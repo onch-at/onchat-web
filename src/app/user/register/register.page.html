@@ -1,0 +1,48 @@
+<ion-content>
+  <div class="flex-col-container">
+    <ion-grid class="d-flex align-items-center" style="padding: 0 1.5rem 5vh; flex: 1 1 auto;">
+      <ion-row>
+        <ion-col size="12">
+          <div class="title text-center font-family-primary">
+            <h1>
+              On<span class="color-primary">Chat</span>
+            </h1>
+            <h5 class="font-weight-bold">世 界 都 在 聊</h5>
+          </div>
+
+          <form #form="ngForm">
+            <input type="text" class="d-block text-center ipt-primary" id="username" name="username" placeholder="用户名" maxlength="30">
+            <input type="password" class="d-block text-center ipt-primary" id="password" name="password" placeholder="密码" maxlength="30">
+            <input type="password" class="d-block text-center ipt-primary" id="confirm-password" name="confirmPassword" placeholder="确认密码" maxlength="30">
+          </form>
+        </ion-col>
+
+        <ion-col style="padding-right: .55rem;">
+          <input type="text" class="d-block text-center ipt-primary" id="captcha" name="captcha" placeholder="验证码" maxlength="4">
+        </ion-col>
+
+        <ion-col style="padding-left: .55rem;">
+          <img class="captcha" [src]="captchaUrl" alt="CAPTCHA" (tap)="updateCaptchaUrl()">
+        </ion-col>
+
+        <ion-col class="text-center" size="12">
+          <button class="ion-activatable ripple-parent btn-primary" style="margin-bottom: .75rem;" [routerLink]="['/register']">
+            注册
+            <ion-ripple-effect></ion-ripple-effect>
+          </button>
+          <span class="color-dark outline-none" style="font-size: .9rem;" [routerLink]="['/login']">已有账号？立即登录！</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <footer class="font-family-primary text-center">
+      <div>
+        Copyright © 2018~2020 HyperGo!
+        <span style="padding: 0 .125rem;">|</span>
+        All Rights Reserved
+      </div>
+      <div>Powered By Angular & Ionic</div>
+    </footer>
+  </div>
+
+</ion-content>

@@ -1,0 +1,39 @@
+<ion-content>
+  <div class="flex-col-container">
+    <ion-grid class="d-flex align-items-center" style="padding: 0 1.5rem 10vh; flex: 1 1 auto;">
+      <ion-row>
+        <ion-col size="12">
+          <div class="title text-center font-family-primary">
+            <h1>
+              On<span class="color-primary">Chat</span>
+            </h1>
+            <h5 class="font-weight-bold">世 界 都 在 聊</h5>
+          </div>
+
+          <form #form="ngForm">
+            <input type="text" class="d-block text-center ipt-primary" id="username" name="username" placeholder="用户名" maxlength="30">
+            <input type="password" class="d-block text-center ipt-primary" id="password" name="password" placeholder="密码" maxlength="30">
+          </form>
+        </ion-col>
+
+        <ion-col style="padding-right: .55rem;">
+          <button class="ion-activatable ripple-parent btn-primary" [routerLink]="['/register']">注册<ion-ripple-effect></ion-ripple-effect></button>
+        </ion-col>
+
+        <ion-col style="padding-left: .55rem;">
+          <button class="ion-activatable ripple-parent btn-primary">登录<ion-ripple-effect></ion-ripple-effect></button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <footer class="font-family-primary text-center">
+      <div>
+        Copyright © 2018~2020 HyperGo!
+        <span style="padding: 0 .125rem;">|</span>
+        All Rights Reserved
+      </div>
+      <div>Powered By Angular & Ionic</div>
+    </footer>
+  </div>
+
+</ion-content>

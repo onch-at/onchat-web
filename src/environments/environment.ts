@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  captchaUrl: 'http://chat.hypergo.net/images/captcha',
+  loginUrl: '/api/user/action/login.php'
 };
 
 /*

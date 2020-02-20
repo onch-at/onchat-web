@@ -1,0 +1,11 @@
+{
+    "/api": {
+        "target": "http://chat.hypergo.net",
+        "secure": "false",
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/api": ""
+        }
+    }
+}

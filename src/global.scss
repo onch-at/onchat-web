@@ -24,3 +24,82 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+@import "./theme/color.scss";
+.font-family-primary { font-family: 'Alibaba-Sans-Black' !important;}
+.color-primary { color: $primary !important; }
+.color-dark { color: $dark !important; }
+.bg-primary { background-color: $primary !important; }
+.d-block { display: block !important; }
+.d-inline { display: inline !important; }
+.d-inline-block { display: inline-block !important; }
+.d-flex { display: flex !important; }
+.justify-content-center { justify-content: center !important; }
+.align-items-center { align-items: center !important; }
+.text-left { text-align: left !important; }
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+.float-left { float: left !important; }
+.float-right { float: right !important; }
+.font-weight-normal { font-weight: normal !important; }
+.font-weight-bold { font-weight: bold !important; }
+.m-0 { margin: 0 !important; }
+.p-0 { padding: 0 !important; }
+.outline-none { outline: none !important; }
+
+@font-face {
+    font-family: 'Alibaba-Sans-Black';
+    src: url('./assets/font/Alibaba-Sans-Black/font.gif');
+    src: url('./assets/font/Alibaba-Sans-Black/font.gif') format('embedded-opentype'),
+         url('./assets/font/Alibaba-Sans-Black/font.bmp') format('woff'),
+         url('./assets/font/Alibaba-Sans-Black/font.jpg') format('truetype'),
+         url('./assets/font/Alibaba-Sans-Black/font.png') format('svg');
+}
+
+.flex-col-container {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+}
+
+.ripple-parent {
+    position: relative;
+    overflow: hidden;
+}
+
+ion-col {
+    padding: 0;
+}
+
+input {
+    border-style: none;
+}
+input.ipt-primary {
+    color: $dark;
+    border-color: $primary;
+}
+input.ipt-primary:focus {
+    box-shadow: 0 0 0 .2rem rgba(255, 193, 7, .5);
+}
+
+button {
+    cursor: pointer;
+}
+button.btn-primary {
+    color: $dark;
+    background-color: $primary;
+}
+button.btn-primary:hover {
+    background: rgba(255, 193, 7, .75);
+}
+button.btn-primary:focus {
+    box-shadow: 0 0 0 .2rem rgba(255, 193, 7, .5);
+}
+
+button, input {
+    outline: none;
+}
+
+input.ipt-primary, button.btn-primary {
+    transition: all .15s ease-in-out
+}

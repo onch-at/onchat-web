@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  captchaUrl: 'http://chat.hypergo.net/images/captcha',
 };

@@ -1,0 +1,28 @@
+@import "../../../theme/color.scss";
+.title {
+    color: #6c757d;
+    margin-bottom: 2rem;
+
+    h1 {
+        font-size: 5rem;
+        letter-spacing: -.25rem
+    }
+}
+
+input {
+    margin-bottom: 1.25rem;
+    background: #f5f5f5;
+}
+
+input, button {
+    width: 100%;
+    font-size: 1.35rem;
+    height: 3.25rem;
+    border-radius: 1.625rem;
+}
+
+footer {
+    padding: .55rem 1rem;
+    font-size: .7rem;
+    color: #e0e0e0;
+}
