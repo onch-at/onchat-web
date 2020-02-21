@@ -1,0 +1,43 @@
+<ion-content [fullscreen]="true" class="bg-white">
+  <aside class="sidebar">
+    <ion-avatar>
+      <img src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5">
+    </ion-avatar>
+
+    <div class="button-group d-flex">
+      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/chat']" routerLinkActive="active">
+        <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
+      </ion-button>
+      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/friend']" routerLinkActive="active">
+        <ion-icon slot="icon-only" name="people"></ion-icon>
+      </ion-button>
+      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/profile']" routerLinkActive="active">
+        <ion-icon slot="icon-only" name="person"></ion-icon>
+      </ion-button>
+
+      <div style="flex: 1 1 auto;"></div>
+
+      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/settings']" routerLinkActive="active">
+        <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
+      </ion-button>
+    </div>
+  </aside>
+
+  <ion-header class="d-flex align-items-center">
+    <ion-toolbar>
+      <span class="brand font-family-primary">
+        On<span class="color-primary">Chat</span>
+      </span>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="presentPopover($event)">
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <main>
+    <ion-router-outlet></ion-router-outlet>
+  </main>
+</ion-content>

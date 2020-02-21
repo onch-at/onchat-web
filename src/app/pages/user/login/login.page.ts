@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { OnChatService } from '../../services/onchat.service';
+import { OnChatService } from '../../../services/onchat.service';
 import { Router } from '@angular/router';
 
 @Component({

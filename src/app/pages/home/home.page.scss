@@ -1,0 +1,146 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 3rem;
+  background: rgba(255, 193, 7, 0.75);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.125);
+  overflow: hidden;
+  z-index: 99;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -0.75rem;
+    height: 3rem;
+    width: 0.75rem;
+    background: rgba(250, 250, 250, 0.25);
+  }
+
+  ion-avatar {
+    padding: 0.35rem;
+
+    img {
+      opacity: 0.9;
+      background: #fff;
+      border: 0.075rem solid #fff;
+    }
+  }
+
+  .button-group {
+    flex-direction: column;
+    margin: .5rem 0 .25rem;
+    height: calc(100% - 3.75rem);
+  }
+
+  ion-button {
+    --color: rgba(255, 255, 255, 0.55);
+    --color-hover: #fff;
+    --color-focused: #fff;
+    --color-activated: #fff;
+    --padding-start: 0.5rem;
+    --padding-end: 0.5rem;
+    --padding-left: 0.5rem;
+    --padding-right: 0.5rem;
+    position: relative;
+    margin: 0 0 0.25rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    &::before {
+      content: "";
+      position: absolute;
+      height: 4rem;
+      width: 4rem;
+      background: #fff;
+      border-radius: 50%;
+      transform: scale(0);
+    }
+
+    &.active {
+      --color: #fff;
+      animation: active .4s ease-out forwards;
+    }
+
+    &.active::before {
+      animation: ripple 0.5s ease-out forwards;
+    }
+  }
+}
+
+ion-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 3rem;
+  width: calc(100% - 3rem);
+  overflow: hidden;
+  background: #fafafa;
+  border-radius: 0 0 1.5rem 0;
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.125);
+
+  ion-toolbar {
+    --border-width: 0;
+    --background: transparent;
+
+    ion-button {
+      color: #616161;
+    }
+  }
+
+  .brand {
+    color: #6c757d;
+    font-size: 1.35rem;
+    line-height: 1.35rem;
+    letter-spacing: -0.075rem;
+    padding: 0 0.75rem;
+  }
+}
+
+ion-router-outlet {
+  margin: 3rem 0 0 3rem;
+  padding: 0.5rem;
+
+  /* 路由转场淡入 */
+  &::ng-deep .ion-page {
+    opacity: .5;
+    animation: fade-in .25s ease-out forwards;
+  }
+}
+
+/* 回弹动画 */
+@keyframes active {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.75);
+  }
+  75% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+/* 涟漪动画 */
+@keyframes ripple {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+/* 淡入动画 */
+@keyframes fade-in {
+  from {
+      opacity: .5;
+  } to {
+      opacity: 1;
+  }
+}
