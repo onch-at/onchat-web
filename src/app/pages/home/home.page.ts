@@ -11,10 +11,10 @@ export class HomePage {
 
   constructor(public popoverController: PopoverController) {}
 
-  async presentPopover(ev: any) {
+  async presentPopover(event: any) {
     const popover = await this.popoverController.create({
       component: PopoverComponent,
-      event: ev,
+      event: event,
     });
     return await popover.present();
   }

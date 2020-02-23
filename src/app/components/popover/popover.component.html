@@ -1,3 +1,17 @@
-<p>
-  popover works!
-</p>
+<ion-list lines="none">
+  <ion-item class="ion-activatable ripple-parent" [detail]="false" [routerLink]="['/login']">
+    <ion-label class="d-flex">
+      <ion-icon name="time-outline"></ion-icon>
+      更新日志
+    </ion-label>
+    <ion-ripple-effect></ion-ripple-effect>
+  </ion-item>
+
+  <ion-item class="ion-activatable ripple-parent" [detail]="false" [routerLink]="['/login']">
+    <ion-label class="d-flex a">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      关于我们
+    </ion-label>
+    <ion-ripple-effect></ion-ripple-effect>
+  </ion-item>
+</ion-list>

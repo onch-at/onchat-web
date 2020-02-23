@@ -31,8 +31,8 @@
 
   .button-group {
     flex-direction: column;
-    margin: .5rem 0 .25rem;
-    height: calc(100% - 3.75rem);
+    margin: 0.5rem 0 0;
+    height: calc(100% - 3.5rem);
   }
 
   ion-button {
@@ -40,12 +40,12 @@
     --color-hover: #fff;
     --color-focused: #fff;
     --color-activated: #fff;
-    --padding-start: 0.5rem;
-    --padding-end: 0.5rem;
-    --padding-left: 0.5rem;
-    --padding-right: 0.5rem;
+    --padding-start: 0.6rem;
+    --padding-end: 0.6rem;
+    --padding-left: 0.6rem;
+    --padding-right: 0.6rem;
     position: relative;
-    margin: 0 0 0.25rem;
+    margin: 0 0 0.75rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -53,8 +53,8 @@
     &::before {
       content: "";
       position: absolute;
-      height: 4rem;
-      width: 4rem;
+      height: 4.5rem;
+      width: 4.5rem;
       background: #fff;
       border-radius: 50%;
       transform: scale(0);
@@ -62,7 +62,7 @@
 
     &.active {
       --color: #fff;
-      animation: active .4s ease-out forwards;
+      animation: active 0.4s ease-out forwards;
     }
 
     &.active::before {
@@ -106,8 +106,17 @@ ion-router-outlet {
 
   /* 路由转场淡入 */
   &::ng-deep .ion-page {
-    opacity: .5;
-    animation: fade-in .25s ease-out forwards;
+    opacity: 0.5;
+    animation: fade-in 0.25s ease-out forwards;
+  }
+}
+
+::ng-deep {
+  ion-popover {
+    --background: #fafafa !important;
+  }
+  .popover-content {
+    --max-width: 8rem;
   }
 }
 
@@ -139,8 +148,9 @@ ion-router-outlet {
 /* 淡入动画 */
 @keyframes fade-in {
   from {
-      opacity: .5;
-  } to {
-      opacity: 1;
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
   }
 }

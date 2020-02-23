@@ -1,0 +1,34 @@
+<ion-content>
+  <ion-header class="d-flex align-items-center">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
+      </ion-buttons>
+
+      <ion-title class="font-weight-bold">
+        <div class="brand font-family-primary">
+          On<span class="color-primary">Chat</span>
+        </div>
+        世界都在聊
+      </ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button>
+          <ion-icon slot="icon-only" name="ellipsis-vertical" style="font-size: 1.5rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <main>
+    <app-msg-list></app-msg-list>
+  </main>
+
+  <div class="bottom-bar">
+    <input type="text" class="ipt-primary" id="message" name="message" placeholder="来说点什么吧？">
+    <button class="ion-activatable ripple-parent btn-primary send-btn">
+      <ion-icon name="arrow-up"></ion-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+    </button>
+  </div>
+</ion-content>

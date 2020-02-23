@@ -1,0 +1,117 @@
+@import "../../../theme/color.scss";
+
+.msg-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  color: $dark;
+
+  .msg-item {
+    display: flex;
+    padding-top: 0.85rem;
+
+    > div:first-child {
+      width: 2.5rem;
+    }
+
+    img {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: #fff;
+      border-radius: 2rem;
+    }
+
+    .username {
+      font-size: 0.8rem;
+    }
+
+    .msg-bubble {
+      position: relative;
+      padding: 0.4rem 0.75rem;
+      margin-top: 0.35rem;
+      max-width: calc(100vw - 7.75rem);
+      border-radius: 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: inline-block;
+      word-break: break-word;
+
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: -0.425rem;
+        width: 1rem;
+        height: 1.15rem;
+        border: 0 solid transparent;
+        border-bottom-width: 0.75rem;
+      }
+    }
+
+    &.msg-item-left {
+      padding-left: 0.75rem;
+      padding-right: 4rem;
+      transform: translateX(-100%);
+      animation: slide-right 0.6s ease-in-out .2s forwards;
+
+      > div:last-child {
+        padding-left: 0.5rem;
+      }
+
+      .msg-bubble {
+        background: #eee;
+
+        &::before {
+          left: -0.375rem;
+          border-bottom-color: #eee;
+          border-radius: 0 0 0 999rem;
+        }
+      }
+    }
+
+    &.msg-item-right {
+      flex-direction: row-reverse;
+      padding-left: 4rem;
+      padding-right: 0.75rem;
+      transform: translateX(100%);
+      animation: slide-left 0.6s ease-in-out .2s forwards;
+
+      > div:last-child {
+        padding-right: 0.5rem;
+      }
+
+      .username {
+        text-align: right;
+      }
+
+      .msg-bubble {
+        background: $primary;
+
+        &::before {
+          right: -0.375rem;
+          border-bottom-color: $primary;
+          border-radius: 0 0 999rem 0;
+        }
+      }
+    }
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

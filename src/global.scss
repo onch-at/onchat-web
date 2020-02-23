@@ -122,6 +122,11 @@ ion-grid,
 ion-col {
   padding: 0;
 }
+// 返回按钮图标
+ion-back-button {
+  --padding-start: .25rem;
+  --color: #616161;
+}
 
 input {
   border-style: none;

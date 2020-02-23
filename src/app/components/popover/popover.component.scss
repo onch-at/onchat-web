@@ -1,0 +1,25 @@
+ion-list {
+    background: transparent;
+}
+
+ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background: transparent;
+
+    ion-label {
+        --color: #616161;
+        margin-left: 1rem;
+        margin-right: 0;
+        align-items: center;
+
+        > ion-icon {
+            font-size: 1.3rem;
+            margin-right: .25rem;
+        }
+    }
+
+    &:not(:last-child) ion-label {
+        margin-bottom: 0;
+    }
+}
