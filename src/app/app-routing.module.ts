@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/user/register/register.module').then(m => m.RegisterPageModule)
   },
   {
+    path: 'card',
+    loadChildren: () => import('./pages/user/card/card.module').then( m => m.CardPageModule)
+  },
+  {
     path: 'chat',
     loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatPageModule)
   },
@@ -22,7 +26,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
-  },
+  }
 ];
 
 @NgModule({

@@ -1,0 +1,200 @@
+@import "../../../../theme/color.scss";
+
+ion-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3rem;
+  background: transparent;
+
+  ion-toolbar {
+    --border-width: 0;
+    --background: transparent;
+
+    ion-buttons > * {
+      color: rgba(#fff, 0.75);
+      border-radius: 50%;
+      filter: drop-shadow(0 0 0.5rem #000);
+    }
+  }
+}
+
+.card-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70vw;
+  transform-origin: bottom;
+  object-fit: cover;
+  filter: brightness(0.9);
+}
+
+.card {
+  position: absolute;
+  top: calc(70vw - 1.5rem);
+  left: 0;
+  border-radius: 0 1.5rem 0 0;
+  box-shadow: 0 0 1rem rgba(#000, 0.5);
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+
+  .card-header {
+    height: 7rem;
+    margin-top: -3rem;
+    padding: 0 0.75rem;
+    display: flex;
+
+    .avatar {
+      width: 6rem;
+      height: 6rem;
+      margin-top: 1rem;
+      border-radius: 50%;
+      border: 0.175rem solid rgba(#fff, 0.75);
+    }
+
+    .info {
+      padding-right: 0.5rem;
+      flex: auto;
+
+      & > * {
+        width: calc(100vw - 8rem);
+      }
+
+      .name {
+        padding: 1.25rem 0 0 0.75rem;
+        color: #fff;
+        height: 3rem;
+        line-height: 1.25rem;
+        font-size: 1.25rem;
+        font-weight: bolder;
+        text-shadow: 0 0 1rem #000;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .account {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 4rem;
+        padding: 0.5rem 0 0.5rem 0.75rem;
+
+        & > * {
+          color: $dark;
+          font-weight: bold;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+
+  .card-content {
+    color: $dark;
+    padding: 0.5rem 1rem;
+
+    & > * {
+      margin-bottom: 0.75rem;
+    }
+
+    .signature {
+      position: relative;
+      padding: .375rem 0 0 3.25rem;
+      border-top: .1rem dotted #e0e0e0;
+
+      // &::before {
+      //   content: 'Personality Signature';
+      //   position: absolute;
+
+      //   color: rgba(#000, .075);
+      //   font-size: 2.5rem;
+      //   font-weight: bold;
+      //   font-style: italic;
+      // }
+
+      > ion-icon {
+        position: absolute;
+        left: 0;
+        font-size: 2.75rem;
+        color: rgba($primary, .75);
+      }
+
+      label {
+        color: #616161;
+        font-weight: bold;
+      }
+
+      article {
+        margin-top: .25rem;
+        font-size: .9rem;
+      }
+    }
+
+    .last-online {
+      display: flex;
+      align-items: center;
+      height: 2.5rem;
+      padding: 0 0.75rem;
+      border-radius: 1.25rem;
+      background: #eee;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      ion-icon {
+        color: #616161;
+        font-size: 1.375rem;
+        margin-right: 0.4rem;
+      }
+    }
+
+    .details-list {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      background: #fafafa;
+      border-radius: 1.25rem;
+
+      .details-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+
+        > span {
+          color: #616161;
+          text-align: right;
+          font-weight: bold;
+          width: 50vw;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
+// *[data-lable] {
+//   position: relative;
+
+//   &::before {
+//     content: attr(data-lable);
+//     display: inline-block;
+//     margin-right: .75em;
+//     width: 3.65em;
+//     text-align: center;
+//     text-align-last: justify;
+//   }
+
+//   &::after {
+//     content: "：";
+//     position: absolute;
+//     top: 0;
+//     left: 3.65em;
+//   }
+// }

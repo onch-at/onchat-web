@@ -9,16 +9,6 @@
   overflow: hidden;
   z-index: 99;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: -0.75rem;
-    height: 3rem;
-    width: 0.75rem;
-    background: rgba(250, 250, 250, 0.25);
-  }
-
   ion-avatar {
     padding: 0.35rem;
 
