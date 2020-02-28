@@ -38,8 +38,17 @@ ion-header {
   border-radius: 0 1.5rem 0 0;
   box-shadow: 0 0 1rem rgba(#000, 0.5);
   width: 100%;
-  height: 100vh;
   background: #fff;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1.5rem;
+    width: 100%;
+    height: 2rem;
+    background: #fff;
+  }
 
   .card-header {
     height: 7rem;
@@ -96,9 +105,9 @@ ion-header {
 
   .card-content {
     color: $dark;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem 2.5rem;
 
-    & > * {
+    & > *:not(:last-child) {
       margin-bottom: 0.75rem;
     }
 
@@ -107,48 +116,35 @@ ion-header {
       padding: .375rem 0 0 3.25rem;
       border-top: .1rem dotted #e0e0e0;
 
-      // &::before {
-      //   content: 'Personality Signature';
-      //   position: absolute;
-
-      //   color: rgba(#000, .075);
-      //   font-size: 2.5rem;
-      //   font-weight: bold;
-      //   font-style: italic;
-      // }
-
       > ion-icon {
         position: absolute;
         left: 0;
         font-size: 2.75rem;
-        color: rgba($primary, .75);
-      }
-
-      label {
         color: #616161;
-        font-weight: bold;
+        transform: rotate(45deg);
       }
 
       article {
         margin-top: .25rem;
-        font-size: .9rem;
+        font-size: .95rem;
       }
     }
 
     .last-online {
       display: flex;
       align-items: center;
+      color: #3880ff;
       height: 2.5rem;
+      line-height: 2.5rem;
       padding: 0 0.75rem;
       border-radius: 1.25rem;
-      background: #eee;
+      background: rgba(#3880ff , .125);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
 
       ion-icon {
-        color: #616161;
-        font-size: 1.375rem;
+        font-size: 1.25rem;
         margin-right: 0.4rem;
       }
     }
@@ -159,6 +155,7 @@ ion-header {
       list-style: none;
       background: #fafafa;
       border-radius: 1.25rem;
+      border: .1rem solid #f5f5f5;
 
       .details-item {
         display: flex;
@@ -179,22 +176,26 @@ ion-header {
   }
 }
 
-// *[data-lable] {
-//   position: relative;
+.bottom-bar {
+  position: fixed;
+  left: .75rem;
+  bottom: 0;
+  padding-bottom: .75rem;
+  width: calc(100vw - 1.5rem);
+  transform: translateY(100%);
+  animation: slide-up 0.25s ease-out .5s forwards;
 
-//   &::before {
-//     content: attr(data-lable);
-//     display: inline-block;
-//     margin-right: .75em;
-//     width: 3.65em;
-//     text-align: center;
-//     text-align-last: justify;
-//   }
+  button {
+    height: 2.5rem;
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 1.25rem;
+    background: rgba($primary, .75);
+    backdrop-filter: saturate(180%) blur(5px);
 
-//   &::after {
-//     content: "：";
-//     position: absolute;
-//     top: 0;
-//     left: 3.65em;
-//   }
-// }
+    ion-icon {
+      margin-right: .25rem;
+      --ionicon-stroke-width: 2.5rem;
+    }
+  }
+}

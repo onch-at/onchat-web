@@ -124,7 +124,7 @@ ion-col {
 }
 // 返回按钮图标
 ion-back-button {
-  --padding-start: .25rem;
+  --padding-start: 0.25rem;
   --color: #616161;
 }
 
@@ -143,6 +143,9 @@ button {
   cursor: pointer;
 }
 button.btn-primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: $dark;
   background-color: $primary;
 }
@@ -156,4 +159,39 @@ button.btn-primary:focus {
 input.ipt-primary,
 button.btn-primary {
   transition: all 0.15s ease-in-out;
+}
+
+// 向左滑出
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+// 向右滑出
+@keyframes slide-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+// 向上滑出
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  } to {
+    transform: translateY(0);
+  }
+}
+// 向下滑出
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  } to {
+    transform: translateY(0);
+  }
 }
