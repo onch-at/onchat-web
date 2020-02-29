@@ -68,8 +68,8 @@ ion-header {
   height: 3rem;
   width: calc(100% - 3rem);
   overflow: hidden;
-  background: rgba(#fafafa , .75);
-  backdrop-filter: saturate(180%) blur(10px);
+  background: rgba(#fafafa , .9);
+  backdrop-filter: saturate(180%) blur(5px);
   border-radius: 0 0 1.5rem 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.125);
 

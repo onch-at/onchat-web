@@ -1,0 +1,45 @@
+@import "../../../../theme/color.scss";
+
+.chat-list {
+    ion-item {
+        --padding-start: 1rem;
+        --padding-end: .5rem;
+        --padding-top: .5rem;
+        --padding-bottom: .5rem;
+
+        h2 {
+            font-weight: 500;
+        }
+    }
+    ion-thumbnail {
+        --border-radius: 50%;
+        margin: 0 .75rem 0 0;
+    }
+
+    ion-item-options {
+        border: none;
+
+        ion-item-option {
+            min-width: 4rem;
+            font-size: .9rem;
+        }
+    }
+
+    .info {
+        text-align: right;
+
+        time {
+            display: block;
+            color: rgba(var(--ion-text-color-rgb,0,0,0),.4);
+            font-size: .75rem;
+            margin-bottom: .25rem;
+        }
+
+        ion-badge {
+            padding: .1rem .35rem;
+            font-weight: 500;
+            font-size: .75rem;
+            --background: #ff5252;
+        }
+    }
+}

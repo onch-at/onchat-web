@@ -37,23 +37,24 @@
       display: inline-block;
       word-break: break-word;
 
-      &::before {
-        content: "";
-        display: block;
-        position: absolute;
-        top: -0.425rem;
-        width: 1rem;
-        height: 1.15rem;
-        border: 0 solid transparent;
-        border-bottom-width: 0.75rem;
-      }
+      // 气泡的勾子，由于气泡要应用涟漪效果，所以暂时弃用气泡的勾子
+      // &::before {
+      //   content: "";
+      //   display: block;
+      //   position: absolute;
+      //   top: -0.425rem;
+      //   width: 1rem;
+      //   height: 1.15rem;
+      //   border: 0 solid transparent;
+      //   border-bottom-width: 0.75rem;
+      // }
     }
 
     &.msg-item-left {
       padding-left: 0.75rem;
       padding-right: 4rem;
       transform: translateX(-100%);
-      animation: slide-right 0.6s ease-in-out .2s forwards;
+      animation: slide-right 0.6s ease-in-out .15s forwards;
 
       > div:last-child {
         padding-left: 0.5rem;
@@ -75,7 +76,7 @@
       padding-left: 4rem;
       padding-right: 0.75rem;
       transform: translateX(100%);
-      animation: slide-left 0.6s ease-in-out .2s forwards;
+      animation: slide-left 0.6s ease-in-out .15s forwards;
 
       > div:last-child {
         padding-right: 0.5rem;

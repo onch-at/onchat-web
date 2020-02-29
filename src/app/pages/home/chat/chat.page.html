@@ -1,19 +1,92 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>chat</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-button [routerLink]="['/login']"  expand="block" fill="clear" shape="round">
+  <ion-list class="chat-list">
+    <ion-item-sliding>
+      <ion-item lines="none" [detail]="false" [routerLink]="['/chat']">
+        <ion-thumbnail slot="start">
+          <img src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>Room Name</h2>
+          <p>room description</p>
+        </ion-label>
+        <div class="info">
+          <time>12:00</time>
+          <ion-badge>5</ion-badge>
+        </div>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option>设为已读</ion-item-option>
+        <ion-item-option color="danger">移除</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item-sliding>
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="https://blog.hypergo.net/images/cartoon/3_angry_birds_yellow.jpg">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>Room Name</h2>
+          <p>room description</p>
+        </ion-label>
+        <div class="info">
+          <time>12:00</time>
+          <ion-badge>5</ion-badge>
+        </div>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option>设为已读</ion-item-option>
+        <ion-item-option color="danger">移除</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item-sliding>
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="https://blog.hypergo.net/images/cartoon/5_angry_birds_pig_happy.jpg">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>Room Name</h2>
+          <p>room description</p>
+        </ion-label>
+        <div class="info">
+          <time>12:00</time>
+          <ion-badge>5</ion-badge>
+        </div>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option>设为已读</ion-item-option>
+        <ion-item-option color="danger">移除</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item-sliding>
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="https://blog.hypergo.net/images/cartoon/2_angry_birds_red.jpg">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>不存在的房间</h2>
+          <p>Non-existent room</p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option>设为已读</ion-item-option>
+        <ion-item-option color="danger">移除</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+
+  <ion-button [routerLink]="['/login']" expand="block" fill="clear" shape="round">
     login
   </ion-button>
 
-  <ion-button [routerLink]="['/chat']"  expand="block" fill="clear" shape="round">
+  <ion-button [routerLink]="['/chat']" expand="block" fill="clear" shape="round">
     chat
   </ion-button>
 
-  <ion-button [routerLink]="['/card']"  expand="block" fill="clear" shape="round">
+  <ion-button [routerLink]="['/card']" expand="block" fill="clear" shape="round">
     card
   </ion-button>
 </ion-content>
