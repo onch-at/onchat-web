@@ -35,11 +35,17 @@
 .color-dark {
   color: $dark !important;
 }
+.color-danger {
+  color: $danger !important;
+}
 .bg-primary {
   background-color: $primary !important;
 }
 .bg-white {
   background-color: #fff !important;
+}
+.bg-danger {
+  background-color: $danger !important;
 }
 .d-block {
   display: block !important;
@@ -136,7 +142,7 @@ input.ipt-primary {
   border-color: $primary;
 }
 input.ipt-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);
 }
 
 button {
@@ -150,10 +156,10 @@ button.btn-primary {
   background-color: $primary;
 }
 button.btn-primary:hover {
-  background: rgba(255, 193, 7, 0.75);
+  background: rgba($primary, 0.75);
 }
 button.btn-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);
 }
 
 input.ipt-primary,
@@ -183,7 +189,8 @@ button.btn-primary {
 @keyframes slide-up {
   from {
     transform: translateY(100%);
-  } to {
+  }
+  to {
     transform: translateY(0);
   }
 }
@@ -191,7 +198,8 @@ button.btn-primary {
 @keyframes slide-down {
   from {
     transform: translateY(-100%);
-  } to {
+  }
+  to {
     transform: translateY(0);
   }
 }

@@ -13,14 +13,15 @@ ion-header {
     --background: transparent;
 
     ion-buttons > * {
-      color: rgba(#fff, 0.75);
+      --color: #fff;
+      opacity: 0.75;
       border-radius: 50%;
       filter: drop-shadow(0 0 0.5rem #000);
     }
   }
 }
 
-.card-bg {
+.bg-img {
   position: fixed;
   top: 0;
   left: 0;
@@ -28,7 +29,7 @@ ion-header {
   height: 70vw;
   transform-origin: bottom;
   object-fit: cover;
-  filter: brightness(0.9);
+  filter: brightness(0.95);
 }
 
 .card {
@@ -41,7 +42,7 @@ ion-header {
   width: 100%;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: -1.5rem;
@@ -73,10 +74,10 @@ ion-header {
       }
 
       .name {
-        padding: 1.25rem 0 0 0.75rem;
+        padding-left: 0.75rem;
         color: #fff;
         height: 3rem;
-        line-height: 1.25rem;
+        line-height: 3.5rem;
         font-size: 1.25rem;
         font-weight: bolder;
         text-shadow: 0 0 1rem #000;
@@ -90,11 +91,10 @@ ion-header {
         flex-direction: column;
         justify-content: space-between;
         height: 4rem;
-        padding: 0.5rem 0 0.5rem 0.75rem;
+        padding: 0.5rem 0 0.25rem 0.75rem;
 
         & > * {
           color: $dark;
-          font-weight: bold;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -105,7 +105,7 @@ ion-header {
 
   .card-content {
     color: $dark;
-    padding: 0.5rem 1rem 2.5rem;
+    padding: 0 1rem 2.5rem;
 
     & > *:not(:last-child) {
       margin-bottom: 0.75rem;
@@ -113,8 +113,8 @@ ion-header {
 
     .signature {
       position: relative;
-      padding: .375rem 0 0 3.25rem;
-      border-top: .1rem dotted #e0e0e0;
+      padding: 0.375rem 0 0 3.25rem;
+      min-height: 2.5rem;
 
       > ion-icon {
         position: absolute;
@@ -125,8 +125,8 @@ ion-header {
       }
 
       article {
-        margin-top: .25rem;
-        font-size: .95rem;
+        margin-top: 0.25rem;
+        font-size: 0.95rem;
       }
     }
 
@@ -138,7 +138,7 @@ ion-header {
       line-height: 2.5rem;
       padding: 0 0.75rem;
       border-radius: 1.25rem;
-      background: rgba(#3880ff , .125);
+      background: rgba(#3880ff, 0.125);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -155,7 +155,6 @@ ion-header {
       list-style: none;
       background: #fafafa;
       border-radius: 1.25rem;
-      border: .1rem solid #f5f5f5;
       overflow: hidden;
 
       .details-item {
@@ -164,13 +163,14 @@ ion-header {
         padding: 0.75rem 1rem;
 
         > span {
-          color: #616161;
-          text-align: right;
-          font-weight: bold;
           width: 50vw;
+          color: #616161;
+          font-size: 0.85rem;
+          font-weight: bold;
+          text-align: right;
+          text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
-          text-overflow: ellipsis;
         }
       }
     }
@@ -179,25 +179,24 @@ ion-header {
 
 .bottom-bar {
   position: fixed;
-  left: .75rem;
+  left: 0.75rem;
   bottom: 0;
-  padding-bottom: .75rem;
+  padding-bottom: 0.75rem;
   width: calc(100vw - 1.5rem);
   transform: translateY(100%);
-  animation: slide-up 0.25s ease-out .5s forwards;
+  animation: slide-up 0.25s ease-out 0.5s forwards;
 
   button {
     height: 2.5rem;
     width: 100%;
     font-size: 1rem;
     border-radius: 1.25rem;
-    background: rgba($primary, .9);
+    background: rgba($primary, 0.9);
     backdrop-filter: saturate(180%) blur(5px);
-    box-shadow: 0 0 1rem rgba(#000, 0.25);
+    box-shadow: 0 0 0.75rem rgba(#000, 0.125);
 
     ion-icon {
-      margin-right: .25rem;
-      --ionicon-stroke-width: 2.5rem;
+      margin-right: 0.25rem;
     }
   }
 }

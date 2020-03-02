@@ -1,28 +1,88 @@
 @import "../../../../theme/color.scss";
 .brand {
-    color: #6c757d;
-    margin-bottom: 2rem;
+  color: #6c757d;
+  margin-bottom: 2rem;
 
-    h1 {
-        font-size: 5rem;
-        letter-spacing: -.25rem
-    }
+  h1 {
+    font-size: 5rem;
+    letter-spacing: -0.25rem;
+    animation: bounce-in-down 0.9s linear;
+  }
 }
 
 input {
-    margin-bottom: 1.25rem;
-    background: #f5f5f5;
+  margin-bottom: 1.25rem;
+  background: #f5f5f5;
 }
 
-input, button {
-    width: 100%;
-    font-size: 1.35rem;
-    height: 3.25rem;
-    border-radius: 1.625rem;
+input,
+button {
+  width: 100%;
+  font-size: 1.35rem;
+  height: 3.25rem;
+  border-radius: 1.625rem;
+}
+
+button {
+  animation: bounce-in-up 0.9s linear;
 }
 
 footer {
-    padding: .55rem 1rem;
-    font-size: .7rem;
-    color: #e0e0e0;
+  padding: 0.55rem 1rem;
+  font-size: 0.7rem;
+  color: #e0e0e0;
+}
+
+@keyframes bounce-in-down {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0);
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0);
+  }
+  75% {
+    transform: translate3d(0, -10px, 0);
+  }
+  90% {
+    transform: translate3d(0, 5px, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes bounce-in-up {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  from {
+    opacity: 0;
+    transform: translate3d(0, 3000px, 0);
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(0, -20px, 0);
+  }
+  75% {
+    transform: translate3d(0, 10px, 0);
+  }
+  90% {
+    transform: translate3d(0, -5px, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 }
