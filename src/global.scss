@@ -134,12 +134,8 @@ ion-back-button {
   --color: #616161;
 }
 
-input {
-  border-style: none;
-}
 input.ipt-primary {
   color: $dark;
-  border-color: $primary;
 }
 input.ipt-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);
@@ -149,14 +145,11 @@ button {
   cursor: pointer;
 }
 button.btn-primary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: $dark;
   background-color: $primary;
 }
 button.btn-primary:hover {
-  background: rgba($primary, 0.75);
+  background-color: rgba($primary, 0.75);
 }
 button.btn-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);

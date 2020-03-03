@@ -5,8 +5,7 @@ ion-header {
   width: 100%;
   height: 3rem;
   overflow: hidden;
-  background: rgba(#fafafa, .9);
-  backdrop-filter: saturate(180%) blur(5px);
+  background: #fafafa;
   border-radius: 0 0 1.5rem 1.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
   transform: translateY(-100%);
@@ -17,8 +16,8 @@ ion-header {
     --background: transparent;
 
     ion-title {
-      transform: translateY(1.5rem);
       color: #424242;
+      transform: translateY(1.5rem);
       animation: show 0.5s ease-out 1.5s forwards;
     }
 
@@ -47,8 +46,7 @@ ion-header {
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-  background: rgba(#fafafa , .9);
-  backdrop-filter: saturate(180%) blur(5px);
+  background: #fafafa;
   border-radius: 1.5rem 1.5rem 0 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
   transform: translateY(100%);
@@ -59,16 +57,17 @@ ion-header {
   }
 
   input {
+    flex: auto;
     font-size: 1rem;
     border: .075rem solid #eee;
     border-radius: 2rem;
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 .75rem;
-    flex: auto;
+    background: #fff;
 
     &:focus {
-      border-style: none;
+      border-color: #fff;
     }
   }
 

@@ -1,6 +1,8 @@
 @import "../../../../theme/color.scss";
 
 .chat-list {
+  margin-top: 0;
+
   ion-item {
     --padding-start: 1rem;
     --padding-end: 0;
@@ -8,17 +10,19 @@
     --padding-bottom: 0.5rem;
 
     h2 {
-        font-size: 1rem;
+      font-size: 1rem;
       font-weight: 500;
     }
 
     p {
-        font-size: .8rem;
+      font-size: 0.8rem;
     }
   }
   ion-thumbnail {
     --border-radius: 50%;
     margin: 0 0.75rem 0 0;
+    width: 3.5rem;
+    height: 3.5rem;
   }
 
   ion-item-options {
