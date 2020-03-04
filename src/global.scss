@@ -134,29 +134,40 @@ ion-back-button {
   --color: #616161;
 }
 
-input.ipt-primary {
+.ipt-primary {
   color: $dark;
 }
-input.ipt-primary:focus {
+.ipt-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);
 }
 
 button {
   cursor: pointer;
 }
-button.btn-primary {
+.btn-primary {
   color: $dark;
   background-color: $primary;
 }
-button.btn-primary:hover {
+.btn-primary:hover {
   background-color: rgba($primary, 0.75);
 }
-button.btn-primary:focus {
+.btn-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);
 }
+.btn-secondary {
+  color: #616161;
+  background-color: #f5f5f5;
+}
+.btn-secondary:hover {
+  background-color: #fafafa;
+}
+.btn-secondary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(#f5f5f5, 0.75);
+}
 
-input.ipt-primary,
-button.btn-primary {
+.ipt-primary,
+.btn-primary,
+.btn-secondary {
   transition: all 0.15s ease-in-out;
 }
 

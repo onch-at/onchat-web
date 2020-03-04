@@ -1,5 +1,7 @@
 @import "../../../../theme/color.scss";
-
+ion-content {
+  --color: #424242;
+}
 ion-header {
   position: fixed;
   top: 0;
@@ -14,7 +16,7 @@ ion-header {
 
     ion-buttons > * {
       --color: #fff;
-      opacity: 0.75;
+      opacity: 0.95;
       border-radius: 50%;
       filter: drop-shadow(0 0 0.5rem #000);
     }
@@ -26,30 +28,19 @@ ion-header {
   top: 0;
   left: 0;
   width: 100%;
-  height: 70vw;
+  height: 100%;
   transform-origin: bottom;
   object-fit: cover;
-  filter: brightness(0.95);
 }
 
 .card {
   position: absolute;
-  top: calc(70vw - 1.5rem);
+  top: 75vw;
   left: 0;
-  background: #fff;
+  background: rgba(#fff, 0.75);
+  backdrop-filter: saturate(200%) blur(5px);
   border-radius: 0 1.5rem 0 0;
-  box-shadow: 0 0 1rem rgba(#000, 0.5);
   width: 100%;
-
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -1.5rem;
-    width: 100%;
-    height: 2rem;
-    background: #fff;
-  }
 
   .card-header {
     height: 6rem;
@@ -61,7 +52,7 @@ ion-header {
       width: 6rem;
       height: 6rem;
       border-radius: 50%;
-      border: 0.175rem solid rgba(#fff, 0.75);
+      border: 0.25rem solid rgba(#fff, 0.5);
     }
 
     .info {
@@ -75,9 +66,9 @@ ion-header {
       h4 {
         margin: 0;
         padding-left: 0.75rem;
-        color: #fff;
         height: 3rem;
         line-height: 3.5rem;
+        color: #fff;
         font-weight: bolder;
         text-shadow: 0 0 1rem #000;
         overflow: hidden;
@@ -89,7 +80,6 @@ ion-header {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        color: $dark;
         font-size: 0.9rem;
         height: 3rem;
         padding: 0.25rem 0 0.1rem 0.75rem;
@@ -104,23 +94,22 @@ ion-header {
   }
 
   .card-content {
-    color: $dark;
-    padding: 0 1rem 2.5rem;
+    padding: 0 1rem 4rem;
 
     & > *:first-child {
       margin-top: 0.75rem;
     }
 
     & > *:not(:last-child) {
-      margin-bottom: 0.75rem;
+      margin-bottom: 1rem;
     }
 
     .signature {
-      padding: 0.5rem 1rem .75rem;
+      padding: 0.5rem 1rem 0.75rem;
       font-size: 0.9rem;
-      background: rgba($primary, 0.125);
-      border-left: .25rem solid rgba($primary, 0.5);
-      border-radius: .35rem;
+      background: rgba($primary, 0.25);
+      border-left: 0.25rem solid rgba($primary, 0.5);
+      border-radius: 0.35rem 0.5rem 0.5rem 0.35rem;
 
       &::first-letter {
         font-size: 1.25rem;
@@ -135,7 +124,7 @@ ion-header {
       line-height: 2.5rem;
       padding: 0 0.75rem;
       border-radius: 1.25rem;
-      background: rgba(#3880ff, 0.125);
+      background: rgba(#3880ff, 0.25);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -150,7 +139,7 @@ ion-header {
       padding: 0;
       margin: 0;
       list-style: none;
-      background: #fafafa;
+      background: rgba(#fff, 0.4);
       border-radius: 1.25rem;
       overflow: hidden;
 
@@ -161,9 +150,7 @@ ion-header {
 
         > span {
           width: 50vw;
-          color: #616161;
-          font-size: 0.85rem;
-          font-weight: bold;
+          font-size: 0.9rem;
           text-align: right;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -188,8 +175,8 @@ ion-header {
     width: 100%;
     font-size: 1rem;
     border-radius: 1.25rem;
-    background: $primary;
-    box-shadow: 0 0 0.75rem rgba(#000, 0.125);
+    background: rgba($primary, .75);
+    backdrop-filter: saturate(200%) blur(5px);
 
     ion-icon {
       margin-right: 0.25rem;

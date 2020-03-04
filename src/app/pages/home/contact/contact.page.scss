@@ -1,0 +1,40 @@
+@import "../../../../theme/color.scss";
+
+ion-searchbar {
+  --color: #424242;
+  --background: #f5f5f5;
+  padding: 0.5rem 1rem;
+
+  &::ng-deep {
+    .searchbar-input-container {
+      height: 2.125rem;
+      line-height: 2.125rem;
+    }
+
+    .searchbar-input {
+      font-size: 0.95rem;
+      border-radius: 1.5rem;
+    }
+
+    .searchbar-search-icon {
+        width: 1.25rem;
+    }
+
+    .searchbar-clear-button.sc-ion-searchbar-ios {
+        width: 2rem;
+        padding-right: .25rem;
+    }
+  }
+
+  &.searchbar-has-value::ng-deep,
+  &.searchbar-has-focus::ng-deep {
+    .searchbar-input.sc-ion-searchbar-ios {
+        padding-inline-start: 2.125rem;
+        padding-inline-end: 2rem;
+      }
+
+    .searchbar-search-icon {
+        padding-left: .25rem;
+    }
+  }
+}

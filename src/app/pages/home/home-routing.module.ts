@@ -13,8 +13,8 @@ const routes: Routes = [
         loadChildren: () => import('./chat/chat.module').then(m => m.ChatPageModule)
       },
       {
-        path: 'friend',
-        loadChildren: () => import('./friend/friend.module').then(m => m.FriendPageModule)
+        path: 'contact',
+        loadChildren: () => import('./contact/contact.module').then(m => m.ContactPageModule)
       },
       {
         path: 'settings',
