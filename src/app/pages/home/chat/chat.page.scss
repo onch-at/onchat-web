@@ -1,23 +1,11 @@
 @import "../../../../theme/color.scss";
 
-.chat-list {
-  margin-top: 0;
+ion-item {
+  --padding-start: 1rem;
+  --padding-end: 0;
+  --padding-top: 0.5rem;
+  --padding-bottom: 0.5rem;
 
-  ion-item {
-    --padding-start: 1rem;
-    --padding-end: 0;
-    --padding-top: 0.5rem;
-    --padding-bottom: 0.5rem;
-
-    h2 {
-      font-size: 1rem;
-      font-weight: 500;
-    }
-
-    p {
-      font-size: 0.8rem;
-    }
-  }
   ion-thumbnail {
     --border-radius: 50%;
     margin: 0 0.75rem 0 0;
@@ -25,30 +13,40 @@
     height: 3.5rem;
   }
 
-  ion-item-options {
-    border: none;
-
-    ion-item-option {
-      color: #fff;
-      min-width: 4rem;
-      font-size: 0.9rem;
-    }
+  h2 {
+    color: $dark;
+    font-size: 1rem;
+    font-weight: bold;
   }
 
-  .info {
-    text-align: right;
+  p {
+    font-size: 0.8rem;
+  }
+}
 
-    time {
-      display: block;
-      color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.4);
-      font-size: 0.75rem;
-      margin-bottom: 0.25rem;
-    }
+ion-item-options {
+  border: none;
 
-    ion-badge {
-      padding: 0.1rem 0.35rem;
-      font-weight: 500;
-      font-size: 0.75rem;
-    }
+  ion-item-option {
+    color: #fff;
+    min-width: 4rem;
+    font-size: 0.9rem;
+  }
+}
+
+.info {
+  text-align: right;
+
+  time {
+    display: block;
+    color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.4);
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  ion-badge {
+    padding: 0.1rem 0.35rem;
+    font-weight: 500;
+    font-size: 0.75rem;
   }
 }

@@ -134,6 +134,10 @@ ion-back-button {
   --color: #616161;
 }
 
+ion-list.list-ios {
+  margin: 0;
+}
+
 .ipt-primary {
   color: $dark;
 }
@@ -205,5 +209,39 @@ button {
   }
   to {
     transform: translateY(0);
+  }
+}
+/* 回弹动画 */
+@keyframes active {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.75);
+  }
+  75% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+/* 淡入动画 */
+@keyframes fade-in {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* 涟漪动画 */
+@keyframes ripple {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
   }
 }
