@@ -3,8 +3,8 @@
 ion-item {
   --padding-start: 1rem;
   --padding-end: 0;
-  --padding-top: 0.5rem;
-  --padding-bottom: 0.5rem;
+  --padding-top: 0;
+  --padding-bottom: 0;
 
   ion-thumbnail {
     --border-radius: 50%;
@@ -23,4 +23,8 @@ ion-item {
     font-size: 0.75rem;
     margin-top: .25rem;
   }
+}
+
+ion-item-option {
+  font-size: .8rem;
 }

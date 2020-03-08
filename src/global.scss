@@ -138,6 +138,15 @@ ion-list.list-ios {
   margin: 0;
 }
 
+ion-item-options {
+  border: none;
+
+  ion-item-option {
+    color: #fff;
+    min-width: 4rem;
+  }
+}
+
 .ipt-primary {
   color: $dark;
 }

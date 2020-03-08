@@ -42,7 +42,7 @@ ion-searchbar {
 aside {
   position: relative;
   display: flex;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 
   button {
     position: relative;
@@ -63,8 +63,8 @@ aside {
       position: absolute;
       top: calc(50% - 2.25rem);
       left: calc(50% - 2.25rem);
-      height: 4.5rem;
-      width: 4.5rem;
+      height: 4.65rem;
+      width: 4.65rem;
       background: rgba(#000, .125);
       border-radius: 50%;
       transform: scale(0);

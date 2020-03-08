@@ -1,9 +1,20 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>settings</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <ion-list>
+    <ion-item lines="none" [detail]="false">
+      <ion-label>Input</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+    <ion-item lines="none" [detail]="false">
+      <ion-label>Toggle</ion-label>
+      <ion-toggle slot="end"></ion-toggle>
+    </ion-item>
+    <ion-item lines="none" [detail]="false">
+      <ion-label>Radio</ion-label>
+      <ion-radio slot="end"></ion-radio>
+    </ion-item>
+    <ion-item lines="none" [detail]="false">
+      <ion-label>Checkbox</ion-label>
+      <ion-checkbox slot="start" mode="md"></ion-checkbox>
+    </ion-item>
+  </ion-list>
 </ion-content>
