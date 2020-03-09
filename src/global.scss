@@ -164,9 +164,10 @@ button {
 .btn-primary:hover {
   background-color: rgba($primary, 0.75);
 }
-.btn-primary:focus {
+.btn-primary.active {
   box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);
 }
+
 .btn-secondary {
   color: #616161;
   background-color: #f5f5f5;
@@ -174,14 +175,15 @@ button {
 .btn-secondary:hover {
   background-color: #fafafa;
 }
-.btn-secondary:focus {
+.btn-secondary.active {
   box-shadow: 0 0 0 0.2rem rgba(#f5f5f5, 0.75);
 }
 
 .ipt-primary,
 .btn-primary,
 .btn-secondary {
-  transition: all 0.15s ease-in-out;
+  box-shadow: none;
+  transition: all 0.15s ease-in-out, box-shadow .175s ease-in-out;
 }
 
 // 向左滑出

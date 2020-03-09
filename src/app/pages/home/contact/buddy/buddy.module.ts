@@ -1,11 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
+import { ShareModule } from 'src/app/modules/share/share.module';
 import { BuddyPageRoutingModule } from './buddy-routing.module';
-
 import { BuddyPage } from './buddy.page';
 
 @NgModule({
@@ -13,7 +11,8 @@ import { BuddyPage } from './buddy.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    BuddyPageRoutingModule
+    BuddyPageRoutingModule,
+    ShareModule
   ],
   declarations: [BuddyPage]
 })

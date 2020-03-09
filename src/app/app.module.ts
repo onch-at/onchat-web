@@ -11,8 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OnChatService } from './services/onchat.service';
 
-
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

@@ -1,11 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
+import { ShareModule } from 'src/app/modules/share/share.module';
 import { LoginPageRoutingModule } from './login-routing.module';
-
 import { LoginPage } from './login.page';
 
 @NgModule({
@@ -13,7 +11,8 @@ import { LoginPage } from './login.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    LoginPageRoutingModule
+    LoginPageRoutingModule,
+    ShareModule
   ],
   declarations: [LoginPage]
 })
