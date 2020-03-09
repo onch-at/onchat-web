@@ -12,7 +12,10 @@
 
           <form #form="ngForm">
             <input type="text" class="d-block text-center ipt-primary" id="username" name="username" placeholder="用户名" maxlength="30">
-            <input type="password" class="d-block text-center ipt-primary" id="password" name="password" placeholder="密码" maxlength="30">
+            <div style="position: relative;">
+              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" name="password" placeholder="密码" maxlength="30">
+              <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
+            </div>
           </form>
         </ion-col>
 

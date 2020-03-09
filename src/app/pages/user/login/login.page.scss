@@ -16,6 +16,15 @@ input {
   background: #f5f5f5;
 }
 
+#password + ion-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  color: #e0e0e0;
+  font-size: 1.5rem;
+}
+
 input,
 button {
   width: 100%;
