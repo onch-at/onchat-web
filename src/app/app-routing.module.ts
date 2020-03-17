@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'card',
-    loadChildren: () => import('./pages/user/card/card.module').then( m => m.CardPageModule)
+    loadChildren: () => import('./pages/user/card/card.module').then(m => m.CardPageModule)
   },
   {
     path: 'chat',

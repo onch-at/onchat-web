@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OnChatService } from '../../../services/onchat.service';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -18,7 +17,7 @@ export class LoginPage implements OnInit {
       console.log(o)
     })
 
-    this.onChatService.login('10','1').subscribe((o: any) => {
+    this.onChatService.login('10', '1').subscribe((o: any) => {
       console.log(o)
     })
 

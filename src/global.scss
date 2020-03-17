@@ -25,27 +25,26 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-@import "./theme/color.scss";
 .font-family-primary {
   font-family: "Alibaba-Sans-Black" !important;
 }
 .color-primary {
-  color: $primary !important;
+  color: var(--custom-color-primary) !important;
 }
 .color-dark {
-  color: $dark !important;
+  color: var(--custom-color-dark) !important;
 }
 .color-danger {
-  color: $danger !important;
+  color: var(--custom-color-danger) !important;
 }
 .bg-primary {
-  background-color: $primary !important;
+  background-color: var(--custom-color-primary) !important;
 }
 .bg-white {
   background-color: #fff !important;
 }
 .bg-danger {
-  background-color: $danger !important;
+  background-color: var(--custom-color-danger) !important;
 }
 .d-block {
   display: block !important;
@@ -117,7 +116,7 @@
     url("./assets/font/constellation/constellation.svg") format("svg");
 }
 
-i[class*="icon-constellation"] {
+i[class*="icon-constellation-"] {
   font-family: "constellation";
   font-size: initial;
   font-style: normal;
@@ -214,24 +213,24 @@ ion-item-options {
 }
 
 .ipt-primary {
-  color: $dark;
+  color: var(--custom-color-dark);
 }
 .ipt-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
 }
 
 button {
   cursor: pointer;
 }
 .btn-primary {
-  color: $dark;
-  background-color: $primary;
+  color: var(--custom-color-dark);
+  background-color: var(--custom-color-primary);
 }
 .btn-primary:hover {
-  background-color: rgba($primary, 0.75);
+  background-color: rgba(var(--custom-color-primary-rgb), 0.75);
 }
 .btn-primary.active {
-  box-shadow: 0 0 0 0.2rem rgba($primary, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
 }
 
 .btn-secondary {

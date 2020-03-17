@@ -1,11 +1,10 @@
-@import "../../../theme/color.scss";
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
   width: 3rem;
-  background: rgba($primary, 0.75);
+  background: rgba(var(--custom-color-primary-rgb), 0.75);
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
   overflow: hidden;
   z-index: 99;
