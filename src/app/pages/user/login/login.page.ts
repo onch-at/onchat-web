@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginForm } from 'src/app/models/form.model';
+import { Result } from 'src/app/models/result.model';
 import { OnChatService } from '../../../services/onchat.service';
 
 @Component({
@@ -13,11 +15,11 @@ export class LoginPage implements OnInit {
   constructor(private onChatService: OnChatService, private router: Router) { }
 
   ngOnInit() {
-    this.onChatService.getUsernameByUid(10).subscribe((o: any) => {
-      console.log(o)
-    })
+    // this.onChatService.getUsernameByUid(10).subscribe((o: any) => {
+    //   console.log(o)
+    // })
 
-    this.onChatService.login('10', '1').subscribe((o: any) => {
+    this.onChatService.login(new LoginForm('HyperLife1119', '123456781')).subscribe((o: Result<any>) => {
       console.log(o)
     })
 

@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment as env } from '../../environments/environment';
+import { Injectable } from '@angular/core';
+import { LoginForm } from '../models/form.model';
+import { Result } from '../models/result.model';
 
 const HTTP_OPTIONS_JSON = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -23,10 +24,11 @@ export class OnChatService {
     return this.http.get('/api/php/history.php?history=' + uid, HTTP_OPTIONS_JSON);
   }
 
-  login(username: string, password: string) {
-    return this.http.post('/api/test.php', {
-      username: username,
-      password: password
-    }, HTTP_OPTIONS_FORM);
+  login(o: LoginForm) {
+    return this.http.post<Result<any>>('/api/User/login', o, HTTP_OPTIONS_JSON);
+  }
+
+  register() {
+
   }
 }
