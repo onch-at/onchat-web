@@ -232,6 +232,13 @@ button {
 .btn-primary.active {
   box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
 }
+.btn-primary.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary.disabled > * {
+  pointer-events: none;
+}
 
 .btn-secondary {
   color: #616161;

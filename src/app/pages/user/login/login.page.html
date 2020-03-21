@@ -11,9 +11,9 @@
           </div>
 
           <form #form="ngForm">
-            <input type="text" class="d-block text-center ipt-primary" id="username" name="username" placeholder="用户名" maxlength="30">
+            <input type="text" class="d-block text-center ipt-primary" id="username" name="username" placeholder="用户名" maxlength="30" [(ngModel)]="username">
             <div style="position: relative;">
-              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" name="password" placeholder="密码" maxlength="30">
+              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" name="password" placeholder="密码" maxlength="30" [(ngModel)]="password">
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
             </div>
           </form>
@@ -24,7 +24,7 @@
         </ion-col>
 
         <ion-col style="padding-left: .55rem;">
-          <button appActiveClass [duration]="175" class="ion-activatable ripple-parent btn-primary">登录<ion-ripple-effect></ion-ripple-effect></button>
+          <button appActiveClass [duration]="175" (tap)="login()" disabled class="ion-activatable ripple-parent btn-primary">登录<ion-ripple-effect></ion-ripple-effect></button>
         </ion-col>
       </ion-row>
     </ion-grid>
