@@ -211,6 +211,12 @@ ion-item-options {
     min-width: 4rem;
   }
 }
+// 自定义的Toast样式
+ion-toast {
+  --start: 10px;
+  --end: 10px;
+  --border-radius: 1.5rem;
+}
 
 .ipt-primary {
   color: var(--custom-color-dark);
