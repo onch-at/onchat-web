@@ -10,23 +10,67 @@
             <h5 class="font-weight-bold">世 界 都 在 聊</h5>
           </div>
 
-          <form #form="ngForm">
-            <input type="text" class="d-block text-center ipt-primary" id="username" name="username" placeholder="用户名" maxlength="30">
-            <input type="password" class="d-block text-center ipt-primary" id="password" name="password" placeholder="密码" maxlength="30">
-            <input type="password" class="d-block text-center ipt-primary" id="confirm-password" name="confirmPassword" placeholder="确认密码" maxlength="30">
+          <form [formGroup]="registerForm">
+            <div class="form-group">
+              <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username" placeholder="用户名" maxlength="30" required>
+              <div class="feedback-control-invalid">
+                <ion-icon name="warning"></ion-icon>
+                <span [hidden]="!registerForm.controls.username.errors || !registerForm.controls.username.errors.required">
+                  用户名不能为空！
+                </span>
+                <span [hidden]="!registerForm.controls.username.errors || (!(registerForm.controls.username.errors.minlength) && !(registerForm.controls.username.errors.maxlength))">
+                  用户名长度必须在5~30位字符之间！
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" formControlName="password" placeholder="密码" maxlength="50" required>
+              <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
+              <div class="feedback-control-invalid">
+                <ion-icon name="warning"></ion-icon>
+                <span [hidden]="!registerForm.controls.password.errors || !registerForm.controls.password.errors.required">
+                  密码不能为空！
+                </span>
+                <span [hidden]="!registerForm.controls.password.errors || (!(registerForm.controls.password.errors.minlength) && !(registerForm.controls.password.errors.maxlength))">
+                  密码长度必须在8~50位字符之间！
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="confirm-password" formControlName="confirmPassword" placeholder="确认密码" maxlength="30" required>
+              <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
+              <div class="feedback-control-invalid">
+                <ion-icon name="warning"></ion-icon>
+                <span [hidden]="!registerForm.controls.confirmPassword.errors || !registerForm.controls.confirmPassword.errors.required">
+                  确认密码不能为空！
+                </span>
+                <span [hidden]="!registerForm.controls.confirmPassword.errors || (!(registerForm.controls.confirmPassword.errors.minlength) && !(registerForm.controls.confirmPassword.errors.maxlength))">
+                  密码长度必须在8~50位字符之间！
+                </span>
+              </div>
+              <div class="feedback-form-invalid" [hidden]="!registerForm.errors || !registerForm.errors.equal">
+                <ion-icon name="warning"></ion-icon>
+                <span> 确认密码与密码不一致！</span>
+              </div>
+            </div>
+            <div class="form-group form-group-row">
+              <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha" placeholder="验证码" maxlength="4" required>
+              <img class="captcha" [src]="captchaUrl" alt="CAPTCHA" (tap)="updateCaptchaUrl()">
+              <div class="feedback-control-invalid">
+                <ion-icon name="warning"></ion-icon>
+                <span [hidden]="!registerForm.controls.captcha.errors || !registerForm.controls.captcha.errors.required">
+                 验证码不能为空！
+                </span>
+                <span [hidden]="!registerForm.controls.captcha.errors || (!(registerForm.controls.captcha.errors.minlength) && !(registerForm.controls.captcha.errors.maxlength))">
+                  验证码长度必须为4位字符！
+                </span>
+              </div>
+            </div>
           </form>
         </ion-col>
 
-        <ion-col style="padding-right: .55rem;">
-          <input type="text" class="d-block text-center ipt-primary" id="captcha" name="captcha" placeholder="验证码" maxlength="4">
-        </ion-col>
-
-        <ion-col style="padding-left: .55rem;">
-          <img class="captcha" [src]="captchaUrl" alt="CAPTCHA" (tap)="updateCaptchaUrl()">
-        </ion-col>
-
         <ion-col class="text-center" size="12">
-          <button appActiveClass [duration]="175" class="ion-activatable ripple-parent btn-primary" style="margin-bottom: .75rem;" [routerLink]="['/register']">
+          <button appActiveClass [duration]="175" [disabled]="registerForm.invalid" class="ion-activatable ripple-parent btn-primary" style="margin-bottom: .75rem;" (tap)="register()">
             注册
             <ion-ripple-effect></ion-ripple-effect>
           </button>

@@ -9,15 +9,34 @@
   }
 }
 
+.form-group {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.feedback-control-invalid,
+.feedback-form-invalid {
+  display: flex;
+  align-items: flex-end;
+  font-size: .85rem;
+  height: 1.75rem;
+  padding-left: .25rem;
+
+  ion-icon {
+    font-size: 1.125rem;
+    margin-right: .125rem;
+  }
+}
+
 input {
   border: none;
-  margin-bottom: 1.25rem;
   background: #f5f5f5;
 }
 
-#password + ion-icon {
+#password + ion-icon,
+#confirm-password + ion-icon {
   position: absolute;
-  top: 50%;
+  top: 1.625rem;
   right: 1rem;
   transform: translateY(-50%);
   color: #e0e0e0;

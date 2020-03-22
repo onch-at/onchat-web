@@ -1,8 +1,17 @@
 @import "../login/login.page.scss";
+.form-group-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    > input,
+    > img {
+        width: calc(50% - .5rem);
+    }
+}
 img.captcha {
-    width: 100%;
     height: 3.25rem;
-    margin-bottom: 1.25rem;
+    object-fit: cover;
     border-radius: 1.625rem;
     border: 1.5px solid #eee;
 }

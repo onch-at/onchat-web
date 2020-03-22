@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginForm } from '../models/form.model';
+import { environment as env } from '../../environments/environment';
+import { LoginForm, RegisterForm } from '../models/form.model';
 import { Result } from '../models/result.model';
 
 const HTTP_OPTIONS_JSON = {
@@ -25,10 +26,10 @@ export class OnChatService {
   }
 
   login(o: LoginForm) {
-    return this.http.post<Result<any>>('/api/User/login', o, HTTP_OPTIONS_JSON);
+    return this.http.post<Result<any>>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
   }
 
-  register() {
-
+  register(o: RegisterForm) {
+    return this.http.post<Result<any>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
   }
 }

@@ -10,11 +10,31 @@
             <h5 class="font-weight-bold">世 界 都 在 聊</h5>
           </div>
 
-          <form #form="ngForm">
-            <input type="text" class="d-block text-center ipt-primary" id="username" name="username" placeholder="用户名" maxlength="30" [(ngModel)]="username">
-            <div style="position: relative;">
-              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" name="password" placeholder="密码" maxlength="30" [(ngModel)]="password">
+          <form [formGroup]="loginForm">
+            <div class="form-group">
+              <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username" placeholder="用户名" maxlength="30" required>
+              <div class="feedback-control-invalid">
+                <ion-icon name="warning"></ion-icon>
+                <span [hidden]="!loginForm.controls.username.errors || !loginForm.controls.username.errors.required">
+                  用户名不能为空！
+                </span>
+                <span [hidden]="!loginForm.controls.username.errors || (!(loginForm.controls.username.errors.minlength) && !(loginForm.controls.username.errors.maxlength))">
+                  用户名长度必须在5~30位字符之间！
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" formControlName="password" placeholder="密码" maxlength="50" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
+              <div class="feedback-control-invalid">
+                <ion-icon name="warning"></ion-icon>
+                <span [hidden]="!loginForm.controls.password.errors || !loginForm.controls.password.errors.required">
+                  密码不能为空！
+                </span>
+                <span [hidden]="!loginForm.controls.password.errors || (!(loginForm.controls.password.errors.minlength) && !(loginForm.controls.password.errors.maxlength))">
+                  密码长度必须在8~50位字符之间！
+                </span>
+              </div>
             </div>
           </form>
         </ion-col>
@@ -24,7 +44,7 @@
         </ion-col>
 
         <ion-col style="padding-left: .55rem;">
-          <button appActiveClass [duration]="175" (tap)="login()" disabled class="ion-activatable ripple-parent btn-primary">登录<ion-ripple-effect></ion-ripple-effect></button>
+          <button appActiveClass [duration]="175" [disabled]="loginForm.invalid" (tap)="login()" class="ion-activatable ripple-parent btn-primary">登录<ion-ripple-effect></ion-ripple-effect></button>
         </ion-col>
       </ion-row>
     </ion-grid>

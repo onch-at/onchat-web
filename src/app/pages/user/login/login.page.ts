@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { LoginForm } from 'src/app/models/form.model';
@@ -11,21 +12,37 @@ import { OnChatService } from '../../../services/onchat.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  /** 用户名 */
-  username: string = '';
-  /** 用户密码 */
-  password: string = '';
   /** 密码框类型 */
   pwdInputType: string = 'password';
 
-  constructor(private onChatService: OnChatService, private router: Router, public toastController: ToastController) { }
+  loginForm = this.fb.group({
+    username: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(30)
+      ]
+    ],
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(50)
+      ]
+    ],
+  });
+
+  constructor(private onChatService: OnChatService, private router: Router, private toastController: ToastController, private fb: FormBuilder) { }
 
   ngOnInit() {
     // this.onChatService.getUsernameByUid(10).subscribe((o: any) => {
     //   console.log(o)
     // })
+    console.log(this.loginForm.value.username)
 
-    this.onChatService.login(new LoginForm(this.username, this.password)).subscribe((o: Result<any>) => {
+    this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((o: Result<any>) => {
       console.log(o)
     })
 
@@ -33,8 +50,8 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    this.onChatService.login(new LoginForm(this.username, this.password)).subscribe((o: Result<any>) => {
-      console.log(o)
+    if (this.loginForm.invalid) { return; }
+    this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((o: Result<any>) => {
       this.presentToast(o.msg)
     })
   }

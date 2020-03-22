@@ -218,6 +218,23 @@ ion-item-options {
 .ipt-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
 }
+.ipt-primary.ng-invalid:not(.ng-pristine) {
+  box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-danger-rgb), 0.5);
+}
+.ipt-primary ~ .feedback-control-invalid,
+form .feedback-form-invalid {
+  color: var(--custom-color-danger);
+  opacity: 1;
+  transition: all .125s ease-in-out;
+}
+
+.ipt-primary.ng-valid ~ .feedback-control-invalid,
+.ipt-primary.ng-pristine ~ .feedback-control-invalid,
+form.ng-valid .feedback-form-invalid,
+form.ng-pristine .feedback-form-invalid {
+  height: 0;
+  opacity: 0;
+}
 
 button {
   cursor: pointer;
@@ -232,11 +249,8 @@ button {
 .btn-primary.active {
   box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
 }
-.btn-primary.disabled {
+.btn-primary[disabled] {
   opacity: 0.5;
-  cursor: not-allowed;
-}
-.btn-primary.disabled > * {
   pointer-events: none;
 }
 

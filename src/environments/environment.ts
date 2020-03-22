@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  captchaUrl: 'http://chat.hypergo.net/images/captcha',
-  loginUrl: '/api/user/action/login.php'
+  captchaUrl: '/api/Index/captcha',
+  userLoginUrl: '/api/User/login',
+  userRegisterUrl: '/api/User/register',
 };
 
 /*
