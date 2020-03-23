@@ -12,6 +12,8 @@ import { OnChatService } from '../../../services/onchat.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  /** 是否正在加载中 */
+  loading: boolean = false;
   /** 密码框类型 */
   pwdInputType: string = 'password';
 
@@ -48,9 +50,11 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    if (this.loginForm.invalid) { return; }
+    if (this.loginForm.invalid || this.loading) { return; }
+    this.loading = true;
     this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<any>) => {
       this.presentToast(result)
+      this.loading = false;
     })
   }
 

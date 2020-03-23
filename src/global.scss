@@ -97,6 +97,9 @@
 .outline-none {
   outline: none !important;
 }
+.visibility-hidden {
+  visibility: hidden;
+}
 
 @font-face {
   font-family: "Alibaba-Sans-Black";
@@ -189,6 +192,11 @@ i[class*="icon-constellation-"] {
   overflow: hidden;
 }
 
+ion-progress-bar {
+  --background: rgba(var(--custom-color-primary-rgb), 0.125);
+  --progress-background: rgba(var(--custom-color-primary-rgb), 0.625);
+}
+
 ion-grid,
 ion-col {
   padding: 0;
@@ -222,6 +230,9 @@ ion-toast {
   color: var(--custom-color-dark);
   appearance: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
 
   &:focus {
     box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
@@ -236,7 +247,7 @@ ion-toast {
 form .feedback-form-invalid {
   color: var(--custom-color-danger);
   opacity: 1;
-  transition: all .125s ease-in-out;
+  transition: all 0.125s ease-in-out;
 }
 
 .ipt-primary.ng-valid ~ .feedback-control-invalid,

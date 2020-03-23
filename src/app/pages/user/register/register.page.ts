@@ -13,6 +13,8 @@ import { environment as env } from '../../../../environments/environment';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+  /** 是否正在加载中 */
+  loading: boolean = false;
   /** 密码框类型 */
   pwdInputType: string = 'password';
   /** 验证码URL */
@@ -66,12 +68,14 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
-    if (this.registerForm.invalid) { return; }
+    if (this.registerForm.invalid || this.loading) { return; }
+    this.loading = true;
     this.onChatService.register(new RegisterForm(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((result: Result<any>) => {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptchaUrl();
       }
-      this.presentToast(result)
+      this.presentToast(result);
+      this.loading = true;
     });
   }
 
