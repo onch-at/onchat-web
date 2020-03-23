@@ -4,9 +4,11 @@
 
 export const environment = {
   production: false,
-  captchaUrl: '/api/Index/captcha',
-  userLoginUrl: '/api/User/login',
-  userRegisterUrl: '/api/User/register',
+  captchaUrl: '/onchat/Index/captcha',
+  userLoginUrl: '/onchat/User/login',
+  userRegisterUrl: '/onchat/User/register',
+  userLogoutUrl: '/onchat/User/logout',
+  userCheckLoginUrl: '/onchat/User/checkLogin',
 };
 
 /*

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { RegisterForm } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/result.model';
@@ -52,28 +53,40 @@ export class RegisterPage implements OnInit {
     ],
   }, { validators: equalValidator });
 
-  constructor(private onChatService: OnChatService, private toastController: ToastController, private fb: FormBuilder) { }
+  constructor(
+    private router: Router,
+    private onChatService: OnChatService,
+    private toastController: ToastController,
+    private fb: FormBuilder
+  ) {
+    
+  }
 
   ngOnInit() {
   }
 
   register() {
     if (this.registerForm.invalid) { return; }
-    this.onChatService.register(new RegisterForm(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((o: Result<any>) => {
-      if (o.code !== 0) { // 如果请求不成功，则刷新验证码
+    this.onChatService.register(new RegisterForm(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((result: Result<any>) => {
+      if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptchaUrl();
       }
-      this.presentToast(o.msg)
+      this.presentToast(result)
     });
   }
 
-  async presentToast(msg: string) {
+  async presentToast(result: Result<any>) {
     const toast = await this.toastController.create({
-      message: msg,
+      message: ' ' + result.msg,
       duration: 2000,
       color: 'dark',
     });
     toast.present();
+    if (result.code === 0) {
+      toast.onWillDismiss().then(() => { // 在Toast即将关闭前
+        this.router.navigate(['/']);
+      });
+    }
   }
 
   /***

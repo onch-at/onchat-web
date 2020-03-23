@@ -14,4 +14,9 @@ img.captcha {
     object-fit: cover;
     border-radius: 1.625rem;
     border: 1.5px solid #eee;
+    transition: box-shadow .125s ease-in-out;
+
+    &.active {
+        box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+    }
 }

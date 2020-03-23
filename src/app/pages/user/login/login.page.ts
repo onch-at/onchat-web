@@ -34,35 +34,38 @@ export class LoginPage implements OnInit {
     ],
   });
 
-  constructor(private onChatService: OnChatService, private router: Router, private toastController: ToastController, private fb: FormBuilder) { }
+  constructor(
+    private onChatService: OnChatService,
+    private router: Router,
+    private toastController: ToastController,
+    private fb: FormBuilder
+  ) {
+    
+  }
 
   ngOnInit() {
-    // this.onChatService.getUsernameByUid(10).subscribe((o: any) => {
-    //   console.log(o)
-    // })
-    console.log(this.loginForm.value.username)
 
-    this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((o: Result<any>) => {
-      console.log(o)
-    })
-
-    // this.router.navigate(['/home']);
   }
 
   login() {
     if (this.loginForm.invalid) { return; }
-    this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((o: Result<any>) => {
-      this.presentToast(o.msg)
+    this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<any>) => {
+      this.presentToast(result)
     })
   }
 
-  async presentToast(msg: string) {
+  async presentToast(result: Result<any>) {
     const toast = await this.toastController.create({
-      message: msg,
-      duration: 200000000,
-      color: 'dark',
+      message: ' ' + result.msg,
+      duration: 2000,
+      color: 'dark'
     });
     toast.present();
+    if (result.code === 0) {
+      toast.onWillDismiss().then(() => { // 在Toast即将关闭前
+        this.router.navigate(['/']);
+      });
+    }
   }
 
   async presentToastWithOptions() {

@@ -220,13 +220,18 @@ ion-toast {
 
 .ipt-primary {
   color: var(--custom-color-dark);
+  appearance: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+  }
+
+  &.ng-invalid:not(.ng-pristine) {
+    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-danger-rgb), 0.5);
+  }
 }
-.ipt-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
-}
-.ipt-primary.ng-invalid:not(.ng-pristine) {
-  box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-danger-rgb), 0.5);
-}
+
 .ipt-primary ~ .feedback-control-invalid,
 form .feedback-form-invalid {
   color: var(--custom-color-danger);
@@ -248,27 +253,31 @@ button {
 .btn-primary {
   color: var(--custom-color-dark);
   background-color: var(--custom-color-primary);
-}
-.btn-primary:hover {
-  background-color: rgba(var(--custom-color-primary-rgb), 0.75);
-}
-.btn-primary.active {
-  box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
-}
-.btn-primary[disabled] {
-  opacity: 0.5;
-  pointer-events: none;
+
+  &:hover {
+    background-color: rgba(var(--custom-color-primary-rgb), 0.75);
+  }
+
+  &.active {
+    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .btn-secondary {
   color: #616161;
   background-color: #f5f5f5;
-}
-.btn-secondary:hover {
-  background-color: #fafafa;
-}
-.btn-secondary.active {
-  box-shadow: 0 0 0 0.2rem rgba(#f5f5f5, 0.75);
+
+  &:hover {
+    background-color: #fafafa;
+  }
+  &.active {
+    box-shadow: 0 0 0 0.2rem rgba(#f5f5f5, 0.75);
+  }
 }
 
 .ipt-primary,
