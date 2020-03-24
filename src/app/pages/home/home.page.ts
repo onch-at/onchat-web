@@ -9,7 +9,7 @@ import { PopoverComponent } from '../../components/popover/popover.component';
 })
 export class HomePage {
 
-  constructor(public popoverController: PopoverController) {}
+  constructor(private popoverController: PopoverController) {}
 
   async presentPopover(event: any) {
     const popover = await this.popoverController.create({

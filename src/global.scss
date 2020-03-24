@@ -192,9 +192,43 @@ i[class*="icon-constellation-"] {
   overflow: hidden;
 }
 
+// 进度条
 ion-progress-bar {
   --background: rgba(var(--custom-color-primary-rgb), 0.125);
   --progress-background: rgba(var(--custom-color-primary-rgb), 0.625);
+}
+
+// 警告框
+ion-alert {
+  .alert-wrapper.sc-ion-alert-ios {
+    border-radius: 1rem;
+  }
+
+  .alert-title.sc-ion-alert-ios {
+    color: var(--custom-color-dark);
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  .alert-message.sc-ion-alert-ios {
+    color: var(--custom-color-dark);
+    font-size: .85rem;
+  }
+
+  .alert-button.sc-ion-alert-ios {
+    height: 2.5rem;
+    border-width: .25px;
+    color: var(--custom-color-dark);
+  }
+
+  .alert-button.sc-ion-alert-ios:last-child {
+    font-weight: normal;
+    color: var(--custom-color-primary);
+  }
+
+  .alert-button-inner {
+    font-size: 1rem;
+  }
 }
 
 ion-grid,

@@ -28,6 +28,10 @@
       font-size: 0.9rem;
     }
 
+    h5 {
+      font-size: 1.125rem;
+    }
+
     h5,
     div {
       overflow: hidden;
@@ -54,8 +58,6 @@
   padding: 0;
   margin: 0 1rem 1rem;
   list-style: none;
-  background: #fff;
-  border-radius: 1.25rem;
   overflow: hidden;
 
   .details-item {
