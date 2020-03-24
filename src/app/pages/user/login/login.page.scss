@@ -1,3 +1,9 @@
+ion-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 .brand {
   color: #6c757d;
   margin-bottom: 2rem;
@@ -31,6 +37,7 @@
 input {
   border: none;
   background: #f5f5f5;
+  padding: 0 1.5rem;
 }
 
 #password + ion-icon,

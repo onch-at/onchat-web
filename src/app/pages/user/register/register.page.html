@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-progress-bar type="indeterminate" mode="md" reversed="true" [ngClass]="{'visibility-hidden': !loading}"></ion-progress-bar>
+  <ion-progress-bar type="indeterminate" mode="md" reversed="true" [hidden]="!loading"></ion-progress-bar>
   <div class="flex-col-container">
     <ion-grid class="d-flex align-items-center" style="padding: 0 1.5rem 5vh; flex: auto;">
       <ion-row>
@@ -56,7 +56,7 @@
             </div>
             <div class="form-group form-group-row">
               <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha" placeholder="验证码" maxlength="4" required>
-              <img appActiveClass [duration]="175" class="captcha" [src]="captchaUrl" alt="CAPTCHA" (tap)="updateCaptchaUrl()">
+              <img appActiveClass [duration]="175" class="captcha" [src]="captchaUrl" alt="CAPTCHA" (tap)="updateCaptcha()">
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span [hidden]="!registerForm.controls.captcha.errors || !registerForm.controls.captcha.errors.required">

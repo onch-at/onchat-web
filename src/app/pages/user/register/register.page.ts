@@ -72,17 +72,17 @@ export class RegisterPage implements OnInit {
     this.loading = true;
     this.onChatService.register(new RegisterForm(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((result: Result<any>) => {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
-        this.updateCaptchaUrl();
+        this.updateCaptcha();
       }
       this.presentToast(result);
-      this.loading = true;
+      this.loading = false;
     });
   }
 
   async presentToast(result: Result<any>) {
     const toast = await this.toastController.create({
       message: ' ' + result.msg,
-      duration: 2000,
+      duration: result.code === 0 ? 1500 : 2000,
       color: 'dark',
     });
     toast.present();
@@ -94,10 +94,11 @@ export class RegisterPage implements OnInit {
   }
 
   /***
-   * 更新验证码URL
+   * 更新验证码URL，清空验证码输入框
    */
-  updateCaptchaUrl() {
+  updateCaptcha() {
     this.captchaUrl = env.captchaUrl + '?' + Date.now();
+    this.registerForm.controls.captcha.setValue('');
   }
 
   /**
