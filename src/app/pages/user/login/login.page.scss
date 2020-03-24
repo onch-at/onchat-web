@@ -36,7 +36,7 @@ ion-progress-bar {
 
 input {
   border: none;
-  background: #f5f5f5;
+  background: var(--custom-color-secondary);
   padding: 0 1.5rem;
 }
 
@@ -48,6 +48,12 @@ input {
   transform: translateY(-50%);
   color: #e0e0e0;
   font-size: 1.5rem;
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      color: #757575;
+    }
+  }
 }
 
 input,
@@ -66,6 +72,12 @@ footer {
   padding: 0.55rem 1rem;
   font-size: 0.7rem;
   color: #e0e0e0;
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      color: #757575;
+    }
+  }
 }
 
 @keyframes bounce-in-down {

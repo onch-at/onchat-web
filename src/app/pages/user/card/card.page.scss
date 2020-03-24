@@ -1,5 +1,5 @@
 ion-content {
-  --color: #424242;
+  --color: var(--custom-color-dark);
 }
 ion-header {
   position: fixed;
@@ -14,10 +14,10 @@ ion-header {
     --background: transparent;
 
     ion-buttons > * {
-      --color: #fff;
+      --color: var(--custom-color-white);
       opacity: 0.95;
       border-radius: 50%;
-      filter: drop-shadow(0 0 0.5rem #000);
+      filter: drop-shadow(0 0 0.5rem var(--custom-color-black));
     }
   }
 }
@@ -29,16 +29,28 @@ ion-header {
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      filter: brightness(0.5);
+    }
+  }
 }
 
 .card {
   position: absolute;
   top: 35.75vh;
   left: 0;
-  background: rgba(#fff, 0.75);
+  background: rgba(var(--custom-color-white-rgb), 0.75);
   backdrop-filter: saturate(200%) blur(5px);
   border-radius: 0 1.5rem 0 0;
   width: 100%;
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      background: rgba(var(--custom-color-white-rgb), 0.5);
+    }
+  }
 
   .card-header {
     height: 6rem;
@@ -50,7 +62,13 @@ ion-header {
       width: 6rem;
       height: 6rem;
       border-radius: 50%;
-      border: 0.25rem solid rgba(#fff, 0.5);
+      border: 0.25rem solid rgba(var(--custom-color-white-rgb), 0.5);
+
+      @media (prefers-color-scheme: dark) {
+        & {
+          filter: brightness(0.75);
+        }
+      }
     }
 
     .info {
@@ -66,9 +84,9 @@ ion-header {
         padding-left: 0.75rem;
         height: 3rem;
         line-height: 3.5rem;
-        color: #fff;
+        color: var(--custom-color-white);
         font-weight: bolder;
-        text-shadow: 0 0 1rem #000;
+        text-shadow: 0 0 1rem var(--custom-color-black);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -137,7 +155,7 @@ ion-header {
       padding: 0;
       margin: 0;
       list-style: none;
-      background: rgba(#fff, 0.4);
+      background: rgba(var(--custom-color-white-rgb), 0.4);
       border-radius: 1.25rem;
       overflow: hidden;
 
@@ -173,11 +191,17 @@ ion-header {
     width: 100%;
     font-size: 1rem;
     border-radius: 1.25rem;
-    background: rgba(var(--custom-color-primary-rgb), .75);
+    background: rgba(var(--custom-color-primary-rgb), 0.75);
     backdrop-filter: saturate(200%) blur(5px);
 
     ion-icon {
       margin-right: 0.25rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      & {
+        filter: brightness(0.75);
+      }
     }
   }
 }

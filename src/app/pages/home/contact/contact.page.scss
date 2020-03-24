@@ -1,6 +1,6 @@
 ion-searchbar {
-  --color: #424242;
-  --background: #f5f5f5;
+  --color: var(--custom-color-drak);
+  --background: var(--custom-color-secondary);
   padding: 0.5rem 1rem;
 
   &::ng-deep {
@@ -63,7 +63,7 @@ aside {
       left: calc(50% - 2.25rem);
       height: 4.65rem;
       width: 4.65rem;
-      background: rgba(#000, .125);
+      background: rgba(var(--custom-color-black-rgb), .125);
       border-radius: 50%;
       transform: scale(0);
     }

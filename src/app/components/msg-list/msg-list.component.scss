@@ -16,8 +16,14 @@
     .avatar {
       width: 2.5rem;
       height: 2.5rem;
-      background: #fff;
+      background: var(--custom-color-white);
       border-radius: 2rem;
+
+      @media (prefers-color-scheme: dark) {
+        & {
+          filter: brightness(0.85);
+        }
+      }
     }
 
     .username {
@@ -59,12 +65,18 @@
       }
 
       .msg-bubble {
-        background: #eee;
+        background: var(--custom-color-gray);
 
-        &::before {
-          left: -0.375rem;
-          border-bottom-color: #eee;
-          border-radius: 0 0 0 999rem;
+        // &::before {
+        //   left: -0.375rem;
+        //   border-bottom-color: var(--custom-color-gray);
+        //   border-radius: 0 0 0 999rem;
+        // }
+
+        @media (prefers-color-scheme: dark) {
+          & {
+            color: #000000;
+          }
         }
       }
     }
@@ -87,10 +99,17 @@
       .msg-bubble {
         background: var(--custom-color-primary);
 
-        &::before {
-          right: -0.375rem;
-          border-bottom-color: var(--custom-color-primary);
-          border-radius: 0 0 999rem 0;
+        // &::before {
+        //   right: -0.375rem;
+        //   border-bottom-color: var(--custom-color-primary);
+        //   border-radius: 0 0 999rem 0;
+        // }
+
+        @media (prefers-color-scheme: dark) {
+          & {
+            color: #424242;
+            background: rgba(var(--custom-color-primary-rgb), .75);
+          }
         }
       }
     }

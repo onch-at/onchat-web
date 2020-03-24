@@ -41,7 +41,7 @@
   background-color: var(--custom-color-primary) !important;
 }
 .bg-white {
-  background-color: #fff !important;
+  background-color: var(--custom-color-white) !important;
 }
 .bg-danger {
   background-color: var(--custom-color-danger) !important;
@@ -192,6 +192,10 @@ i[class*="icon-constellation-"] {
   overflow: hidden;
 }
 
+ion-content {
+  --background: var(--custom-color-white);
+}
+
 // 进度条
 ion-progress-bar {
   --background: rgba(var(--custom-color-primary-rgb), 0.125);
@@ -200,8 +204,16 @@ ion-progress-bar {
 
 // 警告框
 ion-alert {
+  backdrop-filter: saturate(200%) blur(2.5px);
+
+  @media (prefers-color-scheme: dark) {
+    backdrop-filter: saturate(100%) blur(2.5px);
+  }
+
   .alert-wrapper.sc-ion-alert-ios {
+    background: var(--custom-color-white);
     border-radius: 1rem;
+    box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   }
 
   .alert-title.sc-ion-alert-ios {
@@ -212,12 +224,12 @@ ion-alert {
 
   .alert-message.sc-ion-alert-ios {
     color: var(--custom-color-dark);
-    font-size: .85rem;
+    font-size: 0.85rem;
   }
 
   .alert-button.sc-ion-alert-ios {
     height: 2.5rem;
-    border-width: .25px;
+    border-width: 0.25px;
     color: var(--custom-color-dark);
   }
 
@@ -238,7 +250,7 @@ ion-col {
 // 返回按钮图标
 ion-back-button {
   --padding-start: 0.25rem;
-  --color: #616161;
+  --color: var(--custom-color-medium);
 }
 
 ion-list.list-ios {
@@ -247,17 +259,41 @@ ion-list.list-ios {
 
 ion-item-options {
   border: none;
+  background: var(--custom-color-white);
 
   ion-item-option {
-    color: #fff;
+    color: var(--custom-color-white);
     min-width: 4rem;
+
+    @media (prefers-color-scheme: dark) {
+      & {
+        filter: brightness(0.75);
+      }
+    }
   }
 }
+
+ion-item {
+  --background: var(--custom-color-white);
+
+  @media (prefers-color-scheme: dark) {
+    ion-thumbnail {
+      filter: brightness(0.75);
+    }
+  }
+}
+
 // 自定义的Toast样式
 ion-toast {
   --start: 10px;
   --end: 10px;
   --border-radius: 1.5rem;
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      filter: brightness(0.75);
+    }
+  }
 }
 
 .ipt-primary {
@@ -296,7 +332,7 @@ button {
   cursor: pointer;
 }
 .btn-primary {
-  color: var(--custom-color-dark);
+  color: #424242;
   background-color: var(--custom-color-primary);
 
   &:hover {
@@ -311,25 +347,37 @@ button {
     opacity: 0.5;
     pointer-events: none;
   }
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      filter: brightness(0.75);
+    }
+  }
 }
 
 .btn-secondary {
   color: #616161;
-  background-color: #f5f5f5;
+  background-color: var(--custom-color-secondary);
 
   &:hover {
-    background-color: #fafafa;
+    background-color: var(--custom-color-light);
   }
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(#f5f5f5, 0.75);
+    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-secondary-rgb), 0.75);
   }
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0;
+  margin: 0;
 }
 
 .ipt-primary,
 .btn-primary,
 .btn-secondary {
   box-shadow: none;
-  transition: all 0.15s ease-in-out, box-shadow 0.175s ease-in-out;
+  transition: all 0.15s ease-in-out, box-shadow 0.175s ease-out;
 }
 
 // 向左滑出

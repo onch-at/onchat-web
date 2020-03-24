@@ -5,9 +5,15 @@
   height: 100%;
   width: 3rem;
   background: rgba(var(--custom-color-primary-rgb), 0.75);
-  box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   overflow: hidden;
   z-index: 99;
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      filter: brightness(0.75);
+    }
+  }
 
   .avatar {
     opacity: 0.9;
@@ -15,8 +21,14 @@
     width: 2.3rem;
     height: 2.3rem;
     border-radius: 50%;
-    background: #fff;
-    border: 0.075rem solid #fff;
+    background: var(--custom-color-white);
+    border: 0.075rem solid var(--custom-color-white);
+
+    @media (prefers-color-scheme: dark) {
+      & {
+        filter: brightness(0.85);
+      }
+    }
   }
 
   .button-group {
@@ -26,10 +38,10 @@
   }
 
   ion-button {
-    --color: rgba(255, 255, 255, 0.55);
-    --color-hover: #fff;
-    --color-focused: #fff;
-    --color-activated: #fff;
+    --color: rgba(var(--custom-color-white-rgb), 0.55);
+    --color-hover: var(--custom-color-white);
+    --color-focused: var(--custom-color-white);
+    --color-activated: var(--custom-color-white);
     --padding-start: 0.6rem;
     --padding-end: 0.6rem;
     --padding-left: 0.6rem;
@@ -45,13 +57,13 @@
       position: absolute;
       height: 4.5rem;
       width: 4.5rem;
-      background: #fff;
+      background: var(--custom-color-white);
       border-radius: 50%;
       transform: scale(0);
     }
 
     &.active {
-      --color: #fff;
+      --color: var(--custom-color-white);
       animation: active 0.4s ease-out forwards;
     }
 
@@ -68,16 +80,16 @@ ion-header {
   height: 3rem;
   width: calc(100% - 3rem);
   overflow: hidden;
-  background: #fafafa;
+  background: var(--custom-color-light);
   border-radius: 0 0 1.5rem 0;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
 
   ion-toolbar {
     --border-width: 0;
     --background: transparent;
 
     ion-button {
-      --color: #616161;
+      --color: var(--custom-color-medium);
     }
   }
 
@@ -103,7 +115,7 @@ ion-router-outlet {
 
 ::ng-deep {
   ion-popover {
-    --background: #fafafa !important;
+    --background: var(--custom-color-light) !important;
   }
   .popover-content {
     --max-width: 8rem;

@@ -5,24 +5,24 @@ ion-header {
   width: 100%;
   height: 3rem;
   overflow: hidden;
-  background: #fafafa;
+  background: var(--custom-color-light);
   border-radius: 0 0 1.5rem 1.5rem;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   transform: translateY(-100%);
-  animation: slide-down 0.25s ease-out .45s forwards;
+  animation: slide-down 0.25s ease-out 0.45s forwards;
 
   ion-toolbar {
     --border-width: 0;
     --background: transparent;
 
     ion-title {
-      color: #424242;
+      color: var(--custom-color-drak);
       transform: translateY(1.5rem);
       animation: show 0.5s ease-out 1.5s forwards;
     }
 
     ion-buttons > * {
-      --color: #616161;
+      --color: var(--custom-color-medium);
     }
   }
 
@@ -41,33 +41,39 @@ ion-header {
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: .5rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-  background: #fafafa;
+  background: var(--custom-color-light);
   border-radius: 1.5rem 1.5rem 0 0;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   transform: translateY(100%);
-  animation: slide-up 0.25s ease-out .45s forwards;
+  animation: slide-up 0.25s ease-out 0.45s forwards;
 
   > *:not(:last-child) {
-    margin-right: .5rem;
+    margin-right: 0.5rem;
   }
 
   input {
     flex: auto;
     font-size: 1rem;
-    border: .075rem solid #f5f5f5;
+    border: 0.075rem solid var(--custom-color-secondary);
     border-radius: 2rem;
     height: 2.5rem;
     line-height: 2.5rem;
-    padding: 0 .75rem;
-    background: #fff;
+    padding: 0 0.75rem;
+    background: var(--custom-color-white);
 
     &:focus {
-      border-color: #fff;
+      border-color: var(--custom-color-white);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      & {
+        border: none;
+      }
     }
   }
 

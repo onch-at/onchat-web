@@ -1,22 +1,28 @@
 @import "../login/login.page.scss";
 .form-group-row {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
-    > input,
-    > img {
-        width: calc(50% - .5rem);
-    }
+  > input,
+  > img {
+    width: calc(50% - 0.5rem);
+  }
 }
 img.captcha {
-    height: 3.25rem;
-    object-fit: cover;
-    border-radius: 1.625rem;
-    border: 1.5px solid #eee;
-    transition: box-shadow .125s ease-in-out;
+  height: 3.25rem;
+  object-fit: cover;
+  border-radius: 1.625rem;
+  border: 1.5px solid var(--custom-color-gray);
+  transition: box-shadow 0.125s ease-in-out;
 
-    &.active {
-        box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+  &.active {
+    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      filter: brightness(0.75);
     }
+  }
 }
