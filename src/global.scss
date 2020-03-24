@@ -266,9 +266,7 @@ ion-item-options {
     min-width: 4rem;
 
     @media (prefers-color-scheme: dark) {
-      & {
-        filter: brightness(0.75);
-      }
+      filter: brightness(0.75);
     }
   }
 }
@@ -276,8 +274,8 @@ ion-item-options {
 ion-item {
   --background: var(--custom-color-white);
 
-  @media (prefers-color-scheme: dark) {
-    ion-thumbnail {
+  ion-thumbnail {
+    @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
     }
   }
@@ -290,9 +288,7 @@ ion-toast {
   --border-radius: 1.5rem;
 
   @media (prefers-color-scheme: dark) {
-    & {
-      filter: brightness(0.75);
-    }
+    filter: brightness(0.75);
   }
 }
 
@@ -349,9 +345,7 @@ button {
   }
 
   @media (prefers-color-scheme: dark) {
-    & {
-      filter: brightness(0.75);
-    }
+    filter: brightness(0.75);
   }
 }
 

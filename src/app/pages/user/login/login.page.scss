@@ -8,6 +8,10 @@ ion-progress-bar {
   color: #6c757d;
   margin-bottom: 2rem;
 
+  @media (prefers-color-scheme: dark) {
+    filter: brightness(0.85);
+  }
+
   h1 {
     font-size: 5rem;
     letter-spacing: -0.25rem;
@@ -50,9 +54,7 @@ input {
   font-size: 1.5rem;
 
   @media (prefers-color-scheme: dark) {
-    & {
-      color: #757575;
-    }
+    color: #757575;
   }
 }
 
@@ -74,9 +76,7 @@ footer {
   color: #e0e0e0;
 
   @media (prefers-color-scheme: dark) {
-    & {
-      color: #757575;
-    }
+    color: #757575;
   }
 }
 

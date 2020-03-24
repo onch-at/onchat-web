@@ -31,9 +31,7 @@ ion-header {
   object-fit: cover;
 
   @media (prefers-color-scheme: dark) {
-    & {
-      filter: brightness(0.5);
-    }
+    filter: brightness(0.5);
   }
 }
 
@@ -47,9 +45,7 @@ ion-header {
   width: 100%;
 
   @media (prefers-color-scheme: dark) {
-    & {
-      background: rgba(var(--custom-color-white-rgb), 0.5);
-    }
+    background: rgba(var(--custom-color-white-rgb), 0.5);
   }
 
   .card-header {
@@ -65,9 +61,7 @@ ion-header {
       border: 0.25rem solid rgba(var(--custom-color-white-rgb), 0.5);
 
       @media (prefers-color-scheme: dark) {
-        & {
-          filter: brightness(0.75);
-        }
+        filter: brightness(0.75);
       }
     }
 
@@ -199,9 +193,7 @@ ion-header {
     }
 
     @media (prefers-color-scheme: dark) {
-      & {
-        filter: brightness(0.75);
-      }
+      filter: brightness(0.75);
     }
   }
 }

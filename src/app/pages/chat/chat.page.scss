@@ -71,9 +71,7 @@ ion-header {
     }
 
     @media (prefers-color-scheme: dark) {
-      & {
-        border: none;
-      }
+      border: none;
     }
   }
 

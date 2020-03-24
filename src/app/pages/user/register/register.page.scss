@@ -21,8 +21,6 @@ img.captcha {
   }
 
   @media (prefers-color-scheme: dark) {
-    & {
-      filter: brightness(0.75);
-    }
+    filter: brightness(0.75);
   }
 }

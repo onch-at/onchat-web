@@ -16,9 +16,7 @@
     box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.1);
 
     @media (prefers-color-scheme: dark) {
-      & {
-        filter: brightness(0.75);
-      }
+      filter: brightness(0.75);
     }
   }
 
