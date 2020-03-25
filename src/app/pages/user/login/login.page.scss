@@ -4,18 +4,16 @@ ion-progress-bar {
   left: 0;
 }
 
-.brand {
-  color: #6c757d;
+.logo {
   margin-bottom: 2rem;
-
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.85);
-  }
 
   h1 {
     font-size: 5rem;
-    letter-spacing: -0.25rem;
     animation: bounce-in-down 0.9s linear;
+  }
+
+  h5 {
+    color: #6c757d;
   }
 }
 

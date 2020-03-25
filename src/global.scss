@@ -101,6 +101,7 @@
   visibility: hidden;
 }
 
+// 标徽字体
 @font-face {
   font-family: "Alibaba-Sans-Black";
   src: url("./assets/font/Alibaba-Sans-Black/font.gif");
@@ -110,6 +111,7 @@
     url("./assets/font/Alibaba-Sans-Black/font.png") format("svg");
 }
 
+// 星座字体
 @font-face {
   font-family: "constellation";
   src: url("./assets/font/constellation/constellation.eot");
@@ -119,6 +121,7 @@
     url("./assets/font/constellation/constellation.svg") format("svg");
 }
 
+// 星座
 i[class*="icon-constellation-"] {
   font-family: "constellation";
   font-size: initial;
@@ -187,9 +190,10 @@ i[class*="icon-constellation-"] {
   flex-direction: column;
 }
 
+// 使用涟漪效果的父类
 .ripple-parent {
-  position: relative;
-  overflow: hidden;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 ion-content {
@@ -200,6 +204,10 @@ ion-content {
 ion-progress-bar {
   --background: rgba(var(--custom-color-primary-rgb), 0.125);
   --progress-background: rgba(var(--custom-color-primary-rgb), 0.625);
+
+  @media (prefers-color-scheme: dark) {
+    filter: brightness(0.85);
+  }
 }
 
 // 警告框
@@ -211,20 +219,37 @@ ion-alert {
   }
 
   .alert-wrapper.sc-ion-alert-ios {
+    min-width: 16rem;
+    max-width: 17rem;
     background: var(--custom-color-white);
     border-radius: 1rem;
-    box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
+    box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
+  }
+
+  .alert-head.sc-ion-alert-ios {
+    -webkit-padding-start: 1rem;
+    padding-inline-start: 1rem;
+    -webkit-padding-end: 1rem;
+    padding-inline-end: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
   }
 
   .alert-title.sc-ion-alert-ios {
     color: var(--custom-color-dark);
     font-weight: bold;
     font-size: 1rem;
+    margin-top: 0.5rem;
   }
 
   .alert-message.sc-ion-alert-ios {
     color: var(--custom-color-dark);
     font-size: 0.85rem;
+    -webkit-padding-start: 1rem;
+    padding-inline-start: 1rem;
+    -webkit-padding-end: 1rem;
+    padding-inline-end: 1rem;
+    padding-bottom: 1.325rem;
   }
 
   .alert-button.sc-ion-alert-ios {
@@ -289,6 +314,26 @@ ion-toast {
 
   @media (prefers-color-scheme: dark) {
     filter: brightness(0.75);
+  }
+}
+
+// LOGO文字标徽定义
+.brand {
+  font-family: "Alibaba-Sans-Black";
+  letter-spacing: -0.05em;
+
+  @media (prefers-color-scheme: dark) {
+    filter: brightness(0.85);
+  }
+
+  &::before {
+    content: "On";
+    color: #6c757d;
+  }
+
+  &::after {
+    content: "Chat";
+    color: var(--custom-color-primary);
   }
 }
 

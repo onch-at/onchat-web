@@ -16,7 +16,7 @@ ion-header {
     --background: transparent;
 
     ion-title {
-      color: var(--custom-color-drak);
+      color: var(--custom-color-dark);
       transform: translateY(1.5rem);
       animation: show 0.5s ease-out 1.5s forwards;
     }
@@ -28,10 +28,8 @@ ion-header {
 
   .brand {
     height: 3rem;
-    color: #6c757d;
     font-size: 1.35rem;
     line-height: 1.35rem;
-    letter-spacing: -0.075rem;
     padding: 0 0.75rem;
   }
 }
