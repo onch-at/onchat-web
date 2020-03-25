@@ -11,19 +11,14 @@ ion-header {
   transform: translateY(-100%);
   animation: slide-down 0.25s ease-out 0.45s forwards;
 
-  ion-toolbar {
-    --border-width: 0;
-    --background: transparent;
+  ion-title {
+    color: var(--custom-color-dark);
+    transform: translateY(1.5rem);
+    animation: show 0.5s ease-out 1.5s forwards;
+  }
 
-    ion-title {
-      color: var(--custom-color-dark);
-      transform: translateY(1.5rem);
-      animation: show 0.5s ease-out 1.5s forwards;
-    }
-
-    ion-buttons > * {
-      --color: var(--custom-color-medium);
-    }
+  ion-buttons > * {
+    --color: var(--custom-color-medium);
   }
 
   .brand {

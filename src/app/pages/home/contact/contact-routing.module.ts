@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AddComponent } from './add/add.component';
+import { BuddyComponent } from './buddy/buddy.component';
+import { ChatroomComponent } from './chatroom/chatroom.component';
 import { ContactPage } from './contact.page';
 
 
@@ -10,15 +13,15 @@ const routes: Routes = [
     children: [
       {
         path: 'add',
-        loadChildren: () => import('./add/add.module').then(m => m.AddPageModule)
+        component: AddComponent
       },
       {
         path: 'buddy',
-        loadChildren: () => import('./buddy/buddy.module').then(m => m.BuddyPageModule)
+        component: BuddyComponent
       },
       {
         path: 'chatroom',
-        loadChildren: () => import('./chatroom/chatroom.module').then(m => m.ChatroomPageModule)
+        component: ChatroomComponent
       },
       {
         path: '**',

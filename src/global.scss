@@ -268,6 +268,11 @@ ion-alert {
   }
 }
 
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0;
+    --background: transparent;
+}
+
 ion-grid,
 ion-col {
   padding: 0;
@@ -300,6 +305,8 @@ ion-item {
   --background: var(--custom-color-white);
 
   ion-thumbnail {
+    --border-radius: 50%;
+
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
     }

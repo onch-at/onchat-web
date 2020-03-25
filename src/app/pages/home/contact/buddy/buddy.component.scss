@@ -5,7 +5,6 @@ ion-item {
   --padding-bottom: 0;
 
   ion-thumbnail {
-    --border-radius: 50%;
     margin: 0 0.75rem 0 0;
     width: 3rem;
     height: 3rem;
@@ -19,10 +18,10 @@ ion-item {
 
   p {
     font-size: 0.75rem;
-    margin-top: .25rem;
+    margin-top: 0.25rem;
   }
 }
 
 ion-item-option {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }

@@ -2,109 +2,90 @@
   padding: 0;
   margin: 0;
   list-style: none;
-
   color: var(--custom-color-dark);
+}
 
-  .msg-item {
-    display: flex;
-    padding-top: 0.85rem;
+.msg-item {
+  display: flex;
+  padding-top: 0.85rem;
 
-    > div:first-child {
-      width: 2.5rem;
+  > div:first-child {
+    width: 2.5rem;
+  }
+
+  .avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--custom-color-white);
+    border-radius: 2rem;
+
+    @media (prefers-color-scheme: dark) {
+      filter: brightness(0.85);
     }
+  }
 
-    .avatar {
-      width: 2.5rem;
-      height: 2.5rem;
-      background: var(--custom-color-white);
-      border-radius: 2rem;
+  .username {
+    font-size: 0.8rem;
+  }
 
-      @media (prefers-color-scheme: dark) {
-        filter: brightness(0.85);
-      }
-    }
+  .msg-bubble {
+    position: relative;
+    padding: 0.4rem 0.75rem;
+    margin-top: 0.35rem;
+    max-width: calc(100vw - 7.75rem);
+    border-radius: 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: inline-block;
+    word-break: break-word;
+  }
 
-    .username {
-      font-size: 0.8rem;
+  &.msg-item-left {
+    padding-left: 0.75rem;
+    padding-right: 4rem;
+    transform: translateX(-100%);
+    animation: slide-right 0.6s ease 0.15s forwards;
+
+    > div:last-child {
+      padding-left: 0.5rem;
     }
 
     .msg-bubble {
-      position: relative;
-      padding: 0.4rem 0.75rem;
-      margin-top: 0.35rem;
-      max-width: calc(100vw - 7.75rem);
-      border-radius: 1rem;
-      font-weight: 500;
-      font-size: 0.9rem;
-      display: inline-block;
-      word-break: break-word;
+      background: var(--custom-color-gray);
 
-      // 气泡的勾子，由于气泡要应用涟漪效果，所以暂时弃用气泡的勾子
+      @media (prefers-color-scheme: dark) {
+        color: #000000;
+      }
+    }
+  }
+
+  &.msg-item-right {
+    flex-direction: row-reverse;
+    padding-left: 4rem;
+    padding-right: 0.75rem;
+    transform: translateX(100%);
+    animation: slide-left 0.6s ease 0.15s forwards;
+
+    > div:last-child {
+      padding-right: 0.5rem;
+    }
+
+    .username {
+      text-align: right;
+    }
+
+    .msg-bubble {
+      background: var(--custom-color-primary);
+
       // &::before {
-      //   content: "";
-      //   display: block;
-      //   position: absolute;
-      //   top: -0.425rem;
-      //   width: 1rem;
-      //   height: 1.15rem;
-      //   border: 0 solid transparent;
-      //   border-bottom-width: 0.75rem;
+      //   right: -0.375rem;
+      //   border-bottom-color: var(--custom-color-primary);
+      //   border-radius: 0 0 999rem 0;
       // }
-    }
 
-    &.msg-item-left {
-      padding-left: 0.75rem;
-      padding-right: 4rem;
-      transform: translateX(-100%);
-      animation: slide-right 0.6s ease-in-out 0.15s forwards;
-
-      > div:last-child {
-        padding-left: 0.5rem;
-      }
-
-      .msg-bubble {
-        background: var(--custom-color-gray);
-
-        // &::before {
-        //   left: -0.375rem;
-        //   border-bottom-color: var(--custom-color-gray);
-        //   border-radius: 0 0 0 999rem;
-        // }
-
-        @media (prefers-color-scheme: dark) {
-          color: #000000;
-        }
-      }
-    }
-
-    &.msg-item-right {
-      flex-direction: row-reverse;
-      padding-left: 4rem;
-      padding-right: 0.75rem;
-      transform: translateX(100%);
-      animation: slide-left 0.6s ease-in-out 0.15s forwards;
-
-      > div:last-child {
-        padding-right: 0.5rem;
-      }
-
-      .username {
-        text-align: right;
-      }
-
-      .msg-bubble {
-        background: var(--custom-color-primary);
-
-        // &::before {
-        //   right: -0.375rem;
-        //   border-bottom-color: var(--custom-color-primary);
-        //   border-radius: 0 0 999rem 0;
-        // }
-
-        @media (prefers-color-scheme: dark) {
-          color: var(--custom-color-white);
-          background: rgba(var(--custom-color-primary-rgb), 0.75);
-        }
+      @media (prefers-color-scheme: dark) {
+        color: var(--custom-color-white);
+        background: rgba(var(--custom-color-primary-rgb), 0.75);
       }
     }
   }
