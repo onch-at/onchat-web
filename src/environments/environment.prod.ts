@@ -5,4 +5,5 @@ export const environment = {
   userRegisterUrl: '/onchat/User/register',
   userLogoutUrl: '/onchat/User/logout',
   userCheckLoginUrl: '/onchat/User/checkLogin',
+  userChatroomsUrl: '/onchat/User/chatrooms',
 };

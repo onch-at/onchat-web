@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
+import { ChatroomResolve } from 'src/app/guards/chatroom.resolve';
 import { ChatPage } from './chat.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChatPage
+    component: ChatPage,
+    resolve: {
+      chatroomResult: ChatroomResolve
+    }
   }
 ];
 
@@ -14,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ChatPageRoutingModule {}
+export class ChatPageRoutingModule { }

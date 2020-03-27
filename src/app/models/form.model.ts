@@ -1,4 +1,6 @@
-/** 登录表单数据模型 */
+/**
+ * 登录表单数据模型
+ */
 export class LoginForm {
     /** 用户名 */
     username: string;
@@ -11,7 +13,9 @@ export class LoginForm {
     }
 }
 
-/** 注册表单数据模型 */
+/**
+ * 注册表单数据模型
+ */
 export class RegisterForm extends LoginForm {
     /** 验证码 */
     captcha: string;
