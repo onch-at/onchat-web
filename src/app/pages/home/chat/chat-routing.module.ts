@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChatroomResolve } from 'src/app/guards/chatroom.resolve';
+import { ChatListResolve } from 'src/app/guards/chatlist.resolve';
 import { ChatPage } from './chat.page';
 
 const routes: Routes = [
@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: ChatPage,
     resolve: {
-      chatroomResult: ChatroomResolve
+      chatListResult: ChatListResolve
     }
   }
 ];

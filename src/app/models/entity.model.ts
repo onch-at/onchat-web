@@ -3,8 +3,8 @@
  */
 export class Entity {
     id: number;
-    createTime: number;
-    updateTime: number;
+    createTime: string;
+    updateTime: string;
 }
 
 /**
@@ -18,5 +18,14 @@ export class Chatroom extends Entity {
     /** 聊天室头像 */
     avatar: string;
     /** 聊天室类型 */
+    type: number;
+}
+
+export class ChatItem extends Entity {
+    chatroomId: number;
+    name: string;
+    unread: number;
+    sticky: boolean;
+    avatar: string;
     type: number;
 }

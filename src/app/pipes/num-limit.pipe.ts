@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'numLimit'
 })
 export class NumLimitPipe implements PipeTransform {
-  transform(value: any, max: number): any {
+  transform(value: any, max: number = 99): any {
     return value > max ? max + "+" : value;
   }
 }

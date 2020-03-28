@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Chatroom } from 'src/app/models/entity.model';
+import { ChatItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/result.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 
@@ -10,7 +10,7 @@ import { OnChatService } from 'src/app/services/onchat.service';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-  chatrooms: Chatroom[];
+  chatList: ChatItem[];
 
   constructor(
     private onChatService: OnChatService,
@@ -18,10 +18,18 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { chatroomResult: Result<Chatroom[]> }) => {
-      this.chatrooms = data.chatroomResult.data;
-      console.log(this.chatrooms)
+    this.route.data.subscribe((data: { chatListResult: Result<ChatItem[]> }) => {
+      this.chatList = data.chatListResult.data;
+      console.log(this.chatList)
     });
+  }
+
+  /**
+   * 移除聊天列表子项
+   * @param index 
+   */
+  removeChatItem(index: number) {
+    this.chatList.splice(index, 1);
   }
 
 }

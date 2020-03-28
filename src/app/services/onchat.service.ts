@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
-import { Chatroom } from '../models/entity.model';
+import { ChatItem, Chatroom } from '../models/entity.model';
 import { LoginForm, RegisterForm } from '../models/form.model';
 import { Result } from '../models/result.model';
 
@@ -59,7 +59,11 @@ export class OnChatService {
     return this.http.post<Result<any>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
   }
 
-  chatrooms() {
+  getChatrooms() {
     return this.http.get<Result<Chatroom[]>>(env.userChatroomsUrl);
+  }
+
+  getChatList() {
+    return this.http.get<Result<ChatItem[]>>(env.userChatListUrl);
   }
 }
