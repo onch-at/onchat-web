@@ -31,20 +31,44 @@
 .color-primary {
   color: var(--custom-color-primary) !important;
 }
+.color-secondary {
+  color: var(--custom-color-secondary) !important;
+}
 .color-dark {
   color: var(--custom-color-dark) !important;
 }
 .color-danger {
   color: var(--custom-color-danger) !important;
 }
+.color-light {
+  color: var(--custom-color-light) !important;
+}
+.color-gray {
+  color: var(--custom-color-gray) !important;
+}
+.color-medium {
+  color: var(--custom-color-medium) !important;
+}
 .bg-primary {
   background-color: var(--custom-color-primary) !important;
+}
+.bg-secondary {
+  background-color: var(--custom-color-secondary) !important;
 }
 .bg-white {
   background-color: var(--custom-color-white) !important;
 }
 .bg-danger {
   background-color: var(--custom-color-danger) !important;
+}
+.bg-light {
+  background-color: var(--custom-color-light) !important;
+}
+.bg-gray {
+  background-color: var(--custom-color-gray) !important;
+}
+.bg-medium {
+  background-color: var(--custom-color-medium) !important;
 }
 .d-block {
   display: block !important;

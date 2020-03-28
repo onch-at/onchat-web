@@ -108,11 +108,10 @@ ion-header {
 }
 
 ion-router-outlet {
-  margin-left: 3rem;
+  margin: 3rem 0 0 3rem;
 
   /* 路由转场淡入 */
   &::ng-deep .ion-page > * {
-    --padding-top: 3rem;
     opacity: 0.5;
     animation: fade-in 0.25s ease-out forwards;
   }

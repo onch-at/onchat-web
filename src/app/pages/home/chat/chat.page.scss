@@ -1,3 +1,28 @@
+ion-refresher {
+  height: 4rem;
+
+  &::ng-deep {
+    .refresher-refreshing-icon > * {
+      color: var(--custom-color-primary);
+      transform: scale(1.25);
+    }
+
+    .refresher-pulling-icon > * {
+      color: var(--custom-color-dark);
+    }
+
+    .refresher-refreshing-text {
+      margin-top: -0.5rem;
+    }
+
+    .refresher-refreshing-text,
+    .refresher-pulling-text {
+      font-size: 0.75rem;
+      color: var(--custom-color-medium);
+    }
+  }
+}
+
 ion-item {
   --padding-start: 1rem;
   --padding-end: 0;

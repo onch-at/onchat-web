@@ -38,8 +38,8 @@ ion-header {
   backdrop-filter: saturate(200%) blur(5px);
   border-radius: 0 1.5rem 0 0;
   width: 100%;
-  transform: translateY(100%);
-  animation: slide-up 0.75s ease 0.25s forwards;
+  transform: translateX(-100%);
+  animation: slide-right 0.4s ease 0.5s forwards;
 
   @media (prefers-color-scheme: dark) {
     background: rgba(var(--custom-color-white-rgb), 0.5);
@@ -175,7 +175,7 @@ ion-header {
   padding-bottom: 0.75rem;
   width: calc(100vw - 1.5rem);
   transform: translateY(100%);
-  animation: slide-up 0.25s ease 1.25s forwards;
+  animation: slide-up 0.25s ease 1s forwards;
 
   button {
     height: 2.5rem;

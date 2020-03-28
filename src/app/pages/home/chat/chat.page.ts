@@ -24,12 +24,24 @@ export class ChatPage implements OnInit {
     });
   }
 
+  doRefresh(event) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }
+
   /**
    * 移除聊天列表子项
    * @param index 
    */
   removeChatItem(index: number) {
-    this.chatList.splice(index, 1);
+    // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
+    setTimeout(() => {
+      this.chatList.splice(index, 1);
+    });
   }
 
 }
