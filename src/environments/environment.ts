@@ -11,6 +11,9 @@ export const environment = {
   userCheckLoginUrl: '/onchat/User/checkLogin',
   userChatroomsUrl: '/onchat/User/chatrooms',
   userChatListUrl: '/onchat/User/chatlist',
+
+  /** LocalStorage Key */
+  chatListKey: 'chat_list',
 };
 
 /*

@@ -9,6 +9,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 
 @NgModule({
@@ -29,6 +30,7 @@ import { OnChatService } from './services/onchat.service';
     StatusBar,
     SplashScreen,
     OnChatService,
+    LocalStorageService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

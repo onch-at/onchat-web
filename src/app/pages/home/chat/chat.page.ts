@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/result.model';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { environment as env } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-chat',
@@ -14,13 +16,18 @@ export class ChatPage implements OnInit {
 
   constructor(
     private onChatService: OnChatService,
+    private localStorageService: LocalStorageService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { chatListResult: Result<ChatItem[]> }) => {
-      this.chatList = data.chatListResult.data;
-      console.log(this.chatList)
+    this.route.data.subscribe((data: { chatList: ChatItem[] }) => {
+      this.chatList = data.chatList;
+    });
+
+    this.onChatService.getChatList().subscribe((chatListResult: Result<ChatItem[]>) => {
+      this.localStorageService.set(env.chatListKey, chatListResult.data);
+      this.chatList = chatListResult.data;
     });
   }
 
