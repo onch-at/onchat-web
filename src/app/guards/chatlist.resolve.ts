@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { environment as env } from '../../environments/environment';
 import { ChatItem } from '../models/entity.model';
 import { Result } from '../models/result.model';
+import { sortChatList } from '../pages/home/chat/chat.page';
 import { LocalStorageService } from '../services/local-storage.service';
 import { OnChatService } from '../services/onchat.service';
 
@@ -17,8 +18,9 @@ export class ChatListResolve implements Resolve<ChatItem[]> {
         if (data) { return data; }
 
         this.onChatService.getChatList().subscribe((chatList: Result<ChatItem[]>) => {
-            this.localStorageService.set(env.chatListKey, chatList.data);
-            return chatList.data;
+            const data = sortChatList(chatList.data)
+            this.localStorageService.set(env.chatListKey, data);
+            return data;
         });
     }
 }

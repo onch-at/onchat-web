@@ -24,10 +24,25 @@ ion-refresher {
 }
 
 ion-item {
+  position: relative;
   --padding-start: 1rem;
   --padding-end: 0;
   --padding-top: 0.5rem;
   --padding-bottom: 0.5rem;
+
+  &.sticky::before {
+    content: '';
+    position: absolute;
+    top: -.25rem;
+    right: -.25rem;
+    width: 0;
+    height: 0;
+    border: .5rem solid;
+    border-color: transparent transparent rgba(var(--custom-color-primary-rgb), .5) transparent;
+    border-radius: .25rem;
+    z-index: 2;
+    transform: rotate(45deg);
+  }
 
   ion-thumbnail {
     margin: 0 0.75rem 0 0;

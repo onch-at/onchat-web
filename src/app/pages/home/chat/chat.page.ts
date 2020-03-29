@@ -25,19 +25,20 @@ export class ChatPage implements OnInit {
       this.chatList = data.chatList;
     });
 
-    this.onChatService.getChatList().subscribe((chatListResult: Result<ChatItem[]>) => {
-      this.localStorageService.set(env.chatListKey, chatListResult.data);
-      this.chatList = chatListResult.data;
+    this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
+      const chatList = sortChatList(result.data);
+      this.localStorageService.set(env.chatListKey, chatList);
+      this.chatList = chatList;
     });
   }
 
-  doRefresh(event) {
-    console.log('Begin async operation');
-
-    setTimeout(() => {
-      console.log('Async operation has ended');
+  doRefresh(event: any) {
+    this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
+      const chatList = sortChatList(result.data);
+      this.localStorageService.set(env.chatListKey, chatList);
+      this.chatList = chatList;
       event.target.complete();
-    }, 2000);
+    });
   }
 
   /**
@@ -48,7 +49,18 @@ export class ChatPage implements OnInit {
     // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
     setTimeout(() => {
       this.chatList.splice(index, 1);
-    });
+    }, 10);
   }
 
+}
+
+/**
+ * 按照置顶顺序排序聊天列表
+ * @param chatList 
+ */
+export function sortChatList(chatList: ChatItem[]): ChatItem[] {
+  chatList.sort((a: ChatItem, b: ChatItem) => {
+    return (b.sticky as any) - (a.sticky as any);
+  });
+  return chatList;
 }
