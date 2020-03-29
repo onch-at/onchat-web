@@ -19,11 +19,11 @@
 @import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/text-transformation.css";
-@import "~@ionic/angular/css/flex-utils.css";
+// @import "~@ionic/angular/css/padding.css";
+// @import "~@ionic/angular/css/float-elements.css";
+// @import "~@ionic/angular/css/text-alignment.css";
+// @import "~@ionic/angular/css/text-transformation.css";
+// @import "~@ionic/angular/css/flex-utils.css";
 
 .font-family-primary {
   font-family: "Alibaba-Sans-Black" !important;
@@ -128,21 +128,21 @@
 // 标徽字体
 @font-face {
   font-family: "Alibaba-Sans-Black";
-  src: url("./assets/font/Alibaba-Sans-Black/font.gif");
-  src: url("./assets/font/Alibaba-Sans-Black/font.gif") format("embedded-opentype"),
-    url("./assets/font/Alibaba-Sans-Black/font.bmp") format("woff"),
-    url("./assets/font/Alibaba-Sans-Black/font.jpg") format("truetype"),
-    url("./assets/font/Alibaba-Sans-Black/font.png") format("svg");
+  src: url("/assets/font/Alibaba-Sans-Black/font.gif");
+  src: url("/assets/font/Alibaba-Sans-Black/font.gif") format("embedded-opentype"),
+    url("/assets/font/Alibaba-Sans-Black/font.bmp") format("woff"),
+    url("/assets/font/Alibaba-Sans-Black/font.jpg") format("truetype"),
+    url("/assets/font/Alibaba-Sans-Black/font.png") format("svg");
 }
 
 // 星座字体
 @font-face {
   font-family: "constellation";
-  src: url("./assets/font/constellation/constellation.eot");
-  src: url("./assets/font/constellation/constellation.eot?#iefix") format("embedded-opentype"),
-    url("./assets/font/constellation/constellation.woff") format("woff"),
-    url("./assets/font/constellation/constellation.ttf") format("truetype"),
-    url("./assets/font/constellation/constellation.svg") format("svg");
+  src: url("/assets/font/constellation/constellation.eot");
+  src: url("/assets/font/constellation/constellation.eot?#iefix") format("embedded-opentype"),
+    url("/assets/font/constellation/constellation.woff") format("woff"),
+    url("/assets/font/constellation/constellation.ttf") format("truetype"),
+    url("/assets/font/constellation/constellation.svg") format("svg");
 }
 
 // 星座

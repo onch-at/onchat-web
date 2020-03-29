@@ -1,12 +1,12 @@
 export const environment = {
   production: true,
-  captchaurl: '/onchat/index/captcha',
-  userLoginurl: '/onchat/user/login',
-  userRegisterurl: '/onchat/user/register',
-  userLogouturl: '/onchat/user/logout',
-  userCheckLoginurl: '/onchat/user/checklogin',
-  userChatroomsurl: '/onchat/user/chatrooms',
-  userChatListurl: '/onchat/user/chatlist',
+  captchaUrl: '/onchat/index/captcha',
+  userLoginUrl: '/onchat/user/login',
+  userRegisterUrl: '/onchat/user/register',
+  userLogoutUrl: '/onchat/user/logout',
+  userCheckLoginUrl: '/onchat/user/checklogin',
+  userChatroomsUrl: '/onchat/user/chatrooms',
+  userChatListUrl: '/onchat/user/chatlist',
 
   /** LocalStorage Key */
   chatListKey: 'chat_list',
