@@ -21,15 +21,14 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { chatList: ChatItem[] }) => {
-      this.chatList = data.chatList;
-    });
-
     this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
       const chatList = sortChatList(result.data);
       this.localStorageService.set(env.chatListKey, chatList);
       this.chatList = chatList;
     });
+    // 先加载缓存
+    const data = this.localStorageService.get(env.chatListKey);
+    if (data) { this.chatList = data; }
   }
 
   doRefresh(event: any) {

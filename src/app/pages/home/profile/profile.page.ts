@@ -28,7 +28,7 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  async presentAlertConfirm(header: string, msg: string, confirmHandler: Function, cancelHandler?: Function) {
+  async presentAlertConfirm(header: string, msg: string, confirmHandler: CallableFunction, cancelHandler?: CallableFunction) {
     const alert = await this.alertController.create({
       header: header,
       message: msg,

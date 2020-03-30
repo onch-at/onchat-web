@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
-import { ChatItem, Chatroom } from '../models/entity.model';
+import { ChatItem, Chatroom, MsgItem } from '../models/entity.model';
 import { LoginForm, RegisterForm } from '../models/form.model';
 import { Result } from '../models/result.model';
 
@@ -55,15 +55,23 @@ export class OnChatService {
    * 注册
    * @param o 
    */
-  register(o: RegisterForm): Observable<Result<any>>  {
+  register(o: RegisterForm): Observable<Result<any>> {
     return this.http.post<Result<any>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
   }
 
-  getChatrooms() {
+  getUserId(): Observable<Result<number>> {
+    return this.http.get<Result<number>>(env.userIdUrl);
+  }
+
+  getChatrooms(): Observable<Result<Chatroom[]>> {
     return this.http.get<Result<Chatroom[]>>(env.userChatroomsUrl);
   }
 
-  getChatList() {
+  getChatList(): Observable<Result<ChatItem[]>> {
     return this.http.get<Result<ChatItem[]>>(env.userChatListUrl);
+  }
+
+  getRecords(id: number, page: number): Observable<Result<MsgItem[]>> {
+    return this.http.get<Result<MsgItem[]>>(env.chatroomUrl + id + '/records/' + page);
   }
 }

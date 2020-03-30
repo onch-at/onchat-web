@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
 import { CardPage } from './card.page';
+
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id',
     component: CardPage
   }
 ];

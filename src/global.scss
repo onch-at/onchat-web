@@ -124,6 +124,9 @@
 .visibility-hidden {
   visibility: hidden;
 }
+.small {
+  font-size: .75rem !important;
+}
 
 // 标徽字体
 @font-face {
@@ -220,6 +223,29 @@ i[class*="icon-constellation-"] {
   overflow: hidden !important;
 }
 
+ion-refresher {
+  height: 4rem;
+
+  .refresher-refreshing-icon > * {
+    color: var(--custom-color-primary);
+    transform: scale(1.25);
+  }
+
+  .refresher-pulling-icon > * {
+    color: var(--custom-color-dark);
+  }
+
+  .refresher-refreshing-text {
+    margin-top: -0.5rem;
+  }
+
+  .refresher-refreshing-text,
+  .refresher-pulling-text {
+    font-size: 0.75rem;
+    color: var(--custom-color-medium) !important;
+  }
+}
+
 ion-content {
   --background: var(--custom-color-white);
 }
@@ -294,7 +320,7 @@ ion-alert {
 
 .header-ios ion-toolbar:last-of-type {
   --border-width: 0;
-    --background: transparent;
+  --background: transparent;
 }
 
 ion-grid,

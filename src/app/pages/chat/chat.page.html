@@ -19,7 +19,18 @@
   </ion-header>
 
   <main>
-    <app-msg-list></app-msg-list>
+    <ion-content>
+      <ion-refresher slot="fixed" [disabled]="end" [pullFactor]="0.5" (ionRefresh)="doRefresh($event)" style="z-index: 0;">
+        <ion-refresher-content pullingIcon="arrow-down" refreshingSpinner="dots">
+        </ion-refresher-content>
+      </ion-refresher>
+
+      <div class="tip-item" *ngIf="end">
+        <span>(๑ŐдŐ)b 没有更多了</span>
+      </div>
+
+      <app-msg-list [userId]="userId" [data]="msgList"></app-msg-list>
+    </ion-content>
   </main>
 
   <div class="bottom-bar">
