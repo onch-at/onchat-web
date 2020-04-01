@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { IonItemSliding } from '@ionic/angular';
 import { ChatItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/result.model';
 import { isSameWeek } from 'src/app/pipes/detail-date.pipe';
@@ -15,6 +16,8 @@ import { environment as env } from '../../../../environments/environment';
 export class ChatPage implements OnInit {
   chatList: ChatItem[];
   loading: boolean = true;
+
+  @ViewChildren(IonItemSliding) ionItemSlidings: QueryList<IonItemSliding>;
 
   constructor(
     private onChatService: OnChatService,
@@ -43,6 +46,10 @@ export class ChatPage implements OnInit {
     });
   }
 
+  /**
+   * 是否在同一周
+   * @param date 
+   */
   isSameWeek(date: string) {
     return isSameWeek(new Date(Date.parse(date)));
   }
@@ -56,6 +63,34 @@ export class ChatPage implements OnInit {
     setTimeout(() => {
       this.chatList.splice(index, 1);
     }, 10);
+  }
+
+  /**
+   * 置顶聊天列表子项
+   * @param item 
+   */
+  stickyChatItem(item: ChatItem) {
+    this.onChatService.stickyChatItem(item.id).subscribe((result: Result<any>) => {
+      if (result.code == 0) {
+        item.sticky = true;
+        this.chatList = sortChatList(this.chatList);
+        this.ionItemSlidings.first.closeOpened();
+      }
+    });
+  }
+
+  /**
+   * 取消置顶聊天列表子项
+   * @param item 
+   */
+  unstickyChatItem(item: ChatItem) {
+    this.onChatService.unstickyChatItem(item.id).subscribe((result: Result<any>) => {
+      if (result.code == 0) {
+        item.sticky = false;
+        this.chatList = sortChatList(this.chatList);
+        this.ionItemSlidings.first.closeOpened();
+      }
+    });
   }
 
 }

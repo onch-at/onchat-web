@@ -59,23 +59,57 @@ export class OnChatService {
     return this.http.post<Result<any>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
   }
 
+  /**
+   * 获取用户ID
+   */
   getUserId(): Observable<Result<number>> {
     return this.http.get<Result<number>>(env.userIdUrl);
   }
 
+  /**
+   * 获取该用户下所有聊天室
+   */
   getChatrooms(): Observable<Result<Chatroom[]>> {
     return this.http.get<Result<Chatroom[]>>(env.userChatroomsUrl);
   }
 
+  /**
+   * 获取用户的聊天列表
+   */
   getChatList(): Observable<Result<ChatItem[]>> {
     return this.http.get<Result<ChatItem[]>>(env.userChatListUrl);
   }
 
+  /**
+   * 获取聊天室名称
+   * @param id 聊天室ID
+   */
   getChatroomName(id: number): Observable<Result<string>> {
     return this.http.get<Result<string>>(env.chatroomUrl + id + '/name');
   }
 
+  /**
+   * 获取聊天记录
+   * @param id 聊天室ID
+   * @param page 页码
+   */
   getChatRecords(id: number, page: number): Observable<Result<MsgItem[]>> {
     return this.http.get<Result<MsgItem[]>>(env.chatroomUrl + id + '/records/' + page);
+  }
+
+  /**
+   * 置顶聊天列表子项
+   * @param id 聊天列表子项ID
+   */
+  stickyChatItem(id: number): Observable<Result<any>> {
+    return this.http.put<Result<any>>(env.chatListStickyUrl + id, null);
+  }
+
+  /**
+   * 取消置顶聊天列表子项
+   * @param id 聊天列表子项ID
+   */
+  unstickyChatItem(id: number): Observable<Result<any>> {
+    return this.http.put<Result<any>>(env.chatListUnstickyUrl + id, null);
   }
 }
