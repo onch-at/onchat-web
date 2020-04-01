@@ -1,3 +1,5 @@
+@import "../../../../assets/css/constellation.css";
+
 * {
   color: var(--custom-color-dark);
 }
@@ -13,6 +15,7 @@
   float: left;
   width: 5rem;
   height: 5rem;
+  background: var(--custom-color-secondary);
   border-radius: 50%;
   box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.1);
 

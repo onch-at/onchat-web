@@ -29,7 +29,7 @@ export class ChatPage implements OnInit {
   }
 
   loadRecords(complete?: CallableFunction) {
-    this.onChatService.getRecords(this.chatroomId, this.page++).subscribe((result: Result<MsgItem[]>) => {
+    this.onChatService.getRecords(this.chatroomId, this.page).subscribe((result: Result<MsgItem[]>) => {
       if (result.code === 0) {
         // 倒序排列这步交给CSS，详见msg-list.component.scss
         // result.data.sort((a: MsgItem, b: MsgItem) => {
@@ -41,6 +41,7 @@ export class ChatPage implements OnInit {
         //     this.msgList.unshift(value);
         //   }, index * 250);
         // });
+        this.page++; // 查询成功才递增页码
         this.msgList = this.msgList.concat(result.data);
       } else if (result.code === 2) {
         this.end = true;

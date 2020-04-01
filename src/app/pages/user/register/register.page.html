@@ -54,7 +54,7 @@
             </div>
             <div class="form-group form-group-row">
               <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha" placeholder="验证码" maxlength="4" required>
-              <img appActiveClass [duration]="175" class="captcha" [src]="captchaUrl" alt="CAPTCHA" (tap)="updateCaptcha()">
+              <img appActiveClass [duration]="200" class="captcha" [src]="captchaUrl" alt="CAPTCHA" (tap)="updateCaptcha()">
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span [hidden]="!registerForm.controls.captcha.errors || !registerForm.controls.captcha.errors.required">
@@ -69,7 +69,7 @@
         </ion-col>
 
         <ion-col class="text-center" size="12">
-          <button appActiveClass [duration]="175" [disabled]="registerForm.invalid" class="ion-activatable ripple-parent btn-primary" style="margin-bottom: .75rem;" (tap)="register()">
+          <button appActiveClass [duration]="200" [disabled]="registerForm.invalid" class="ion-activatable ripple-parent btn-primary" style="margin-bottom: .75rem;" (tap)="register()">
             注册
             <ion-ripple-effect></ion-ripple-effect>
           </button>

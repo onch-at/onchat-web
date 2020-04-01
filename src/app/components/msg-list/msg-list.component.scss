@@ -19,7 +19,7 @@
   .avatar {
     width: 2.5rem;
     height: 2.5rem;
-    background: var(--custom-color-white);
+    background: var(--custom-color-secondary);
     border-radius: 2rem;
 
     @media (prefers-color-scheme: dark) {
@@ -32,9 +32,11 @@
   }
 
   .msg-bubble {
-    position: relative;
+    // position: relative;
     padding: 0.4rem 0.75rem;
     margin-top: 0.35rem;
+    min-height: 2rem;
+    min-width: 2rem;
     max-width: calc(100vw - 7.75rem);
     border-radius: 1rem;
     font-weight: 500;

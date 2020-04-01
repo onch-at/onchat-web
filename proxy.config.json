@@ -1,6 +1,6 @@
 {
     "/onchat": {
-        "target": "http://localhost:8000",
+        "target": "http://tp.hypergo.net",
         "secure": "false",
         "logLevel": "debug",
         "changeOrigin": true,

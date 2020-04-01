@@ -13,6 +13,7 @@ import { environment as env } from '../../../../environments/environment';
 })
 export class ChatPage implements OnInit {
   chatList: ChatItem[];
+  loading: boolean = true;
 
   constructor(
     private onChatService: OnChatService,
@@ -25,6 +26,7 @@ export class ChatPage implements OnInit {
       const chatList = sortChatList(result.data);
       this.localStorageService.set(env.chatListKey, chatList);
       this.chatList = chatList;
+      this.loading = false;
     });
     // 先加载缓存
     const data = this.localStorageService.get(env.chatListKey);

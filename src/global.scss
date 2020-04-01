@@ -124,9 +124,6 @@
 .visibility-hidden {
   visibility: hidden;
 }
-.small {
-  font-size: .75rem !important;
-}
 
 // 标徽字体
 @font-face {
@@ -136,71 +133,6 @@
     url("/assets/font/Alibaba-Sans-Black/font.bmp") format("woff"),
     url("/assets/font/Alibaba-Sans-Black/font.jpg") format("truetype"),
     url("/assets/font/Alibaba-Sans-Black/font.png") format("svg");
-}
-
-// 星座字体
-@font-face {
-  font-family: "constellation";
-  src: url("/assets/font/constellation/constellation.eot");
-  src: url("/assets/font/constellation/constellation.eot?#iefix") format("embedded-opentype"),
-    url("/assets/font/constellation/constellation.woff") format("woff"),
-    url("/assets/font/constellation/constellation.ttf") format("truetype"),
-    url("/assets/font/constellation/constellation.svg") format("svg");
-}
-
-// 星座
-i[class*="icon-constellation-"] {
-  font-family: "constellation";
-  font-size: initial;
-  font-style: normal;
-}
-// 白羊座
-.icon-constellation-aries:before {
-  content: "\f0015";
-}
-// 金牛座
-.icon-constellation-taurus:before {
-  content: "\f0014";
-}
-// 双子座
-.icon-constellation-gemini:before {
-  content: "\f0013";
-}
-// 天枰座
-.icon-constellation-libra:before {
-  content: "\f0012";
-}
-// 射手座
-.icon-constellation-sagittarius:before {
-  content: "\f0011";
-}
-// 天蝎座
-.icon-constellation-scorpio:before {
-  content: "\f0010";
-}
-// 巨蟹座
-.icon-constellation-cancer:before {
-  content: "\f000f";
-}
-// 狮子座
-.icon-constellation-leo:before {
-  content: "\f000e";
-}
-// 摩羯座
-.icon-constellation-capricorn:before {
-  content: "\f000c";
-}
-// 处女座
-.icon-constellation-virgo:before {
-  content: "\f000d";
-}
-// 双鱼座
-.icon-constellation-pisces:before {
-  content: "\f000b";
-}
-// 水瓶座
-.icon-constellation-aquarius:before {
-  content: "\f000a";
 }
 
 * {
@@ -356,6 +288,7 @@ ion-item {
 
   ion-thumbnail {
     --border-radius: 50%;
+    background: var(--custom-color-secondary);
 
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
@@ -473,7 +406,7 @@ button {
 .btn-primary,
 .btn-secondary {
   box-shadow: none;
-  transition: all 0.15s ease-in-out, box-shadow 0.175s ease-out;
+  transition: all 0.15s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 // 向左滑出
