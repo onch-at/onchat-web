@@ -4,8 +4,22 @@
   list-style: none;
   color: var(--custom-color-dark);
   // 使用CSS进行倒序排列
-  display: flex;
-  flex-direction: column-reverse;
+  // display: flex;
+  // flex-direction: column-reverse;
+}
+
+.tip-item {
+  margin: 1rem 0 .25rem;
+  text-align: center;
+
+  & > span {
+    white-space: nowrap;
+    font-size: 0.7rem;
+    color: var(--custom-color-medium);
+    padding: 0.25rem 0.75rem;
+    background: var(--custom-color-secondary);
+    border-radius: 1rem;
+  }
 }
 
 .msg-item {

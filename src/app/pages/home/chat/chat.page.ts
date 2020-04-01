@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/result.model';
+import { isSameWeek } from 'src/app/pipes/detail-date.pipe';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { environment as env } from '../../../../environments/environment';
@@ -40,6 +41,10 @@ export class ChatPage implements OnInit {
       this.chatList = chatList;
       event.target.complete();
     });
+  }
+
+  isSameWeek(date: string) {
+    return isSameWeek(new Date(Date.parse(date)));
   }
 
   /**

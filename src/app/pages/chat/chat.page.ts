@@ -12,6 +12,7 @@ import { OnChatService } from 'src/app/services/onchat.service';
 export class ChatPage implements OnInit {
   userId: number;
   chatroomId: number;
+  roomName: string = '';
   page: number = 1;
   msgList: MsgItem[] = [];
   end: boolean = false;
@@ -26,15 +27,21 @@ export class ChatPage implements OnInit {
     this.chatroomId = this.route.snapshot.params.id;
 
     this.loadRecords();
+
+    this.onChatService.getChatroomName(this.chatroomId).subscribe((result: Result<string>) => {
+      if (result.code === 0) {
+        this.roomName = result.data;
+      }
+    });
   }
 
   loadRecords(complete?: CallableFunction) {
-    this.onChatService.getRecords(this.chatroomId, this.page).subscribe((result: Result<MsgItem[]>) => {
+    this.onChatService.getChatRecords(this.chatroomId, this.page).subscribe((result: Result<MsgItem[]>) => {
       if (result.code === 0) {
         // 倒序排列这步交给CSS，详见msg-list.component.scss
-        // result.data.sort((a: MsgItem, b: MsgItem) => {
-        //   return a.id - b.id;
-        // });
+        result.data.sort((a: MsgItem, b: MsgItem) => {
+          return a.id - b.id;
+        });
 
         // result.data.forEach((value: MsgItem, index: number) => {
         //   setTimeout(() => {
@@ -42,7 +49,7 @@ export class ChatPage implements OnInit {
         //   }, index * 250);
         // });
         this.page++; // 查询成功才递增页码
-        this.msgList = this.msgList.concat(result.data);
+        this.msgList = result.data.concat(this.msgList);
       } else if (result.code === 2) {
         this.end = true;
       }

@@ -71,7 +71,11 @@ export class OnChatService {
     return this.http.get<Result<ChatItem[]>>(env.userChatListUrl);
   }
 
-  getRecords(id: number, page: number): Observable<Result<MsgItem[]>> {
+  getChatroomName(id: number): Observable<Result<string>> {
+    return this.http.get<Result<string>>(env.chatroomUrl + id + '/name');
+  }
+
+  getChatRecords(id: number, page: number): Observable<Result<MsgItem[]>> {
     return this.http.get<Result<MsgItem[]>>(env.chatroomUrl + id + '/records/' + page);
   }
 }

@@ -92,10 +92,11 @@ main {
   .tip-item {
     margin: 1rem 0 .25rem;
     text-align: center;
-    font-size: .7rem;
-    color: var(--custom-color-medium);
 
-    > span {
+    & > span {
+      white-space: nowrap;
+      font-size: .7rem;
+      color: var(--custom-color-medium);
       padding: .25rem .75rem;
       background: var(--custom-color-secondary);
       border-radius: 1rem;

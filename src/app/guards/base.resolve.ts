@@ -26,7 +26,6 @@ export class ChatListResolve implements Resolve<ChatItem[]> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): ChatItem[] {
         const data = this.localStorageService.get(env.chatListKey);
-        console.log(data)
         if (data) { return data; }
     }
 }

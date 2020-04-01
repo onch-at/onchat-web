@@ -58,7 +58,8 @@ ion-header {
     width: 6rem;
     height: 6rem;
     border-radius: 50%;
-    border: 0.25rem solid rgba(var(--custom-color-white-rgb), 0.5);
+    background: rgba(var(--custom-color-white-rgb), 0.5);
+    padding: 0.25rem;
 
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
