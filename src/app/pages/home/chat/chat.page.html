@@ -8,8 +8,8 @@
   <ion-list class="chat-list">
     <ion-item-sliding mode="md" *ngFor="let item of chatList; let i = index">
       <ion-item-options side="start">
-        <ion-item-option *ngIf="!item.sticky" (tap)="stickyChatItem(item)" class="bg-gray color-medium">置顶</ion-item-option>
-        <ion-item-option *ngIf="item.sticky" (tap)="unstickyChatItem(item)" class="bg-gray color-medium">取消置顶</ion-item-option>
+        <ion-item-option *ngIf="!item.sticky" (tap)="stickyChatItem(item, i)" class="bg-gray color-medium">置顶</ion-item-option>
+        <ion-item-option *ngIf="item.sticky" (tap)="unstickyChatItem(item, i)" class="bg-gray color-medium">取消置顶</ion-item-option>
       </ion-item-options>
 
       <ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false" [routerLink]="['/chat', item.chatroomId]">

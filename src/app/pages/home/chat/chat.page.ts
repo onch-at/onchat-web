@@ -68,13 +68,17 @@ export class ChatPage implements OnInit {
   /**
    * 置顶聊天列表子项
    * @param item 
+   * @param i 
    */
-  stickyChatItem(item: ChatItem) {
+  stickyChatItem(item: ChatItem, i: number) {
     this.onChatService.stickyChatItem(item.id).subscribe((result: Result<any>) => {
       if (result.code == 0) {
         item.sticky = true;
         this.chatList = sortChatList(this.chatList);
-        this.ionItemSlidings.first.closeOpened();
+
+        this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
+          index == i && item.close();
+        });
       }
     });
   }
@@ -82,13 +86,17 @@ export class ChatPage implements OnInit {
   /**
    * 取消置顶聊天列表子项
    * @param item 
+   * @param i 
    */
-  unstickyChatItem(item: ChatItem) {
+  unstickyChatItem(item: ChatItem, i: number) {
     this.onChatService.unstickyChatItem(item.id).subscribe((result: Result<any>) => {
       if (result.code == 0) {
         item.sticky = false;
         this.chatList = sortChatList(this.chatList);
-        this.ionItemSlidings.first.closeOpened();
+
+        this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
+          index == i && item.close();
+        });
       }
     });
   }
