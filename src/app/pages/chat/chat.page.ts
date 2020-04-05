@@ -11,14 +11,23 @@ import { OnChatService } from 'src/app/services/onchat.service';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
+  /** 当前用户ID */
   userId: number;
+  /** 当前房间号 */
   chatroomId: number;
+  /** 当前房间名字 */
   roomName: string = '';
+  /** 查询聊天记录的页码 */
   page: number = 1;
+  /** 聊天记录 */
   msgList: MsgItem[] = [];
+  /** 聊天记录是否查到末尾了 */
   end: boolean = false;
+  /** IonContent */
   @ViewChild('ionContent', { static: true }) ionContent: IonContent;
-  /** 可视高度 */
+  /** IonContent滚动元素 */
+  contentElement: HTMLElement;
+  /** IonContent滚动元素初始可视高度 */
   contentClientHeight: number;
   resizeTimeout: any = null;
 
@@ -45,6 +54,7 @@ export class ChatPage implements OnInit {
 
   ngAfterViewInit() {
     this.ionContent.getScrollElement().then((element: HTMLElement) => {
+      this.contentElement = element;
       this.contentClientHeight = element.clientHeight;
     });
   }
@@ -56,11 +66,19 @@ export class ChatPage implements OnInit {
       this.resizeTimeout = null;
     }
     this.resizeTimeout = setTimeout(() => {
-      this.ionContent.getScrollElement().then((element: HTMLElement) => {
-        this.upliftScroll();
-        this.scrollToBottom();
-      });
+      this.upliftScroll();
     }, 100);
+  }
+
+  /**
+   * 当监听到滚动停止的时候
+   */
+  onScrollEnd() {
+    if (this.contentElement.scrollTop <= 0.5) {
+      this.loadRecords(() => {
+        this.ionContent.scrollByPoint(0, 5, 100);
+      });
+    }
   }
 
   /**
@@ -88,25 +106,17 @@ export class ChatPage implements OnInit {
     });
   }
 
-  doRefresh(event: any) {
-    this.loadRecords(() => {
-      event.target.complete();
-    });
-  }
-
   /**
    * 抬升滚动，用于软键盘弹起的时候
    */
   upliftScroll() {
-    this.ionContent.getScrollElement().then((element: HTMLElement) => {
-      const diffHeight = this.contentClientHeight - element.clientHeight;
+    const diffHeight = this.contentClientHeight - this.contentElement.clientHeight;
       // 如果现在的高度与初始高度的差值是正数，则代表窗口高度变小了
       if (diffHeight > 0) {
         this.ionContent.scrollByPoint(0, diffHeight, 500);
-      } else if (diffHeight < 0) {
-        this.contentClientHeight = element.clientHeight;
+      } else if (diffHeight < 0) { // 如果窗口高度变大了，就重新设置一下初始高度
+        this.contentClientHeight = this.contentElement.clientHeight;
       }
-    });
   }
 
   /**
@@ -114,12 +124,6 @@ export class ChatPage implements OnInit {
    */
   scrollToBottom() {
     this.ionContent.scrollToBottom(500);
-  }
-
-  isScrollAtBottom() {
-    this.ionContent.getScrollElement().then((element: HTMLElement) => {
-      return (element.scrollHeight - this.contentClientHeight) == element.scrollTop;
-    });
   }
 
 }
