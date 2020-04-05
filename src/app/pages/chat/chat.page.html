@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content #ionContent>
   <ion-header class="d-flex align-items-center">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -19,23 +19,17 @@
   </ion-header>
 
   <main>
-    <ion-content>
-      <ion-refresher slot="fixed" [disabled]="end" [pullFactor]="0.5" (ionRefresh)="doRefresh($event)" style="top: 0.5rem; z-index: 0;">
+      <ion-refresher slot="fixed" [disabled]="end" [pullFactor]="0.5" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content pullingIcon="arrow-down" refreshingSpinner="dots">
         </ion-refresher-content>
       </ion-refresher>
 
-      <div class="tip-item" *ngIf="end">
-        <span>没有更多消息</span>
-      </div>
-
-      <app-msg-list [userId]="userId" [data]="msgList"></app-msg-list>
-    </ion-content>
+      <app-msg-list [userId]="userId" [data]="msgList" [end]="end"></app-msg-list>
   </main>
 
   <div class="bottom-bar">
     <input type="text" class="ipt-primary" id="message" name="message" placeholder="来说点什么吧？">
-    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn">
+    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn" (tap)="scrollToBottom()">
       <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
       <ion-ripple-effect></ion-ripple-effect>
     </button>

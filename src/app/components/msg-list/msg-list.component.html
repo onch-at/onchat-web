@@ -1,12 +1,15 @@
 <ul class="msg-list">
+  <li class="tip-item" *ngIf="end">
+    <span>没有更多消息</span>
+  </li>
   <div *ngFor="let item of data; let index = index;">
-    <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
-      <span>{{ item.createTime | detailDate }} {{ item.createTime | date:'hh:mm aaa' }}</span>
+    <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime * 1000, data[index - 1].createTime * 1000)">
+      <span>{{ item.createTime * 1000 | detailDate }} {{ item.createTime * 1000 | date:'hh:mm aaa' }}</span>
     </li>
 
     <li class="msg-item" [ngClass]="{ 'msg-item-right': userId == item.userId, 'msg-item-left': userId != item.userId }">
       <div>
-        <img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5" [routerLink]="['/card', item.userId]">
+        <ion-img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5" [routerLink]="['/card', item.userId]"></ion-img>
       </div>
       <div>
         <div class="username">{{ item.nickname }}</div>

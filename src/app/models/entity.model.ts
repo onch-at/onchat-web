@@ -3,8 +3,8 @@
  */
 export class Entity {
     id: number;
-    createTime: string;
-    updateTime: string;
+    createTime: number;
+    updateTime: number;
 }
 
 /**

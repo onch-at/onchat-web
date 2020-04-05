@@ -1,7 +1,6 @@
 <ion-content>
   <ion-refresher slot="fixed" [pullFactor]="0.5" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-down" pullingText="下拉刷新" refreshingSpinner="dots"
-      refreshingText=" 正在刷新…">
+    <ion-refresher-content pullingIcon="arrow-down" pullingText="下拉刷新" refreshingSpinner="dots" refreshingText=" 正在刷新…">
     </ion-refresher-content>
   </ion-refresher>
 
@@ -14,7 +13,7 @@
 
       <ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false" [routerLink]="['/chat', item.chatroomId]">
         <ion-thumbnail slot="start">
-          <img lazyLoad="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg">
+          <ion-img src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg"></ion-img>
         </ion-thumbnail>
         <ion-label>
           <h2>{{ item.name }}</h2>
@@ -23,8 +22,8 @@
         <div class="info">
           <time>
             <span>
-              {{ item.updateTime | detailDate }}
-              <span *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime | date:'hh:mm aaa' }}</span>
+              {{ item.updateTime * 1000 | detailDate }}
+              <span *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime * 1000 | date:'hh:mm aaa' }}</span>
             </span>
           </time>
           <ion-badge [ngClass]="{'visibility-hidden': item.unread <= 0}" class="bg-danger" mode="ios">
@@ -37,86 +36,6 @@
         <ion-item-option class="bg-danger" (tap)="removeChatItem(i)">移除</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
-
-    <!-- <ion-item-sliding mode="md">
-      <ion-item lines="none" [detail]="false" [routerLink]="['/chat/1']">
-        <ion-thumbnail slot="start">
-          <img lazyLoad="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg">
-        </ion-thumbnail>
-        <ion-label>
-          <h2>Room Name</h2>
-          <p>room description</p>
-        </ion-label>
-        <div class="info">
-          <time>12:00</time>
-          <ion-badge class="bg-danger" mode="ios">5</ion-badge>
-        </div>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="warning">设为已读</ion-item-option>
-        <ion-item-option class="bg-danger">移除</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-
-    <ion-item-sliding mode="md">
-      <ion-item lines="none" [detail]="false" [routerLink]="['/chat/1']">
-        <ion-thumbnail slot="start">
-          <img lazyLoad="https://blog.hypergo.net/images/cartoon/2_angry_birds_red.jpg">
-        </ion-thumbnail>
-        <ion-label>
-          <h2>Room Name</h2>
-          <p>room description</p>
-        </ion-label>
-        <div class="info">
-          <time>12:00</time>
-          <ion-badge class="bg-danger" mode="ios">5</ion-badge>
-        </div>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="warning">设为已读</ion-item-option>
-        <ion-item-option class="bg-danger">移除</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-
-    <ion-item-sliding mode="md">
-      <ion-item lines="none" [detail]="false" [routerLink]="['/chat/1']">
-        <ion-thumbnail slot="start">
-          <img lazyLoad="https://blog.hypergo.net/images/cartoon/3_angry_birds_yellow.jpg">
-        </ion-thumbnail>
-        <ion-label>
-          <h2>Room Name</h2>
-          <p>room description</p>
-        </ion-label>
-        <div class="info">
-          <time>12:00</time>
-          <ion-badge class="bg-danger" mode="ios">5</ion-badge>
-        </div>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="warning">设为已读</ion-item-option>
-        <ion-item-option class="bg-danger">移除</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-
-    <ion-item-sliding mode="md">
-      <ion-item lines="none" [detail]="false" [routerLink]="['/chat/1']">
-        <ion-thumbnail slot="start">
-          <img lazyLoad="https://blog.hypergo.net/images/cartoon/5_angry_birds_pig_happy.jpg">
-        </ion-thumbnail>
-        <ion-label>
-          <h2>不存在的房间</h2>
-          <p>这是一个不存在的房间</p>
-        </ion-label>
-        <div class="info">
-          <time>00:00</time>
-          <ion-badge class="bg-danger" mode="ios">{{ 999 | numLimit: 99 }}</ion-badge>
-        </div>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="warning">设为已读</ion-item-option>
-        <ion-item-option class="bg-danger">移除</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding> -->
 
   </ion-list>
 </ion-content>

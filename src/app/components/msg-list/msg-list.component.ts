@@ -9,6 +9,7 @@ import { MsgItem } from 'src/app/models/entity.model';
 export class MsgListComponent implements OnInit {
   @Input() data: MsgItem[] = [];
   @Input() userId: number;
+  @Input() end: boolean;
 
   constructor() { }
 
@@ -21,9 +22,9 @@ export class MsgListComponent implements OnInit {
    * @param time 当前时间
    * @param otherTime 上一个时间
    */
-  canShowTime(time: string, otherTime: string): boolean {
-    const date = new Date(Date.parse(time));
-    const otherDate = new Date(Date.parse(otherTime));
+  canShowTime(time: number, otherTime: number): boolean {
+    const date = new Date(time);
+    const otherDate = new Date(otherTime);
 
     if ((date.getTime() - otherDate.getTime()) < 300000) {
       return false;
