@@ -12,4 +12,8 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
   }
 
+  rangeChange(e) {
+    document.documentElement.style.fontSize = e.detail.value + '%'
+  }
+
 }

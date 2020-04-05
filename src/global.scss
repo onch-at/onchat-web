@@ -143,6 +143,10 @@
   }
 }
 
+body {
+  background: var(--custom-color-white);
+}
+
 .flex-col-container {
   display: flex;
   min-height: 100%;
@@ -178,8 +182,8 @@ ion-refresher {
   }
 }
 
-body,
 ion-content {
+  --color: var(--custom-color-dark);
   --background: var(--custom-color-white);
 }
 
@@ -446,7 +450,7 @@ button {
     transform: translateY(0);
   }
 }
-/* 回弹动画 */
+// 回弹动画
 @keyframes active {
   0% {
     transform: scale(1);
@@ -461,16 +465,18 @@ button {
     transform: scale(1.1);
   }
 }
-/* 淡入动画 */
+// 淡入动画
 @keyframes fade-in {
   from {
+    transform: scale(1.125);
     opacity: 0.5;
   }
   to {
+    transform: scale(1);
     opacity: 1;
   }
 }
-/* 涟漪动画 */
+// 涟漪动画
 @keyframes ripple {
   from {
     transform: scale(0);

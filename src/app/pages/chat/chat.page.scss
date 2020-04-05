@@ -4,12 +4,15 @@ ion-header {
   left: 0;
   width: 100%;
   height: 3rem;
-  overflow: hidden;
   background: var(--custom-color-light);
   border-radius: 0 0 1.5rem 1.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   transform: translateY(-100%);
   animation: slide-down 0.25s ease-out 0.25s forwards;
+
+  ion-toolbar {
+    overflow: hidden;
+  }
 
   ion-title {
     color: var(--custom-color-dark);
@@ -26,6 +29,44 @@ ion-header {
     font-size: 1.35rem;
     line-height: 1.35rem;
     padding: 0 0.75rem;
+  }
+
+  .bubble-tips {
+    position: fixed;
+    top: 3.65rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    padding: 0.1rem 0.5rem;
+    color: #424242;
+    background: var(--custom-color-primary);
+    border-radius: 1rem;
+    opacity: 0.75;
+    box-shadow: 0 0 0.25rem 0.05rem rgba(#000000, 0.125);
+    white-space: nowrap;
+    animation: bubble-tips 0.5s ease-in-out 2.5s forwards;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -0.25rem;
+      left: calc(50% - 0.25rem);
+      width: 0.5rem;
+      height: 0.5rem;
+      background: var(--custom-color-primary);
+      border-radius: 0.125rem 0 0 0;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+@keyframes bubble-tips {
+  from {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 

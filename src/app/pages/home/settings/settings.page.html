@@ -9,8 +9,10 @@
       <ion-toggle slot="end"></ion-toggle>
     </ion-item>
     <ion-item lines="none" [detail]="false">
-      <ion-label>Radio</ion-label>
-      <ion-radio slot="end"></ion-radio>
+      <ion-range mode="md" [pin]="true" min="50" max="150" value="100" color="secondary" (ionChange)="rangeChange($event)">
+        <ion-label slot="start">50%</ion-label>
+        <ion-label slot="end">150%</ion-label>
+      </ion-range>
     </ion-item>
     <ion-item lines="none" [detail]="false">
       <ion-label>Checkbox</ion-label>

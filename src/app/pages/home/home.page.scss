@@ -97,6 +97,10 @@ ion-header {
 
     ion-button {
       --color: var(--custom-color-medium);
+
+      & > ion-icon {
+        font-size: 1.75rem;
+      }
     }
   }
 
