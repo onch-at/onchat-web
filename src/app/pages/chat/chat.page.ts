@@ -71,14 +71,22 @@ export class ChatPage implements OnInit {
   }
 
   /**
-   * 当监听到滚动停止的时候
+   * 下拉刷新
+   * @param event 
    */
-  onScrollEnd() {
-    if (this.contentElement.scrollTop <= 0.5) {
-      this.loadRecords(() => {
-        this.ionContent.scrollByPoint(0, 5, 100);
-      });
-    }
+  doRefresh(event) {
+    this.loadRecords(() => {
+      event.target.complete();
+    });
+  }
+
+  /**
+   * 点击加载更多
+   */
+  tapToLoadRecords() {
+    this.loadRecords(() => {
+      this.ionContent.scrollToTop(500);
+    });
   }
 
   /**
@@ -86,6 +94,10 @@ export class ChatPage implements OnInit {
    * @param complete 
    */
   loadRecords(complete?: CallableFunction) {
+    if (this.end) {
+      return complete && complete();
+    }
+
     this.onChatService.getChatRecords(this.chatroomId, this.page).subscribe((result: Result<MsgItem[]>) => {
       if (result.code === 0) {
         result.data.sort((a: MsgItem, b: MsgItem) => {

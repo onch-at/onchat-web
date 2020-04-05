@@ -159,12 +159,12 @@ ion-refresher {
   height: 4rem;
 
   .refresher-refreshing-icon > * {
-    color: var(--custom-color-primary);
+    color: var(--custom-color-primary) !important;
     transform: scale(1.25);
   }
 
   .refresher-pulling-icon > * {
-    color: var(--custom-color-dark);
+    color: var(--custom-color-dark) !important;
   }
 
   .refresher-refreshing-text {

@@ -1,5 +1,5 @@
-<ion-content #ionContent [scrollEvents]="!end" (ionScrollEnd)="onScrollEnd()">
-  <ion-header class="d-flex align-items-center">
+<ion-content #ionContent mode="md">
+  <ion-header mode="ios" class="d-flex align-items-center" (tap)="tapToLoadRecords()">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
@@ -19,6 +19,9 @@
   </ion-header>
 
   <main>
+    <ion-refresher slot="fixed" [pullFactor]="0.5" [disabled]="end" (ionRefresh)="doRefresh($event)" style="top: 3rem;">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
       <app-msg-list [userId]="userId" [data]="msgList" [end]="end"></app-msg-list>
   </main>
 
