@@ -21,6 +21,8 @@ export class ChatPage implements OnInit {
   page: number = 1;
   /** 聊天记录 */
   msgList: MsgItem[] = [];
+  /** 是否是第一次查询 */
+  first: boolean = true;
   /** 聊天记录是否查到末尾了 */
   end: boolean = false;
   /** IonContent */
@@ -71,10 +73,15 @@ export class ChatPage implements OnInit {
   }
 
   /**
-   * 下拉刷新
+   * 加载更多消息
    * @param event 
    */
-  doRefresh(event) {
+  loadMoreRecords(event) {
+    if (this.first) {
+      return this.scrollToBottom(() => {
+        event.target.complete();
+      });
+    }
     this.loadRecords(() => {
       event.target.complete();
     });
@@ -83,35 +90,37 @@ export class ChatPage implements OnInit {
   /**
    * 点击加载更多
    */
-  tapToLoadRecords() {
-    this.loadRecords(() => {
-      this.ionContent.scrollToTop(500);
-    });
-  }
+  // tapToLoadRecords() {
+  //   this.loadRecords(() => {
+  //     this.ionContent.scrollToTop(500);
+  //   });
+  // }
 
   /**
    * 加载聊天记录
    * @param complete 
    */
   loadRecords(complete?: CallableFunction) {
-    if (this.end) {
-      return complete && complete();
-    }
+    if (this.end) { return complete && complete(); }
 
     this.onChatService.getChatRecords(this.chatroomId, this.page).subscribe((result: Result<MsgItem[]>) => {
       if (result.code === 0) {
+        // 按照ID排序
         result.data.sort((a: MsgItem, b: MsgItem) => {
           return a.id - b.id;
         });
 
-        this.page++; // 查询成功则递增页码
-
-        let first = false;
-        if (this.msgList.length === 0) { first = true; }
         this.msgList = result.data.concat(this.msgList);
+
         // 如果是第一次查记录，就执行滚动
-        first && this.scrollToBottom();
-      } else if (result.code === 1) {
+        this.page++ == 1 && this.scrollToBottom(() => {
+          this.first = false;
+        });
+
+        if (result.data.length < 10) { // 如果返回的消息里少于10条，则代表这是最后一页
+          this.end = true;
+        }
+      } else if (result.code == 1) { // 如果没有消息
         this.end = true;
       }
       complete && complete();
@@ -134,8 +143,10 @@ export class ChatPage implements OnInit {
   /**
    * 滚到底部
    */
-  scrollToBottom() {
-    this.ionContent.scrollToBottom(500);
+  scrollToBottom(complete?: CallableFunction) {
+    this.ionContent.scrollToBottom(500).then(() => {
+      complete && complete();
+    });
   }
 
 }

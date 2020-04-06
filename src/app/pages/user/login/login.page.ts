@@ -53,8 +53,8 @@ export class LoginPage implements OnInit {
     if (this.loginForm.invalid || this.loading) { return; }
     this.loading = true;
     this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<any>) => {
-      this.presentToast(result)
       this.loading = false;
+      this.presentToast(result);
     })
   }
 
@@ -66,8 +66,10 @@ export class LoginPage implements OnInit {
     });
     toast.present();
     if (result.code === 0) {
+      this.loading = true;
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
         this.router.navigate(['/']);
+        this.loading = false;
       });
     }
   }

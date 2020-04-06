@@ -5,7 +5,7 @@
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
       </ion-buttons>
 
-      <ion-title class="font-weight-bold" (tap)="tapToLoadRecords()">
+      <ion-title class="font-weight-bold" (tap)="scrollToBottom();">
         <div class="brand"></div>
         <div>{{ roomName }}</div>
       </ion-title>
@@ -16,19 +16,20 @@
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
-    <span class="bubble-tips">技巧：点击标题可以加载更多哦~</span>
+    <span class="bubble-tips" [ngClass]="{'show': page == 3}">技巧：点击标题栏的文字可快速回到底部</span>
   </ion-header>
 
   <main>
-    <ion-refresher slot="fixed" [pullFactor]="0.5" [disabled]="end" (ionRefresh)="doRefresh($event)" style="top: 3rem;">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-      <app-msg-list [userId]="userId" [data]="msgList" [end]="end"></app-msg-list>
+    <ion-infinite-scroll position="top" threshold="0%" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
+      <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <app-msg-list [userId]="userId" [data]="msgList" [end]="end"></app-msg-list>
   </main>
 
   <div class="bottom-bar">
     <input type="text" class="ipt-primary" id="message" name="message" placeholder="来说点什么吧？">
-    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn" (tap)="scrollToBottom()">
+    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn"
+      (tap)="scrollToBottom()">
       <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
       <ion-ripple-effect></ion-ripple-effect>
     </button>

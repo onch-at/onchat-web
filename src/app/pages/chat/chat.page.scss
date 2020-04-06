@@ -15,6 +15,7 @@ ion-header {
   }
 
   ion-title {
+    font-size: 1.075rem;
     color: var(--custom-color-dark);
     transform: translateY(1.5rem);
     animation: show 0.5s ease-out 1.25s forwards;
@@ -41,10 +42,17 @@ ion-header {
     color: #424242;
     background: var(--custom-color-primary);
     border-radius: 1rem;
-    opacity: 0.75;
     box-shadow: 0 0 0.25rem 0.05rem rgba(#000000, 0.125);
     white-space: nowrap;
-    animation: bubble-tips 0.5s ease-in-out 2.5s forwards;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+
+    &.show {
+      opacity: 0.75;
+      visibility: visible;
+      animation: bubble-tips 0.5s ease-in-out 3.5s forwards;
+    }
 
     &::before {
       content: "";
@@ -63,6 +71,7 @@ ion-header {
 @keyframes bubble-tips {
   from {
     opacity: 0.75;
+    visibility: visible;
   }
   to {
     opacity: 0;
@@ -115,6 +124,7 @@ ion-header {
     border-radius: 2.25rem;
     font-size: 1.45rem;
     line-height: 1rem;
+    flex-shrink: 0;
   }
 }
 

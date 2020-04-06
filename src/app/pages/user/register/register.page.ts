@@ -74,8 +74,8 @@ export class RegisterPage implements OnInit {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }
-      this.presentToast(result);
       this.loading = false;
+      this.presentToast(result);
     });
   }
 
@@ -87,8 +87,10 @@ export class RegisterPage implements OnInit {
     });
     toast.present();
     if (result.code === 0) {
+      this.loading = true;
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
         this.router.navigate(['/']);
+        this.loading = false;
       });
     }
   }

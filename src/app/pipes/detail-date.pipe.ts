@@ -31,7 +31,7 @@ export class DetailDatePipe implements PipeTransform {
       return this.weekDay[date.getDay()];
     }
     // 否则将返回年-月-日
-    return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+    return date.getFullYear() + '年' + (1 + date.getMonth()) + '月' + date.getDate() + '日';
   }
 
 }
@@ -57,7 +57,7 @@ export function isSameWeek(date: Date): boolean {
   const nowTime = nowDate.getTime();
   const nowDay = nowDate.getDay();
   for (let i = 0; i < 7; i++) {
-    if (inDateStr == (new Date(nowTime + (i - nowDay) * 24 * 3600 * 1000)).toLocaleDateString()) {
+    if (inDateStr == (new Date(nowTime + (i - nowDay) * 86400000)).toLocaleDateString()) {
       return true;
     }
   }
