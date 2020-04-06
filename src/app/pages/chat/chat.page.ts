@@ -82,7 +82,9 @@ export class ChatPage implements OnInit {
         event.target.complete();
       });
     }
+    if (isAppleWebKit()) { this.ionContent.scrollY = false; }
     this.loadRecords(() => {
+      if (isAppleWebKit()) { this.ionContent.scrollY = true; }
       event.target.complete();
     });
   }
@@ -149,4 +151,8 @@ export class ChatPage implements OnInit {
     });
   }
 
+}
+
+export function isAppleWebKit() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
 }

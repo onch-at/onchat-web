@@ -20,7 +20,7 @@
   </ion-header>
 
   <main>
-    <ion-infinite-scroll position="top" threshold="0%" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
+    <ion-infinite-scroll position="top" threshold="-10px" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
     <app-msg-list [userId]="userId" [data]="msgList" [end]="end"></app-msg-list>
