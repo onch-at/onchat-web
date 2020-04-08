@@ -119,7 +119,7 @@ export class ChatPage implements OnInit {
           this.first = false;
         });
 
-        if (result.data.length < 10) { // 如果返回的消息里少于10条，则代表这是最后一页
+        if (result.data.length < 15) { // 如果返回的消息里少于10条，则代表这是最后一页
           this.end = true;
         }
       } else if (result.code == 1) { // 如果没有消息
