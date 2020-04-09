@@ -14,6 +14,8 @@ import { environment as env } from '../../../../environments/environment';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
+  /** 当前用户ID */
+  userId: number;
   chatList: ChatItem[];
   loading: boolean = true;
 
@@ -35,6 +37,10 @@ export class ChatPage implements OnInit {
     // 先加载缓存
     const data = this.localStorageService.get(env.chatListKey);
     if (data) { this.chatList = data; }
+
+    this.onChatService.getUserId().subscribe((result: Result<number>) => {
+      this.userId = result.data;
+    });
   }
 
   doRefresh(event: any) {

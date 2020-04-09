@@ -17,8 +17,8 @@
         </ion-thumbnail>
         <ion-label>
           <h2>{{ item.name }}</h2>
-          <p *ngIf="item.latestMsg">{{ item.latestMsg.nickname }}：{{ item.latestMsg.content }}</p>
-          <p *ngIf="!item.latestMsg">快来聊天吧！</p>
+          <p *ngIf="item.latestMsg">{{ item.latestMsg.userId == userId ? '我' : item.latestMsg.nickname }}：{{ item.latestMsg.content }}</p>
+          <p *ngIf="!item.latestMsg">进来打个招呼吧？</p>
         </ion-label>
         <div class="info">
           <time>
