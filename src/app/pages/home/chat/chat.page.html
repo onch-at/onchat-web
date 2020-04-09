@@ -17,7 +17,8 @@
         </ion-thumbnail>
         <ion-label>
           <h2>{{ item.name }}</h2>
-          <p>{{ item.name }}</p>
+          <p *ngIf="item.latestMsg">{{ item.latestMsg.nickname }}：{{ item.latestMsg.content }}</p>
+          <p *ngIf="!item.latestMsg">快来聊天吧！</p>
         </ion-label>
         <div class="info">
           <time>

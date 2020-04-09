@@ -39,6 +39,8 @@ export class ChatItem extends Entity {
     avatarThumbnail: string;
     /** 聊天室类型 */
     type: number;
+    /** 最新消息 */
+    latestMsg: MsgItem
 }
 
 /**
