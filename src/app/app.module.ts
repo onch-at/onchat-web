@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
+import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,9 @@ import { OnChatService } from './services/onchat.service';
       mode: 'ios',
       backButtonText: '',
       backButtonIcon: 'chevron-back-outline'
+    }),
+    SocketIoModule.forRoot({
+      url: 'http://localhost:8001', options: { }
     }),
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })

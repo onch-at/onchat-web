@@ -18,3 +18,9 @@ export enum Day {
     TODAY     = '今天',
     YESTERDAY = '昨天'
 }
+
+export enum SocketEvent {
+    Init      = 'init',
+    UserJoin  = 'user_join',
+    UserLeave = 'user_leave'
+}
