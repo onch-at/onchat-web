@@ -11,7 +11,7 @@
 
           <form [formGroup]="registerForm">
             <div class="form-group">
-              <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username" placeholder="用户名" maxlength="30" required>
+              <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username" (keyup)="trimAll('username')" placeholder="用户名" maxlength="30" required>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span [hidden]="!registerForm.controls.username.errors || !registerForm.controls.username.errors.required">
@@ -23,7 +23,7 @@
               </div>
             </div>
             <div class="form-group">
-              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" formControlName="password" placeholder="密码" maxlength="50" required>
+              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" formControlName="password" (keyup)="trimAll('password')" placeholder="密码" maxlength="50" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
@@ -36,7 +36,7 @@
               </div>
             </div>
             <div class="form-group">
-              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="confirm-password" formControlName="confirmPassword" placeholder="确认密码" maxlength="30" required>
+              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="confirm-password" formControlName="confirmPassword" (keyup)="trimAll('confirmPassword')" placeholder="确认密码" maxlength="30" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
@@ -53,7 +53,7 @@
               </div>
             </div>
             <div class="form-group form-group-row">
-              <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha" placeholder="验证码" maxlength="4" required>
+              <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha" (keyup)="trimAll('captcha')" placeholder="验证码" maxlength="4" required>
               <img appActiveClass [duration]="200" class="captcha" [src]="captchaUrl" alt="CAPTCHA" (tap)="updateCaptcha()">
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>

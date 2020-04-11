@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { Str } from 'src/app/common/util/str';
 import { LoginForm } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/result.model';
 import { OnChatService } from '../../../services/onchat.service';
@@ -45,9 +46,7 @@ export class LoginPage implements OnInit {
     
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   login() {
     if (this.loginForm.invalid || this.loading) { return; }
@@ -108,6 +107,14 @@ export class LoginPage implements OnInit {
     } else {
       this.pwdInputType = 'password';
     }
+  }
+
+  /**
+   * 消除表单控件的值的空格
+   * @param controlName 控件名
+   */
+  trimAll(controlName: string) {
+    this.loginForm.controls[controlName].setValue(Str.trimAll(this.loginForm.value[controlName]));
   }
 
 }
