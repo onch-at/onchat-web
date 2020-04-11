@@ -27,9 +27,8 @@
   </main>
 
   <div class="bottom-bar">
-    <input type="text" class="ipt-primary" id="message" name="message" placeholder="来说点什么吧？">
-    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn"
-      (tap)="scrollToBottom()">
+    <input type="text" class="ipt-primary" id="message" name="message" placeholder="来说点什么吧？" [(ngModel)]="msg">
+    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn" (tap)="send()" [disabled]="disable()">
       <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
       <ion-ripple-effect></ion-ripple-effect>
     </button>

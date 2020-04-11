@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
+import { Str } from 'src/app/common/util/str';
 import { MsgItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/result.model';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -11,6 +12,7 @@ import { OnChatService } from 'src/app/services/onchat.service';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
+  msg: string = '';
   /** 当前用户ID */
   userId: number;
   /** 当前房间号 */
@@ -151,6 +153,22 @@ export class ChatPage implements OnInit {
     this.ionContent.scrollToBottom(500).then(() => {
       complete && complete();
     });
+  }
+
+  /**
+   * 发送消息
+   */
+  send() {
+    this.scrollToBottom();
+    console.log(this.msg);
+    this.msg = '';
+  }
+
+  /**
+   * 是否禁用发送按钮
+   */
+  disable() {
+    return Str.trimAll(this.msg) == '';
   }
 
 }

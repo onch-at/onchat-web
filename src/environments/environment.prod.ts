@@ -15,6 +15,8 @@ export const environment = {
 
   chatroomUrl:           '/onchat/chatroom/',
 
+  socketUrl:             'http://tp.hypergo.net:8001',
+
   /** LocalStorage Key */
   chatListKey:           'chat_list',
 };
