@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
-import { SocketEvent } from '../models/enum';
+import { SocketEvent } from '../common/enum';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,14 @@ import { SocketEvent } from '../models/enum';
 export class SocketService {
 
   constructor(private socket: Socket) { }
+
+  init(sessId: string) {
+    this.emit(SocketEvent.Init, { sessId: sessId });
+  }
+
+  unload(sessId: string) {
+    this.emit(SocketEvent.Unload, { sessId: sessId });
+  }
 
   join(sessId: string, chatroomId: string) {
     this.emit(SocketEvent.UserJoin, {
@@ -23,6 +31,10 @@ export class SocketService {
 
   on(eventName: string): Observable<unknown> {
     return this.socket.fromEvent(eventName);
+  }
+
+  disconnect() {
+    return this.socket.disconnect();
   }
 
 }

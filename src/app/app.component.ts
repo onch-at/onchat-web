@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
+import { SocketEvent } from './common/enum';
 import { SocketService } from './services/socket.service';
 
 
@@ -34,12 +35,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.socketService.on("abc").subscribe(o=> {
-    //   console.log(o)
-    // });
+    this.socketService.on(SocketEvent.Connect).subscribe(() => {
+      this.socketService.init(this.cookieService.get("PHPSESSID"));
+      console.log('ok')
+    });
 
-    // setInterval(()=>{
-    //   this.send();
-    // },1000)
+    this.socketService.on(SocketEvent.Init).subscribe((o) => {
+      console.log(o)
+    });
+  }
+
+  @HostListener('window:beforeunload')
+  onBeforeUnload() {
+    this.socketService.unload(this.cookieService.get("PHPSESSID"));
   }
 }

@@ -27,7 +27,9 @@ import { OnChatService } from './services/onchat.service';
     }),
     SocketIoModule.forRoot({
       url: env.socketUrl,
-      options: { }
+      options: {
+        transports: ['websocket'] // 只使用WebSocket连接
+      }
     }),
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
