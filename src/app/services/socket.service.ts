@@ -10,9 +10,9 @@ export class SocketService {
 
   constructor(private socket: Socket) { }
 
-  join(sessid: string, chatroomId: string) {
+  join(sessId: string, chatroomId: string) {
     this.emit(SocketEvent.UserJoin, {
-      sessId: sessid,
+      sessId: sessId,
       chatroomId: chatroomId
     });
   }

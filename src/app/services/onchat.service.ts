@@ -91,10 +91,10 @@ export class OnChatService {
   /**
    * 获取聊天记录
    * @param id 聊天室ID
-   * @param page 页码
+   * @param msgId 页码
    */
-  getChatRecords(id: number, page: number): Observable<Result<MsgItem[]>> {
-    return this.http.get<Result<MsgItem[]>>(env.chatroomUrl + id + '/records/' + page);
+  getChatRecords(id: number, msgId?: number): Observable<Result<MsgItem[]>> {
+    return this.http.get<Result<MsgItem[]>>(env.chatroomUrl + id + '/records/' + msgId);
   }
 
   /**

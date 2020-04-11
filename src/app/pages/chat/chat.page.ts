@@ -17,8 +17,8 @@ export class ChatPage implements OnInit {
   chatroomId: number;
   /** 当前房间名字 */
   roomName: string = '';
-  /** 查询聊天记录的页码 */
-  page: number = 1;
+  /** 消息ID，用于查询指定消息段 */
+  msgId: number = 0;
   /** 聊天记录 */
   msgList: MsgItem[] = [];
   /** 是否是第一次查询 */
@@ -105,7 +105,7 @@ export class ChatPage implements OnInit {
   loadRecords(complete?: CallableFunction) {
     if (this.end) { return complete && complete(); }
 
-    this.onChatService.getChatRecords(this.chatroomId, this.page).subscribe((result: Result<MsgItem[]>) => {
+    this.onChatService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<MsgItem[]>) => {
       if (result.code === 0) {
         // 按照ID排序
         result.data.sort((a: MsgItem, b: MsgItem) => {
@@ -115,11 +115,13 @@ export class ChatPage implements OnInit {
         this.msgList = result.data.concat(this.msgList);
 
         // 如果是第一次查记录，就执行滚动
-        this.page++ == 1 && this.scrollToBottom(() => {
+        this.msgId == 0 && this.scrollToBottom(() => {
           this.first = false;
         });
 
-        if (result.data.length < 15) { // 如果返回的消息里少于10条，则代表这是最后一页
+        this.msgId = this.msgList[0].id;
+
+        if (result.data.length < 15) { // 如果返回的消息里少于10条，则代表这是最后一段消息了
           this.end = true;
         }
       } else if (result.code == 1) { // 如果没有消息
