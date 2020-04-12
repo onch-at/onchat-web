@@ -51,7 +51,7 @@ ion-header {
     &.show {
       opacity: 0.75;
       visibility: visible;
-      animation: bubble-tips 0.5s ease-in-out 3.5s forwards;
+      animation: bubble-tips 0.5s ease-in-out 4s forwards;
     }
 
     &::before {

@@ -1,9 +1,11 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { SocketEvent } from './common/enum';
+import { Result } from './models/result.model';
+import { OnChatService } from './services/onchat.service';
 import { SocketService } from './services/socket.service';
 
 
@@ -18,7 +20,9 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private cookieService: CookieService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private onChatService: OnChatService,
+    private toastController: ToastController,
   ) {
     this.initializeApp();
   }
@@ -30,23 +34,39 @@ export class AppComponent implements OnInit {
     });
   }
 
-  send() {
-    this.socketService.join(this.cookieService.get("PHPSESSID"), String(1));
-  }
-
   ngOnInit() {
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
-      this.socketService.init(this.cookieService.get("PHPSESSID"));
-      console.log('ok')
+      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+        result.data && this.socketService.init();
+      });
     });
 
     this.socketService.on(SocketEvent.Init).subscribe((o) => {
       console.log(o)
     });
+
+    this.socketService.on(SocketEvent.Message).subscribe((o) => {
+      this.presentToast(o as string);
+    });
+
+    this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
+      this.presentToast('与服务器断开连接！');
+    });
+
+    this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
+      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+        result.data && this.socketService.init();
+      });
+      this.presentToast('与服务器重连成功！');
+    });
   }
 
-  @HostListener('window:beforeunload')
-  onBeforeUnload() {
-    this.socketService.unload(this.cookieService.get("PHPSESSID"));
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: 'dark'
+    });
+    toast.present();
   }
 }

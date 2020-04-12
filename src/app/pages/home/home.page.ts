@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { CookieService } from 'ngx-cookie-service';
+import { SocketService } from 'src/app/services/socket.service';
 import { PopoverComponent } from '../../components/popover/popover.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { PopoverComponent } from '../../components/popover/popover.component';
 })
 export class HomePage implements OnInit {
 
-  constructor(private popoverController: PopoverController, private cookieService: CookieService) {
+  constructor(private popoverController: PopoverController, private socketService: SocketService) {
     // console.log(this.cookieService.get("PHPSESSID"));
 
   }
@@ -23,6 +23,10 @@ export class HomePage implements OnInit {
       event: event,
     });
     return await popover.present();
+  }
+
+  send() {
+    this.socketService.message('Hello World!')
   }
 
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { SocketService } from 'src/app/services/socket.service';
 import { environment as env } from 'src/environments/environment';
 
 @Component({
@@ -16,7 +17,8 @@ export class ProfilePage implements OnInit {
     private onChatService: OnChatService,
     private localStorageService: LocalStorageService,
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private socketService: SocketService,
   ) { }
 
   ngOnInit() {
@@ -48,6 +50,7 @@ export class ProfilePage implements OnInit {
 
   logout() {
     this.onChatService.logout().subscribe(() => {
+      this.socketService.unload();
       this.localStorageService.remove(env.chatListKey);
       this.router.navigate(['/login']);
     });

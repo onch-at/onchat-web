@@ -21,8 +21,11 @@ export enum Day {
 
 export enum SocketEvent {
     Connect    = 'connect',
+    Disconnect = 'disconnect',
+    Reconnect  = 'reconnect',
     Init       = 'init',
     Unload     = 'unload',
+    Message    = 'message',
     UserJoin   = 'user_join',
     UserLeave  = 'user_leave'
 }

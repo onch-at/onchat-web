@@ -5,6 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { Str } from 'src/app/common/util/str';
 import { LoginForm } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/result.model';
+import { SocketService } from 'src/app/services/socket.service';
 import { OnChatService } from '../../../services/onchat.service';
 
 @Component({
@@ -41,10 +42,9 @@ export class LoginPage implements OnInit {
     private onChatService: OnChatService,
     private router: Router,
     private toastController: ToastController,
-    private fb: FormBuilder
-  ) {
-    
-  }
+    private fb: FormBuilder,
+    private socketService: SocketService,
+  ) { }
 
   ngOnInit() { }
 
@@ -52,7 +52,6 @@ export class LoginPage implements OnInit {
     if (this.loginForm.invalid || this.loading) { return; }
     this.loading = true;
     this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<any>) => {
-      this.loading = false;
       this.presentToast(result);
     })
   }
@@ -65,11 +64,13 @@ export class LoginPage implements OnInit {
     });
     toast.present();
     if (result.code === 0) {
-      this.loading = true;
+      this.socketService.init();
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
         this.router.navigate(['/']);
         this.loading = false;
       });
+    } else {
+      this.loading = false;
     }
   }
 

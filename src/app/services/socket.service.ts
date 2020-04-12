@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { SocketEvent } from '../common/enum';
@@ -7,15 +8,29 @@ import { SocketEvent } from '../common/enum';
   providedIn: 'root'
 })
 export class SocketService {
+  isInit: boolean = false;
 
-  constructor(private socket: Socket) { }
+  constructor(
+    private socket: Socket,
+    private cookieService: CookieService,
+    ) { }
 
-  init(sessId: string) {
-    this.emit(SocketEvent.Init, { sessId: sessId });
+  init() {
+    this.emit(SocketEvent.Init, { sessId: this.cookieService.get("PHPSESSID") });
   }
 
-  unload(sessId: string) {
-    this.emit(SocketEvent.Unload, { sessId: sessId });
+  unload() {
+    this.emit(SocketEvent.Unload, { sessId: this.cookieService.get("PHPSESSID") });
+  }
+
+  message(msg) {
+    this.emit(SocketEvent.Message, {
+      sessId: this.cookieService.get("PHPSESSID"),
+      msg: {
+        chatroomId: 1,
+        content: msg
+      }
+    });
   }
 
   join(sessId: string, chatroomId: string) {
