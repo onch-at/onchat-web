@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ShareModule } from 'src/app/modules/share/share.module';
+import { SharedModule } from 'src/app/modules/shared.module';
 import { PopoverComponent } from '../../components/popover/popover.component';
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
@@ -13,7 +13,7 @@ import { HomePage } from './home.page';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    ShareModule
+    SharedModule
   ],
   declarations: [
     HomePage,

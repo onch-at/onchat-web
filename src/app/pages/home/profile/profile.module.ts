@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ShareModule } from 'src/app/modules/share/share.module';
+import { SharedModule } from 'src/app/modules/shared.module';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { ProfilePage } from './profile.page';
 
@@ -12,7 +12,7 @@ import { ProfilePage } from './profile.page';
     FormsModule,
     IonicModule,
     ProfilePageRoutingModule,
-    ShareModule
+    SharedModule
   ],
   declarations: [ProfilePage]
 })

@@ -13,4 +13,4 @@ import { DetailDatePipe } from 'src/app/pipes/detail-date.pipe';
     DetailDatePipe
   ]
 })
-export class ShareModule { }
+export class SharedModule { }

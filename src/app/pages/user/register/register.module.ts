@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ShareModule } from 'src/app/modules/share/share.module';
+import { SharedModule } from 'src/app/modules/shared.module';
 import { RegisterPageRoutingModule } from './register-routing.module';
 import { RegisterPage } from './register.page';
 
@@ -13,7 +13,7 @@ import { RegisterPage } from './register.page';
     ReactiveFormsModule,
     IonicModule,
     RegisterPageRoutingModule,
-    ShareModule
+    SharedModule
   ],
   declarations: [RegisterPage]
 })
