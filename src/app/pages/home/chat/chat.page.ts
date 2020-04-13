@@ -38,9 +38,16 @@ export class ChatPage implements OnInit {
     const data = this.localStorageService.get(env.chatListKey);
     if (data) { this.chatList = data; }
 
-    this.onChatService.getUserId().subscribe((result: Result<number>) => {
-      this.userId = result.data;
-    });
+    const userId = this.onChatService.userId;
+    if (userId) {
+      this.userId = userId;
+    } else {
+      this.onChatService.getUserId().subscribe((result: Result<number>) => {
+        this.onChatService.userId = result.data;
+        this.userId = result.data;
+      });
+    }
+
   }
 
   doRefresh(event: any) {

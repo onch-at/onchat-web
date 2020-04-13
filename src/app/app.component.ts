@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
-import { CookieService } from 'ngx-cookie-service';
 import { SocketEvent } from './common/enum';
 import { Result } from './models/result.model';
 import { OnChatService } from './services/onchat.service';
@@ -19,7 +18,6 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private cookieService: CookieService,
     private socketService: SocketService,
     private onChatService: OnChatService,
     private toastController: ToastController,
@@ -37,6 +35,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+        this.onChatService.isLogin = result.data;
         result.data && this.socketService.init();
       });
     });
@@ -55,6 +54,7 @@ export class AppComponent implements OnInit {
 
     this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+        this.onChatService.isLogin = result.data;
         result.data && this.socketService.init();
       });
       this.presentToast('与服务器重连成功！');

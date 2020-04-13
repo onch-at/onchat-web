@@ -6,6 +6,7 @@ import { Str } from 'src/app/common/util/str';
 import { RegisterForm } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/result.model';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { SocketService } from 'src/app/services/socket.service';
 import { environment as env } from '../../../../environments/environment';
 
 @Component({
@@ -60,7 +61,8 @@ export class RegisterPage implements OnInit {
     private router: Router,
     private onChatService: OnChatService,
     private toastController: ToastController,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private socketService: SocketService,
   ) {
     
   }
@@ -75,7 +77,6 @@ export class RegisterPage implements OnInit {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }
-      this.loading = false;
       this.presentToast(result);
     });
   }
@@ -88,11 +89,14 @@ export class RegisterPage implements OnInit {
     });
     toast.present();
     if (result.code === 0) {
-      this.loading = true;
+      this.onChatService.isLogin = true;
+      this.socketService.init();
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
         this.router.navigate(['/']);
         this.loading = false;
       });
+    } else {
+      this.loading = false;
     }
   }
 

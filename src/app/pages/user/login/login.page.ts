@@ -64,6 +64,7 @@ export class LoginPage implements OnInit {
     });
     toast.present();
     if (result.code === 0) {
+      this.onChatService.isLogin = true;
       this.socketService.init();
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
         this.router.navigate(['/']);

@@ -10,10 +10,10 @@ import { PopoverComponent } from '../../components/popover/popover.component';
 })
 export class HomePage implements OnInit {
 
-  constructor(private popoverController: PopoverController, private socketService: SocketService) {
-    // console.log(this.cookieService.get("PHPSESSID"));
-
-  }
+  constructor(
+    private popoverController: PopoverController,
+    private socketService: SocketService
+  ) { }
 
   ngOnInit() { }
 

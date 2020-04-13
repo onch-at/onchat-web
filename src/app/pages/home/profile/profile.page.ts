@@ -50,6 +50,8 @@ export class ProfilePage implements OnInit {
 
   logout() {
     this.onChatService.logout().subscribe(() => {
+      this.onChatService.isLogin = false;
+      this.onChatService.userId = null;
       this.socketService.unload();
       this.localStorageService.remove(env.chatListKey);
       this.router.navigate(['/login']);

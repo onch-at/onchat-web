@@ -7,12 +7,12 @@ import { LoginForm, RegisterForm } from '../models/form.model';
 import { Result } from '../models/result.model';
 
 const HTTP_OPTIONS_JSON = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' }),
   withCredentials: true
 };
 
 const HTTP_OPTIONS_FORM = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }),
+  headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }),
   withCredentials: true
 };
 
@@ -20,8 +20,10 @@ const HTTP_OPTIONS_FORM = {
   providedIn: 'root'
 })
 export class OnChatService {
-  /** 存储URL，以便在登录后可以重定向 */
-  redirectUrl: string;
+  /** 缓存登录状态 */
+  isLogin: boolean = null;
+  /** 缓存用户ID */
+  userId: number = null;
 
   constructor(private http: HttpClient) { }
 

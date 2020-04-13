@@ -13,7 +13,7 @@ export class SocketService {
   constructor(
     private socket: Socket,
     private cookieService: CookieService,
-    ) { }
+  ) { }
 
   init() {
     this.emit(SocketEvent.Init, { sessId: this.cookieService.get("PHPSESSID") });

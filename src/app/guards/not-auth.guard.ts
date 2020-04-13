@@ -11,32 +11,41 @@ export class NotAuthGuard implements CanActivate, CanLoad {
   constructor(private onChatService: OnChatService, private router: Router) { }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
-    return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-        observer.next(!result.data);
-        return observer.complete();
-      }, () => {
-        observer.next(false);
-        return observer.complete();
+    const isLogin = this.onChatService.isLogin;
+    if (isLogin == null) {
+      return new Observable(observer => {
+        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          observer.next(!result.data);
+          return observer.complete();
+        }, () => {
+          observer.next(false);
+          return observer.complete();
+        });
       });
-    });
+    }
+    return !isLogin;
   }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-        result.data && this.router.navigate(['/']); // 如果已经登录了，就直接跳回首页
+    const isLogin = this.onChatService.isLogin;
+    if (isLogin == null) {
+      return new Observable(observer => {
+        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          result.data && this.router.navigate(['/']); // 如果已经登录了，就直接跳回首页
 
-        observer.next(!result.data);
-        return observer.complete();
-      }, () => {
-        observer.next(false);
-        return observer.complete();
+          observer.next(!result.data);
+          return observer.complete();
+        }, () => {
+          observer.next(false);
+          return observer.complete();
+        });
       });
-    });
+    }
+    isLogin && this.router.navigate(['/']);
+    return !isLogin;
   }
 
 }

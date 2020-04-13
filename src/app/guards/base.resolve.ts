@@ -10,10 +10,12 @@ import { OnChatService } from '../services/onchat.service';
 @Injectable({
     providedIn: 'root',
 })
-export class UserIdResolve implements Resolve<Result<number>> {
+export class UserIdResolve implements Resolve<Result<number> | number> {
     constructor(private onChatService: OnChatService) { }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<number>> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<number>> | number {
+        const userId = this.onChatService.userId;
+        if (userId) { return userId; }
         return this.onChatService.getUserId();
     }
 }

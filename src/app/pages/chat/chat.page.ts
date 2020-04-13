@@ -41,8 +41,9 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { userIdResult: Result<number> }) => {
-      this.userId = data.userIdResult.data;
+    this.route.data.subscribe((data: { userId: Result<number> | number }) => {
+      this.userId = (typeof data.userId == 'number') ? data.userId : data.userId.data;
+      this.onChatService.userId = this.userId;
     });
 
     this.chatroomId = this.route.snapshot.params.id;

@@ -11,33 +11,41 @@ export class AuthGuard implements CanActivate, CanLoad {
   constructor(private onChatService: OnChatService, private router: Router) { }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
-    return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-        observer.next(result.data);
-        return observer.complete();
-      }, () => {
-        observer.next(false);
-        return observer.complete();
+    const isLogin = this.onChatService.isLogin;
+    if (isLogin == null) { // 如果还没有被初始化
+      return new Observable(observer => {
+        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          observer.next(result.data);
+          return observer.complete();
+        }, () => {
+          observer.next(false);
+          return observer.complete();
+        });
       });
-    });
+    }
+    return isLogin;
   }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-        if (!result.data) { // 如果没有登录
-          this.router.navigate(['/login']); // 返回登录页面
-        }
-        observer.next(result.data);
-        return observer.complete();
-      }, () => {
-        observer.next(false);
-        return observer.complete();
+    const isLogin = this.onChatService.isLogin;
+    if (isLogin == null) { // 如果还没有被初始化
+      return new Observable(observer => {
+        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          !result.data && this.router.navigate(['/login']); // 返回登录页面
+          observer.next(result.data);
+          return observer.complete();
+        }, () => {
+          observer.next(false);
+          return observer.complete();
+        });
       });
-    });
+    }
+
+    !isLogin && this.router.navigate(['/login']);
+    return isLogin;
   }
 
 }
