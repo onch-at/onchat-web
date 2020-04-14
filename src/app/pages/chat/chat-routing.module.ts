@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
-import { UserIdResolve } from 'src/app/guards/base.resolve';
+import { UserIdResolve } from 'src/app/resolver/base.resolver';
 import { ChatPage } from './chat.page';
 
 const routes: Routes = [
