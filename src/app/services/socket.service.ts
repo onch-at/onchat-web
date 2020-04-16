@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { SocketEvent } from '../common/enum';
+import { Message } from '../models/form.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,13 +24,10 @@ export class SocketService {
     this.emit(SocketEvent.Unload, { sessId: this.cookieService.get("PHPSESSID") });
   }
 
-  message(msg) {
+  message(msg: Message) {
     this.emit(SocketEvent.Message, {
       sessId: this.cookieService.get("PHPSESSID"),
-      msg: {
-        chatroomId: 1,
-        content: msg
-      }
+      msg: msg
     });
   }
 

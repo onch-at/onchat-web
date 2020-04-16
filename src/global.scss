@@ -179,7 +179,6 @@ ion-refresher {
 }
 
 ion-infinite-scroll {
-
   ion-infinite-scroll-content {
     min-height: 5rem;
     margin: 0 0 -1.75rem;
@@ -358,7 +357,8 @@ ion-toast {
     box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
   }
 
-  &.ng-invalid:not(.ng-pristine) {
+  &.ng-invalid:not(.ng-pristine),
+  &.invalid {
     box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-danger-rgb), 0.5);
   }
 }

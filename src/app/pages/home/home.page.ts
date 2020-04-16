@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { SocketService } from 'src/app/services/socket.service';
 import { PopoverComponent } from '../../components/popover/popover.component';
 
 @Component({
@@ -11,8 +10,7 @@ import { PopoverComponent } from '../../components/popover/popover.component';
 export class HomePage implements OnInit {
 
   constructor(
-    private popoverController: PopoverController,
-    private socketService: SocketService
+    private popoverController: PopoverController
   ) { }
 
   ngOnInit() { }
@@ -23,10 +21,6 @@ export class HomePage implements OnInit {
       event: event,
     });
     return await popover.present();
-  }
-
-  send() {
-    this.socketService.message('Hello World!')
   }
 
 }

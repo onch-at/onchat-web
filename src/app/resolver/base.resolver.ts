@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { ChatItem } from '../models/entity.model';
-import { Result } from '../models/result.model';
+import { Result } from '../models/interface.model';
 import { LocalStorageService } from '../services/local-storage.service';
 import { OnChatService } from '../services/onchat.service';
 

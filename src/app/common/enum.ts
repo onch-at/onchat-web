@@ -29,3 +29,7 @@ export enum SocketEvent {
     UserJoin   = 'user_join',
     UserLeave  = 'user_leave'
 }
+
+export enum MessageType {
+    TEXT = 1
+}

@@ -3,8 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Str } from 'src/app/common/util/str';
-import { LoginForm } from 'src/app/models/form.model';
-import { Result } from 'src/app/models/result.model';
+import { Login } from 'src/app/models/form.model';
+import { Result } from 'src/app/models/interface.model';
 import { SocketService } from 'src/app/services/socket.service';
 import { OnChatService } from '../../../services/onchat.service';
 
@@ -51,7 +51,7 @@ export class LoginPage implements OnInit {
   login() {
     if (this.loginForm.invalid || this.loading) { return; }
     this.loading = true;
-    this.onChatService.login(new LoginForm(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<any>) => {
+    this.onChatService.login(new Login(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<any>) => {
       this.presentToast(result);
     })
   }

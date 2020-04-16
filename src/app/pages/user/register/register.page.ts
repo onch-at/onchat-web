@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } fro
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Str } from 'src/app/common/util/str';
-import { RegisterForm } from 'src/app/models/form.model';
-import { Result } from 'src/app/models/result.model';
+import { Register } from 'src/app/models/form.model';
+import { Result } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { environment as env } from '../../../../environments/environment';
@@ -73,7 +73,7 @@ export class RegisterPage implements OnInit {
   register() {
     if (this.registerForm.invalid || this.loading) { return; }
     this.loading = true;
-    this.onChatService.register(new RegisterForm(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((result: Result<any>) => {
+    this.onChatService.register(new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((result: Result<any>) => {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }

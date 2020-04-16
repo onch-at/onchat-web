@@ -1,10 +1,15 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
+import { SocketEvent } from 'src/app/common/enum';
 import { Str } from 'src/app/common/util/str';
 import { MsgItem } from 'src/app/models/entity.model';
-import { Result } from 'src/app/models/result.model';
+import { Message } from 'src/app/models/form.model';
+import { Result } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { SocketService } from 'src/app/services/socket.service';
+
+const MSG_MAX_LENGTH: number = 4096;
 
 @Component({
   selector: 'app-chat',
@@ -12,6 +17,7 @@ import { OnChatService } from 'src/app/services/onchat.service';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
+  MSG_MAX_LENGTH: number = MSG_MAX_LENGTH;
   msg: string = '';
   /** 当前用户ID */
   userId: number;
@@ -37,6 +43,7 @@ export class ChatPage implements OnInit {
 
   constructor(
     private onChatService: OnChatService,
+    private socketService: SocketService,
     private route: ActivatedRoute,
   ) { }
 
@@ -54,6 +61,13 @@ export class ChatPage implements OnInit {
       if (result.code === 0) {
         this.roomName = result.data;
       }
+    });
+
+    this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
+      if (o.code == 0) {
+        this.msgList.push(o.data);
+      }
+      console.log(o)
     });
   }
 
@@ -160,16 +174,22 @@ export class ChatPage implements OnInit {
    * 发送消息
    */
   send() {
+    if (this.msg.length > 4096) {
+      return;
+    }
     this.scrollToBottom();
-    console.log(this.msg);
+    const msg = new Message(this.chatroomId);
+    msg.content = this.msg;
+    this.socketService.message(msg);
     this.msg = '';
+    console.log(msg)
   }
 
   /**
    * 是否禁用发送按钮
    */
   disable() {
-    return Str.trimAll(this.msg) == '';
+    return (Str.trimAll(this.msg) == '' || this.msg.length > MSG_MAX_LENGTH);
   }
 
 }

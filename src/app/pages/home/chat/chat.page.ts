@@ -1,11 +1,13 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
+import { SocketEvent } from 'src/app/common/enum';
 import { ChatItem } from 'src/app/models/entity.model';
-import { Result } from 'src/app/models/result.model';
+import { Result } from 'src/app/models/interface.model';
 import { isSameWeek } from 'src/app/pipes/detail-date.pipe';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { SocketService } from 'src/app/services/socket.service';
 import { environment as env } from '../../../../environments/environment';
 
 @Component({
@@ -24,7 +26,8 @@ export class ChatPage implements OnInit {
   constructor(
     private onChatService: OnChatService,
     private localStorageService: LocalStorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private socketService: SocketService,
   ) { }
 
   ngOnInit() {
@@ -47,6 +50,10 @@ export class ChatPage implements OnInit {
         this.userId = result.data;
       });
     }
+
+    this.socketService.on(SocketEvent.Message).subscribe((o) => {
+      console.log(o)
+    });
 
   }
 

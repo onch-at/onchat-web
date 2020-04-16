@@ -1,3 +1,5 @@
+import { MessageType } from '../common/enum';
+
 /**
  * 唯一基础实体类
  */
@@ -56,9 +58,9 @@ export class MsgItem extends Entity {
     /** 消息发送者的头像缩略图 */
     avatarThumbnail: string;
     /** 消息类型 */
-    type: number;
+    type: MessageType;
     /** 消息内容 */
-    content: string;
+    content: any;
     /** 回复消息的消息记录ID */
     replyId: number;
 }

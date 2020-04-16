@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { ChatItem, Chatroom, MsgItem } from '../models/entity.model';
-import { LoginForm, RegisterForm } from '../models/form.model';
-import { Result } from '../models/result.model';
+import { Login, Register } from '../models/form.model';
+import { Result } from '../models/interface.model';
 
 const HTTP_OPTIONS_JSON = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' }),
@@ -35,7 +35,7 @@ export class OnChatService {
    * 登录
    * @param o 
    */
-  login(o: LoginForm): Observable<Result<any>> {
+  login(o: Login): Observable<Result<any>> {
     return this.http.post<Result<any>>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
   }
 
@@ -57,7 +57,7 @@ export class OnChatService {
    * 注册
    * @param o 
    */
-  register(o: RegisterForm): Observable<Result<any>> {
+  register(o: Register): Observable<Result<any>> {
     return this.http.post<Result<any>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
   }
 

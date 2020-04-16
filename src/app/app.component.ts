@@ -3,7 +3,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { SocketEvent } from './common/enum';
-import { Result } from './models/result.model';
+import { Result } from './models/interface.model';
 import { OnChatService } from './services/onchat.service';
 import { SocketService } from './services/socket.service';
 
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     });
 
     this.socketService.on(SocketEvent.Message).subscribe((o) => {
-      this.presentToast(o as string);
+      console.log(o)
     });
 
     this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
