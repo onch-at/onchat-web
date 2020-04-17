@@ -55,9 +55,17 @@ export class ChatPage implements OnInit {
       if (o.code == 0) {
         let presence = false; // 收到的消息所属房间是否存在于列表当中
         for (const chatItem of this.chatList) {
-          if (chatItem.chatroomId == o.data.chatroomId && this.onChatService.chatroomId != o.data.chatroomId) {
+          if (chatItem.chatroomId == o.data.chatroomId) { // 如果存在
+            if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
+              this.onChatService.readed(chatItem.id).subscribe((result: Result<null>) => {
+                if (result.code == 0) {
+                  chatItem.unread = 0;
+                }
+              });
+            } else {
+              chatItem.unread++;
+            }
             chatItem.latestMsg = o.data;
-            chatItem.unread++;
             chatItem.updateTime = +new Date() / 1000;
             this.chatList = sortChatList(this.chatList);
             presence = true;

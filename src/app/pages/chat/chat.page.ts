@@ -70,7 +70,7 @@ export class ChatPage implements OnInit {
         const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
         this.msgList.push(o.data);
         // 如果是自己发的消息，或者当前滚动的位置允许滚动
-        o.data.userId == this.userId || canScrollToBottom && this.scrollToBottom();
+        (o.data.userId == this.userId || canScrollToBottom) && this.scrollToBottom();
       }
     });
   }
