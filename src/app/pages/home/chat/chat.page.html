@@ -33,7 +33,7 @@
       </ion-item>
 
       <ion-item-options side="end">
-        <ion-item-option class="bg-primary">设为已读</ion-item-option>
+        <ion-item-option class="bg-primary" (tap)="readed(item, i)">设为已读</ion-item-option>
         <ion-item-option class="bg-danger" (tap)="removeChatItem(i)">移除</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>

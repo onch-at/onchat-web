@@ -66,8 +66,8 @@ export class ChatPage implements OnInit {
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
       if (o.code == 0) {
         this.msgList.push(o.data);
+        if (o.data.userId == this.userId) { this.scrollToBottom(); }
       }
-      console.log(o)
     });
   }
 
@@ -182,7 +182,6 @@ export class ChatPage implements OnInit {
     msg.content = this.msg;
     this.socketService.message(msg);
     this.msg = '';
-    console.log(msg)
   }
 
   /**

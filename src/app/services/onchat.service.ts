@@ -35,15 +35,15 @@ export class OnChatService {
    * 登录
    * @param o 
    */
-  login(o: Login): Observable<Result<any>> {
-    return this.http.post<Result<any>>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
+  login(o: Login): Observable<Result<number>> {
+    return this.http.post<Result<null>>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
   }
 
   /**
    * 登出
    */
-  logout(): Observable<any> {
-    return this.http.get<any>(env.userLogoutUrl);
+  logout(): Observable<null> {
+    return this.http.get<null>(env.userLogoutUrl);
   }
 
   /**
@@ -57,8 +57,8 @@ export class OnChatService {
    * 注册
    * @param o 
    */
-  register(o: Register): Observable<Result<any>> {
-    return this.http.post<Result<any>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
+  register(o: Register): Observable<Result<number>> {
+    return this.http.post<Result<null>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
   }
 
   /**
@@ -103,7 +103,7 @@ export class OnChatService {
    * 置顶聊天列表子项
    * @param id 聊天列表子项ID
    */
-  stickyChatItem(id: number): Observable<Result<any>> {
+  stickyChatItem(id: number): Observable<Result<null>> {
     return this.http.put<Result<any>>(env.chatListStickyUrl + id, null);
   }
 
@@ -111,7 +111,11 @@ export class OnChatService {
    * 取消置顶聊天列表子项
    * @param id 聊天列表子项ID
    */
-  unstickyChatItem(id: number): Observable<Result<any>> {
+  unstickyChatItem(id: number): Observable<Result<null>> {
     return this.http.put<Result<any>>(env.chatListUnstickyUrl + id, null);
+  }
+
+  readed(id: number): Observable<Result<null>> {
+    return this.http.put<Result<any>>(env.chatListReadedUrl + id, null);
   }
 }

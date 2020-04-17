@@ -1,7 +1,6 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
-import { SocketEvent } from 'src/app/common/enum';
 import { ChatItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/interface.model';
 import { isSameWeek } from 'src/app/pipes/detail-date.pipe';
@@ -51,10 +50,6 @@ export class ChatPage implements OnInit {
       });
     }
 
-    this.socketService.on(SocketEvent.Message).subscribe((o) => {
-      console.log(o)
-    });
-
   }
 
   doRefresh(event: any) {
@@ -91,13 +86,13 @@ export class ChatPage implements OnInit {
    * @param i 
    */
   stickyChatItem(item: ChatItem, i: number) {
-    this.onChatService.stickyChatItem(item.id).subscribe((result: Result<any>) => {
+    this.onChatService.stickyChatItem(item.id).subscribe((result: Result<null>) => {
       if (result.code == 0) {
         item.sticky = true;
         this.chatList = sortChatList(this.chatList);
 
         this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
-          index == i && item.close();
+          index == i && item.close(); // 合上ionItemSlidings
         });
       }
     });
@@ -109,13 +104,36 @@ export class ChatPage implements OnInit {
    * @param i 
    */
   unstickyChatItem(item: ChatItem, i: number) {
-    this.onChatService.unstickyChatItem(item.id).subscribe((result: Result<any>) => {
+    this.onChatService.unstickyChatItem(item.id).subscribe((result: Result<null>) => {
       if (result.code == 0) {
         item.sticky = false;
         this.chatList = sortChatList(this.chatList);
 
         this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
-          index == i && item.close();
+          index == i && item.close(); // 合上ionItemSlidings
+        });
+      }
+    });
+  }
+
+  /**
+   * 将聊天列表子项设置为已读
+   * @param item 
+   * @param i 
+   */
+  readed(item: ChatItem, i: number) {
+    if (item.unread == 0) {
+      return this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
+        index == i && item.close(); // 合上ionItemSlidings
+      });
+    }
+
+    this.onChatService.readed(item.id).subscribe((result: Result<null>) => {
+      if (result.code == 0) {
+        item.unread = 0;
+
+        this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
+          index == i && item.close(); // 合上ionItemSlidings
         });
       }
     });

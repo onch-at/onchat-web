@@ -51,7 +51,7 @@ export class LoginPage implements OnInit {
   login() {
     if (this.loginForm.invalid || this.loading) { return; }
     this.loading = true;
-    this.onChatService.login(new Login(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<any>) => {
+    this.onChatService.login(new Login(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<number>) => {
       this.presentToast(result);
     })
   }
@@ -65,6 +65,7 @@ export class LoginPage implements OnInit {
     toast.present();
     if (result.code === 0) {
       this.onChatService.isLogin = true;
+      this.onChatService.userId = result.data;
       this.socketService.init();
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
         this.router.navigate(['/']);

@@ -64,7 +64,7 @@ export class RegisterPage implements OnInit {
     private fb: FormBuilder,
     private socketService: SocketService,
   ) {
-    
+
   }
 
   ngOnInit() {
@@ -73,7 +73,7 @@ export class RegisterPage implements OnInit {
   register() {
     if (this.registerForm.invalid || this.loading) { return; }
     this.loading = true;
-    this.onChatService.register(new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((result: Result<any>) => {
+    this.onChatService.register(new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((result: Result<number>) => {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }
@@ -90,6 +90,7 @@ export class RegisterPage implements OnInit {
     toast.present();
     if (result.code === 0) {
       this.onChatService.isLogin = true;
+      this.onChatService.userId = result.data;
       this.socketService.init();
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
         this.router.navigate(['/']);
