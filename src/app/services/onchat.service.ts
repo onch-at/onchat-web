@@ -24,6 +24,8 @@ export class OnChatService {
   isLogin: boolean = null;
   /** 缓存用户ID */
   userId: number = null;
+  /** 记录当前所在的聊天室ID */
+  chatroomId: number = null;
 
   constructor(private http: HttpClient) { }
 
@@ -104,7 +106,7 @@ export class OnChatService {
    * @param id 聊天列表子项ID
    */
   stickyChatItem(id: number): Observable<Result<null>> {
-    return this.http.put<Result<any>>(env.chatListStickyUrl + id, null);
+    return this.http.put<Result<null>>(env.chatListStickyUrl + id, null);
   }
 
   /**
@@ -112,10 +114,22 @@ export class OnChatService {
    * @param id 聊天列表子项ID
    */
   unstickyChatItem(id: number): Observable<Result<null>> {
-    return this.http.put<Result<any>>(env.chatListUnstickyUrl + id, null);
+    return this.http.put<Result<null>>(env.chatListUnstickyUrl + id, null);
   }
 
+  /**
+   * 将聊天列表子项设为已读
+   * @param id 聊天列表子项ID
+   */
   readed(id: number): Observable<Result<null>> {
-    return this.http.put<Result<any>>(env.chatListReadedUrl + id, null);
+    return this.http.put<Result<null>>(env.chatListReadedUrl + id, null);
+  }
+
+  /**
+   * 将聊天列表子项设为未读
+   * @param id 聊天列表子项ID
+   */
+  unread(id: number): Observable<Result<null>> {
+    return this.http.put<Result<null>>(env.chatListUnreadUrl + id, null);
   }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
-import { ChatItem } from 'src/app/models/entity.model';
+import { SocketEvent } from 'src/app/common/enum';
+import { ChatItem, MsgItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/interface.model';
 import { isSameWeek } from 'src/app/pipes/detail-date.pipe';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
@@ -50,13 +51,36 @@ export class ChatPage implements OnInit {
       });
     }
 
+    this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
+      if (o.code == 0) {
+        let presence = false; // 收到的消息所属房间是否存在于列表当中
+        for (const chatItem of this.chatList) {
+          if (chatItem.chatroomId == o.data.chatroomId && this.onChatService.chatroomId != o.data.chatroomId) {
+            chatItem.latestMsg = o.data;
+            chatItem.unread++;
+            chatItem.updateTime = +new Date() / 1000;
+            this.chatList = sortChatList(this.chatList);
+            presence = true;
+            break;
+          }
+        }
+        !presence && this.refresh();
+      }
+    });
+
   }
 
-  doRefresh(event: any) {
+  refresh(complete?: CallableFunction) {
     this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
       const chatList = sortChatList(result.data);
       this.localStorageService.set(env.chatListKey, chatList);
       this.chatList = chatList;
+      complete && complete();
+    });
+  }
+
+  doRefresh(event: any) {
+    this.refresh(() => {
       event.target.complete();
     });
   }
@@ -85,33 +109,24 @@ export class ChatPage implements OnInit {
    * @param item 
    * @param i 
    */
-  stickyChatItem(item: ChatItem, i: number) {
+  doSticky(item: ChatItem, i: number) {
+    if (item.sticky) {
+      return this.onChatService.unstickyChatItem(item.id).subscribe((result: Result<null>) => {
+        if (result.code == 0) {
+          item.sticky = false;
+          this.chatList = sortChatList(this.chatList);
+
+          this.closeIonItemSliding(i);
+        }
+      });
+    }
+
     this.onChatService.stickyChatItem(item.id).subscribe((result: Result<null>) => {
       if (result.code == 0) {
         item.sticky = true;
         this.chatList = sortChatList(this.chatList);
 
-        this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
-          index == i && item.close(); // 合上ionItemSlidings
-        });
-      }
-    });
-  }
-
-  /**
-   * 取消置顶聊天列表子项
-   * @param item 
-   * @param i 
-   */
-  unstickyChatItem(item: ChatItem, i: number) {
-    this.onChatService.unstickyChatItem(item.id).subscribe((result: Result<null>) => {
-      if (result.code == 0) {
-        item.sticky = false;
-        this.chatList = sortChatList(this.chatList);
-
-        this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
-          index == i && item.close(); // 合上ionItemSlidings
-        });
+        this.closeIonItemSliding(i);
       }
     });
   }
@@ -121,10 +136,14 @@ export class ChatPage implements OnInit {
    * @param item 
    * @param i 
    */
-  readed(item: ChatItem, i: number) {
+  doRead(item: ChatItem, i: number) {
     if (item.unread == 0) {
-      return this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
-        index == i && item.close(); // 合上ionItemSlidings
+      return this.onChatService.unread(item.id).subscribe((result: Result<null>) => {
+        if (result.code == 0) {
+          item.unread = 1;
+
+          this.closeIonItemSliding(i);
+        }
       });
     }
 
@@ -132,22 +151,35 @@ export class ChatPage implements OnInit {
       if (result.code == 0) {
         item.unread = 0;
 
-        this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
-          index == i && item.close(); // 合上ionItemSlidings
-        });
+        this.closeIonItemSliding(i);
       }
+    });
+  }
+
+  /**
+   * 合上IonItemSliding
+   * @param i 
+   */
+  closeIonItemSliding(i: number) {
+    this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
+      index == i && item.close();
     });
   }
 
 }
 
 /**
- * 按照置顶顺序排序聊天列表
+ * 按照时间/置顶顺序排序聊天列表
  * @param chatList 
  */
 export function sortChatList(chatList: ChatItem[]): ChatItem[] {
   chatList.sort((a: ChatItem, b: ChatItem) => {
-    return (b.sticky as any) - (a.sticky as any);
+    return b.updateTime - a.updateTime;
   });
+
+  chatList.sort((a: ChatItem, b: ChatItem) => {
+    return +b.sticky - +a.sticky;
+  });
+
   return chatList;
 }

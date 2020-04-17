@@ -54,6 +54,8 @@ export class ChatPage implements OnInit {
     });
 
     this.chatroomId = this.route.snapshot.params.id;
+    // 记录当前房间ID，由于处理聊天列表
+    this.onChatService.chatroomId = this.chatroomId;
 
     this.loadRecords();
 
@@ -65,10 +67,16 @@ export class ChatPage implements OnInit {
 
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
       if (o.code == 0) {
+        const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
         this.msgList.push(o.data);
-        if (o.data.userId == this.userId) { this.scrollToBottom(); }
+        // 如果是自己发的消息，或者当前滚动的位置允许滚动
+        o.data.userId == this.userId || canScrollToBottom && this.scrollToBottom();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.onChatService.chatroomId = null;
   }
 
   ngAfterViewInit() {
@@ -174,10 +182,7 @@ export class ChatPage implements OnInit {
    * 发送消息
    */
   send() {
-    if (this.msg.length > 4096) {
-      return;
-    }
-    this.scrollToBottom();
+    if (this.msg.length > 4096) { return; }
     const msg = new Message(this.chatroomId);
     msg.content = this.msg;
     this.socketService.message(msg);

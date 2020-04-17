@@ -17,6 +17,7 @@ export const environment = {
   chatListStickyUrl:     '/onchat/user/chatlist/sticky/',
   chatListUnstickyUrl:   '/onchat/user/chatlist/unsticky/',
   chatListReadedUrl:     '/onchat/user/chatlist/readed/',
+  chatListUnreadUrl:     '/onchat/user/chatlist/unread/',
 
   chatroomUrl:           '/onchat/chatroom/',
 
