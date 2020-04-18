@@ -5,6 +5,7 @@ import { Platform, ToastController } from '@ionic/angular';
 import { SocketEvent } from './common/enum';
 import { MsgItem } from './models/entity.model';
 import { Result } from './models/interface.model';
+import { AudioService } from './services/audio.service';
 import { OnChatService } from './services/onchat.service';
 import { SocketService } from './services/socket.service';
 
@@ -14,7 +15,6 @@ import { SocketService } from './services/socket.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  audio: HTMLAudioElement = new Audio('/assets/audio/boo.mp3')
 
   constructor(
     private platform: Platform,
@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private socketService: SocketService,
     private onChatService: OnChatService,
+    private audioService: AudioService,
     private toastController: ToastController,
   ) {
     this.initializeApp();
@@ -57,7 +58,7 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
       console.log(o)
       // 如果消息不是自己的话，就播放提示音
-      o.data.userId != this.onChatService.userId && this.audio.play();
+      o.data.userId != this.onChatService.userId && this.audioService.msg.play();
     });
 
     this.socketService.on(SocketEvent.Disconnect).subscribe(() => {

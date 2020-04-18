@@ -5,6 +5,7 @@ import { environment as env } from '../../environments/environment';
 import { ChatItem, Chatroom, MsgItem } from '../models/entity.model';
 import { Login, Register } from '../models/form.model';
 import { Result } from '../models/interface.model';
+import { AudioService } from './audio.service';
 import { LocalStorageService } from './local-storage.service';
 
 const HTTP_OPTIONS_JSON = {
@@ -37,7 +38,11 @@ export class OnChatService {
     return this._chatList;
   }
 
-  constructor(private http: HttpClient, private localStorageService: LocalStorageService,) { }
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService,
+    private audioService: AudioService,
+  ) { }
 
   init() {
     // 先加载缓存
@@ -47,6 +52,12 @@ export class OnChatService {
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.chatList = result.data;
       this.localStorageService.set(env.chatListKey, this.chatList);
+      for (const chatItem of this.chatList) {
+        if (chatItem.unread > 0 && chatItem.chatroomId != this.chatroomId) {
+          this.audioService.msg.play();
+          break;
+        }
+      }
     });
 
     this.userId == null && this.getUserId().subscribe((o: Result<number>) => {
