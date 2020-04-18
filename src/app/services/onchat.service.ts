@@ -5,6 +5,7 @@ import { environment as env } from '../../environments/environment';
 import { ChatItem, Chatroom, MsgItem } from '../models/entity.model';
 import { Login, Register } from '../models/form.model';
 import { Result } from '../models/interface.model';
+import { LocalStorageService } from './local-storage.service';
 
 const HTTP_OPTIONS_JSON = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' }),
@@ -26,8 +27,32 @@ export class OnChatService {
   userId: number = null;
   /** 记录当前所在的聊天室ID */
   chatroomId: number = null;
+  /** 缓存聊天列表 */
+  _chatList: ChatItem[] = [];
+  set chatList(chatList: ChatItem[]) {
+    this._chatList = sortChatList(chatList);
+    this.localStorageService.set(env.chatListKey, this.chatList);
+  }
+  get chatList(): ChatItem[] {
+    return this._chatList;
+  }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private localStorageService: LocalStorageService,) { }
+
+  init() {
+    // 先加载缓存
+    const data = this.localStorageService.get(env.chatListKey);
+    if (data) { this.chatList = data; }
+
+    this.getChatList().subscribe((result: Result<ChatItem[]>) => {
+      this.chatList = result.data;
+      this.localStorageService.set(env.chatListKey, this.chatList);
+    });
+
+    this.userId == null && this.getUserId().subscribe((o: Result<number>) => {
+      if (o.code == 0) { this.userId = o.data; }
+    });
+  }
 
   getUsernameByUid(uid: number) {
     return this.http.get('/api/php/history.php?history=' + uid, HTTP_OPTIONS_JSON);
@@ -132,4 +157,20 @@ export class OnChatService {
   unread(id: number): Observable<Result<null>> {
     return this.http.put<Result<null>>(env.chatListUnreadUrl + id, null);
   }
+}
+
+/**
+ * 按照时间/置顶顺序排序聊天列表
+ * @param chatList 
+ */
+export function sortChatList(chatList: ChatItem[]): ChatItem[] {
+  chatList.sort((a: ChatItem, b: ChatItem) => {
+    return b.updateTime - a.updateTime;
+  });
+
+  chatList.sort((a: ChatItem, b: ChatItem) => {
+    return +b.sticky - +a.sticky;
+  });
+
+  return chatList;
 }

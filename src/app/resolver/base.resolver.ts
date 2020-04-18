@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { environment as env } from '../../environments/environment';
-import { ChatItem } from '../models/entity.model';
 import { Result } from '../models/interface.model';
-import { LocalStorageService } from '../services/local-storage.service';
 import { OnChatService } from '../services/onchat.service';
 
 @Injectable({
@@ -20,14 +17,14 @@ export class UserIdResolve implements Resolve<Result<number> | number> {
     }
 }
 
-@Injectable({
-    providedIn: 'root',
-})
-export class ChatListResolve implements Resolve<ChatItem[]> {
-    constructor(private onChatService: OnChatService, private localStorageService: LocalStorageService) { }
+// @Injectable({
+//     providedIn: 'root',
+// })
+// export class ChatListResolve implements Resolve<ChatItem[]> {
+//     constructor(private onChatService: OnChatService, private localStorageService: LocalStorageService) { }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): ChatItem[] {
-        const data = this.localStorageService.get(env.chatListKey);
-        if (data) { return data; }
-    }
-}
+//     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): ChatItem[] {
+//         const data = this.localStorageService.get(env.chatListKey);
+//         if (data) { return data; }
+//     }
+// }

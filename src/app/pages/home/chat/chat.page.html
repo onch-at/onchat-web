@@ -5,14 +5,14 @@
   </ion-refresher>
 
   <ion-list class="chat-list">
-    <ion-item-sliding mode="md" *ngFor="let item of chatList; let i = index">
+    <ion-item-sliding mode="md" *ngFor="let item of onChatService.chatList; let i = index">
       <ion-item-options side="start">
         <ion-item-option (tap)="doSticky(item, i)" class="bg-gray color-medium">
           {{ item.sticky ? '取消置顶' : '置顶' }}
         </ion-item-option>
       </ion-item-options>
 
-      <ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false" [routerLink]="['/chat', item.chatroomId]" (tap)="item.unread = 0">
+      <ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false" [routerLink]="['/chat', item.chatroomId]" (tap)="item.unread = 0; onChatService.chatList = onChatService.chatList;">
         <ion-thumbnail slot="start">
           <ion-img src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg"></ion-img>
         </ion-thumbnail>

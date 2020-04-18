@@ -91,6 +91,7 @@ export class RegisterPage implements OnInit {
     if (result.code === 0) {
       this.onChatService.isLogin = true;
       this.onChatService.userId = result.data;
+      this.onChatService.init();
       this.socketService.init();
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
         this.router.navigate(['/']);

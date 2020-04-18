@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+import { OnChatService } from 'src/app/services/onchat.service';
 import { PopoverComponent } from '../../components/popover/popover.component';
 
 @Component({
@@ -10,7 +11,8 @@ import { PopoverComponent } from '../../components/popover/popover.component';
 export class HomePage implements OnInit {
 
   constructor(
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private onChatService: OnChatService,
   ) { }
 
   ngOnInit() { }

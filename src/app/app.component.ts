@@ -8,7 +8,6 @@ import { Result } from './models/interface.model';
 import { OnChatService } from './services/onchat.service';
 import { SocketService } from './services/socket.service';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -38,16 +37,18 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
       this.onChatService.isLogin = result.data;
-      this.onChatService.getUserId().subscribe((o: Result<number>) => {
-        if (o.code == 0) { this.onChatService.userId = o.data; }
-      });
+      result.data && this.onChatService.init();
     });
 
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-        this.onChatService.isLogin = result.data;
-        result.data && this.socketService.init();
-      });
+      if (this.onChatService.isLogin == null) {
+        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          this.onChatService.isLogin = result.data;
+          result.data && this.socketService.init();
+        });
+      } else {
+        this.onChatService.isLogin && this.socketService.init();
+      }
     });
 
     this.socketService.on(SocketEvent.Init).subscribe((o) => {

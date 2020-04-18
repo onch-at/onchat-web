@@ -5,10 +5,8 @@ import { SocketEvent } from 'src/app/common/enum';
 import { ChatItem, MsgItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/interface.model';
 import { isSameWeek } from 'src/app/pipes/detail-date.pipe';
-import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { environment as env } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-chat',
@@ -18,29 +16,16 @@ import { environment as env } from '../../../../environments/environment';
 export class ChatPage implements OnInit {
   /** 当前用户ID */
   userId: number;
-  chatList: ChatItem[];
-  loading: boolean = true;
 
   @ViewChildren(IonItemSliding) ionItemSlidings: QueryList<IonItemSliding>;
 
   constructor(
     private onChatService: OnChatService,
-    private localStorageService: LocalStorageService,
     private route: ActivatedRoute,
     private socketService: SocketService,
   ) { }
 
   ngOnInit() {
-    this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
-      const chatList = sortChatList(result.data);
-      this.localStorageService.set(env.chatListKey, chatList);
-      this.chatList = chatList;
-      this.loading = false;
-    });
-    // 先加载缓存
-    const data = this.localStorageService.get(env.chatListKey);
-    if (data) { this.chatList = data; }
-
     const userId = this.onChatService.userId;
     if (userId) {
       this.userId = userId;
@@ -53,8 +38,8 @@ export class ChatPage implements OnInit {
 
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
       if (o.code == 0) {
-        let presence = false; // 收到的消息所属房间是否存在于列表当中
-        for (const chatItem of this.chatList) {
+        let unpresence = true; // 收到的消息所属房间是否存在于列表当中(默认不存在)
+        for (const chatItem of this.onChatService.chatList) {
           if (chatItem.chatroomId == o.data.chatroomId) { // 如果存在
             if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
               this.onChatService.readed(chatItem.id).subscribe((result: Result<null>) => {
@@ -67,12 +52,12 @@ export class ChatPage implements OnInit {
             }
             chatItem.latestMsg = o.data;
             chatItem.updateTime = +new Date() / 1000;
-            this.chatList = sortChatList(this.chatList);
-            presence = true;
+            this.onChatService.chatList = this.onChatService.chatList;
+            unpresence = false;
             break;
           }
         }
-        !presence && this.refresh();
+        unpresence && this.refresh();
       }
     });
 
@@ -80,9 +65,7 @@ export class ChatPage implements OnInit {
 
   refresh(complete?: CallableFunction) {
     this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
-      const chatList = sortChatList(result.data);
-      this.localStorageService.set(env.chatListKey, chatList);
-      this.chatList = chatList;
+      this.onChatService.chatList = result.data;
       complete && complete();
     });
   }
@@ -108,7 +91,7 @@ export class ChatPage implements OnInit {
   removeChatItem(index: number) {
     // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
     setTimeout(() => {
-      this.chatList.splice(index, 1);
+      this.onChatService.chatList.splice(index, 1);
     }, 10);
   }
 
@@ -122,7 +105,7 @@ export class ChatPage implements OnInit {
       return this.onChatService.unstickyChatItem(item.id).subscribe((result: Result<null>) => {
         if (result.code == 0) {
           item.sticky = false;
-          this.chatList = sortChatList(this.chatList);
+          this.onChatService.chatList = this.onChatService.chatList;
 
           this.closeIonItemSliding(i);
         }
@@ -132,7 +115,7 @@ export class ChatPage implements OnInit {
     this.onChatService.stickyChatItem(item.id).subscribe((result: Result<null>) => {
       if (result.code == 0) {
         item.sticky = true;
-        this.chatList = sortChatList(this.chatList);
+        this.onChatService.chatList = this.onChatService.chatList;
 
         this.closeIonItemSliding(i);
       }
@@ -149,6 +132,7 @@ export class ChatPage implements OnInit {
       return this.onChatService.unread(item.id).subscribe((result: Result<null>) => {
         if (result.code == 0) {
           item.unread = 1;
+          this.onChatService.chatList = this.onChatService.chatList;
 
           this.closeIonItemSliding(i);
         }
@@ -158,6 +142,7 @@ export class ChatPage implements OnInit {
     this.onChatService.readed(item.id).subscribe((result: Result<null>) => {
       if (result.code == 0) {
         item.unread = 0;
+        this.onChatService.chatList = this.onChatService.chatList;
 
         this.closeIonItemSliding(i);
       }
@@ -174,20 +159,4 @@ export class ChatPage implements OnInit {
     });
   }
 
-}
-
-/**
- * 按照时间/置顶顺序排序聊天列表
- * @param chatList 
- */
-export function sortChatList(chatList: ChatItem[]): ChatItem[] {
-  chatList.sort((a: ChatItem, b: ChatItem) => {
-    return b.updateTime - a.updateTime;
-  });
-
-  chatList.sort((a: ChatItem, b: ChatItem) => {
-    return +b.sticky - +a.sticky;
-  });
-
-  return chatList;
 }

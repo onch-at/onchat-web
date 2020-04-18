@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -15,7 +13,6 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private onChatService: OnChatService,
-    private localStorageService: LocalStorageService,
     private router: Router,
     private alertController: AlertController,
     private socketService: SocketService,
@@ -52,8 +49,8 @@ export class ProfilePage implements OnInit {
     this.onChatService.logout().subscribe(() => {
       this.onChatService.isLogin = false;
       this.onChatService.userId = null;
+      this.onChatService.chatList = [];
       this.socketService.unload();
-      this.localStorageService.remove(env.chatListKey);
       this.router.navigate(['/login']);
     });
   }
