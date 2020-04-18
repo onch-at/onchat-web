@@ -12,7 +12,7 @@ export class HomePage implements OnInit {
 
   constructor(
     private popoverController: PopoverController,
-    private onChatService: OnChatService,
+    public onChatService: OnChatService,
   ) { }
 
   ngOnInit() { }

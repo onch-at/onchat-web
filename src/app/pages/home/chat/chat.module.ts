@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from 'src/app/modules/shared.module';
-import { NumLimitPipe } from 'src/app/pipes/num-limit.pipe';
 import { ChatPageRoutingModule } from './chat-routing.module';
 import { ChatPage } from './chat.page';
 
@@ -15,6 +14,6 @@ import { ChatPage } from './chat.page';
     ChatPageRoutingModule,
     SharedModule
   ],
-  declarations: [ChatPage, NumLimitPipe]
+  declarations: [ChatPage]
 })
 export class ChatPageModule { }

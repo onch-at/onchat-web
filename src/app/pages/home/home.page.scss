@@ -77,6 +77,12 @@
     &.active::before {
       animation: ripple 0.5s ease-out forwards;
     }
+
+    & > ion-badge {
+      position: absolute;
+      top: .15rem;
+      right: -.25rem;
+    }
   }
 }
 

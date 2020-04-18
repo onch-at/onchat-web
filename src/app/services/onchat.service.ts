@@ -28,9 +28,16 @@ export class OnChatService {
   userId: number = null;
   /** 记录当前所在的聊天室ID */
   chatroomId: number = null;
+  unreadNum: number = 0;
   /** 缓存聊天列表 */
   private _chatList: ChatItem[] = [];
   set chatList(chatList: ChatItem[]) {
+    this.unreadNum = 0;
+    for (const chatItem of chatList) {
+      if (chatItem.unread > 0) {
+        this.unreadNum += chatItem.unread;
+      }
+    }
     this._chatList = sortChatList(chatList);
     this.localStorageService.set(env.chatListKey, this.chatList);
   }
