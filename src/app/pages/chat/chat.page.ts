@@ -9,6 +9,7 @@ import { Result } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 
+// 文本消息最长长度
 const MSG_MAX_LENGTH: number = 4096;
 
 @Component({
@@ -21,8 +22,6 @@ export class ChatPage implements OnInit {
   msg: string = '';
   /** 当前用户ID */
   userId: number;
-  /** 当前房间号 */
-  chatroomId: number;
   /** 当前房间名字 */
   roomName: string = '';
   /** 消息ID，用于查询指定消息段 */
@@ -53,20 +52,19 @@ export class ChatPage implements OnInit {
       this.onChatService.userId = this.userId;
     });
 
-    this.chatroomId = this.route.snapshot.params.id;
     // 记录当前房间ID，由于处理聊天列表
-    this.onChatService.chatroomId = this.chatroomId;
+    this.onChatService.chatroomId = this.route.snapshot.params.id;
 
     this.loadRecords();
 
-    this.onChatService.getChatroomName(this.chatroomId).subscribe((result: Result<string>) => {
+    this.onChatService.getChatroomName(this.onChatService.chatroomId).subscribe((result: Result<string>) => {
       if (result.code === 0) {
         this.roomName = result.data;
       }
     });
 
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
-      if (o.code == 0) {
+      if (o.code == 0 && o.data.chatroomId == this.onChatService.chatroomId) {
         const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
         this.msgList.push(o.data);
         // 如果是自己发的消息，或者当前滚动的位置允许滚动
@@ -130,7 +128,7 @@ export class ChatPage implements OnInit {
   loadRecords(complete?: CallableFunction) {
     if (this.end) { return complete && complete(); }
 
-    this.onChatService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<MsgItem[]>) => {
+    this.onChatService.getChatRecords(this.onChatService.chatroomId, this.msgId).subscribe((result: Result<MsgItem[]>) => {
       if (result.code === 0) {
         // 按照ID排序
         result.data.sort((a: MsgItem, b: MsgItem) => {
@@ -161,12 +159,12 @@ export class ChatPage implements OnInit {
    */
   upliftScroll() {
     const diffHeight = this.contentClientHeight - this.contentElement.clientHeight;
-      // 如果现在的高度与初始高度的差值是正数，则代表窗口高度变小了
-      if (diffHeight > 0) {
-        this.ionContent.scrollByPoint(0, diffHeight, 500);
-      } else if (diffHeight < 0) { // 如果窗口高度变大了，就重新设置一下初始高度
-        this.contentClientHeight = this.contentElement.clientHeight;
-      }
+    // 如果现在的高度与初始高度的差值是正数，则代表窗口高度变小了
+    if (diffHeight > 0) {
+      this.ionContent.scrollByPoint(0, diffHeight, 500);
+    } else if (diffHeight < 0) { // 如果窗口高度变大了，就重新设置一下初始高度
+      this.contentClientHeight = this.contentElement.clientHeight;
+    }
   }
 
   /**
@@ -183,7 +181,7 @@ export class ChatPage implements OnInit {
    */
   send() {
     if (this.msg.length > 4096) { return; }
-    const msg = new Message(this.chatroomId);
+    const msg = new Message(this.onChatService.chatroomId);
     msg.content = this.msg;
     this.socketService.message(msg);
     this.msg = '';
