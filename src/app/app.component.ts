@@ -35,19 +35,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-      this.onChatService.isLogin = result.data;
-      result.data && this.onChatService.init();
-    });
-
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
       if (this.onChatService.isLogin == null) {
         this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
           this.onChatService.isLogin = result.data;
-          result.data && this.socketService.init();
+          if (result.data) {
+            this.socketService.init();
+            this.onChatService.init();
+          }
         });
-      } else {
-        this.onChatService.isLogin && this.socketService.init();
+      } else if (this.onChatService.isLogin) {
+        this.onChatService.init();
+        this.socketService.init();
       }
     });
 
@@ -68,7 +67,10 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
         this.onChatService.isLogin = result.data;
-        result.data && this.socketService.init();
+        if (result.data) {
+          this.socketService.init();
+          this.onChatService.init();
+        }
       });
       this.presentToast('与服务器重连成功！');
     });

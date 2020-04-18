@@ -28,7 +28,7 @@ export class OnChatService {
   /** 记录当前所在的聊天室ID */
   chatroomId: number = null;
   /** 缓存聊天列表 */
-  _chatList: ChatItem[] = [];
+  private _chatList: ChatItem[] = [];
   set chatList(chatList: ChatItem[]) {
     this._chatList = sortChatList(chatList);
     this.localStorageService.set(env.chatListKey, this.chatList);

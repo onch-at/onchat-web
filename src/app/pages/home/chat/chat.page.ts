@@ -1,6 +1,8 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SocketEvent } from 'src/app/common/enum';
 import { ChatItem, MsgItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/interface.model';
@@ -14,29 +16,18 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-  /** 当前用户ID */
-  userId: number;
+  subject: Subject<unknown> = new Subject();
 
   @ViewChildren(IonItemSliding) ionItemSlidings: QueryList<IonItemSliding>;
 
   constructor(
-    private onChatService: OnChatService,
+    public onChatService: OnChatService,
     private route: ActivatedRoute,
     private socketService: SocketService,
   ) { }
 
   ngOnInit() {
-    const userId = this.onChatService.userId;
-    if (userId) {
-      this.userId = userId;
-    } else {
-      this.onChatService.getUserId().subscribe((result: Result<number>) => {
-        this.onChatService.userId = result.data;
-        this.userId = result.data;
-      });
-    }
-
-    this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
+    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<MsgItem>) => {
       if (o.code == 0) {
         let unpresence = true; // 收到的消息所属房间是否存在于列表当中(默认不存在)
         for (const chatItem of this.onChatService.chatList) {
@@ -61,6 +52,11 @@ export class ChatPage implements OnInit {
       }
     });
 
+  }
+
+  ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
   refresh(complete?: CallableFunction) {

@@ -15,6 +15,7 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     if (isLogin == null) {
       return new Observable(observer => {
         this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          this.onChatService.isLogin = result.data;
           observer.next(!result.data);
           return observer.complete();
         }, () => {
@@ -34,6 +35,7 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     if (isLogin == null) {
       return new Observable(observer => {
         this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          this.onChatService.isLogin = result.data;
           result.data && this.router.navigate(['/']); // 如果已经登录了，就直接跳回首页
 
           observer.next(!result.data);

@@ -15,6 +15,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (isLogin == null) { // 如果还没有被初始化
       return new Observable(observer => {
         this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          this.onChatService.isLogin = result.data;
           observer.next(result.data);
           return observer.complete();
         }, () => {
@@ -34,6 +35,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (isLogin == null) { // 如果还没有被初始化
       return new Observable(observer => {
         this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+          this.onChatService.isLogin = result.data;
           !result.data && this.router.navigate(['/login']); // 返回登录页面
           observer.next(result.data);
           return observer.complete();
