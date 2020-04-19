@@ -130,6 +130,42 @@ ion-header {
 
 main {
   padding: 2.75rem 0 4rem;
+
+  > .tips {
+    position: fixed;
+    left: 50%;
+    bottom: 4.25rem;
+    transform: translateX(-50%);
+    font-size: .8rem;
+    line-height: .8rem;
+    padding: .3rem .75rem;
+    color: #424242;
+    background: rgba(var(--custom-color-primary-rgb), 0.75);
+    backdrop-filter: saturate(200%) blur(5px);
+    border-radius: 1rem;
+    box-shadow: 0 0 0.25rem 0.05rem rgba(#000000, 0.125);
+    transition: box-shadow 0.2s ease-in-out;
+
+    &.active {
+      box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+    }
+
+    > ion-icon {
+      animation: jitter .75s linear infinite;
+    }
+  }
+}
+
+@keyframes jitter {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(.195rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes show {

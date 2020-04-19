@@ -67,7 +67,7 @@ ion-header {
     padding-right: 0.5rem;
     flex: auto;
 
-    & > * {
+     > * {
       width: calc(100vw - 8rem);
     }
 
@@ -93,7 +93,7 @@ ion-header {
     height: 3rem;
     padding: 0.3rem 0 0.1rem 0.75rem;
 
-    & > * {
+     > * {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -103,11 +103,11 @@ ion-header {
   .card-content {
     padding: 0 1rem 4rem;
 
-    & > *:first-child {
+     > *:first-child {
       margin-top: 0.75rem;
     }
 
-    & > *:not(:last-child) {
+     > *:not(:last-child) {
       margin-bottom: 1rem;
     }
   }

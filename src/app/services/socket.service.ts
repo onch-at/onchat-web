@@ -17,16 +17,16 @@ export class SocketService {
   ) { }
 
   init() {
-    this.emit(SocketEvent.Init, { sessId: this.cookieService.get("PHPSESSID") });
+    this.emit(SocketEvent.Init, { sessId: this.cookieService.get('PHPSESSID') });
   }
 
   unload() {
-    this.emit(SocketEvent.Unload, { sessId: this.cookieService.get("PHPSESSID") });
+    this.emit(SocketEvent.Unload, { sessId: this.cookieService.get('PHPSESSID') });
   }
 
   message(msg: Message) {
     this.emit(SocketEvent.Message, {
-      sessId: this.cookieService.get("PHPSESSID"),
+      sessId: this.cookieService.get('PHPSESSID'),
       msg: msg
     });
   }

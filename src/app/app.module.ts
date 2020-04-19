@@ -1,5 +1,7 @@
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import localeZhHans from '@angular/common/locales/zh-Hans';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -13,6 +15,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
+
+registerLocaleData(localeZhHans);
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,6 +41,7 @@ import { OnChatService } from './services/onchat.service';
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: LOCALE_ID, useValue: 'zh-Hans' },
     StatusBar,
     SplashScreen,
     OnChatService,

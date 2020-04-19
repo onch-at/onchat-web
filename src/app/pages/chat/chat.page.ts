@@ -39,6 +39,8 @@ export class ChatPage implements OnInit {
   /** IonContent滚动元素初始可视高度 */
   contentClientHeight: number;
   resizeTimeout: any = null;
+  /** 是否有未读消息 */
+  hasUnread: boolean = false;
 
   constructor(
     private onChatService: OnChatService,
@@ -68,7 +70,11 @@ export class ChatPage implements OnInit {
         const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
         this.msgList.push(o.data);
         // 如果是自己发的消息，或者当前滚动的位置允许滚动
-        (o.data.userId == this.userId || canScrollToBottom) && this.scrollToBottom();
+        if (o.data.userId == this.userId || canScrollToBottom) {
+          this.scrollToBottom();
+        } else {
+          this.hasUnread = true;
+        }
       }
     });
   }
@@ -82,6 +88,16 @@ export class ChatPage implements OnInit {
       this.contentElement = element;
       this.contentClientHeight = element.clientHeight;
     });
+  }
+
+  /**
+   * 滚动结束时
+   */
+  onIonScrollEnd() {
+    // 已经有未读消息，且当前位置接近最底部了
+    if (this.hasUnread && this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50) {
+      this.hasUnread = false;
+    }
   }
 
   @HostListener('window:resize')
