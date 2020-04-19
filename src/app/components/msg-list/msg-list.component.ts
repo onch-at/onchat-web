@@ -17,6 +17,11 @@ export class MsgListComponent implements OnInit {
     
   }
 
+
+  onPress(e) {
+    console.log(e)
+  }
+
   /**
    * 判断是否需要显示时间
    * @param time 当前时间
