@@ -4,7 +4,7 @@
   </li>
   <div *ngFor="let item of data; let index = index;">
     <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime * 1000, data[index - 1].createTime * 1000)">
-      <span>{{ item.createTime * 1000 | detailDate }} {{ item.createTime * 1000 | date:'hh:mm aaa' }}</span>
+      <span>{{ item.createTime * 1000 | detailDate }} {{ item.createTime * 1000 | date:'aaa hh:mm' }}</span>
     </li>
 
     <li class="msg-item" [ngClass]="{ 'msg-item-right': userId == item.userId, 'msg-item-left': userId != item.userId }">

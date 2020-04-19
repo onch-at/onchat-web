@@ -2,11 +2,9 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { SocketEvent } from 'src/app/common/enum';
-import { ChatItem, MsgItem } from 'src/app/models/entity.model';
+import { DateUtil } from 'src/app/common/util/date';
+import { ChatItem } from 'src/app/models/entity.model';
 import { Result } from 'src/app/models/interface.model';
-import { isSameWeek } from 'src/app/pipes/detail-date.pipe';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -27,30 +25,27 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<MsgItem>) => {
-      if (o.code == 0) {
-        let unpresence = true; // 收到的消息所属房间是否存在于列表当中(默认不存在)
-        for (const chatItem of this.onChatService.chatList) {
-          if (chatItem.chatroomId == o.data.chatroomId) { // 如果存在
-            if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
-              this.onChatService.readed(chatItem.id).subscribe((result: Result<null>) => {
-                if (result.code == 0) {
-                  chatItem.unread = 0;
-                }
-              });
-            } else {
-              chatItem.unread++;
-            }
-            chatItem.latestMsg = o.data;
-            chatItem.updateTime = +new Date() / 1000;
-            this.onChatService.chatList = this.onChatService.chatList;
-            unpresence = false;
-            break;
-          }
-        }
-        unpresence && this.refresh();
-      }
-    });
+    // this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<MsgItem>) => {
+    //   if (o.code == 0) {
+    //     let unpresence = true; // 收到的消息所属房间是否存在于列表当中(默认不存在)
+    //     for (const chatItem of this.onChatService.chatList) {
+    //       if (chatItem.chatroomId == o.data.chatroomId) { // 如果存在
+    //         console.log(this.onChatService.chatroomId)
+    //         if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
+    //           chatItem.unread = 0;
+    //         } else {
+    //           chatItem.unread++;
+    //         }
+    //         chatItem.latestMsg = o.data;
+    //         chatItem.updateTime = +new Date() / 1000;
+    //         this.onChatService.chatList = this.onChatService.chatList;
+    //         unpresence = false;
+    //         break;
+    //       }
+    //     }
+    //     unpresence && this.refresh();
+    //   }
+    // });
 
   }
 
@@ -77,7 +72,7 @@ export class ChatPage implements OnInit {
    * @param date 
    */
   isSameWeek(date: string) {
-    return isSameWeek(new Date(Date.parse(date)));
+    return DateUtil.isSameWeek(new Date(Date.parse(date)));
   }
 
   /**
@@ -125,7 +120,7 @@ export class ChatPage implements OnInit {
    */
   doRead(item: ChatItem, i: number) {
     if (item.unread == 0) {
-      return this.onChatService.unread(item.id).subscribe((result: Result<null>) => {
+      return this.onChatService.unread(item.chatroomId).subscribe((result: Result<null>) => {
         if (result.code == 0) {
           item.unread = 1;
           this.onChatService.chatList = this.onChatService.chatList;
@@ -135,7 +130,7 @@ export class ChatPage implements OnInit {
       });
     }
 
-    this.onChatService.readed(item.id).subscribe((result: Result<null>) => {
+    this.onChatService.readed(item.chatroomId).subscribe((result: Result<null>) => {
       if (result.code == 0) {
         item.unread = 0;
         this.onChatService.chatList = this.onChatService.chatList;

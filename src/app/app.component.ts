@@ -3,7 +3,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { SocketEvent } from './common/enum';
-import { MsgItem } from './models/entity.model';
+import { ChatItem, MsgItem } from './models/entity.model';
 import { Result } from './models/interface.model';
 import { AudioService } from './services/audio.service';
 import { OnChatService } from './services/onchat.service';
@@ -59,6 +59,28 @@ export class AppComponent implements OnInit {
       console.log(o)
       // 如果消息不是自己的话，就播放提示音
       o.data.userId != this.onChatService.userId && this.audioService.msg.play();
+
+      let unpresence = true; // 收到的消息所属房间是否存在于列表当中(默认不存在)
+      // 然后去列表里面找
+      for (const chatItem of this.onChatService.chatList) {
+        if (chatItem.chatroomId == o.data.chatroomId) { // 如果存在
+          if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
+            chatItem.unread = 0;
+          } else {
+            chatItem.unread++;
+          }
+          chatItem.latestMsg = o.data;
+          chatItem.updateTime = +new Date() / 1000;
+          this.onChatService.chatList = this.onChatService.chatList;
+          unpresence = false;
+          break;
+        }
+      }
+
+      // 如果不存在于列表当中，就刷新数据
+      unpresence && this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
+        this.onChatService.chatList = result.data;
+      });
     });
 
     this.socketService.on(SocketEvent.Disconnect).subscribe(() => {

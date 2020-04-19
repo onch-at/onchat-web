@@ -1,8 +1,10 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SocketEvent } from 'src/app/common/enum';
-import { Str } from 'src/app/common/util/str';
+import { StrUtil } from 'src/app/common/util/str';
 import { MsgItem } from 'src/app/models/entity.model';
 import { Message } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/interface.model';
@@ -20,8 +22,6 @@ const MSG_MAX_LENGTH: number = 4096;
 export class ChatPage implements OnInit {
   MSG_MAX_LENGTH: number = MSG_MAX_LENGTH;
   msg: string = '';
-  /** 当前用户ID */
-  userId: number;
   /** 当前房间名字 */
   roomName: string = '';
   /** 消息ID，用于查询指定消息段 */
@@ -41,17 +41,17 @@ export class ChatPage implements OnInit {
   resizeTimeout: any = null;
   /** 是否有未读消息 */
   hasUnread: boolean = false;
+  subject: Subject<unknown> = new Subject();
 
   constructor(
-    private onChatService: OnChatService,
+    public onChatService: OnChatService,
     private socketService: SocketService,
     private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.route.data.subscribe((data: { userId: Result<number> | number }) => {
-      this.userId = (typeof data.userId == 'number') ? data.userId : data.userId.data;
-      this.onChatService.userId = this.userId;
+      this.onChatService.userId = (typeof data.userId == 'number') ? data.userId : data.userId.data;
     });
 
     // 记录当前房间ID，由于处理聊天列表
@@ -65,22 +65,27 @@ export class ChatPage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
+    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<MsgItem>) => {
+      // 如果请求成功，并且收到的消息是这个房间的
       if (o.code == 0 && o.data.chatroomId == this.onChatService.chatroomId) {
         const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
         this.msgList.push(o.data);
         // 如果是自己发的消息，或者当前滚动的位置允许滚动
-        if (o.data.userId == this.userId || canScrollToBottom) {
+        if (o.data.userId == this.onChatService.userId || canScrollToBottom) {
           this.scrollToBottom();
         } else {
           this.hasUnread = true;
         }
+        // 如果消息不是自己的，就设为已读
+        o.data.userId != this.onChatService.userId && this.onChatService.readed(this.onChatService.chatroomId).pipe(takeUntil(this.subject)).subscribe();
       }
     });
   }
 
   ngOnDestroy() {
     this.onChatService.chatroomId = null;
+    this.subject.next();
+    this.subject.complete();
   }
 
   ngAfterViewInit() {
@@ -207,7 +212,7 @@ export class ChatPage implements OnInit {
    * 是否禁用发送按钮
    */
   disable() {
-    return (Str.trimAll(this.msg) == '' || this.msg.length > MSG_MAX_LENGTH);
+    return (StrUtil.trimAll(this.msg) == '' || this.msg.length > MSG_MAX_LENGTH);
   }
 
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { Str } from 'src/app/common/util/str';
+import { StrUtil } from 'src/app/common/util/str';
 import { Register } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -126,7 +126,7 @@ export class RegisterPage implements OnInit {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    this.registerForm.controls[controlName].setValue(Str.trimAll(this.registerForm.value[controlName]));
+    this.registerForm.controls[controlName].setValue(StrUtil.trimAll(this.registerForm.value[controlName]));
   }
 
 }

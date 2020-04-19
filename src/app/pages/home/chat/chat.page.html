@@ -25,7 +25,7 @@
           <time>
             <span>
               {{ item.updateTime * 1000 | detailDate }}
-              <span *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime * 1000 | date:'hh:mm aaa' }}</span>
+              <span *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime * 1000 | date:'aaa hh:mm' }}</span>
             </span>
           </time>
           <ion-badge [ngClass]="{'visibility-hidden': item.unread <= 0}" class="bg-danger" mode="ios">

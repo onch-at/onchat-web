@@ -162,18 +162,18 @@ export class OnChatService {
 
   /**
    * 将聊天列表子项设为已读
-   * @param id 聊天列表子项ID
+   * @param chatroomId 聊天室ID
    */
-  readed(id: number): Observable<Result<null>> {
-    return this.http.put<Result<null>>(env.chatListReadedUrl + id, null);
+  readed(chatroomId: number): Observable<Result<null>> {
+    return this.http.put<Result<null>>(env.chatListReadedUrl + chatroomId, null);
   }
 
   /**
    * 将聊天列表子项设为未读
-   * @param id 聊天列表子项ID
+   * @param chatroomId 聊天室ID
    */
-  unread(id: number): Observable<Result<null>> {
-    return this.http.put<Result<null>>(env.chatListUnreadUrl + id, null);
+  unread(chatroomId: number): Observable<Result<null>> {
+    return this.http.put<Result<null>>(env.chatListUnreadUrl + chatroomId, null);
   }
 }
 
