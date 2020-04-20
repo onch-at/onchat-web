@@ -34,8 +34,9 @@ export class OnChatService {
   set chatList(chatList: ChatItem[]) {
     this.unreadNum = 0;
     for (const chatItem of chatList) {
-      if (chatItem.unread > 0) {
-        this.unreadNum += chatItem.unread;
+      // 如果有未读消息，且总未读数大于100，则停止遍历，提升性能
+      if (chatItem.unread > 0 && (this.unreadNum += chatItem.unread) >= 100) {
+        break;
       }
     }
     this._chatList = sortChatList(chatList);

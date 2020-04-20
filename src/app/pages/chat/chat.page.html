@@ -1,4 +1,4 @@
-<ion-content #ionContent mode="md" [scrollEvents]="true" (ionScrollEnd)="onIonScrollEnd()">
+<ion-content #ionContent mode="md" [scrollEvents]="hasUnread" (ionScrollEnd)="onIonScrollEnd()">
   <ion-header mode="ios" class="d-flex align-items-center">
     <ion-toolbar>
       <ion-buttons slot="start">
