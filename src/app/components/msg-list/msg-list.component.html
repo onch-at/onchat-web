@@ -2,7 +2,7 @@
   <li class="tip-item" *ngIf="end">
     <span>没有更多消息</span>
   </li>
-  <div *ngFor="let item of data; let index = index;">
+  <div *ngFor="let item of data; let index = index; trackBy: trackByFn">
     <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime * 1000, data[index - 1].createTime * 1000)">
       <span>{{ item.createTime * 1000 | detailDate }} {{ item.createTime * 1000 | date:'aaa hh:mm' }}</span>
     </li>

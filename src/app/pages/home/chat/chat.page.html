@@ -5,7 +5,7 @@
   </ion-refresher>
 
   <ion-list class="chat-list">
-    <ion-item-sliding mode="md" *ngFor="let item of onChatService.chatList; let i = index">
+    <ion-item-sliding mode="md" *ngFor="let item of onChatService.chatList; let i = index; trackBy: trackByFn">
       <ion-item-options side="start">
         <ion-item-option (tap)="doSticky(item, i)" class="bg-gray color-medium">
           {{ item.sticky ? '取消置顶' : '置顶' }}

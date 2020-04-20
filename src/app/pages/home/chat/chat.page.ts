@@ -54,6 +54,17 @@ export class ChatPage implements OnInit {
     this.subject.complete();
   }
 
+  /**
+   * 用于提升性能
+   * 一般情况下，当数组内有变更时，
+   * Angular将会对整个DOM树加以重新渲染。
+   * 如果加上trackBy方法，Angular将会知道具体的变更元素，
+   * 并针对性地对此特定元素进行DOM刷新，提升页面渲染性能。
+   */
+  trackByFn(index: number, item: ChatItem): number {
+    return item.id;
+  }
+
   refresh(complete?: CallableFunction) {
     this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.onChatService.chatList = result.data;
