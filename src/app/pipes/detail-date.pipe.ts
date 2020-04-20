@@ -31,8 +31,9 @@ export class DetailDatePipe implements PipeTransform {
     if (DateUtil.isSameWeek(date)) { // 如果在本周
       return this.weekDay[date.getDay()];
     }
+
     // 否则将返回年-月-日
-    return date.getFullYear() + '年' + (1 + date.getMonth()) + '月' + date.getDate() + '日';
+    return (DateUtil.isThisYear(date) ? '' : date.getFullYear() + '年') + (1 + date.getMonth()) + '月' + date.getDate() + '日';
   }
 
 }

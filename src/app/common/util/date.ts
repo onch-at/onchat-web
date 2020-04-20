@@ -26,4 +26,12 @@ export class DateUtil {
         }
         return false;
     }
+
+    /**
+     * 是否在今年
+     * @param date 
+     */
+    static isThisYear(date: Date): boolean {
+        return date.getFullYear() == new Date().getFullYear();
+    }
 }

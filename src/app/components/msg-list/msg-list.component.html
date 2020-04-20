@@ -13,8 +13,7 @@
       </div>
       <div>
         <div class="username">{{ item.nickname }}</div>
-        <span class="msg-bubble ion-activatable ripple-parent" (press)="onPress($event)">
-          {{ item.content }}
+        <span class="msg-bubble ion-activatable ripple-parent" (press)="onPress($event)" [innerHTML]="item.content">
           <ion-ripple-effect></ion-ripple-effect>
         </span>
       </div>

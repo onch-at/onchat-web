@@ -52,8 +52,9 @@
     border-radius: 1rem;
     font-weight: 500;
     font-size: 0.9rem;
-    display: inline-block;
     word-break: break-word;
+    display: inline-flex;
+    align-items: center;
   }
 
   &.msg-item-left {
