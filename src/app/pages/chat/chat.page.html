@@ -19,7 +19,7 @@
     <!-- <span class="bubble-tips" [ngClass]="{'show': !first}">技巧：点击标题栏的文字可快速回到底部</span> -->
   </ion-header>
 
-  <main>
+  <main [ngStyle]="{ 'padding-bottom': 'calc(0.75rem + ' + bottomBar.clientHeight + 'px)' } ">
     <ion-infinite-scroll position="top" threshold="-10px" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
@@ -27,9 +27,10 @@
     <button appActiveClass [duration]="200" class="tips" [hidden]="!hasUnread" (tap)="scrollToBottom()">收到新消息<ion-icon name="arrow-down-outline"></ion-icon></button>
   </main>
 
-  <div class="bottom-bar">
-    <input type="text" class="ipt-primary" [ngClass]="{'invalid': msg.length > MSG_MAX_LENGTH}" id="message" name="message" placeholder="来说点什么吧？" [(ngModel)]="msg">
-    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn" (tap)="send()" [disabled]="disable()">
+  <div #bottomBar class="bottom-bar">
+    <textarea #textarea id="message" name="message" rows="1" class="ipt-primary" [ngClass]="{'invalid': msg.length > MSG_MAX_LENGTH}" (keyup)="onKeyup($event)" placeholder="来说点什么吧？" [(ngModel)]="msg"></textarea>
+    <!-- <input type="text" class="ipt-primary" [ngClass]="{'invalid': msg.length > MSG_MAX_LENGTH}" id="message" name="message" placeholder="来说点什么吧？" [(ngModel)]="msg"> -->
+    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn" (tap)="send(textarea)" [disabled]="disable()">
       <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
       <ion-ripple-effect></ion-ripple-effect>
     </button>

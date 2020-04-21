@@ -17,7 +17,7 @@ import { ChatPage } from './chat.page';
   ],
   declarations: [
     ChatPage,
-    MsgListComponent
+    MsgListComponent,
   ]
 })
 export class ChatPageModule { }

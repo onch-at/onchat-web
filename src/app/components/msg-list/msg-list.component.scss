@@ -55,6 +55,7 @@
     word-break: break-word;
     display: inline-flex;
     align-items: center;
+    white-space: pre-wrap;
   }
 
   &.msg-item-left {

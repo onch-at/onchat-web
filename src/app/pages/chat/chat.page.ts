@@ -105,6 +105,12 @@ export class ChatPage implements OnInit {
     }
   }
 
+  onKeyup(e: any) {
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
+    (this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50) && this.scrollToBottom();
+  }
+
   @HostListener('window:resize')
   onResize() {
     if (this.resizeTimeout) {
@@ -200,12 +206,13 @@ export class ChatPage implements OnInit {
   /**
    * 发送消息
    */
-  send() {
+  send(textareaElement: HTMLTextAreaElement) {
     if (this.msg.length > 4096) { return; }
     const msg = new Message(this.onChatService.chatroomId);
     msg.content = this.msg;
     this.socketService.message(msg);
     this.msg = '';
+    textareaElement.style.height = 'auto';
   }
 
   /**
