@@ -82,8 +82,8 @@ export class ChatPage implements OnInit {
    * 是否在同一周
    * @param date 
    */
-  isSameWeek(date: string) {
-    return DateUtil.isSameWeek(new Date(Date.parse(date)));
+  isSameWeek(date: number) {
+    return DateUtil.isSameWeek(new Date(date * 1000));
   }
 
   /**
