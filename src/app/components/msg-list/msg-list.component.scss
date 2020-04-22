@@ -56,6 +56,7 @@
     display: inline-flex;
     align-items: center;
     white-space: pre-wrap;
+    touch-action: auto !important;
   }
 
   &.msg-item-left {

@@ -1,9 +1,9 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SocketEvent } from 'src/app/common/enum';
+import { MessageType, SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/util/str';
 import { MsgItem } from 'src/app/models/entity.model';
 import { Message } from 'src/app/models/form.model';
@@ -47,6 +47,7 @@ export class ChatPage implements OnInit {
     public onChatService: OnChatService,
     private socketService: SocketService,
     private route: ActivatedRoute,
+    private renderer2: Renderer2
   ) { }
 
   ngOnInit() {
@@ -69,15 +70,21 @@ export class ChatPage implements OnInit {
       // 如果请求成功，并且收到的消息是这个房间的
       if (o.code == 0 && o.data.chatroomId == this.onChatService.chatroomId) {
         const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
-        this.msgList.push(o.data);
+
+        const msgItem = Object.assign({}, o.data);
+
+        if (msgItem.type == MessageType.TEXT) {
+          msgItem.content = StrUtil.hyperlink(msgItem.content);
+        }
+        this.msgList.push(msgItem);
         // 如果是自己发的消息，或者当前滚动的位置允许滚动
-        if (o.data.userId == this.onChatService.userId || canScrollToBottom) {
+        if (msgItem.userId == this.onChatService.userId || canScrollToBottom) {
           this.scrollToBottom();
         } else {
           this.hasUnread = true;
         }
         // 如果消息不是自己的，就设为已读
-        o.data.userId != this.onChatService.userId && this.onChatService.readed(this.onChatService.chatroomId).pipe(takeUntil(this.subject)).subscribe();
+        msgItem.userId != this.onChatService.userId && this.onChatService.readed(this.onChatService.chatroomId).pipe(takeUntil(this.subject)).subscribe();
       }
     });
   }
@@ -106,8 +113,8 @@ export class ChatPage implements OnInit {
   }
 
   onKeyup(e: any) {
-    e.target.style.height = 'auto';
-    e.target.style.height = e.target.scrollHeight + 'px';
+    this.renderer2.setStyle(e.target, 'height', 'auto');
+    this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 'px');
     (this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50) && this.scrollToBottom();
   }
 
@@ -161,6 +168,12 @@ export class ChatPage implements OnInit {
         result.data.sort((a: MsgItem, b: MsgItem) => {
           return a.id - b.id;
         });
+
+        for (const msgItem of result.data) {
+          if (msgItem.type == MessageType.TEXT) {
+            msgItem.content = StrUtil.hyperlink(msgItem.content);
+          }
+        }
 
         this.msgList = result.data.concat(this.msgList);
 

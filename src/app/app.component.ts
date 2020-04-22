@@ -70,6 +70,7 @@ export class AppComponent implements OnInit {
             chatItem.unread++;
           }
           chatItem.latestMsg = o.data;
+          console.log(chatItem.latestMsg)
           chatItem.updateTime = +new Date() / 1000;
           this.onChatService.chatList = this.onChatService.chatList;
           unpresence = false;
