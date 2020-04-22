@@ -12,6 +12,6 @@ export class StrUtil {
      * @param str 
      */
     static hyperlink(str: string): string {
-        return str.replace(/(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g, '<a href="$1$2" a="1" target="_blank">$1$2</a>')
+        return str.replace(/(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g, '<a href="$1$2" a="1" target="_blank">$1$2</a>');
     }
 }

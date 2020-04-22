@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MessageType, SocketEvent } from 'src/app/common/enum';
+import { SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/util/str';
 import { MsgItem } from 'src/app/models/entity.model';
 import { Message } from 'src/app/models/form.model';
@@ -71,20 +71,15 @@ export class ChatPage implements OnInit {
       if (o.code == 0 && o.data.chatroomId == this.onChatService.chatroomId) {
         const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
 
-        const msgItem = Object.assign({}, o.data);
-
-        if (msgItem.type == MessageType.TEXT) {
-          msgItem.content = StrUtil.hyperlink(msgItem.content);
-        }
-        this.msgList.push(msgItem);
+        this.msgList.push(o.data);
         // 如果是自己发的消息，或者当前滚动的位置允许滚动
-        if (msgItem.userId == this.onChatService.userId || canScrollToBottom) {
+        if (o.data.userId == this.onChatService.userId || canScrollToBottom) {
           this.scrollToBottom();
         } else {
           this.hasUnread = true;
         }
         // 如果消息不是自己的，就设为已读
-        msgItem.userId != this.onChatService.userId && this.onChatService.readed(this.onChatService.chatroomId).pipe(takeUntil(this.subject)).subscribe();
+        o.data.userId != this.onChatService.userId && this.onChatService.readed(this.onChatService.chatroomId).pipe(takeUntil(this.subject)).subscribe();
       }
     });
   }
@@ -168,12 +163,6 @@ export class ChatPage implements OnInit {
         result.data.sort((a: MsgItem, b: MsgItem) => {
           return a.id - b.id;
         });
-
-        for (const msgItem of result.data) {
-          if (msgItem.type == MessageType.TEXT) {
-            msgItem.content = StrUtil.hyperlink(msgItem.content);
-          }
-        }
 
         this.msgList = result.data.concat(this.msgList);
 
