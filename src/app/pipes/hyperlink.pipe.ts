@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { StrUtil } from '../common/util/str';
 
 /**
  * 将字符串中的超链接转为A标签
@@ -10,7 +9,7 @@ import { StrUtil } from '../common/util/str';
 export class HyperlinkPipe implements PipeTransform {
 
   transform(value: string): string {
-    return StrUtil.hyperlink(value);
+    return value.replace(/(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g, '<a href="$1$2" target="_blank">$1$2</a>');
   }
 
 }

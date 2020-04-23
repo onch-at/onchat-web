@@ -2,10 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
-import { ChatItem, Chatroom, MsgItem } from '../models/entity.model';
 import { Login, Register } from '../models/form.model';
-import { Result } from '../models/interface.model';
-import { AudioService } from './audio.service';
+import { ChatItem, Chatroom, MsgItem, Result } from '../models/interface.model';
+import { FeedbackService } from './feedback.service';
 import { LocalStorageService } from './local-storage.service';
 
 const HTTP_OPTIONS_JSON = {
@@ -49,7 +48,7 @@ export class OnChatService {
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService,
-    private audioService: AudioService,
+    private feedbackService: FeedbackService,
   ) { }
 
   init() {
@@ -62,7 +61,7 @@ export class OnChatService {
       this.localStorageService.set(env.chatListKey, this.chatList);
       for (const chatItem of this.chatList) {
         if (chatItem.unread > 0 && chatItem.chatroomId != this.chatroomId) {
-          this.audioService.msg.play();
+          this.feedbackService.msgAudio.play();
           break;
         }
       }

@@ -3,9 +3,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { SocketEvent } from './common/enum';
-import { ChatItem, MsgItem } from './models/entity.model';
-import { Result } from './models/interface.model';
-import { AudioService } from './services/audio.service';
+import { ChatItem, MsgItem, Result } from './models/interface.model';
+import { FeedbackService } from './services/feedback.service';
 import { OnChatService } from './services/onchat.service';
 import { SocketService } from './services/socket.service';
 
@@ -22,7 +21,7 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private socketService: SocketService,
     private onChatService: OnChatService,
-    private audioService: AudioService,
+    private feedbackService: FeedbackService,
     private toastController: ToastController,
   ) {
     this.initializeApp();
@@ -58,7 +57,7 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
       console.log(o)
       // 如果消息不是自己的话，就播放提示音
-      o.data.userId != this.onChatService.userId && this.audioService.msg.play();
+      o.data.userId != this.onChatService.userId && this.feedbackService.msgAudio.play();
 
       let unpresence = true; // 收到的消息所属房间是否存在于列表当中(默认不存在)
       // 然后去列表里面找
@@ -70,7 +69,6 @@ export class AppComponent implements OnInit {
             chatItem.unread++;
           }
           chatItem.latestMsg = o.data;
-          console.log(chatItem.latestMsg)
           chatItem.updateTime = +new Date() / 1000;
           this.onChatService.chatList = this.onChatService.chatList;
           unpresence = false;

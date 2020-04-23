@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { DateUtil } from 'src/app/common/util/date';
-import { ChatItem } from 'src/app/models/entity.model';
-import { Result } from 'src/app/models/interface.model';
+import { ChatItem, Result } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 

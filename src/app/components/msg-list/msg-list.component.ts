@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MsgItem } from 'src/app/models/entity.model';
+import { MsgItem } from 'src/app/models/interface.model';
 
 @Component({
   selector: 'app-msg-list',

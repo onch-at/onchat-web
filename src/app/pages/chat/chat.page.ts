@@ -5,9 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/util/str';
-import { MsgItem } from 'src/app/models/entity.model';
 import { Message } from 'src/app/models/form.model';
-import { Result } from 'src/app/models/interface.model';
+import { MsgItem, Result } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -110,7 +109,9 @@ export class ChatPage implements OnInit {
   onKeyup(e: any) {
     this.renderer2.setStyle(e.target, 'height', 'auto');
     this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 'px');
-    (this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50) && this.scrollToBottom();
+    const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
+
+    (diff <= 50 && diff >= 5) && this.scrollToBottom();
   }
 
   @HostListener('window:resize')
@@ -160,11 +161,14 @@ export class ChatPage implements OnInit {
     this.onChatService.getChatRecords(this.onChatService.chatroomId, this.msgId).subscribe((result: Result<MsgItem[]>) => {
       if (result.code === 0) {
         // 按照ID排序
-        result.data.sort((a: MsgItem, b: MsgItem) => {
-          return a.id - b.id;
-        });
+        // result.data.sort((a: MsgItem, b: MsgItem) => {
+        //   return a.id - b.id;
+        // });
+        // this.msgList = result.data.concat(this.msgList);
 
-        this.msgList = result.data.concat(this.msgList);
+        for (const msgItem of result.data) {
+          this.msgList.unshift(msgItem);
+        }
 
         // 如果是第一次查记录，就执行滚动
         this.msgId == 0 && this.scrollToBottom(() => {
