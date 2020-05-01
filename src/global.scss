@@ -127,6 +127,7 @@
 
 // 标徽字体
 @font-face {
+  font-display: fallback;
   font-family: "Alibaba-Sans-Black";
   src: url("/assets/font/Alibaba-Sans-Black/font.gif");
   src: url("/assets/font/Alibaba-Sans-Black/font.gif") format("embedded-opentype"),
