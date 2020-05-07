@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
+import { environment as env } from '../environments/environment';
 import { SocketEvent } from './common/enum';
 import { ChatItem, MsgItem, Result } from './models/interface.model';
 import { FeedbackService } from './services/feedback.service';
+import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 import { SocketService } from './services/socket.service';
 
@@ -23,6 +25,7 @@ export class AppComponent implements OnInit {
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
     private toastController: ToastController,
+    private localStorageService: LocalStorageService,
   ) {
     this.initializeApp();
   }
@@ -35,6 +38,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    // 首先加载出缓存数据，保证用户体验
+    const data = this.localStorageService.get(env.chatListKey);
+    if (data) { this.onChatService.chatList = data; }
+
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
       if (this.onChatService.isLogin == null) {
         this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {

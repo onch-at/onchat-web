@@ -27,6 +27,7 @@ export class OnChatService {
   userId: number = null;
   /** 记录当前所在的聊天室ID */
   chatroomId: number = null;
+  /** 未读消息总数 */
   unreadNum: number = 0;
   /** 缓存聊天列表 */
   private _chatList: ChatItem[] = [];
@@ -52,15 +53,11 @@ export class OnChatService {
   ) { }
 
   init() {
-    // 先加载缓存
-    const data = this.localStorageService.get(env.chatListKey);
-    if (data) { this.chatList = data; }
-
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.chatList = result.data;
       this.localStorageService.set(env.chatListKey, this.chatList);
       for (const chatItem of this.chatList) {
-        if (chatItem.unread > 0 && chatItem.chatroomId != this.chatroomId) {
+        if (chatItem.unread > 0) {
           this.feedbackService.msgAudio.play();
           break;
         }
@@ -182,13 +179,9 @@ export class OnChatService {
  * @param chatList 
  */
 export function sortChatList(chatList: ChatItem[]): ChatItem[] {
-  chatList.sort((a: ChatItem, b: ChatItem) => {
-    return b.updateTime - a.updateTime;
-  });
+  chatList.sort((a: ChatItem, b: ChatItem) => b.updateTime - a.updateTime);
 
-  chatList.sort((a: ChatItem, b: ChatItem) => {
-    return +b.sticky - +a.sticky;
-  });
+  chatList.sort((a: ChatItem, b: ChatItem) => +b.sticky - +a.sticky);
 
   return chatList;
 }

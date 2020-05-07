@@ -7,6 +7,10 @@
       <span>{{ item.createTime * 1000 | detailDate }} {{ item.createTime * 1000 | date:'aaahh:mm' }}</span>
     </li>
 
+    <!-- <li class="tip-item">
+      <span>欢迎新成员 HyperLife1119 加入房间</span>
+    </li> -->
+
     <li class="msg-item" [ngClass]="{ 'msg-item-right': userId == item.userId, 'msg-item-left': userId != item.userId }">
       <div>
         <ion-img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5" [routerLink]="['/card', item.userId]"></ion-img>
