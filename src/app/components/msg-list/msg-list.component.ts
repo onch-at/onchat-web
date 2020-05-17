@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 import { MsgItem } from 'src/app/models/interface.model';
+import { FeedbackService } from 'src/app/services/feedback.service';
+import { PopoverComponent } from '../popover/popover.component';
 
 @Component({
   selector: 'app-msg-list',
@@ -11,7 +14,10 @@ export class MsgListComponent implements OnInit {
   @Input() userId: number;
   @Input() end: boolean;
 
-  constructor() { }
+  constructor(
+    private popoverController: PopoverController,
+    private feedbackService: FeedbackService
+  ) { }
 
   ngOnInit() {
     
@@ -29,8 +35,15 @@ export class MsgListComponent implements OnInit {
   }
 
 
-  onPress(e) {
-    console.log(e)
+  async presentPopover(event: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      event: event,
+      showBackdrop: false
+    });
+    return popover.present().then(() => {
+      this.feedbackService.vibrate();
+    });
   }
 
   /**
@@ -48,16 +61,5 @@ export class MsgListComponent implements OnInit {
 
     return true;
   }
-
-  isSameWeek(inDate){ // inDate 是一个date对象
-    let inDateStr = inDate.toLocaleDateString();  // 获取如YYYY/MM/DD的日期
-    let nowDate = new Date();
-    let nowTime = nowDate.getTime();
-    let nowDay = nowDate.getDay();
-    for(let i=0;i<7;i++){
-       if(inDateStr == ( new Date(nowTime + (i-nowDay)*24*3600*1000) ).toLocaleDateString() ) return true;
-    }
-    return false;
- }
 
 }

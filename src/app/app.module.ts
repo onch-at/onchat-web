@@ -13,14 +13,17 @@ import { SocketIoModule } from 'ngx-socket-io';
 import { environment as env, environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PopoverComponent } from './components/popover/popover.component';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 
 registerLocaleData(localeZhHans);
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, PopoverComponent],
+  entryComponents: [
+    PopoverComponent
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

@@ -10,4 +10,8 @@ export class FeedbackService {
   msgAudio: HTMLAudioElement = new Audio('/assets/audio/boo.mp3');
 
   constructor() { }
+
+  vibrate() {
+    'vibrate' in window.navigator && window.navigator.vibrate(100);
+  }
 }

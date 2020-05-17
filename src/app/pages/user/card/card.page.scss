@@ -33,6 +33,7 @@ ion-header {
   position: absolute;
   top: 35.75vh;
   left: 0;
+  bottom: 0;
   background: rgba(var(--custom-color-white-rgb), 0.75);
   backdrop-filter: saturate(200%) blur(5px);
   border-radius: 0 1.5rem 0 0;

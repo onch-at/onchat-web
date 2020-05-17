@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from 'src/app/modules/shared.module';
-import { PopoverComponent } from '../../components/popover/popover.component';
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 
@@ -16,11 +15,7 @@ import { HomePage } from './home.page';
     SharedModule
   ],
   declarations: [
-    HomePage,
-    PopoverComponent,
-  ],
-  entryComponents: [
-    PopoverComponent
+    HomePage
   ]
 })
 export class HomePageModule { }
