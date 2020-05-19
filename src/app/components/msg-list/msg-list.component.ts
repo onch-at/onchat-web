@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { MsgItem } from 'src/app/models/interface.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { PopoverComponent } from '../popover/popover.component';
+import { OnChatService } from 'src/app/services/onchat.service';
+import { BubbleToolbarComponent } from '../bubble-toolbar/bubble-toolbar.component';
 
 @Component({
   selector: 'app-msg-list',
@@ -11,16 +12,16 @@ import { PopoverComponent } from '../popover/popover.component';
 })
 export class MsgListComponent implements OnInit {
   @Input() data: MsgItem[] = [];
-  @Input() userId: number;
   @Input() end: boolean;
 
   constructor(
     private popoverController: PopoverController,
-    private feedbackService: FeedbackService
+    private feedbackService: FeedbackService,
+    public onChatService: OnChatService,
   ) { }
 
   ngOnInit() {
-    
+
   }
 
   /**
@@ -34,13 +35,18 @@ export class MsgListComponent implements OnInit {
     return item.id;
   }
 
-
-  async presentPopover(event: any) {
+  async presentPopover(msgItem: MsgItem, event: any) {
     const popover = await this.popoverController.create({
-      component: PopoverComponent,
+      component: BubbleToolbarComponent,
+      componentProps: {
+        element: event.target,
+        msgItem: msgItem,
+      },
       event: event,
-      showBackdrop: false
+      showBackdrop: false,
+      keyboardClose: false
     });
+
     return popover.present().then(() => {
       this.feedbackService.vibrate();
     });

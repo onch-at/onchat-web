@@ -12,6 +12,6 @@ export class FeedbackService {
   constructor() { }
 
   vibrate() {
-    'vibrate' in window.navigator && window.navigator.vibrate(100);
+    'vibrate' in window.navigator && window.navigator.vibrate(50);
   }
 }

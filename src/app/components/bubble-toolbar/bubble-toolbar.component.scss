@@ -1,0 +1,30 @@
+.bubble-toolbar {
+    margin: 0;
+    padding: .25rem .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    color: var(--custom-color-light);
+    background: var(--custom-color-dark);
+    list-style: none;
+}
+
+.bubble-toolbar-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: content-box;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    font-size: 0.75rem;
+
+    > ion-icon {
+        display: block;
+        font-size: 1.25rem;
+    }
+}
+
+::ng-deep .popover-arrow::after {
+    background: var(--custom-color-dark) !important;
+}

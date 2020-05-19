@@ -35,6 +35,8 @@ export enum SocketEvent {
     Unload     = 'unload',
     /** 接收到消息时 */
     Message    = 'message',
+    /** 收到撤回消息 */
+    RevokeMsg  = 'revoke_msg',
     /** 加入房间 */
     UserJoin   = 'user_join',
     /** 退出房间 */

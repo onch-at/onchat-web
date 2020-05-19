@@ -179,6 +179,10 @@ ion-refresher {
   }
 }
 
+.popover-content {
+  border-radius: 1rem !important;
+}
+
 ion-infinite-scroll {
   ion-infinite-scroll-content {
     min-height: 5rem;

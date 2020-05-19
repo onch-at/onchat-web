@@ -27,14 +27,22 @@ export class SocketService {
   message(msg: Message) {
     this.emit(SocketEvent.Message, {
       sessId: this.cookieService.get('PHPSESSID'),
-      msg: msg
+      msg
+    });
+  }
+
+  revokeMsg(chatroomId: number, msgId: number) {
+    this.emit(SocketEvent.RevokeMsg, {
+      sessId: this.cookieService.get('PHPSESSID'),
+      chatroomId: +chatroomId,
+      msgId: +msgId
     });
   }
 
   join(sessId: string, chatroomId: string) {
     this.emit(SocketEvent.UserJoin, {
-      sessId: sessId,
-      chatroomId: chatroomId
+      sessId,
+      chatroomId
     });
   }
 

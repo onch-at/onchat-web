@@ -23,7 +23,7 @@
     <ion-infinite-scroll position="top" threshold="-10px" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
-    <app-msg-list [userId]="onChatService.userId" [data]="msgList" [end]="end"></app-msg-list>
+    <app-msg-list [data]="msgList" [end]="end"></app-msg-list>
     <button appActiveClass [duration]="200" class="tips" [hidden]="!hasUnread" (tap)="scrollToBottom()">收到新消息<ion-icon name="arrow-down-outline"></ion-icon></button>
   </main>
   <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->

@@ -81,6 +81,19 @@ export class ChatPage implements OnInit {
         o.data.userId != this.onChatService.userId && this.onChatService.readed(this.onChatService.chatroomId).pipe(takeUntil(this.subject)).subscribe();
       }
     });
+
+    this.socketService.on(SocketEvent.RevokeMsg).pipe(takeUntil(this.subject)).subscribe((o: Result<{ chatroomId: number, msgId: number}>) => {
+      // 如果请求成功，并且收到的消息是这个房间的
+      if (o.code == 0 && o.data.chatroomId == this.onChatService.chatroomId) {
+        for (const key in this.msgList) {
+          if (this.msgList[key].id == o.data.msgId) { // 移除被撤回的那条消息
+            // TODO 把撤回消息变成Tips
+            this.msgList.splice(+key, 1);
+            break;
+          }
+        }
+      }
+    });
   }
 
   ngOnDestroy() {
