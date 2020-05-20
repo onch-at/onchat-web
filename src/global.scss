@@ -178,7 +178,9 @@ ion-refresher {
     color: var(--custom-color-medium) !important;
   }
 }
-
+ion-popover {
+    --max-width: 75vw;
+}
 .popover-content {
   border-radius: 1rem !important;
 }

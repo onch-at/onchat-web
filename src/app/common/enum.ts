@@ -48,7 +48,8 @@ export enum SocketEvent {
  */
 export enum MessageType {
     /** 系统消息 */
-    SYSTEM = 0,
+    System = 0,
     /** 文本 */
-    TEXT   = 1
+    Text   = 1,
+    Tips   = 2
 }

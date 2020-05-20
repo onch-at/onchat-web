@@ -13,7 +13,7 @@ export interface Result<T> {
 export interface Entity {
     id: number;
     createTime: number;
-    updateTime: number;
+    updateTime?: number;
 }
 
 /**
@@ -59,17 +59,17 @@ export interface MsgItem extends Entity {
     /** 消息对应的聊天室ID */
     chatroomId: number;
     /** 消息发送者ID */
-    userId: number;
+    userId?: number;
     /** 消息发送者的聊天室昵称 */
-    nickname: string;
+    nickname?: string;
     /** 消息发送者的头像缩略图 */
-    avatarThumbnail: string;
+    avatarThumbnail?: string;
     /** 消息类型 */
     type: MessageType;
     /** 消息内容 */
     content: any;
     /** 回复消息的消息记录ID */
-    replyId: number;
+    replyId?: number;
 }
 
 

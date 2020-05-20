@@ -20,6 +20,10 @@
     background: var(--custom-color-secondary);
     border-radius: .75rem;
   }
+
+  ::ng-deep a {
+    text-decoration: none;
+  }
 }
 
 .msg-item {

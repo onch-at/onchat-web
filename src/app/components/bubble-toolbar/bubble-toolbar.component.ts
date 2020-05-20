@@ -14,6 +14,8 @@ export class BubbleToolbarComponent implements OnInit {
   @Input() element: Element;
   /** 消息体 */
   @Input() msgItem: MsgItem;
+  /** 当前时间戳 */
+  now: number = Date.now();
 
   constructor(
     public onChatService: OnChatService,
@@ -27,6 +29,7 @@ export class BubbleToolbarComponent implements OnInit {
    */
   copyText() {
     Util.copyText(this.element);
+    this.dismiss();
   }
 
   /**
@@ -34,6 +37,16 @@ export class BubbleToolbarComponent implements OnInit {
    */
   revokeMsg() {
     this.socketService.revokeMsg(this.onChatService.chatroomId, this.msgItem.id);
+    this.dismiss();
+  }
+
+  /**
+   * 关闭气泡消息工具条
+   */
+  dismiss() {
+    this.onChatService.bubbleToolbarPopover && this.onChatService.bubbleToolbarPopover.dismiss().then(() => {
+      this.onChatService.bubbleToolbarPopover = null;
+    });
   }
 
 }

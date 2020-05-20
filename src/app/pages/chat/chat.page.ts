@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SocketEvent } from 'src/app/common/enum';
+import { MessageType, SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/util/str';
 import { Message } from 'src/app/models/form.model';
 import { MsgItem, Result } from 'src/app/models/interface.model';
@@ -85,10 +85,10 @@ export class ChatPage implements OnInit {
     this.socketService.on(SocketEvent.RevokeMsg).pipe(takeUntil(this.subject)).subscribe((o: Result<{ chatroomId: number, msgId: number}>) => {
       // 如果请求成功，并且收到的消息是这个房间的
       if (o.code == 0 && o.data.chatroomId == this.onChatService.chatroomId) {
-        for (const key in this.msgList) {
-          if (this.msgList[key].id == o.data.msgId) { // 移除被撤回的那条消息
-            // TODO 把撤回消息变成Tips
-            this.msgList.splice(+key, 1);
+        for (const msgItem of this.msgList) {
+          if (msgItem.id == o.data.msgId) { // 移除被撤回的那条消息
+            msgItem.type = MessageType.Tips;
+            msgItem.content = `<a target="_blank" href="/card/${msgItem.userId}">${msgItem.nickname}</a> 撤回了一条消息`;
             break;
           }
         }

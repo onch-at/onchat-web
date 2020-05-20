@@ -45,6 +45,8 @@ export class OnChatService {
   get chatList(): ChatItem[] {
     return this._chatList;
   }
+  /** 气泡消息工具条的实例 */
+  bubbleToolbarPopover: HTMLIonPopoverElement;
 
   constructor(
     private http: HttpClient,

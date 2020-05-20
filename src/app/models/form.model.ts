@@ -32,7 +32,7 @@ export class Message {
     /** 消息对应的聊天室ID */
     chatroomId: number;
     /** 消息类型（默认为文本类型） */
-    type: MessageType = MessageType.TEXT;
+    type: MessageType = MessageType.Text;
     /** 消息内容 */
     content: any;
     /** 回复消息的消息记录ID */
