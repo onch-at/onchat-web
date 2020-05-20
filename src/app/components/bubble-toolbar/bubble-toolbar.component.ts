@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MessageType } from 'src/app/common/enum';
 import { Util } from 'src/app/common/util/util';
 import { MsgItem } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -16,6 +17,8 @@ export class BubbleToolbarComponent implements OnInit {
   @Input() msgItem: MsgItem;
   /** 当前时间戳 */
   now: number = Date.now();
+  /** 消息类型枚举 */
+  msgType = MessageType;
 
   constructor(
     public onChatService: OnChatService,

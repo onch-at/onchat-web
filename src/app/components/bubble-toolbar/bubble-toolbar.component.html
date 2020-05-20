@@ -1,5 +1,5 @@
 <ul class="bubble-toolbar">
-  <li class="bubble-toolbar-item ion-activatable ripple-parent" (tap)="copyText()">
+  <li *ngIf="msgItem.type === msgType.Text" class="bubble-toolbar-item ion-activatable ripple-parent" (tap)="copyText()">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-icon name="copy-outline"></ion-icon>
     复制

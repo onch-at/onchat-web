@@ -12,8 +12,11 @@ import { BubbleToolbarComponent } from '../bubble-toolbar/bubble-toolbar.compone
   styleUrls: ['./msg-list.component.scss'],
 })
 export class MsgListComponent implements OnInit {
+  /** 消息类型枚举 */
   msgType = MessageType;
+  /** 消息记录 */
   @Input() data: MsgItem[] = [];
+  /** 消息记录是否到了末尾 */
   @Input() end: boolean;
 
   constructor(
@@ -37,6 +40,11 @@ export class MsgListComponent implements OnInit {
     return item.id;
   }
 
+  /**
+   * 弹出BubbleToolbar气泡工具条
+   * @param msgItem 气泡对应的MsgItem
+   * @param event 
+   */
   async presentPopover(msgItem: MsgItem, event: any) {
     this.onChatService.bubbleToolbarPopover = await this.popoverController.create({
       component: BubbleToolbarComponent,
@@ -47,7 +55,6 @@ export class MsgListComponent implements OnInit {
       cssClass: 'bubble-toolbar-popover',
       event: event,
       showBackdrop: false,
-      keyboardClose: false,
     });
 
     return this.onChatService.bubbleToolbarPopover.present().then(() => {
