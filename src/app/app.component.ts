@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
           } else {
             chatItem.unread++;
           }
-          chatItem.latestMsg = JSON.parse(JSON.stringify(o.data));
+          chatItem.latestMsg = o.data;
           chatItem.updateTime = Date.now();
           this.onChatService.chatList = this.onChatService.chatList;
           unpresence = false;
@@ -95,8 +95,9 @@ export class AppComponent implements OnInit {
         for (const chatItem of this.onChatService.chatList) {
           if (chatItem.chatroomId == o.data.chatroomId) {
             chatItem.unread > 0 && chatItem.unread--;
+            chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
             chatItem.latestMsg.type = MessageType.Tips;
-            chatItem.latestMsg.content = chatItem.latestMsg.nickname + '撤回了一条消息';
+            chatItem.latestMsg.content = chatItem.latestMsg.nickname + ' 撤回了一条消息';
             this.onChatService.chatList = this.onChatService.chatList;
             break;
           }
