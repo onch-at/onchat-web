@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
           } else {
             chatItem.unread++;
           }
-          chatItem.latestMsg = o.data;
+          chatItem.latestMsg = JSON.parse(JSON.stringify(o.data));
           chatItem.updateTime = Date.now();
           this.onChatService.chatList = this.onChatService.chatList;
           unpresence = false;
@@ -91,12 +91,12 @@ export class AppComponent implements OnInit {
 
     this.socketService.on(SocketEvent.RevokeMsg).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
       // 如果请求成功，并且收到的消息不是这个房间的
-      if (o.code == 0 && o.data.chatroomId != this.onChatService.chatroomId) {
+      if (o.code == 0) {
         for (const chatItem of this.onChatService.chatList) {
-          if (chatItem.chatroomId == o.data.chatroomId && chatItem.unread > 0) {
-            chatItem.unread--;
+          if (chatItem.chatroomId == o.data.chatroomId) {
+            chatItem.unread > 0 && chatItem.unread--;
             chatItem.latestMsg.type = MessageType.Tips;
-            chatItem.latestMsg.content = `${chatItem.latestMsg.nickname} 撤回了一条消息`;
+            chatItem.latestMsg.content = chatItem.latestMsg.nickname + '撤回了一条消息';
             this.onChatService.chatList = this.onChatService.chatList;
             break;
           }
