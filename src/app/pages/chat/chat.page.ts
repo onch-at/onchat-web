@@ -82,7 +82,7 @@ export class ChatPage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.RevokeMsg).pipe(takeUntil(this.subject)).subscribe((o: Result<{ chatroomId: number, msgId: number}>) => {
+    this.socketService.on(SocketEvent.RevokeMsg).pipe(takeUntil(this.subject)).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
       // 如果请求成功，并且收到的消息是这个房间的
       if (o.code == 0 && o.data.chatroomId == this.onChatService.chatroomId) {
         for (const msgItem of this.msgList) {

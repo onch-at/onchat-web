@@ -12,22 +12,32 @@
         </ion-item-option>
       </ion-item-options>
 
-      <ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false" [routerLink]="['/chat', item.chatroomId]" (tap)="item.unread = 0; onChatService.chatList = onChatService.chatList;">
+      <ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
+        [routerLink]="['/chat', item.chatroomId]"
+        (tap)="item.unread = 0; onChatService.chatList = onChatService.chatList;">
         <ion-thumbnail slot="start">
           <ion-img src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg"></ion-img>
         </ion-thumbnail>
         <ion-label>
           <h2>{{ item.name }}</h2>
           <p *ngIf="item.latestMsg">
-            <span>{{ item.latestMsg.userId == onChatService.userId ? '我' : item.latestMsg.nickname }}：</span>
-            <span [innerHTML]="item.latestMsg.content"></span>
+            <span [ngSwitch]="item.latestMsg.type">
+              <span *ngSwitchCase="msgType.Text">
+                {{ item.latestMsg.userId == onChatService.userId ? '我' : item.latestMsg.nickname }}：
+                <span [innerHTML]="item.latestMsg.content"></span>
+              </span>
+
+              <span *ngSwitchCase="msgType.Tips">
+                <span [innerHTML]="item.latestMsg.content"></span>
+              </span>
+            </span>
           </p>
           <p *ngIf="!item.latestMsg">进去打个招呼吧？</p>
         </ion-label>
         <div class="info">
           <time>
-            {{ item.updateTime * 1000 | detailDate }}
-            <span *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime * 1000 | date:'aaahh:mm' }}</span>
+            {{ item.updateTime | detailDate }}
+            <span *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime | date:'aaahh:mm' }}</span>
           </time>
           <ion-badge [ngClass]="{'visibility-hidden': item.unread <= 0}" class="bg-danger" mode="ios">
             {{ item.unread | numLimit }}</ion-badge>

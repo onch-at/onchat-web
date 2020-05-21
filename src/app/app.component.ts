@@ -3,7 +3,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { environment as env } from '../environments/environment';
-import { SocketEvent } from './common/enum';
+import { MessageType, SocketEvent } from './common/enum';
 import { ChatItem, MsgItem, Result } from './models/interface.model';
 import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
             chatItem.unread++;
           }
           chatItem.latestMsg = o.data;
-          chatItem.updateTime = +new Date() / 1000;
+          chatItem.updateTime = Date.now();
           this.onChatService.chatList = this.onChatService.chatList;
           unpresence = false;
           break;
@@ -87,6 +87,21 @@ export class AppComponent implements OnInit {
       unpresence && this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
         this.onChatService.chatList = result.data;
       });
+    });
+
+    this.socketService.on(SocketEvent.RevokeMsg).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
+      // 如果请求成功，并且收到的消息不是这个房间的
+      if (o.code == 0 && o.data.chatroomId != this.onChatService.chatroomId) {
+        for (const chatItem of this.onChatService.chatList) {
+          if (chatItem.chatroomId == o.data.chatroomId && chatItem.unread > 0) {
+            chatItem.unread--;
+            chatItem.latestMsg.type = MessageType.Tips;
+            chatItem.latestMsg.content = `${chatItem.latestMsg.nickname} 撤回了一条消息`;
+            this.onChatService.chatList = this.onChatService.chatList;
+            break;
+          }
+        }
+      }
     });
 
     this.socketService.on(SocketEvent.Disconnect).subscribe(() => {

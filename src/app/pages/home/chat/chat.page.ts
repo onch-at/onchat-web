@@ -2,6 +2,7 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { Subject } from 'rxjs';
+import { MessageType } from 'src/app/common/enum';
 import { DateUtil } from 'src/app/common/util/date';
 import { ChatItem, Result } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -14,6 +15,8 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class ChatPage implements OnInit {
   subject: Subject<unknown> = new Subject();
+  /** 消息类型枚举 */
+  msgType = MessageType;
 
   @ViewChildren(IonItemSliding) ionItemSlidings: QueryList<IonItemSliding>;
 
@@ -82,7 +85,7 @@ export class ChatPage implements OnInit {
    * @param date 
    */
   isSameWeek(date: number) {
-    return DateUtil.isSameWeek(new Date(date * 1000));
+    return DateUtil.isSameWeek(new Date(date));
   }
 
   /**

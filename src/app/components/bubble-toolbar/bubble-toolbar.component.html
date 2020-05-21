@@ -5,7 +5,7 @@
     复制
   </li>
 
-  <li *ngIf="onChatService.userId === msgItem.userId && now <= (msgItem.createTime * 1000 + 120000)" class="bubble-toolbar-item ion-activatable ripple-parent" (tap)="revokeMsg()">
+  <li *ngIf="onChatService.userId === msgItem.userId && now <= (msgItem.createTime + 120000)" class="bubble-toolbar-item ion-activatable ripple-parent" (tap)="revokeMsg()">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-icon name="arrow-undo-outline"></ion-icon>
     撤回

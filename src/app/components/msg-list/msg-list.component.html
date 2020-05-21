@@ -3,13 +3,13 @@
     <span>没有更多消息</span>
   </li>
   <div *ngFor="let item of data; let index = index; trackBy: trackByFn">
-    <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime * 1000, data[index - 1].createTime * 1000)">
-      <span>{{ item.createTime * 1000 | detailDate }} {{ item.createTime * 1000 | date:'aaahh:mm' }}</span>
+    <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
+      <span>{{ item.createTime | detailDate }} {{ item.createTime | date:'aaahh:mm' }}</span>
     </li>
 
     <div [ngSwitch]="item.type">
       <li *ngSwitchCase="msgType.Tips" class="tip-item">
-        <span [innerHTML]="item.content | hyperlink | html"></span>
+        <span [innerHTML]="item.content | html"></span>
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="{ 'msg-item-right': onChatService.userId == item.userId, 'msg-item-left': onChatService.userId != item.userId }">
