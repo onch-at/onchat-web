@@ -9,7 +9,7 @@
 
     <div [ngSwitch]="item.type">
       <li *ngSwitchCase="msgType.Tips" class="tip-item">
-        <span [innerHTML]="item.content | html"></span>
+        <span [innerHTML]="item.data.content | html"></span>
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="{ 'msg-item-right': onChatService.userId == item.userId, 'msg-item-left': onChatService.userId != item.userId }">
@@ -18,7 +18,7 @@
         </div>
         <div>
           <div class="username">{{ item.nickname }}</div>
-          <span class="msg-bubble ion-activatable ripple-parent" (press)="presentPopover(item, $event)" [innerHTML]="item.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
+          <span class="msg-bubble ion-activatable ripple-parent" (press)="presentPopover(item, $event)" [innerHTML]="item.data.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
         </div>
       </li>
     </div>

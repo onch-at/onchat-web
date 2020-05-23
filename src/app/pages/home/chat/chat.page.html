@@ -24,11 +24,11 @@
             <span [ngSwitch]="item.latestMsg.type">
               <span *ngSwitchCase="msgType.Text">
                 {{ item.latestMsg.userId == onChatService.userId ? '我' : item.latestMsg.nickname }}：
-                <span [innerHTML]="item.latestMsg.content"></span>
+                <span [innerHTML]="item.latestMsg.data.content"></span>
               </span>
 
               <span *ngSwitchCase="msgType.Tips">
-                <span [innerHTML]="item.latestMsg.content"></span>
+                <span [innerHTML]="item.latestMsg.data.content"></span>
               </span>
             </span>
           </p>

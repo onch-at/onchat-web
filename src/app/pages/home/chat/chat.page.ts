@@ -27,27 +27,6 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<MsgItem>) => {
-    //   if (o.code == 0) {
-    //     let unpresence = true; // 收到的消息所属房间是否存在于列表当中(默认不存在)
-    //     for (const chatItem of this.onChatService.chatList) {
-    //       if (chatItem.chatroomId == o.data.chatroomId) { // 如果存在
-    //         console.log(this.onChatService.chatroomId)
-    //         if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
-    //           chatItem.unread = 0;
-    //         } else {
-    //           chatItem.unread++;
-    //         }
-    //         chatItem.latestMsg = o.data;
-    //         chatItem.updateTime = +new Date() / 1000;
-    //         this.onChatService.chatList = this.onChatService.chatList;
-    //         unpresence = false;
-    //         break;
-    //       }
-    //     }
-    //     unpresence && this.refresh();
-    //   }
-    // });
 
   }
 

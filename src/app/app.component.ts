@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
             chatItem.unread > 0 && chatItem.unread--;
             chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
             chatItem.latestMsg.type = MessageType.Tips;
-            chatItem.latestMsg.content = chatItem.latestMsg.nickname + ' 撤回了一条消息';
+            chatItem.latestMsg.data.content = chatItem.latestMsg.nickname + ' 撤回了一条消息';
             this.onChatService.chatList = this.onChatService.chatList;
             break;
           }

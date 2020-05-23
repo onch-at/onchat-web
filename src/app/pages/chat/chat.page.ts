@@ -11,7 +11,7 @@ import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 // 文本消息最长长度
-const MSG_MAX_LENGTH: number = 4096;
+const MSG_MAX_LENGTH: number = 3000;
 
 @Component({
   selector: 'app-chat',
@@ -88,7 +88,7 @@ export class ChatPage implements OnInit {
         for (const msgItem of this.msgList) {
           if (msgItem.id == o.data.msgId) { // 移除被撤回的那条消息
             msgItem.type = MessageType.Tips;
-            msgItem.content = `<a target="_blank" href="/card/${msgItem.userId}">${msgItem.nickname}</a> 撤回了一条消息`;
+            msgItem.data.content = `<a target="_blank" href="/card/${msgItem.userId}">${msgItem.nickname}</a> 撤回了一条消息`;
             break;
           }
         }
@@ -226,9 +226,10 @@ export class ChatPage implements OnInit {
    * 发送消息
    */
   send(textareaElement: HTMLTextAreaElement) {
-    if (this.msg.length > 4096) { return; }
+    if (this.msg.length > MSG_MAX_LENGTH) { return; }
     const msg = new Message(this.onChatService.chatroomId);
-    msg.content = this.msg;
+    // TODO 封装成一个文字消息类
+    msg.data = this.msg;
     this.socketService.message(msg);
     this.msg = '';
     textareaElement.style.height = 'auto';

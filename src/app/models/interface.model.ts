@@ -67,7 +67,7 @@ export interface MsgItem extends Entity {
     /** 消息类型 */
     type: MessageType;
     /** 消息内容 */
-    content: any;
+    data: any;
     /** 回复消息的消息记录ID */
     replyId?: number;
 }

@@ -34,7 +34,7 @@ export class Message {
     /** 消息类型（默认为文本类型） */
     type: MessageType = MessageType.Text;
     /** 消息内容 */
-    content: any;
+    data: any;
     /** 回复消息的消息记录ID */
     replyId: number = null;
 
