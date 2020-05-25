@@ -37,7 +37,7 @@
         <div class="info">
           <time>
             {{ item.updateTime | detailDate }}
-            <span *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime | date:'aaahh:mm' }}</span>
+            <ng-container *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime | date:'aaahh:mm' }}</ng-container>
           </time>
           <ion-badge [ngClass]="{'visibility-hidden': item.unread <= 0}" class="bg-danger" mode="ios">
             {{ item.unread | numLimit }}</ion-badge>

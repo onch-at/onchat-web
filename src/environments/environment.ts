@@ -22,9 +22,6 @@ export const environment = {
   chatroomUrl:           '/onchat/chatroom/',
 
   socketUrl:             'http://localhost:9501',
-
-  /** LocalStorage Key */
-  chatListKey:           'chat_list',
 };
 
 /*

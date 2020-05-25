@@ -24,7 +24,7 @@ export class UserIdResolve implements Resolve<Result<number> | number> {
 //     constructor(private onChatService: OnChatService, private localStorageService: LocalStorageService) { }
 
 //     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): ChatItem[] {
-//         const data = this.localStorageService.get(env.chatListKey);
+//         const data = this.localStorageService.get(LocalStorageKey.ChatList);
 //         if (data) { return data; }
 //     }
 // }

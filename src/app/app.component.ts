@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
-import { environment as env } from '../environments/environment';
-import { MessageType, SocketEvent } from './common/enum';
+import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
 import { ChatItem, MsgItem, Result } from './models/interface.model';
 import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -39,7 +38,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // 首先加载出缓存数据，保证用户体验
-    const data = this.localStorageService.get(env.chatListKey);
+    const data = this.localStorageService.get(LocalStorageKey.ChatList);
     if (data) { this.onChatService.chatList = data; }
 
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
@@ -98,6 +97,7 @@ export class AppComponent implements OnInit {
             chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
             chatItem.latestMsg.type = MessageType.Tips;
             chatItem.latestMsg.data.content = chatItem.latestMsg.nickname + ' 撤回了一条消息';
+            chatItem.updateTime = Date.now();
             this.onChatService.chatList = this.onChatService.chatList;
             break;
           }

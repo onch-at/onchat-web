@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
+import { LocalStorageKey } from '../common/enum';
 import { Login, Register } from '../models/form.model';
 import { ChatItem, Chatroom, MsgItem, Result } from '../models/interface.model';
 import { FeedbackService } from './feedback.service';
@@ -40,7 +41,7 @@ export class OnChatService {
       }
     }
     this._chatList = sortChatList(chatList);
-    this.localStorageService.set(env.chatListKey, this.chatList);
+    this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
   }
   get chatList(): ChatItem[] {
     return this._chatList;
@@ -57,7 +58,7 @@ export class OnChatService {
   init() {
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.chatList = result.data;
-      this.localStorageService.set(env.chatListKey, this.chatList);
+      this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
       for (const chatItem of this.chatList) {
         if (chatItem.unread > 0) {
           this.feedbackService.msgAudio.play();

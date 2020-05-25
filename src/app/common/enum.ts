@@ -53,3 +53,11 @@ export enum MessageType {
     Text   = 1,
     Tips   = 2
 }
+
+/**
+ * 枚举本地储存的KEY
+ */
+export enum LocalStorageKey {
+    /** 聊天会话列表缓存 */
+    ChatList = 'chat_list'
+}
