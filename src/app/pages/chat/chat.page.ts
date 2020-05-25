@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageType, SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/util/str';
+import { Util } from 'src/app/common/util/util';
 import { Message } from 'src/app/models/form.model';
 import { MsgItem, Result } from 'src/app/models/interface.model';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -148,9 +149,11 @@ export class ChatPage implements OnInit {
         event.target.complete();
       });
     }
-    if (isAppleWebKit()) { this.ionContent.scrollY = false; }
+    // 暴力兼容苹果内核
+    const isAppleWebKit = Util.isAppleWebKit();
+    if (isAppleWebKit) { this.ionContent.scrollY = false; }
     this.loadRecords(() => {
-      if (isAppleWebKit()) { this.ionContent.scrollY = true; }
+      if (isAppleWebKit) { this.ionContent.scrollY = true; }
       event.target.complete();
     });
   }
@@ -242,8 +245,4 @@ export class ChatPage implements OnInit {
     return (StrUtil.trimAll(this.msg) == '' || this.msg.length > MSG_MAX_LENGTH);
   }
 
-}
-
-export function isAppleWebKit() {
-  return /iphone|ipad|ipod/i.test(navigator.userAgent);
 }

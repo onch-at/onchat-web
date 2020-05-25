@@ -29,6 +29,10 @@ export class MsgListComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.onChatService.bubbleToolbarPopover = null;
+  }
+
   /**
    * 用于提升性能
    * 一般情况下，当数组内有变更时，

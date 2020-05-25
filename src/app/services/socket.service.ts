@@ -9,21 +9,30 @@ import { Message } from '../models/form.model';
   providedIn: 'root'
 })
 export class SocketService {
-  isInit: boolean = false;
 
   constructor(
     private socket: Socket,
     private cookieService: CookieService,
   ) { }
 
+  /**
+   * 初始化时执行，让后端把用户加入相应的房间
+   */
   init() {
     this.emit(SocketEvent.Init, { sessId: this.cookieService.get('PHPSESSID') });
   }
 
+  /**
+   * 让后端把用户退出相应的房间
+   */
   unload() {
     this.emit(SocketEvent.Unload, { sessId: this.cookieService.get('PHPSESSID') });
   }
 
+  /**
+   * 发送消息
+   * @param msg 
+   */
   message(msg: Message) {
     this.emit(SocketEvent.Message, {
       sessId: this.cookieService.get('PHPSESSID'),
@@ -31,6 +40,11 @@ export class SocketService {
     });
   }
 
+  /**
+   * 撤回消息
+   * @param chatroomId 
+   * @param msgId 
+   */
   revokeMsg(chatroomId: number, msgId: number) {
     this.emit(SocketEvent.RevokeMsg, {
       sessId: this.cookieService.get('PHPSESSID'),
@@ -39,21 +53,27 @@ export class SocketService {
     });
   }
 
-  join(sessId: string, chatroomId: string) {
-    this.emit(SocketEvent.UserJoin, {
-      sessId,
-      chatroomId
-    });
-  }
-
+  /**
+   * 发送事件
+   * @param eventName 事件名
+   * @param data 数据
+   * @param callback 回调
+   */
   emit(eventName: string, data?: any, callback?: CallableFunction) {
     return this.socket.emit(eventName, data, callback);
   }
 
+  /**
+   * 监听事件
+   * @param eventName 事件名
+   */
   on(eventName: string): Observable<unknown> {
     return this.socket.fromEvent(eventName);
   }
 
+  /**
+   * 断开连接
+   */
   disconnect() {
     return this.socket.disconnect();
   }
