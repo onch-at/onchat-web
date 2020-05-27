@@ -55,16 +55,27 @@ export class ChatPage implements OnInit {
       this.onChatService.userId = (typeof data.userId == 'number') ? data.userId : data.userId.data;
     });
 
-    // 记录当前房间ID，由于处理聊天列表
+    // 记录当前房间ID，用于处理聊天列表
     this.onChatService.chatroomId = this.route.snapshot.params.id;
 
     this.loadRecords();
 
-    this.onChatService.getChatroomName(this.onChatService.chatroomId).subscribe((result: Result<string>) => {
-      if (result.code === 0) {
-        this.roomName = result.data;
+    // 先去聊天列表缓存里面查，看看有没有这个房间的数据
+    if (this.onChatService.chatList) {
+      for (const chatItem of this.onChatService.chatList) {
+        if (chatItem.chatroomId == this.onChatService.chatroomId) {
+          this.roomName = chatItem.name;
+          break;
+        }
       }
-    });
+    } else { // 如果没有，才请求服务器
+      this.onChatService.getChatroomName(this.onChatService.chatroomId).subscribe((result: Result<string>) => {
+        if (result.code === 0) {
+          this.roomName = result.data;
+        }
+      });
+    }
+
 
     this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<MsgItem>) => {
       // 如果请求成功，并且收到的消息是这个房间的

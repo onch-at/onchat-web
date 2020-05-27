@@ -3,7 +3,7 @@ export class Util {
      * 复制节点文本
      * @param element 
      */
-    static copyText(element: Element) {
+    static copyText(element: Element): void {
         const range = document.createRange();
         range.selectNode(element);
         window.getSelection().removeAllRanges();
@@ -15,7 +15,7 @@ export class Util {
     /**
      * 判断浏览器内核是否为苹果
      */
-    static isAppleWebKit() {
+    static isAppleWebKit(): boolean {
         return /iphone|ipad|ipod/i.test(navigator.userAgent);
     }
 }

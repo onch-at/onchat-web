@@ -26,9 +26,7 @@ export class ChatPage implements OnInit {
     private socketService: SocketService,
   ) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   ngOnDestroy() {
     this.subject.next();

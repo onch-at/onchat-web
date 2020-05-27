@@ -11,7 +11,7 @@ export class LocalStorageService {
    * @param key 键名
    * @param value 数据
    */
-  public set(key: any, value: any): void {
+  set(key: any, value: any): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
@@ -19,7 +19,7 @@ export class LocalStorageService {
    * 获取数据
    * @param key 键名
    */
-  public get(key: any): any {
+  get(key: any): any {
     const data = localStorage.getItem(key);
     if (!data) { return false; }
     return JSON.parse(data);
@@ -29,7 +29,7 @@ export class LocalStorageService {
    * 移除数据
    * @param key 键名
    */
-  public remove(key: any): void {
+  remove(key: any): void {
     localStorage.removeItem(key);
   }
 }

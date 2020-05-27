@@ -12,19 +12,18 @@ export class AuthGuard implements CanActivate, CanLoad {
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
     const isLogin = this.onChatService.isLogin;
-    if (isLogin == null) { // 如果还没有被初始化
-      return new Observable(observer => {
-        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-          this.onChatService.isLogin = result.data;
-          observer.next(result.data);
-          return observer.complete();
-        }, () => {
-          observer.next(false);
-          return observer.complete();
-        });
+    if (isLogin !== null) { return isLogin; }
+
+    return new Observable(observer => {
+      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+        this.onChatService.isLogin = result.data;
+        observer.next(result.data);
+        return observer.complete();
+      }, () => {
+        observer.next(false);
+        return observer.complete();
       });
-    }
-    return isLogin;
+    });
   }
 
   canActivate(
@@ -32,22 +31,22 @@ export class AuthGuard implements CanActivate, CanLoad {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const isLogin = this.onChatService.isLogin;
-    if (isLogin == null) { // 如果还没有被初始化
-      return new Observable(observer => {
-        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-          this.onChatService.isLogin = result.data;
-          !result.data && this.router.navigate(['/login']); // 返回登录页面
-          observer.next(result.data);
-          return observer.complete();
-        }, () => {
-          observer.next(false);
-          return observer.complete();
-        });
-      });
+    if (isLogin !== null) {
+      !isLogin && this.router.navigate(['/login']);
+      return isLogin;
     }
 
-    !isLogin && this.router.navigate(['/login']);
-    return isLogin;
+    return new Observable(observer => {
+      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+        this.onChatService.isLogin = result.data;
+        !result.data && this.router.navigate(['/login']); // 返回登录页面
+        observer.next(result.data);
+        return observer.complete();
+      }, () => {
+        observer.next(false);
+        return observer.complete();
+      });
+    });
   }
 
 }

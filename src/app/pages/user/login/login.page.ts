@@ -68,38 +68,14 @@ export class LoginPage implements OnInit {
       this.onChatService.userId = result.data;
       this.socketService.init();
       toast.onWillDismiss().then(() => { // 在Toast即将关闭前
-        this.router.navigate(['/']);
+        return this.router.navigate(['/']);
+      }).then(() => {
         this.onChatService.init();
         this.loading = false;
       });
     } else {
       this.loading = false;
     }
-  }
-
-  async presentToastWithOptions() {
-    const toast = await this.toastController.create({
-      header: 'Toast header',
-      message: 'Click to Close',
-      position: 'top',
-      buttons: [
-        {
-          side: 'start',
-          icon: 'star',
-          text: 'Favorite',
-          handler: () => {
-            console.log('Favorite clicked');
-          }
-        }, {
-          text: 'Done',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    toast.present();
   }
 
   /**

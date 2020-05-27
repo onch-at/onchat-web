@@ -163,21 +163,21 @@ main {
 
 @keyframes jitter {
   0% {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translateY(0.195rem);
+    transform: translate3d(0, 0.195rem, 0);
   }
   100% {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes show {
   from {
-    transform: translateY(1.5rem);
+    transform: translate3d(0, 1.5rem, 0);
   }
   to {
-    transform: translateY(-1.5rem);
+    transform: translate3d(0, -1.5rem, 0);
   }
 }

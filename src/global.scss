@@ -100,12 +100,6 @@
 .text-right {
   text-align: right !important;
 }
-.float-left {
-  float: left !important;
-}
-.float-right {
-  float: right !important;
-}
 .font-weight-normal {
   font-weight: normal !important;
 }
@@ -156,6 +150,7 @@ body {
   overflow: hidden !important;
 }
 
+// 下拉刷新
 ion-refresher {
   height: 4rem;
 
@@ -178,13 +173,16 @@ ion-refresher {
     color: var(--custom-color-medium) !important;
   }
 }
+
+// Popover
 ion-popover {
-    --max-width: 75vw;
+  --max-width: 75vw;
 }
 .popover-content {
   border-radius: 1rem !important;
 }
 
+// 无限滚动
 ion-infinite-scroll {
   ion-infinite-scroll-content {
     min-height: 5rem;
@@ -283,6 +281,7 @@ ion-grid,
 ion-col {
   padding: 0;
 }
+
 // 返回按钮图标
 ion-back-button {
   --padding-start: 0.25rem;
@@ -294,6 +293,7 @@ ion-list.list-ios {
   margin: 0;
 }
 
+// 滑动列表里面的按钮
 ion-item-options {
   border: none;
   background: var(--custom-color-white);
@@ -308,6 +308,7 @@ ion-item-options {
   }
 }
 
+// 标徽
 ion-badge {
   padding: 0.1rem 0.25rem;
   font-weight: 500;
@@ -358,13 +359,12 @@ ion-toast {
   }
 }
 
+// 主要输入框
 .ipt-primary {
   color: var(--custom-color-dark);
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
 
   &:focus {
     box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
@@ -376,6 +376,7 @@ ion-toast {
   }
 }
 
+// 主要输入框的警告模式
 .ipt-primary ~ .feedback-control-invalid,
 form .feedback-form-invalid {
   color: var(--custom-color-danger);
@@ -383,6 +384,7 @@ form .feedback-form-invalid {
   transition: all 0.125s ease-in-out;
 }
 
+// 主要输入框的正常模式
 .ipt-primary.ng-valid ~ .feedback-control-invalid,
 .ipt-primary.ng-pristine ~ .feedback-control-invalid,
 form.ng-valid .feedback-form-invalid,
@@ -391,9 +393,7 @@ form.ng-pristine .feedback-form-invalid {
   opacity: 0;
 }
 
-button {
-  cursor: pointer;
-}
+// 主要按钮
 .btn-primary {
   color: #424242;
   background-color: var(--custom-color-primary);
@@ -416,6 +416,7 @@ button {
   }
 }
 
+// 二级按钮
 .btn-secondary {
   color: #616161;
   background-color: var(--custom-color-secondary);
@@ -444,72 +445,72 @@ button {
 // 向左滑出
 @keyframes slide-left {
   from {
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
   }
   to {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 // 向右滑出
 @keyframes slide-right {
   from {
-    transform: translateX(-100%);
+    transform: translate3d(-100%, 0, 0);
   }
   to {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 // 向上滑出
 @keyframes slide-up {
   from {
-    transform: translateY(100%);
+    transform: translate3d(0, 100%, 0);
   }
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 // 向下滑出
 @keyframes slide-down {
   from {
-    transform: translateY(-100%);
+    transform: translate3d(0, -100%, 0);
   }
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 // 回弹动画
 @keyframes active {
   0% {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
   }
   25% {
-    transform: scale(0.75);
+    transform: scale3d(0.75, 0.75, 1);
   }
   75% {
-    transform: scale(1.25);
+    transform: scale3d(1.25, 1.25, 1);
   }
   100% {
-    transform: scale(1.1);
+    transform: scale3d(1.1, 1.1, 1);
   }
 }
 // 淡入动画
 @keyframes fade-in {
   from {
-    transform: scale(1.075);
+    transform: scale3d(1.075, 1.075, 1);
     opacity: 0.5;
   }
   to {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
     opacity: 1;
   }
 }
 // 涟漪动画
 @keyframes ripple {
   from {
-    transform: scale(0);
+    transform: scale3d(0, 0, 1);
   }
   to {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
     opacity: 0;
   }
 }

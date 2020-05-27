@@ -12,19 +12,18 @@ export class NotAuthGuard implements CanActivate, CanLoad {
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
     const isLogin = this.onChatService.isLogin;
-    if (isLogin == null) {
-      return new Observable(observer => {
-        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-          this.onChatService.isLogin = result.data;
-          observer.next(!result.data);
-          return observer.complete();
-        }, () => {
-          observer.next(false);
-          return observer.complete();
-        });
+    if (isLogin !== null) { return !isLogin; }
+
+    return new Observable(observer => {
+      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+        this.onChatService.isLogin = result.data;
+        observer.next(!result.data);
+        return observer.complete();
+      }, () => {
+        observer.next(false);
+        return observer.complete();
       });
-    }
-    return !isLogin;
+    });
   }
 
   canActivate(
@@ -32,22 +31,23 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const isLogin = this.onChatService.isLogin;
-    if (isLogin == null) {
-      return new Observable(observer => {
-        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-          this.onChatService.isLogin = result.data;
-          result.data && this.router.navigate(['/']); // 如果已经登录了，就直接跳回首页
-
-          observer.next(!result.data);
-          return observer.complete();
-        }, () => {
-          observer.next(false);
-          return observer.complete();
-        });
-      });
+    if (isLogin !== null) {
+      isLogin && this.router.navigate(['/']);
+      return !isLogin;
     }
-    isLogin && this.router.navigate(['/']);
-    return !isLogin;
+
+    return new Observable(observer => {
+      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
+        this.onChatService.isLogin = result.data;
+        result.data && this.router.navigate(['/']); // 如果已经登录了，就直接跳回首页
+
+        observer.next(!result.data);
+        return observer.complete();
+      }, () => {
+        observer.next(false);
+        return observer.complete();
+      });
+    });
   }
 
 }

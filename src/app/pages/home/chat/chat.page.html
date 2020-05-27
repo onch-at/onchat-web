@@ -21,16 +21,16 @@
         <ion-label>
           <h2>{{ item.name }}</h2>
           <p *ngIf="item.latestMsg">
-            <span [ngSwitch]="item.latestMsg.type">
-              <span *ngSwitchCase="msgType.Text">
+            <ng-container [ngSwitch]="item.latestMsg.type">
+              <ng-container *ngSwitchCase="msgType.Text">
                 {{ item.latestMsg.userId == onChatService.userId ? '我' : item.latestMsg.nickname }}：
                 <span [innerHTML]="item.latestMsg.data.content"></span>
-              </span>
+              </ng-container>
 
-              <span *ngSwitchCase="msgType.Tips">
+              <ng-container *ngSwitchCase="msgType.Tips">
                 <span [innerHTML]="item.latestMsg.data.content"></span>
-              </span>
-            </span>
+              </ng-container>
+            </ng-container>
           </p>
           <p *ngIf="!item.latestMsg">进去打个招呼吧？</p>
         </ion-label>

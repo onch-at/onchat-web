@@ -33,15 +33,16 @@ export class OnChatService {
   /** 缓存聊天列表 */
   private _chatList: ChatItem[] = [];
   set chatList(chatList: ChatItem[]) {
-    this.unreadNum = 0;
+    this._chatList = sortChatList(chatList);
+    this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
+
     for (const chatItem of chatList) {
+      // 计算未读消息总数
       // 如果有未读消息，且总未读数大于100，则停止遍历，提升性能
       if (chatItem.unread > 0 && (this.unreadNum += chatItem.unread) >= 100) {
         break;
       }
     }
-    this._chatList = sortChatList(chatList);
-    this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
   }
   get chatList(): ChatItem[] {
     return this._chatList;
@@ -55,10 +56,10 @@ export class OnChatService {
     private feedbackService: FeedbackService,
   ) { }
 
-  init() {
+  init(): void {
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.chatList = result.data;
-      this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
+      // 循环遍历，看看有没有未读消息，有就放提示音
       for (const chatItem of this.chatList) {
         if (chatItem.unread > 0) {
           this.feedbackService.msgAudio.play();
@@ -70,10 +71,6 @@ export class OnChatService {
     this.userId == null && this.getUserId().subscribe((o: Result<number>) => {
       if (o.code == 0) { this.userId = o.data; }
     });
-  }
-
-  getUsernameByUid(uid: number) {
-    return this.http.get('/api/php/history.php?history=' + uid, HTTP_OPTIONS_JSON);
   }
 
   /**
