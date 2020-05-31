@@ -18,7 +18,7 @@ export class BubbleToolbarComponent implements OnInit {
   /** 当前时间戳 */
   now: number = Date.now();
   /** 消息类型枚举 */
-  msgType = MessageType;
+  msgType: typeof MessageType = MessageType;
 
   constructor(
     public onChatService: OnChatService,

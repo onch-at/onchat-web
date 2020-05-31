@@ -13,7 +13,7 @@ import { BubbleToolbarComponent } from '../bubble-toolbar/bubble-toolbar.compone
 })
 export class MsgListComponent implements OnInit {
   /** 消息类型枚举 */
-  msgType = MessageType;
+  msgType: typeof MessageType = MessageType;
   /** 消息记录 */
   @Input() data: MsgItem[] = [];
   /** 消息记录是否到了末尾 */
