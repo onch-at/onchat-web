@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -47,7 +47,8 @@ export class ChatPage implements OnInit {
     public onChatService: OnChatService,
     private socketService: SocketService,
     private route: ActivatedRoute,
-    private renderer2: Renderer2
+    private renderer2: Renderer2,
+    private element: ElementRef
   ) { }
 
   ngOnInit() {
@@ -119,6 +120,21 @@ export class ChatPage implements OnInit {
       this.contentElement = element;
       this.contentClientHeight = element.clientHeight;
     });
+
+    // 修改返回按钮的样式，用作未读消息显示
+    const ionBackButton = this.element.nativeElement.querySelector('ion-back-button');
+    const styleSheet = `
+      .button-text {
+        background: var(--custom-color-gray);
+        padding: .2rem .4rem;
+        font-size: .8rem;
+        border-radius: 1rem;
+      }
+      .button-text:empty {
+        background: transparent;
+      }
+    `;
+    Util.injectStyleToShadowRoot(this.renderer2, ionBackButton, styleSheet);
   }
 
   /**
