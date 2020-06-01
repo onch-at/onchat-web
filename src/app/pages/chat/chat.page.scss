@@ -31,52 +31,6 @@ ion-header {
     line-height: 1.35rem;
     padding: 0 0.75rem;
   }
-
-  .bubble-tips {
-    position: fixed;
-    top: 3.65rem;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.65rem;
-    padding: 0.1rem 0.5rem;
-    color: #424242;
-    background: var(--custom-color-primary);
-    border-radius: 1rem;
-    box-shadow: 0 0 0.25rem 0.05rem rgba(#000000, 0.125);
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-
-    &.show {
-      opacity: 0.75;
-      visibility: visible;
-      animation: bubble-tips 0.5s ease-in-out 4s forwards;
-    }
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: -0.25rem;
-      left: calc(50% - 0.25rem);
-      width: 0.5rem;
-      height: 0.5rem;
-      background: var(--custom-color-primary);
-      border-radius: 0.125rem 0 0 0;
-      transform: rotate(45deg);
-    }
-  }
-}
-
-@keyframes bubble-tips {
-  from {
-    opacity: 0.75;
-    visibility: visible;
-  }
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
 }
 
 .bottom-bar {
@@ -149,7 +103,14 @@ main {
     backdrop-filter: saturate(200%) blur(5px);
     border-radius: 1rem;
     box-shadow: 0 0 0.25rem 0.05rem rgba(#000000, 0.125);
-    transition: box-shadow 0.2s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+
+    &.show {
+      opacity: 1;
+      visibility: visible;
+    }
 
     &.active {
       box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
