@@ -130,9 +130,6 @@ export class ChatPage implements OnInit {
         font-size: .8rem;
         border-radius: 1rem;
       }
-      .button-text:empty {
-        background: transparent;
-      }
     `;
     Util.injectStyleToShadowRoot(this.renderer2, ionBackButton, styleSheet);
   }
