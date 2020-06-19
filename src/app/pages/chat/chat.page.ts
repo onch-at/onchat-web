@@ -91,7 +91,7 @@ export class ChatPage implements OnInit {
           this.hasUnread = true;
         }
         // 如果消息不是自己的，就设为已读
-        o.data.userId != this.onChatService.userId && this.onChatService.readed(this.onChatService.chatroomId).pipe(takeUntil(this.subject)).subscribe();
+        o.data.userId != this.onChatService.userId && this.onChatService.readed(this.onChatService.chatroomId).subscribe();
       }
     });
 
