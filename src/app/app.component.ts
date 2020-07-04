@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.FriendRequest).subscribe((o) => {
+    this.socketService.on(SocketEvent.FriendRequest).subscribe(o => {
       console.log(o)
     });
 
