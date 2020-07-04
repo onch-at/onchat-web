@@ -7,7 +7,7 @@
 }
 
 .tip-item {
-  margin: 1rem 0 .25rem;
+  margin: 1rem 0 0.25rem;
   text-align: center;
 
   > span {
@@ -19,7 +19,7 @@
     color: var(--custom-color-medium);
     padding: 0.25rem 0.75rem;
     background: var(--custom-color-secondary);
-    border-radius: .75rem;
+    border-radius: 0.75rem;
   }
 
   ::ng-deep a {

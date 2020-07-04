@@ -2,20 +2,20 @@
  * 枚举周
  */
 export enum WeekDay {
-    Sunday    = '周日',
-    Monday    = '周一',
-    Tuesday   = '周二',
+    Sunday = '周日',
+    Monday = '周一',
+    Tuesday = '周二',
     Wednesday = '周三',
-    Thursday  = '周四',
-    Friday    = '周五',
-    Saturday  = '周六',
+    Thursday = '周四',
+    Friday = '周五',
+    Saturday = '周六',
 }
 
 /**
  * 枚举天
  */
 export enum Day {
-    TODAY     = '今天',
+    TODAY = '今天',
     YESTERDAY = '昨天'
 }
 
@@ -24,23 +24,25 @@ export enum Day {
  */
 export enum SocketEvent {
     /** 连接打通时 */
-    Connect    = 'connect',
+    Connect = 'connect',
     /** 连接断开时 */
     Disconnect = 'disconnect',
     /** 重新连接时 */
-    Reconnect  = 'reconnect',
+    Reconnect = 'reconnect',
     /** 初始化 */
-    Init       = 'init',
+    Init = 'init',
     /** 卸载时 */
-    Unload     = 'unload',
+    Unload = 'unload',
     /** 接收到消息时 */
-    Message    = 'message',
+    Message = 'message',
     /** 收到撤回消息 */
-    RevokeMsg  = 'revoke_msg',
+    RevokeMsg = 'revoke_msg',
+    /** 好友申请 */
+    FriendRequest = 'friend_request',
     /** 加入房间 */
-    JoinRoom   = 'join_room',
+    JoinRoom = 'join_room',
     /** 退出房间 */
-    LeaveRoom  = 'leave_room'
+    LeaveRoom = 'leave_room'
 }
 
 /**
@@ -50,8 +52,8 @@ export enum MessageType {
     /** 系统消息 */
     System = 0,
     /** 文本 */
-    Text   = 1,
-    Tips   = 2
+    Text = 1,
+    Tips = 2
 }
 
 /**

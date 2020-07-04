@@ -65,6 +65,7 @@ ion-header {
     padding: 0.625rem 0.75rem;
     background: var(--custom-color-white);
     max-height: 10rem;
+    min-height: 100%;
 
     &::-webkit-scrollbar {
       display: none;

@@ -257,6 +257,7 @@ export class ChatPage implements OnInit {
     this.socketService.message(msg);
     this.msg = '';
     textareaElement.style.height = 'auto';
+    this.socketService.friendRequest(2);
   }
 
   /**

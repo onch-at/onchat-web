@@ -54,6 +54,17 @@ export class SocketService {
   }
 
   /**
+   * 好友申请
+   * @param userId 
+   */
+  friendRequest(userId: number) {
+    this.emit(SocketEvent.FriendRequest, {
+      sessId: this.cookieService.get('PHPSESSID'),
+      userId: +userId
+    });
+  }
+
+  /**
    * 发送事件
    * @param eventName 事件名
    * @param data 数据
