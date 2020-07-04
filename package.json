@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host=0.0.0.0",
-    "build": "ionic build --prod --aot --build-optimizer",
+    "build": "ionic build --prod --engine=browser",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

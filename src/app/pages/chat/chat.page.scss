@@ -19,6 +19,10 @@ ion-header {
     color: var(--custom-color-dark);
     transform: translateY(1.5rem);
     animation: show 0.5s ease-out 1.25s forwards;
+
+    &:not(.brand) {
+      font-size: 1rem;
+    }
   }
 
   ion-buttons > * {

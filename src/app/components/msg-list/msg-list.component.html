@@ -12,13 +12,16 @@
         <span [innerHTML]="item.data.content | html"></span>
       </li>
 
-      <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="{ 'msg-item-right': onChatService.userId == item.userId, 'msg-item-left': onChatService.userId != item.userId }">
+      <li *ngSwitchCase="msgType.Text" class="msg-item"
+        [ngClass]="{ 'msg-item-right': onChatService.userId == item.userId, 'msg-item-left': onChatService.userId != item.userId }">
         <!-- <div> -->
-          <ion-img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5" [routerLink]="['/card', item.userId]"></ion-img>
+        <ion-img class="avatar" [alt]="'@' + item.nickname"
+          src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5" [routerLink]="['/card', item.userId]"></ion-img>
         <!-- </div> -->
         <div>
           <div class="username">{{ item.nickname }}</div>
-          <span class="msg-bubble ion-activatable ripple-parent" (press)="presentPopover(item, $event)" [innerHTML]="item.data.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
+          <span class="msg-bubble ion-activatable ripple-parent" (press)="presentPopover(item, $event)"
+            [innerHTML]="item.data.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
         </div>
       </li>
     </ng-container>

@@ -16,10 +16,11 @@
         [routerLink]="['/chat', item.chatroomId]"
         (tap)="item.unread = 0; onChatService.chatList = onChatService.chatList;">
         <ion-thumbnail slot="start">
-          <ion-img src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg"></ion-img>
+          <ion-img [alt]="'@' + item.name" src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg">
+          </ion-img>
         </ion-thumbnail>
         <ion-label>
-          <h2>{{ item.name }}</h2>
+          <h2 class="font-weight-bold">{{ item.name }}</h2>
           <p *ngIf="item.latestMsg">
             <ng-container [ngSwitch]="item.latestMsg.type">
               <ng-container *ngSwitchCase="msgType.Text">

@@ -1,24 +1,22 @@
 ion-item {
   --padding-start: 1rem;
   --padding-end: 0;
-  --padding-top: 0;
-  --padding-bottom: 0;
+  --padding-top: 0.25rem;
+  --padding-bottom: 0.25rem;
 
   ion-thumbnail {
     margin: 0 0.75rem 0 0;
-    width: 3rem;
-    height: 3rem;
+    width: 3.25rem;
+    height: 3.25rem;
   }
 
-  h3 {
+  h2 {
     color: var(--custom-color-dark);
-    font-size: 0.85rem;
-    font-weight: bold;
+    font-size: 0.9rem;
   }
 
   p {
-    font-size: 0.75rem;
-    margin-top: 0.25rem;
+    font-size: 0.7rem;
   }
 }
 
