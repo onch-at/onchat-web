@@ -43,8 +43,9 @@ export class AppComponent implements OnInit {
 
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
       if (this.onChatService.isLogin == null) {
-        this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-          this.onChatService.isLogin = result.data;
+        this.onChatService.checkLogin().subscribe((result: Result<number>) => {
+          this.onChatService.isLogin = Boolean(result.data);
+          this.onChatService.userId = result.data || undefined;
           if (result.data) {
             this.socketService.init();
             this.onChatService.init();
@@ -110,9 +111,10 @@ export class AppComponent implements OnInit {
     });
 
     this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-        this.onChatService.isLogin = result.data;
-        if (result.data) {
+      this.onChatService.checkLogin().subscribe((result: Result<number>) => {
+        this.onChatService.isLogin = Boolean(result.data);
+        this.onChatService.userId = result.data || undefined;
+        if (this.onChatService.isLogin) {
           this.socketService.init();
           this.onChatService.init();
         }

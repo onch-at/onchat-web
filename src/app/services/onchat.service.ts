@@ -90,9 +90,10 @@ export class OnChatService {
 
   /**
    * 检测是否已经登录
+   * 成功登录则返回用户ID，否则返回零
    */
-  checkLogin(): Observable<Result<boolean>> {
-    return this.http.get<Result<boolean>>(env.userCheckLoginUrl);
+  checkLogin(): Observable<Result<number>> {
+    return this.http.get<Result<number>>(env.userCheckLoginUrl);
   }
 
   /**
@@ -105,6 +106,7 @@ export class OnChatService {
 
   /**
    * 获取用户ID
+   * 废弃：获取用户ID请采用checkLogin，成功登录则返回用户ID
    */
   getUserId(): Observable<Result<number>> {
     return this.http.get<Result<number>>(env.userIdUrl);

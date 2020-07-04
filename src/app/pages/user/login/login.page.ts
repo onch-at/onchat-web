@@ -56,7 +56,7 @@ export class LoginPage implements OnInit {
     })
   }
 
-  async presentToast(result: Result<any>) {
+  async presentToast(result: Result<number>) {
     const toast = await this.toastController.create({
       message: ' ' + result.msg,
       duration: result.code === 0 ? 1000 : 2000,

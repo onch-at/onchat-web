@@ -52,9 +52,6 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { userId: Result<number> | number }) => {
-      this.onChatService.userId = (typeof data.userId == 'number') ? data.userId : data.userId.data;
-    });
 
     // 记录当前房间ID，用于处理聊天列表
     this.onChatService.chatroomId = this.route.snapshot.params.id;

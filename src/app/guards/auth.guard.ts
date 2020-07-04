@@ -15,9 +15,10 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (isLogin !== null) { return isLogin; }
 
     return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-        this.onChatService.isLogin = result.data;
-        observer.next(result.data);
+      this.onChatService.checkLogin().subscribe((result: Result<number>) => {
+        this.onChatService.isLogin = Boolean(result.data);
+        this.onChatService.userId = result.data || undefined;
+        observer.next(this.onChatService.isLogin);
         return observer.complete();
       }, () => {
         observer.next(false);
@@ -37,10 +38,11 @@ export class AuthGuard implements CanActivate, CanLoad {
     }
 
     return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean>) => {
-        this.onChatService.isLogin = result.data;
+      this.onChatService.checkLogin().subscribe((result: Result<number>) => {
+        this.onChatService.isLogin = Boolean(result.data);
+        this.onChatService.userId = result.data || undefined;
         !result.data && this.router.navigate(['/login']); // 返回登录页面
-        observer.next(result.data);
+        observer.next(this.onChatService.isLogin);
         return observer.complete();
       }, () => {
         observer.next(false);
