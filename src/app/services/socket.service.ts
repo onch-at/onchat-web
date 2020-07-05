@@ -26,7 +26,7 @@ export class SocketService {
    * 让后端把用户退出相应的房间
    */
   unload() {
-    this.emit(SocketEvent.Unload, { sessId: this.cookieService.get('PHPSESSID') });
+    this.emit(SocketEvent.Unload);
   }
 
   /**
@@ -35,7 +35,6 @@ export class SocketService {
    */
   message(msg: Message) {
     this.emit(SocketEvent.Message, {
-      sessId: this.cookieService.get('PHPSESSID'),
       msg
     });
   }
@@ -47,7 +46,6 @@ export class SocketService {
    */
   revokeMsg(chatroomId: number, msgId: number) {
     this.emit(SocketEvent.RevokeMsg, {
-      sessId: this.cookieService.get('PHPSESSID'),
       chatroomId: +chatroomId,
       msgId: +msgId
     });
@@ -59,7 +57,6 @@ export class SocketService {
    */
   friendRequest(userId: number) {
     this.emit(SocketEvent.FriendRequest, {
-      sessId: this.cookieService.get('PHPSESSID'),
       userId: +userId
     });
   }
