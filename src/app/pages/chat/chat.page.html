@@ -2,7 +2,8 @@
   <ion-header mode="ios" class="d-flex align-items-center">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button [text]="(onChatService.unreadNum == 0 ? '' : onChatService.unreadNum) | numLimit" defaultHref="home"></ion-back-button>
+        <ion-back-button [text]="(onChatService.unreadNum == 0 ? '' : onChatService.unreadNum) | numLimit"
+          defaultHref="home"></ion-back-button>
       </ion-buttons>
 
       <ion-title class="font-weight-bold">
@@ -24,14 +25,18 @@
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
     <app-msg-list [data]="msgList" [end]="end"></app-msg-list>
-    <button appActiveClass [duration]="200" class="tips" [ngClass]="{'show': hasUnread}" (tap)="scrollToBottom()">收到新消息<ion-icon name="arrow-down-outline"></ion-icon></button>
+    <button appActiveClass [duration]="200" class="tips" [ngClass]="{'show': hasUnread}" (tap)="scrollToBottom()">收到新消息
+      <ion-icon name="arrow-down-outline"></ion-icon></button>
   </main>
 
   <div #bottomBar class="bottom-bar">
-    <textarea #textarea id="message" name="message" rows="1" class="ipt-primary" [ngClass]="{'invalid': msg.length > MSG_MAX_LENGTH}" (keyup)="onKeyup($event)" placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
+    <textarea #textarea id="message" name="message" rows="1" class="ipt-primary"
+      [ngClass]="{'invalid': msg.length > MSG_MAX_LENGTH}" (keyup)="onKeyup($event)" placeholder="来说点什么吧！"
+      [(ngModel)]="msg"></textarea>
     <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
     <label for="message">
-      <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn" (tap)="send(textarea)" [disabled]="disable()">
+      <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn"
+        (tap)="send(textarea)" [disabled]="disable()">
         <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
         <ion-ripple-effect></ion-ripple-effect>
       </button>

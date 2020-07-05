@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse } from '@angular/common/http';
-import { MessageType } from '../common/enum';
+import { FriendRequestStatus, MessageType } from '../common/enum';
 
 export interface Result<T> {
     code: number;
@@ -70,6 +70,26 @@ export interface MsgItem extends Entity {
     data: any;
     /** 回复消息的消息记录ID */
     replyId?: number;
+}
+
+/** 好友申请 */
+export interface FriendRequest extends Entity {
+    /** 申请人ID */
+    selfId: number;
+    /** 被申请人ID */
+    targetId: number;
+    /** 申请原因 */
+    requestReason: string;
+    /** 拒绝理由 */
+    rejectReason: string;
+    /** 申请人的状态 */
+    selfStatus: FriendRequestStatus;
+    /** 被申请人的状态 */
+    targetStatus: FriendRequestStatus;
+    /** 申请人的别名 */
+    selfAlias: string;
+    /** 被申请人的别名 */
+    targetAlias: string;
 }
 
 

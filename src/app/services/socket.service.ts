@@ -53,7 +53,7 @@ export class SocketService {
 
   /**
    * 好友申请
-   * @param userId 
+   * @param userId 对方的用户ID
    */
   friendRequest(userId: number) {
     this.emit(SocketEvent.FriendRequest, {

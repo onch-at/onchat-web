@@ -56,6 +56,20 @@ export enum MessageType {
     Tips = 2
 }
 
+/** 好友申请的状态 */
+export enum FriendRequestStatus {
+    /** 等待验证 */
+    Wait = 0,
+    /** 同意 */
+    Agree = 1,
+    /** 拒绝 */
+    Reject = 2,
+    /** 删除 */
+    Delete = 3,
+    /** 忽略 */
+    Ignore = 4
+}
+
 /**
  * 枚举本地储存的KEY
  */
