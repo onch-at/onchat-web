@@ -3,7 +3,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
-import { ChatItem, MsgItem, Result } from './models/interface.model';
+import { ChatItem, Message, Result } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
       console.log(o)
     });
 
-    this.socketService.on(SocketEvent.Message).subscribe((o: Result<MsgItem>) => {
+    this.socketService.on(SocketEvent.Message).subscribe((o: Result<Message>) => {
       console.log(o)
       // 如果消息不是自己的话，就播放提示音
       o.data.userId != this.onChatService.userId && this.feedbackService.msgAudio.play();

@@ -4,7 +4,7 @@ import { IonItemSliding } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { MessageType } from 'src/app/common/enum';
 import { DateUtil } from 'src/app/common/util/date';
-import { ChatItem, Result } from 'src/app/models/interface.model';
+import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 

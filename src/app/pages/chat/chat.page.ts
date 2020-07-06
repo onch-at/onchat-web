@@ -6,8 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageType, SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/util/str';
 import { Util } from 'src/app/common/util/util';
-import { Message } from 'src/app/models/form.model';
-import { MsgItem, Result } from 'src/app/models/interface.model';
+import { Message, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -27,7 +26,7 @@ export class ChatPage implements OnInit {
   /** 消息ID，用于查询指定消息段 */
   msgId: number = 0;
   /** 聊天记录 */
-  msgList: MsgItem[] = [];
+  msgList: Message[] = [];
   /** 是否是第一次查询 */
   first: boolean = true;
   /** 聊天记录是否查到末尾了 */
@@ -75,7 +74,7 @@ export class ChatPage implements OnInit {
     }
 
 
-    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<MsgItem>) => {
+    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<Message>) => {
       // 如果请求成功，并且收到的消息是这个房间的
       if (o.code == 0 && o.data.chatroomId == this.onChatService.chatroomId) {
         const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
@@ -195,10 +194,10 @@ export class ChatPage implements OnInit {
   loadRecords(complete?: CallableFunction) {
     if (this.end) { return complete && complete(); }
 
-    this.onChatService.getChatRecords(this.onChatService.chatroomId, this.msgId).subscribe((result: Result<MsgItem[]>) => {
+    this.onChatService.getChatRecords(this.onChatService.chatroomId, this.msgId).subscribe((result: Result<Message[]>) => {
       if (result.code === 0) {
         // 按照ID排序
-        // result.data.sort((a: MsgItem, b: MsgItem) => {
+        // result.data.sort((a: Message, b: Message) => {
         //   return a.id - b.id;
         // });
         // this.msgList = result.data.concat(this.msgList);
@@ -251,7 +250,7 @@ export class ChatPage implements OnInit {
    */
   send(textareaElement: HTMLTextAreaElement) {
     if (this.msg.length > MSG_MAX_LENGTH) { return; }
-    const msg = new Message(this.onChatService.chatroomId);
+    const msg = new Message(+this.onChatService.chatroomId);
     // TODO 封装成一个文字消息类
     msg.data = this.msg;
     this.socketService.message(msg);

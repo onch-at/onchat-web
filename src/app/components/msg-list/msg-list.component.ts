@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { MessageType } from 'src/app/common/enum';
-import { MsgItem } from 'src/app/models/interface.model';
+import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { BubbleToolbarComponent } from '../bubble-toolbar/bubble-toolbar.component';
@@ -15,7 +15,7 @@ export class MsgListComponent implements OnInit {
   /** 消息类型枚举 */
   msgType: typeof MessageType = MessageType;
   /** 消息记录 */
-  @Input() data: MsgItem[] = [];
+  @Input() data: Message[] = [];
   /** 消息记录是否到了末尾 */
   @Input() end: boolean;
 
@@ -40,16 +40,16 @@ export class MsgListComponent implements OnInit {
    * 如果加上trackBy方法，Angular将会知道具体的变更元素，
    * 并针对性地对此特定元素进行DOM刷新，提升页面渲染性能。
    */
-  trackByFn(index: number, item: MsgItem): number {
+  trackByFn(index: number, item: Message): number {
     return item.id;
   }
 
   /**
    * 弹出BubbleToolbar气泡工具条
-   * @param msgItem 气泡对应的MsgItem
+   * @param msgItem 气泡对应的Message
    * @param event 
    */
-  async presentPopover(msgItem: MsgItem, event: any) {
+  async presentPopover(msgItem: Message, event: any) {
     this.onChatService.bubbleToolbarPopover = await this.popoverController.create({
       component: BubbleToolbarComponent,
       componentProps: {

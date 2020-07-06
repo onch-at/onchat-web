@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StrUtil } from 'src/app/common/util/str';
 import { Login } from 'src/app/models/form.model';
-import { Result } from 'src/app/models/interface.model';
+import { Result } from 'src/app/models/onchat.model';
 import { SocketService } from 'src/app/services/socket.service';
 import { OnChatService } from '../../../services/onchat.service';
 

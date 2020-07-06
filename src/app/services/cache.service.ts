@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Cache, CacheEntry } from '../models/interface.model';
+import { Cache, CacheEntry } from '../models/onchat.model';
 
 @Injectable({
   providedIn: 'root'

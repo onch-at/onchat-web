@@ -3,7 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { SocketEvent } from '../common/enum';
-import { Message } from '../models/form.model';
+import { Message } from '../models/onchat.model';
 
 @Injectable({
   providedIn: 'root'

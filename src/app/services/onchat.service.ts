@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { LocalStorageKey } from '../common/enum';
 import { Login, Register } from '../models/form.model';
-import { ChatItem, Chatroom, MsgItem, Result } from '../models/interface.model';
+import { ChatItem, Chatroom, Message, Result } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
 import { LocalStorageService } from './local-storage.service';
 
@@ -139,8 +139,8 @@ export class OnChatService {
    * @param id 聊天室ID
    * @param msgId 页码
    */
-  getChatRecords(id: number, msgId?: number): Observable<Result<MsgItem[]>> {
-    return this.http.get<Result<MsgItem[]>>(env.chatroomUrl + id + '/records/' + msgId);
+  getChatRecords(id: number, msgId?: number): Observable<Result<Message[]>> {
+    return this.http.get<Result<Message[]>>(env.chatroomUrl + id + '/records/' + msgId);
   }
 
   /**
