@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { MessageType } from 'src/app/common/enum';
+import { ChatroomType, MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -14,10 +14,14 @@ import { BubbleToolbarComponent } from '../bubble-toolbar/bubble-toolbar.compone
 export class MsgListComponent implements OnInit {
   /** 消息类型枚举 */
   msgType: typeof MessageType = MessageType;
+  /** 聊天室类型枚举 */
+  chatroomTypes: typeof ChatroomType = ChatroomType;
   /** 消息记录 */
   @Input() data: Message[] = [];
   /** 消息记录是否到了末尾 */
   @Input() end: boolean;
+  /** 聊天室类型 */
+  @Input() chatroomType: ChatroomType;
 
   constructor(
     private popoverController: PopoverController,
@@ -25,9 +29,7 @@ export class MsgListComponent implements OnInit {
     public onChatService: OnChatService,
   ) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   ngOnDestroy() {
     this.onChatService.bubbleToolbarPopover = null;

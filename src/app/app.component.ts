@@ -3,7 +3,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
-import { ChatItem, Message, Result } from './models/onchat.model';
+import { ChatItem, FriendRequest, Message, Result } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
@@ -57,8 +57,41 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.FriendRequest).subscribe(o => {
-      console.log(o)
+    this.socketService.on(SocketEvent.FriendRequest).subscribe((o: Result<FriendRequest | FriendRequest[]>) => {
+      console.log('o: ', o);
+      if (o.code != 0) { return; } //TODO
+      if (Array.isArray(o.data)) {
+        this.onChatService.friendRequests = o.data.sort((a: FriendRequest, b: FriendRequest) => b.updateTime - a.updateTime);
+      } else {
+        const friendRequest = o.data as FriendRequest;
+        if (friendRequest.targetId == this.onChatService.userId) {
+          const friendRequests = this.onChatService.friendRequests;
+          const index = friendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
+          // 如果这条好友申请已经在列表里
+          if (index >= 0) {
+            this.onChatService.friendRequests[index] = friendRequest;
+          } else {
+            this.onChatService.friendRequests.push(friendRequest);
+            this.feedbackService.msgAudio.play();
+          }
+          this.onChatService.friendRequests = friendRequests.sort((a: FriendRequest, b: FriendRequest) => b.updateTime - a.updateTime);
+        }
+      }
+    });
+
+    this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<any>) => {
+      if (result.code == 0) {
+        // 如果申请人是自己，就播放提示音
+        result.data.selfId == this.onChatService.userId && this.feedbackService.msgAudio.play();
+
+        this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
+          this.onChatService.chatList = result.data;
+        });
+
+        const index = this.onChatService.friendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
+
+        index >= 0 && this.onChatService.friendRequests.splice(index, 1);
+      }
     });
 
     this.socketService.on(SocketEvent.Init).subscribe((o) => {

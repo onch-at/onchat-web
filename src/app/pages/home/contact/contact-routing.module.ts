@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddComponent } from './add/add.component';
 import { BuddyComponent } from './buddy/buddy.component';
 import { ChatroomComponent } from './chatroom/chatroom.component';
 import { ContactPage } from './contact.page';
-
+import { NewComponent } from './new/new.component';
 
 const routes: Routes = [
   {
@@ -12,8 +11,8 @@ const routes: Routes = [
     component: ContactPage,
     children: [
       {
-        path: 'add',
-        component: AddComponent
+        path: 'new',
+        component: NewComponent
       },
       {
         path: 'buddy',

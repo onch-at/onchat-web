@@ -21,7 +21,7 @@
       <div class="info">
         <h4>HyperLife1119</h4>
         <div class="account">
-          <div>UserID：1</div>
+          <div>UserID：{{ userId }}</div>
           <div>昵称：HyperLife1119</div>
         </div>
       </div>
@@ -43,7 +43,8 @@
         <li class="details-item">
           <label>心 情</label>
           <span class="d-flex align-items-center justify-content-end">
-            <ion-icon style="color: #ffc400; font-size: 1.25rem; margin-right: .25rem;" src="assets/svg/mood/grin-alt.svg"></ion-icon>
+            <ion-icon style="color: #ffc400; font-size: 1.25rem; margin-right: .25rem;"
+              src="assets/svg/mood/grin-alt.svg"></ion-icon>
             <small>喜</small>
           </span>
         </li>
@@ -79,7 +80,15 @@
     </div>
   </div>
   <aside class="bottom-bar">
-    <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary">
+    <button *ngIf="chatroomId" appActiveClass [duration]="200" [routerLink]="['/chat', chatroomId]"
+      class="ion-activatable ripple-parent btn-primary">
+      跟Ta聊天
+      <ion-ripple-effect></ion-ripple-effect>
+    </button>
+
+    <!-- TODO 这边以后可以和自己聊天 -->
+    <button *ngIf="!chatroomId && onChatService.userId != userId" appActiveClass [duration]="200"
+      (tap)="friendRequest()" class="ion-activatable ripple-parent btn-primary">
       加Ta好友
       <ion-ripple-effect></ion-ripple-effect>
     </button>

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { LocalStorageKey } from '../common/enum';
 import { Login, Register } from '../models/form.model';
-import { ChatItem, Chatroom, Message, Result } from '../models/onchat.model';
+import { ChatItem, Chatroom, FriendRequest, Message, Result } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
 import { LocalStorageService } from './local-storage.service';
 
@@ -29,17 +29,18 @@ export class OnChatService {
   /** 记录当前所在的聊天室ID */
   chatroomId: number = null;
   /** 未读消息总数 */
-  unreadNum: number = 0;
+  unreadMsgNum: number = 0;
+
   /** 缓存聊天列表 */
   private _chatList: ChatItem[] = [];
   set chatList(chatList: ChatItem[]) {
     this._chatList = sortChatList(chatList);
     this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
-    if (this.unreadNum > 0) { this.unreadNum = 0; }
+    if (this.unreadMsgNum > 0) { this.unreadMsgNum = 0; }
     for (const chatItem of chatList) {
       // 计算未读消息总数
       // 如果有未读消息，且总未读数大于100，则停止遍历，提升性能
-      if (chatItem.unread > 0 && (this.unreadNum += chatItem.unread) >= 100) {
+      if (chatItem.unread > 0 && (this.unreadMsgNum += chatItem.unread) >= 100) {
         break;
       }
     }
@@ -47,6 +48,9 @@ export class OnChatService {
   get chatList(): ChatItem[] {
     return this._chatList;
   }
+
+  /** 好友申请列表 */
+  friendRequests: FriendRequest[] = [];
   /** 气泡消息工具条的实例 */
   bubbleToolbarPopover: HTMLIonPopoverElement;
 
@@ -173,6 +177,15 @@ export class OnChatService {
    */
   unread(chatroomId: number): Observable<Result<null>> {
     return this.http.put<Result<null>>(env.chatListUnreadUrl + chatroomId, null);
+  }
+
+  /**
+   * 判断自己跟对方是否为好友关系
+   * 如果是好友关系，则返回私聊房间号；否则返回零
+   * @param userId 对方UserId
+   */
+  isFriend(userId: number): Observable<Result<number>> {
+    return this.http.get<Result<number>>(env.friendUrl + userId + '/isfriend');
   }
 }
 

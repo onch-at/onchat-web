@@ -12,6 +12,12 @@ aside {
     padding: 0.65rem 0;
     background: transparent;
 
+    > ion-badge {
+      position: absolute;
+      top: 0.5rem;
+      transform: translateX(0.75rem);
+    }
+
     ion-icon {
       font-size: 1.5rem;
       padding-bottom: 0.25rem;

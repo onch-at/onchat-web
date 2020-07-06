@@ -55,9 +55,20 @@ export class SocketService {
    * 好友申请
    * @param userId 对方的用户ID
    */
-  friendRequest(userId: number) {
+  friendRequest(userId: number, requestReason: string = null) {
     this.emit(SocketEvent.FriendRequest, {
-      userId: +userId
+      userId: +userId,
+      requestReason
+    });
+  }
+
+  /**
+   * 同意好友申请
+   * @param friendRequestId 好友申请实体ID
+   */
+  friendRequestAgree(friendRequestId: number) {
+    this.emit(SocketEvent.FriendRequestAgree, {
+      friendRequestId
     });
   }
 

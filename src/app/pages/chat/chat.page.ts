@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MessageType, SocketEvent } from 'src/app/common/enum';
+import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/util/str';
 import { Util } from 'src/app/common/util/util';
-import { Message, Result } from 'src/app/models/onchat.model';
+import { ChatItem, Message, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -40,6 +40,8 @@ export class ChatPage implements OnInit {
   resizeTimeout: any = null;
   /** 是否有未读消息 */
   hasUnread: boolean = false;
+  /** 聊天室类型 */
+  chatroomType: ChatroomType = ChatroomType.Group;
   subject: Subject<unknown> = new Subject();
 
   constructor(
@@ -51,21 +53,18 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-
     // 记录当前房间ID，用于处理聊天列表
     this.onChatService.chatroomId = this.route.snapshot.params.id;
 
     this.loadRecords();
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-    if (this.onChatService.chatList) {
-      for (const chatItem of this.onChatService.chatList) {
-        if (chatItem.chatroomId == this.onChatService.chatroomId) {
-          this.roomName = chatItem.name;
-          break;
-        }
-      }
-    } else { // 如果没有，才请求服务器
+    const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.onChatService.chatroomId);
+
+    if (index >= 0) {
+      this.roomName = this.onChatService.chatList[index].name;
+      this.chatroomType = this.onChatService.chatList[index].type;
+    } else {
       this.onChatService.getChatroomName(this.onChatService.chatroomId).subscribe((result: Result<string>) => {
         if (result.code === 0) {
           this.roomName = result.data;
@@ -256,7 +255,6 @@ export class ChatPage implements OnInit {
     this.socketService.message(msg);
     this.msg = '';
     textareaElement.style.height = 'auto';
-    this.socketService.friendRequest(2);
   }
 
   /**

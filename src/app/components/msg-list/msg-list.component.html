@@ -19,7 +19,7 @@
           src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5" [routerLink]="['/card', item.userId]"></ion-img>
         <!-- </div> -->
         <div>
-          <div class="username">{{ item.nickname }}</div>
+          <div class="username" *ngIf="chatroomType == chatroomTypes.Group">{{ item.nickname }}</div>
           <span class="msg-bubble ion-activatable ripple-parent" (press)="presentPopover(item, $event)"
             [innerHTML]="item.data.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
         </div>

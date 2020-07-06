@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from 'src/app/modules/shared.module';
-import { AddComponent } from './add/add.component';
 import { BuddyComponent } from './buddy/buddy.component';
 import { ChatroomComponent } from './chatroom/chatroom.component';
 import { ContactPageRoutingModule } from './contact-routing.module';
 import { ContactPage } from './contact.page';
+import { NewComponent } from './new/new.component';
 
 @NgModule({
   imports: [
@@ -18,10 +18,10 @@ import { ContactPage } from './contact.page';
     SharedModule
   ],
   declarations: [
-    AddComponent,
+    NewComponent,
     BuddyComponent,
     ChatroomComponent,
     ContactPage
   ]
 })
-export class ContactPageModule {}
+export class ContactPageModule { }

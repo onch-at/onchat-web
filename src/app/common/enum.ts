@@ -39,6 +39,10 @@ export enum SocketEvent {
     RevokeMsg = 'revoke_msg',
     /** 好友申请 */
     FriendRequest = 'friend_request',
+    /** 同意好友申请 */
+    FriendRequestAgree = 'friend_request_agree',
+    /** 拒绝好友申请 */
+    FriendRequestReject = 'friend_request_reject',
     /** 加入房间 */
     JoinRoom = 'join_room',
     /** 退出房间 */
@@ -68,6 +72,16 @@ export enum FriendRequestStatus {
     Delete = 3,
     /** 忽略 */
     Ignore = 4
+}
+
+/** 聊天室类型 */
+export enum ChatroomType {
+    /** 聊天室类型：群聊 */
+    Group = 0,
+    /** 聊天室类型：私聊 */
+    Private = 1,
+    /** 聊天室类型：单聊（就是自己跟自己聊） */
+    Single = 2,
 }
 
 /**

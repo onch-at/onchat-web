@@ -3,20 +3,32 @@
     <img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5" [routerLink]="['/card', 1]">
 
     <div class="button-group d-flex">
-      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/chat']" routerLinkActive="active">
+      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/chat']"
+        routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
-        <ion-badge [ngClass]="{'visibility-hidden': onChatService.unreadNum <= 0}" class="bg-danger" mode="ios">{{ onChatService.unreadNum | numLimit }}</ion-badge>
+        <ion-badge [ngClass]="{'visibility-hidden': onChatService.unreadMsgNum <= 0}" class="bg-danger" mode="ios">
+          {{ onChatService.unreadMsgNum | numLimit }}
+        </ion-badge>
       </ion-button>
-      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/contact']" routerLinkActive="active">
+
+      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/contact']"
+        routerLinkActive="active">
         <ion-icon slot="icon-only" name="people"></ion-icon>
+        <ion-badge [ngClass]="{'visibility-hidden': onChatService.friendRequests.length <= 0}" class="bg-danger"
+          mode="ios">
+          {{ onChatService.friendRequests.length | numLimit }}
+        </ion-badge>
       </ion-button>
-      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/profile']" routerLinkActive="active">
+
+      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/profile']"
+        routerLinkActive="active">
         <ion-icon slot="icon-only" name="person"></ion-icon>
       </ion-button>
 
       <div style="flex: auto;"></div>
 
-      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/settings']" routerLinkActive="active">
+      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/settings']"
+        routerLinkActive="active">
         <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
       </ion-button>
     </div>

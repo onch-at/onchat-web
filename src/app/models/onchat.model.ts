@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse } from '@angular/common/http';
-import { FriendRequestStatus, MessageType } from '../common/enum';
+import { ChatroomType, FriendRequestStatus, MessageType } from '../common/enum';
 
 export interface Result<T> {
     code: number;
@@ -56,7 +56,7 @@ export interface ChatItem extends IEntity {
     /** 聊天室头像缩略图 */
     avatarThumbnail: string;
     /** 聊天室类型 */
-    type: number;
+    type: ChatroomType;
     /** 最新消息 */
     latestMsg: Message
 }
@@ -104,6 +104,15 @@ export class FriendRequest extends Entity {
     selfAlias: string;
     /** 被申请人的别名 */
     targetAlias: string;
+
+    /** 申请人的用户名 */
+    selfUsername: string;
+    /** 申请人的头像 */
+    selfAvatarThumbnail: string;
+    /** 被申请人的用户名 */
+    targetUsername: string;
+    /** 被申请人的头像 */
+    targetAvatarThumbnail: string;
 }
 
 

@@ -2,7 +2,7 @@
   <ion-header mode="ios" class="d-flex align-items-center">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button [text]="(onChatService.unreadNum == 0 ? '' : onChatService.unreadNum) | numLimit"
+        <ion-back-button [text]="(onChatService.unreadMsgNum == 0 ? '' : onChatService.unreadMsgNum) | numLimit"
           defaultHref="home"></ion-back-button>
       </ion-buttons>
 
@@ -24,7 +24,9 @@
     <ion-infinite-scroll position="top" threshold="-10px" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
-    <app-msg-list [data]="msgList" [end]="end"></app-msg-list>
+
+    <app-msg-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-msg-list>
+
     <button appActiveClass [duration]="200" class="tips" [ngClass]="{'show': hasUnread}" (tap)="scrollToBottom()">收到新消息
       <ion-icon name="arrow-down-outline"></ion-icon></button>
   </main>
