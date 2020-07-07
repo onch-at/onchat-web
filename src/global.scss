@@ -300,8 +300,7 @@ ion-item-options {
 
   ion-item-option {
     color: var(--custom-color-white);
-    min-width: 4rem;
-    padding: 0 0.25rem;
+    min-width: 4.5rem;
 
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
