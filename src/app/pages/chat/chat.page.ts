@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -48,6 +48,7 @@ export class ChatPage implements OnInit {
     public onChatService: OnChatService,
     private socketService: SocketService,
     private route: ActivatedRoute,
+    private router: Router,
     private renderer2: Renderer2,
     private element: ElementRef
   ) { }
@@ -217,6 +218,8 @@ export class ChatPage implements OnInit {
         }
       } else if (result.code == 1) { // 如果没有消息
         this.end = true;
+      } else if (result.code == -3) { // 如果没有权限
+        this.router.navigate(['/']); // 没权限还想进来，回首页去吧
       }
       complete && complete();
     });

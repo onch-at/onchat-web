@@ -72,6 +72,10 @@ export class OnChatService {
       }
     });
 
+    if (this.friendRequests.length > 0) {
+      this.friendRequests = [];
+    }
+
     this.userId == null && this.getUserId().subscribe((o: Result<number>) => {
       if (o.code == 0) { this.userId = o.data; }
     });
