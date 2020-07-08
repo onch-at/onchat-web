@@ -91,3 +91,11 @@ export enum LocalStorageKey {
     /** 聊天会话列表缓存 */
     ChatList = 'chat_list'
 }
+
+/**
+ * 枚举h会话储存的KEY
+ */
+export enum SessionStorageKey {
+    /** 用户Map缓存 */
+    UserMap = 'user_map'
+}

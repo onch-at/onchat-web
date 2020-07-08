@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { LocalStorageKey } from '../common/enum';
 import { Login, Register } from '../models/form.model';
-import { ChatItem, Chatroom, FriendRequest, Message, Result } from '../models/onchat.model';
+import { ChatItem, Chatroom, FriendRequest, Message, Result, User } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
 import { LocalStorageService } from './local-storage.service';
 
@@ -63,13 +63,8 @@ export class OnChatService {
   init(): void {
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.chatList = result.data;
-      // 循环遍历，看看有没有未读消息，有就放提示音
-      for (const chatItem of this.chatList) {
-        if (chatItem.unread > 0) {
-          this.feedbackService.msgAudio.play();
-          break;
-        }
-      }
+      // 看看有没有未读消息，有就放提示音
+      this.chatList.some((v: ChatItem) => v.unread > 0) && this.feedbackService.msgAudio.play();
     });
 
     if (this.friendRequests.length > 0) {
@@ -110,6 +105,14 @@ export class OnChatService {
    */
   register(o: Register): Observable<Result<number>> {
     return this.http.post<Result<null>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
+  }
+
+  /**
+   * 通过用户ID获取用户
+   * @param $userId 用户ID
+   */
+  getUser($userId: number): Observable<Result<User>> {
+    return this.http.get<Result<User>>(env.userUrl + $userId);
   }
 
   /**

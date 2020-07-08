@@ -1,0 +1,41 @@
+<ion-content>
+  <ion-header class="d-flex align-items-center">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
+      </ion-buttons>
+
+      <ion-buttons slot="end">
+        <ion-button>
+          <ion-icon slot="icon-only" name="ellipsis-vertical" style="font-size: 1.5rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <img class="bg-img" src="https://blog.hypergo.net/images/banner/yein.jpg">
+
+  <main>
+    <img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5">
+    <h1>{{ user.username }}</h1>
+
+    <ion-item lines="none">
+      <ion-label position="stacked">好友别名</ion-label>
+      <ion-input [(ngModel)]="targetAlias" clearInput maxlength="30" placeholder="给对方起个好听的别名吧"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label position="stacked">申请原因</ion-label>
+      <ion-textarea [(ngModel)]="requestReason" clearInput maxlength="50" rows="4" placeholder="告诉对方你的好友申请原因">
+      </ion-textarea>
+    </ion-item>
+
+    <div style="flex: auto;"></div>
+
+    <button appActiveClass [duration]="200" (tap)="friendRequest()"
+      class="ion-activatable ripple-parent btn-primary btn-block">
+      立即申请
+      <ion-ripple-effect></ion-ripple-effect>
+    </button>
+  </main>
+</ion-content>

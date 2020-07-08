@@ -26,6 +26,20 @@ export class Entity implements IEntity {
 }
 
 /**
+ * 用户
+ */
+export interface User extends IEntity {
+    /** 用户名称 */
+    username: string;
+    /** 电子邮箱 */
+    email: string;
+    /** 电话号 */
+    telephone: string;
+    /** 头像缩略图 */
+    avatarThumbnail: string;
+}
+
+/**
  * 聊天室
  */
 export interface Chatroom extends IEntity {

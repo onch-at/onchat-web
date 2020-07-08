@@ -53,11 +53,14 @@ export class SocketService {
 
   /**
    * 好友申请
-   * @param userId 对方的用户ID
+   * @param userId 对方的ID
+   * @param targetAlias 设置好友别名
+   * @param requestReason 申请原因
    */
-  friendRequest(userId: number, requestReason: string = null) {
+  friendRequest(userId: number, targetAlias: string = null, requestReason: string = null) {
     this.emit(SocketEvent.FriendRequest, {
       userId: +userId,
+      targetAlias,
       requestReason
     });
   }

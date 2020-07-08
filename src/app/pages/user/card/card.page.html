@@ -19,10 +19,10 @@
     <div class="card-header">
       <img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5">
       <div class="info">
-        <h4>HyperLife1119</h4>
+        <h4>{{ user.username }}</h4>
         <div class="account">
-          <div>UserID：{{ userId }}</div>
-          <div>昵称：HyperLife1119</div>
+          <div>UserID：{{ user.id }}</div>
+          <div>昵称：{{ user.nickname || user.username }}</div>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
 
       <div class="last-online ion-activatable ripple-parent">
         <ion-icon name="time"></ion-icon>
-        最近一次上线时间：2020年02月02日
+        最近一次上线时间：{{ user.updateTime | date:'yyyy年M月d日' }}
         <ion-ripple-effect></ion-ripple-effect>
       </div>
 
@@ -74,21 +74,21 @@
 
         <li class="details-item">
           <label>电子邮箱</label>
-          <span>hyperlife1119@qq.com</span>
+          <span>{{ user.email || '未绑定' }}</span>
         </li>
       </ul>
     </div>
   </div>
   <aside class="bottom-bar">
     <button *ngIf="chatroomId" appActiveClass [duration]="200" [routerLink]="['/chat', chatroomId]"
-      class="ion-activatable ripple-parent btn-primary">
+      class="ion-activatable ripple-parent btn-primary btn-block">
       跟Ta聊天
       <ion-ripple-effect></ion-ripple-effect>
     </button>
 
     <!-- TODO 这边以后可以和自己聊天 -->
-    <button *ngIf="!chatroomId && onChatService.userId != userId" appActiveClass [duration]="200"
-      (tap)="friendRequest()" class="ion-activatable ripple-parent btn-primary">
+    <button *ngIf="!chatroomId && onChatService.userId != user.id" appActiveClass [duration]="200"
+      [routerLink]="['/friend/request', userId]" class="ion-activatable ripple-parent btn-primary btn-block">
       加Ta好友
       <ion-ripple-effect></ion-ripple-effect>
     </button>

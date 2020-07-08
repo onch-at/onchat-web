@@ -23,10 +23,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatPageModule)
   },
   {
+    path: 'friend/request',
+    loadChildren: () => import('./pages/friend/request/request.module').then(m => m.RequestPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
-  }
+  },
 ];
 
 @NgModule({

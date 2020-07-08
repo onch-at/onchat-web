@@ -1,16 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 import { UserResolve } from 'src/app/resolver/onchat.resolver';
-import { CardPage } from './card.page';
-
+import { RequestPage } from './request.page';
 
 const routes: Routes = [
   {
     path: ':userId',
-    component: CardPage,
+    component: RequestPage,
     resolve: {
       user: UserResolve
     },
+    canActivate: [
+      AuthGuard
+    ],
+    canLoad: [
+      AuthGuard
+    ],
   }
 ];
 
@@ -18,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CardPageRoutingModule { }
+export class RequestPageRoutingModule { }

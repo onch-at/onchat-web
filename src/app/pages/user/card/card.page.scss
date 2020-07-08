@@ -68,7 +68,7 @@ ion-header {
     padding-right: 0.5rem;
     flex: auto;
 
-     > * {
+    > * {
       width: calc(100vw - 8rem);
     }
 
@@ -94,7 +94,7 @@ ion-header {
     height: 3rem;
     padding: 0.3rem 0 0.1rem 0.75rem;
 
-     > * {
+    > * {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -104,11 +104,11 @@ ion-header {
   .card-content {
     padding: 0 1rem 4rem;
 
-     > *:first-child {
+    > *:first-child {
       margin-top: 0.75rem;
     }
 
-     > *:not(:last-child) {
+    > *:not(:last-child) {
       margin-bottom: 1rem;
     }
   }
@@ -179,10 +179,6 @@ ion-header {
   animation: slide-up 0.25s ease 1.25s forwards;
 
   button {
-    height: 2.5rem;
-    width: 100%;
-    font-size: 1rem;
-    border-radius: 1.25rem;
     background: rgba(var(--custom-color-primary-rgb), 0.75);
     backdrop-filter: saturate(200%) blur(5px);
 

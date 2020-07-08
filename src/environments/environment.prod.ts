@@ -3,6 +3,8 @@ export const environment = {
 
   captchaUrl: '/onchat/index/captcha',
 
+  userUrl: '/onchat/user/',
+
   userIdUrl: '/onchat/user/id',
   userLoginUrl: '/onchat/user/login',
   userRegisterUrl: '/onchat/user/register',
