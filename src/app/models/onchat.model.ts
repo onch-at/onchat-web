@@ -31,6 +31,8 @@ export class Entity implements IEntity {
 export interface User extends IEntity {
     /** 用户名称 */
     username: string;
+    /** 昵称 */
+    nickname: string;
     /** 电子邮箱 */
     email: string;
     /** 电话号 */
