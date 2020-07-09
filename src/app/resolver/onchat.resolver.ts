@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Result, User } from '../models/onchat.model';
+import { FriendRequest, Result, User } from '../models/onchat.model';
 import { OnChatService } from '../services/onchat.service';
 import { SessionStorageService } from '../services/session-storage.service';
 
+/**
+ * 用户Resolve，根据路由参数中的userId来获得user
+ */
 @Injectable({
     providedIn: 'root',
 })
@@ -21,5 +24,23 @@ export class UserResolve implements Resolve<Result<User> | User> {
         if (user) { return user; }
 
         return this.onChatService.getUser(userId);
+    }
+}
+
+/**
+ * 获取自己给对方（根据路由参数userId）发起好友申请的Resolve
+ */
+@Injectable({
+    providedIn: 'root',
+})
+export class FriendRequestByTargetIdResolve implements Resolve<Result<FriendRequest>> {
+    constructor(
+        private onChatService: OnChatService
+    ) { }
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<FriendRequest>> {
+        const userId = +route.params.userId;
+
+        return this.onChatService.getFriendRequestByTargetId(userId);
     }
 }

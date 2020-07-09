@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
-import { UserResolve } from 'src/app/resolver/onchat.resolver';
+import { NotFriendGuard } from 'src/app/guards/not-friend.guard';
+import { FriendRequestByTargetIdResolve, UserResolve } from 'src/app/resolver/onchat.resolver';
 import { RequestPage } from './request.page';
 
 const routes: Routes = [
@@ -9,13 +10,15 @@ const routes: Routes = [
     path: ':userId',
     component: RequestPage,
     resolve: {
-      user: UserResolve
+      user: UserResolve,
+      friendRequest: FriendRequestByTargetIdResolve
     },
     canActivate: [
-      AuthGuard
+      AuthGuard,
+      NotFriendGuard
     ],
     canLoad: [
-      AuthGuard
+      AuthGuard,
     ],
   }
 ];

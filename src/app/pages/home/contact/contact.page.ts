@@ -4,7 +4,7 @@ import { OnChatService } from 'src/app/services/onchat.service';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.page.html',
-  styleUrls: ['./contact.page.scss'],
+  styleUrls: ['./contact.page.scss']
 })
 export class ContactPage implements OnInit {
 

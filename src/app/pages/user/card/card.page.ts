@@ -24,7 +24,7 @@ export class CardPage implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: { user: Result<User> | User }) => {
       const user = data.user as User;
-      if (user.id) { this.user = user; }
+      user.id && (this.user = user);
 
       const result = data.user as Result<User>;
       if (result.code == 0) {

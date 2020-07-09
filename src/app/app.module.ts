@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -25,6 +26,7 @@ registerLocaleData(localeZhHans);
     PopoverComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot({

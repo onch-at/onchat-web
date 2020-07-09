@@ -116,18 +116,6 @@ export class ChatPage implements OnInit {
       this.contentElement = element;
       this.contentClientHeight = element.clientHeight;
     });
-
-    // 修改返回按钮的样式，用作未读消息显示
-    const ionBackButton = this.element.nativeElement.querySelector('ion-back-button');
-    const styleSheet = `
-      .button-text {
-        background: var(--custom-color-gray);
-        padding: .2rem .4rem;
-        font-size: .8rem;
-        border-radius: 1rem;
-      }
-    `;
-    Util.injectStyleToShadowRoot(this.renderer2, ionBackButton, styleSheet);
   }
 
   /**
@@ -171,9 +159,9 @@ export class ChatPage implements OnInit {
     }
     // 暴力兼容苹果内核
     const isAppleWebKit = Util.isAppleWebKit();
-    if (isAppleWebKit) { this.ionContent.scrollY = false; }
+    isAppleWebKit && (this.ionContent.scrollY = false);
     this.loadRecords(() => {
-      if (isAppleWebKit) { this.ionContent.scrollY = true; }
+      isAppleWebKit && (this.ionContent.scrollY = true);
       event.target.complete();
     });
   }
@@ -213,9 +201,8 @@ export class ChatPage implements OnInit {
 
         this.msgId = this.msgList[0].id;
 
-        if (result.data.length < 15) { // 如果返回的消息里少于10条，则代表这是最后一段消息了
-          this.end = true;
-        }
+        // 如果返回的消息里少于10条，则代表这是最后一段消息了
+        result.data.length < 15 && (this.end = true);
       } else if (result.code == 1) { // 如果没有消息
         this.end = true;
       } else if (result.code == -3) { // 如果没有权限

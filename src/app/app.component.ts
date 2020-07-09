@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // 首先加载出缓存数据，保证用户体验
     const data = this.localStorageService.get(LocalStorageKey.ChatList);
-    if (data) { this.onChatService.chatList = data; }
+    data && (this.onChatService.chatList = data);
 
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
       if (this.onChatService.isLogin == null) {
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
             this.onChatService.friendRequests[index] = friendRequest;
           } else {
             this.onChatService.friendRequests.push(friendRequest);
-            this.feedbackService.msgAudio.play();
+            this.feedbackService.dingDengAudio.play();
           }
           this.onChatService.friendRequests = friendRequests.sort((a: FriendRequest, b: FriendRequest) => b.updateTime - a.updateTime);
         }
@@ -82,7 +82,7 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<any>) => {
       if (result.code == 0) {
         // 如果申请人是自己，就播放提示音
-        result.data.selfId == this.onChatService.userId && this.feedbackService.msgAudio.play();
+        result.data.selfId == this.onChatService.userId && this.feedbackService.booAudio.play();
 
         this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
           this.onChatService.chatList = result.data;
@@ -101,45 +101,40 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<Message>) => {
       console.log(o)
       // 如果消息不是自己的话，就播放提示音
-      o.data.userId != this.onChatService.userId && this.feedbackService.msgAudio.play();
+      o.data.userId != this.onChatService.userId && this.feedbackService.booAudio.play();
 
-      let unpresence = true; // 收到的消息所属房间是否存在于列表当中(默认不存在)
       // 然后去列表里面找
-      for (const chatItem of this.onChatService.chatList) {
-        if (chatItem.chatroomId == o.data.chatroomId) { // 如果存在
-          if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
-            chatItem.unread = 0;
-          } else {
-            chatItem.unread++;
-          }
-          chatItem.latestMsg = o.data;
-          chatItem.updateTime = Date.now();
-          this.onChatService.chatList = this.onChatService.chatList;
-          unpresence = false;
-          break;
-        }
-      }
+      const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == o.data.chatroomId);
 
-      // 如果不存在于列表当中，就刷新数据
-      unpresence && this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
-        this.onChatService.chatList = result.data;
-      });
+      if (index >= 0) {
+        if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
+          this.onChatService.chatList[index].unread = 0;
+        } else {
+          this.onChatService.chatList[index].unread++;
+        }
+        this.onChatService.chatList[index].latestMsg = o.data;
+        this.onChatService.chatList[index].updateTime = Date.now();
+        this.onChatService.chatList = this.onChatService.chatList;
+      } else { // 如果不存在于列表当中，就刷新数据
+        this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
+          this.onChatService.chatList = result.data;
+        });
+      }
     });
 
     this.socketService.on(SocketEvent.RevokeMsg).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
-      // 如果请求成功，并且收到的消息不是这个房间的
-      if (o.code == 0) {
-        for (const chatItem of this.onChatService.chatList) {
-          if (chatItem.chatroomId == o.data.chatroomId) {
-            chatItem.unread > 0 && chatItem.unread--;
-            chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
-            chatItem.latestMsg.type = MessageType.Tips;
-            chatItem.latestMsg.data.content = chatItem.latestMsg.nickname + ' 撤回了一条消息';
-            chatItem.updateTime = Date.now();
-            this.onChatService.chatList = this.onChatService.chatList;
-            break;
-          }
-        }
+      if (o.code != 0) { return; }
+      // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
+      const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == o.data.chatroomId);
+      if (index >= 0) {
+        const chatItem = this.onChatService.chatList[index];
+        chatItem.unread > 0 && chatItem.unread--;
+        chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
+        chatItem.latestMsg.type = MessageType.Tips;
+        chatItem.latestMsg.data.content = chatItem.latestMsg.nickname + ' 撤回了一条消息';
+        chatItem.updateTime = Date.now();
+        this.onChatService.chatList[index] = chatItem;
+        this.onChatService.chatList = this.onChatService.chatList;
       }
     });
 

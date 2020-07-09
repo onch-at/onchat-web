@@ -50,6 +50,7 @@ export class ProfilePage implements OnInit {
       this.onChatService.isLogin = false;
       this.onChatService.userId = null;
       this.onChatService.chatList = [];
+      this.onChatService.friendRequests = [];
       this.socketService.unload();
       this.router.navigate(['/login']);
     });

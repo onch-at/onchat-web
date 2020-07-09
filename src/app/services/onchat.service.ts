@@ -64,12 +64,8 @@ export class OnChatService {
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.chatList = result.data;
       // 看看有没有未读消息，有就放提示音
-      this.chatList.some((v: ChatItem) => v.unread > 0) && this.feedbackService.msgAudio.play();
+      this.chatList.some((v: ChatItem) => v.unread > 0) && this.feedbackService.booAudio.play();
     });
-
-    if (this.friendRequests.length > 0) {
-      this.friendRequests = [];
-    }
 
     this.userId == null && this.getUserId().subscribe((o: Result<number>) => {
       if (o.code == 0) { this.userId = o.data; }
@@ -187,12 +183,20 @@ export class OnChatService {
   }
 
   /**
+   * 根据对方的UID来获取FriendRequest
+   * @param targetId 对方UserId
+   */
+  getFriendRequestByTargetId(targetId: number): Observable<Result<FriendRequest>> {
+    return this.http.get<Result<FriendRequest>>(env.friendUrl + '/request/target/' + targetId);
+  }
+
+  /**
    * 判断自己跟对方是否为好友关系
    * 如果是好友关系，则返回私聊房间号；否则返回零
-   * @param userId 对方UserId
+   * @param targetId 对方UserId
    */
-  isFriend(userId: number): Observable<Result<number>> {
-    return this.http.get<Result<number>>(env.friendUrl + userId + '/isfriend');
+  isFriend(targetId: number): Observable<Result<number>> {
+    return this.http.get<Result<number>>(env.friendUrl + targetId + '/isfriend');
   }
 }
 

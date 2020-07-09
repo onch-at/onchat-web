@@ -78,6 +78,11 @@ ion-item {
     border-radius: 1rem;
     overflow: hidden;
 
+    &:focus-within {
+        box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
     > ion-label {
         font-size: 0.95rem;
         margin: 0.5rem 0 0;

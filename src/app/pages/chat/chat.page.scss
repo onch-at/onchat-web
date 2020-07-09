@@ -125,6 +125,13 @@ main {
   }
 }
 
+ion-back-button::part(text) {
+  background: var(--custom-color-gray);
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  border-radius: 1rem;
+}
+
 @keyframes jitter {
   0% {
     transform: translate3d(0, 0, 0);

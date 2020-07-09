@@ -7,8 +7,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class FeedbackService {
-  /** 消息提示音：啵 */
-  msgAudio: HTMLAudioElement = new Audio('/assets/audio/boo.mp3');
+  /** 提示音：啵 */
+  booAudio: HTMLAudioElement = new Audio('/assets/audio/boo.mp3');
+  /** 提示音：叮噔 */
+  dingDengAudio: HTMLAudioElement = new Audio('/assets/audio/ding-deng.mp3');
 
   constructor() { }
 
