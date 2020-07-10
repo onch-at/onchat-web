@@ -27,17 +27,17 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  async presentAlertConfirm(header: string, msg: string, confirmHandler: CallableFunction, cancelHandler?: CallableFunction) {
+  async presentAlertConfirm(header: string, message: string, confirmHandler: CallableFunction, cancelHandler?: CallableFunction) {
     const alert = await this.alertController.create({
-      header: header,
-      message: msg,
+      header,
+      message,
       buttons: [
         {
           text: '取消',
           handler: () => { cancelHandler && cancelHandler(); }
         }, {
           text: '确定',
-          handler: () => { confirmHandler(); }
+          handler: () => confirmHandler()
         }
       ]
     });

@@ -9,10 +9,6 @@
   overflow: hidden;
   z-index: 99;
 
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.75);
-  }
-
   .avatar {
     opacity: 0.9;
     margin: 0.35rem;
@@ -48,13 +44,6 @@
     justify-content: space-around;
     align-items: center;
 
-    @media (prefers-color-scheme: dark) {
-      --color: rgba(var(--custom-color-light-rgb), 0.55);
-      --color-hover: var(--custom-color-light);
-      --color-focused: var(--custom-color-light);
-      --color-activated: var(--custom-color-light);
-    }
-
     &::before {
       content: "";
       position: absolute;
@@ -68,10 +57,6 @@
     &.active {
       --color: var(--custom-color-white);
       animation: active 0.4s ease-out forwards;
-
-      @media (prefers-color-scheme: dark) {
-        --color: var(--custom-color-light);
-      }
     }
 
     &.active::before {

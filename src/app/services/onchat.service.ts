@@ -183,11 +183,27 @@ export class OnChatService {
   }
 
   /**
-   * 根据对方的UID来获取FriendRequest
-   * @param targetId 对方UserId
+   * 根据被申请人的UID来获取FriendRequest
+   * @param targetId 被申请人的ID
    */
   getFriendRequestByTargetId(targetId: number): Observable<Result<FriendRequest>> {
     return this.http.get<Result<FriendRequest>>(env.friendUrl + '/request/target/' + targetId);
+  }
+
+  /**
+   * 根据申请人的UID来获取FriendRequest
+   * @param selfId 申请人的UID
+   */
+  getFriendRequestBySelfId(selfId: number): Observable<Result<FriendRequest>> {
+    return this.http.get<Result<FriendRequest>>(env.friendUrl + '/request/self/' + selfId);
+  }
+
+  /**
+   * 根据ID来获取FriendRequest
+   * @param id FriendRequest Id
+   */
+  getFriendRequestById(id: number): Observable<Result<FriendRequest>> {
+    return this.http.get<Result<FriendRequest>>(env.friendUrl + '/request/' + id);
   }
 
   /**

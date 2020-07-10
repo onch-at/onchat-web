@@ -27,6 +27,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/friend/request/request.module').then(m => m.RequestPageModule)
   },
   {
+    path: 'friend/handle',
+    loadChildren: () => import('./pages/friend/handle/handle.module').then(m => m.HandlePageModule)
+  },
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'

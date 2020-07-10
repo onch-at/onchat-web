@@ -79,7 +79,7 @@ ion-header {
       line-height: 3.5rem;
       color: var(--custom-color-white);
       font-weight: bolder;
-      text-shadow: 0 0 1rem var(--custom-color-black);
+      text-shadow: 0 0 0.75rem var(--custom-color-black);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -177,17 +177,4 @@ ion-header {
   width: calc(100vw - 1.5rem);
   transform: translateY(100%);
   animation: slide-up 0.25s ease 1.25s forwards;
-
-  button {
-    background: rgba(var(--custom-color-primary-rgb), 0.75);
-    backdrop-filter: saturate(200%) blur(5px);
-
-    ion-icon {
-      margin-right: 0.25rem;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0.75);
-    }
-  }
 }

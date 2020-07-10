@@ -29,7 +29,7 @@ export class CardPage implements OnInit {
       const result = data.user as Result<User>;
       if (result.code == 0) {
         this.user = result.data;
-        this.sessionStorageService.addUser(this.user);
+        this.sessionStorageService.setUser(this.user);
       }
     });
 

@@ -1,0 +1,45 @@
+<ion-content>
+  <ion-header class="d-flex align-items-center">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
+      </ion-buttons>
+
+      <!-- <ion-title class="color-white">好友申请</ion-title> -->
+
+      <ion-buttons slot="end">
+        <ion-button [routerLink]="['/card', user.id]">
+          <ion-icon slot="icon-only" name="person-outline" style="font-size: 1.5rem; --ionicon-stroke-width: 45px;">
+          </ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <img class="bg-img" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5">
+
+  <main>
+    <img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5">
+    <h1>{{ user.username }}</h1>
+
+    <ion-item lines="none">
+      <ion-label position="stacked">申请原因</ion-label>
+      <p>{{ friendRequest.requestReason }}</p>
+    </ion-item>
+
+    <div style="flex: auto;"></div>
+
+    <ion-buttons>
+      <button appActiveClass [duration]="200" (tap)="reject()"
+        class="ion-activatable ripple-parent btn-secondary btn-block">
+        拒绝申请
+        <ion-ripple-effect></ion-ripple-effect>
+      </button>
+      <button appActiveClass [duration]="200" (tap)="agree()"
+        class="ion-activatable ripple-parent btn-primary btn-block">
+        同意申请
+        <ion-ripple-effect></ion-ripple-effect>
+      </button>
+    </ion-buttons>
+  </main>
+</ion-content>

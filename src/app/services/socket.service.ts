@@ -68,10 +68,12 @@ export class SocketService {
   /**
    * 同意好友申请
    * @param friendRequestId 好友申请实体ID
+   * @param selfAlias 设置好友别名
    */
-  friendRequestAgree(friendRequestId: number) {
+  friendRequestAgree(friendRequestId: number, selfAlias: string = null) {
     this.emit(SocketEvent.FriendRequestAgree, {
-      friendRequestId
+      friendRequestId,
+      selfAlias
     });
   }
 

@@ -85,10 +85,18 @@ ion-item {
         --color: var(--custom-color-dark);
     }
 
+    > p {
+        flex: 1;
+        font-size: 1rem;
+        margin: 0 0 0.4rem;
+        padding: 0.25rem 0;
+        color: var(--custom-color-medium);
+    }
+
     > ion-input,
     > ion-textarea {
         font-size: 1rem;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.35rem;
         --padding-top: 0.25rem;
         --padding-bottom: 0.25rem;
         --padding-end: 0;
@@ -100,7 +108,17 @@ ion-item {
     }
 }
 
-.btn-block,
+ion-buttons {
+    .btn-block {
+        flex: 1;
+
+        &:first-child {
+            margin-right: 1rem;
+        }
+    }
+}
+
+ion-buttons,
 ion-item {
     width: 90vw;
     flex-shrink: 0;

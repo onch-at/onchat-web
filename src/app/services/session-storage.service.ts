@@ -40,7 +40,7 @@ export class SessionStorageService {
    * 添加用户到会话储存
    * @param user 用户实体
    */
-  addUser(user: User): void {
+  setUser(user: User): void {
     const userMap: { [index: number]: User } = this.get(SessionStorageKey.UserMap) || {};
     userMap[user.id] = user;
     this.set(SessionStorageKey.UserMap, userMap);

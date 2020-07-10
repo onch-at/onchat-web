@@ -34,6 +34,12 @@
 .color-secondary {
   color: var(--custom-color-secondary) !important;
 }
+.color-white {
+  color: var(--custom-color-white) !important;
+}
+.color-black {
+  color: var(--custom-color-black) !important;
+}
 .color-dark {
   color: var(--custom-color-dark) !important;
 }
@@ -57,6 +63,9 @@
 }
 .bg-white {
   background-color: var(--custom-color-white) !important;
+}
+.bg-black {
+  background-color: var(--custom-color-black) !important;
 }
 .bg-danger {
   background-color: var(--custom-color-danger) !important;
@@ -208,15 +217,11 @@ ion-content {
 ion-progress-bar {
   --background: rgba(var(--custom-color-primary-rgb), 0.125);
   --progress-background: rgba(var(--custom-color-primary-rgb), 0.625);
-
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.85);
-  }
 }
 
 // 警告框
 ion-alert {
-  backdrop-filter: saturate(200%) blur(2.5px);
+  backdrop-filter: saturate(125%) blur(2.5px);
 
   @media (prefers-color-scheme: dark) {
     backdrop-filter: saturate(100%) blur(2.5px);
@@ -224,7 +229,7 @@ ion-alert {
 
   .alert-wrapper.sc-ion-alert-ios {
     min-width: 16rem;
-    max-width: 17rem;
+    max-width: 85vw;
     background: var(--custom-color-white);
     border-radius: 1rem;
     box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
@@ -249,11 +254,45 @@ ion-alert {
   .alert-message.sc-ion-alert-ios {
     color: var(--custom-color-dark);
     font-size: 0.85rem;
-    -webkit-padding-start: 1rem;
     padding-inline-start: 1rem;
-    -webkit-padding-end: 1rem;
     padding-inline-end: 1rem;
     padding-bottom: 1.325rem;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .alert-input-group.sc-ion-alert-ios {
+    color: var(--custom-color-dark);
+    font-size: 0.85rem;
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
+    padding-bottom: 1rem;
+
+    .alert-input.sc-ion-alert-ios {
+      margin-top: 0.5rem;
+      border-radius: 0.75rem;
+      width: 16rem;
+    }
+
+    input {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    textarea {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+
+    input,
+    textarea {
+      padding-inline-start: 0.5rem;
+      padding-inline-end: 0.5rem;
+      background: var(--custom-color-white);
+      border: 0.05rem solid var(--custom-color-gray);
+    }
   }
 
   .alert-button.sc-ion-alert-ios {
@@ -301,10 +340,6 @@ ion-item-options {
   ion-item-option {
     color: var(--custom-color-white);
     min-width: 4.5rem;
-
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0.75);
-    }
   }
 }
 
@@ -333,9 +368,13 @@ ion-toast {
   --start: 10px;
   --end: 10px;
   --border-radius: 1.5rem;
+}
 
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.75);
+input,
+textarea {
+  &::selection {
+    color: var(--custom-color-white);
+    background: rgba(var(--custom-color-primary-rgb), 0.75);
   }
 }
 
@@ -343,10 +382,6 @@ ion-toast {
 .brand {
   font-family: "Alibaba-Sans-Black";
   letter-spacing: -0.05em;
-
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.85);
-  }
 
   &::before {
     content: "On";
@@ -407,18 +442,15 @@ form.ng-pristine .feedback-form-invalid {
   }
 
   &[disabled] {
-    opacity: 0.5;
+    color: rgba(#424242, 0.75);
+    background-color: rgba(var(--custom-color-primary-rgb), 0.5);
     pointer-events: none;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.75);
   }
 }
 
 // 二级按钮
 .btn-secondary {
-  color: #616161;
+  color: var(--custom-color-dark);
   background-color: var(--custom-color-secondary);
 
   &:hover {
@@ -429,8 +461,29 @@ form.ng-pristine .feedback-form-invalid {
   }
 }
 
+.btn-danger {
+  position: relative;
+  color: var(--custom-color-danger);
+  background-color: var(--custom-color-white);
+
+  // &::after {
+  //   content: "";
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   background-color: rgba(var(--custom-color-danger-rgb), 0.3);
+  // }
+
+  &.active {
+    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-danger-rgb), 0.75);
+  }
+}
+
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-danger {
   padding: 0;
   margin: 0;
 
@@ -444,7 +497,8 @@ form.ng-pristine .feedback-form-invalid {
 
 .ipt-primary,
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-danger {
   box-shadow: none;
   transition: all 0.15s ease-in-out, box-shadow 0.2s ease-in-out;
 }

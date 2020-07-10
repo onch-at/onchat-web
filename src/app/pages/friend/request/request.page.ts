@@ -34,18 +34,16 @@ export class RequestPage implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((data: { user: Result<User> | User, friendRequest: Result<FriendRequest> }) => {
-      const user = data.user as User;
-      user.id && (this.user = user);
-
-      const resultUser = data.user as Result<User>;
-      if (resultUser.code == 0) {
-        this.user = resultUser.data;
-        this.sessionStorageService.addUser(this.user);
+      if ((data.user as User).id) {
+        this.user = data.user as User;
+      } else if ((data.user as Result<User>).code == 0) {
+        this.user = (data.user as Result<User>).data;
+        this.sessionStorageService.setUser(this.user);
       }
 
       const resultFriendRequest = data.friendRequest;
       // 如果之前有申请过，就把之前填过的信息补全上去
-      if (resultFriendRequest.code == 0 && resultFriendRequest.data) {
+      if (resultFriendRequest.code == 0) {
         this.targetAlias = resultFriendRequest.data.targetAlias || '';
         this.requestReason = resultFriendRequest.data.requestReason || '';
       }
@@ -59,7 +57,7 @@ export class RequestPage implements OnInit {
 
       o.code == 0 && (o.msg = '好友申请已发出，等待对方验证');
 
-      this.presentToast(o as Result<FriendRequest>);
+      this.presentToast(o.msg);
 
       o.code == 0 && setTimeout(() => {
         this.router.navigate(['/'])
@@ -72,10 +70,10 @@ export class RequestPage implements OnInit {
     this.subject.complete();
   }
 
-  async presentToast(result: Result<FriendRequest>) {
+  async presentToast(message: string) {
     const toast = await this.toastController.create({
-      message: ' ' + result.msg,
-      duration: result.code === 0 ? 1000 : 2000,
+      message: ' ' + message,
+      duration: 2000,
       color: 'dark',
     });
     toast.present();
