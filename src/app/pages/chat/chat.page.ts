@@ -4,8 +4,8 @@ import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
-import { StrUtil } from 'src/app/common/util/str';
-import { Util } from 'src/app/common/util/util';
+import { StrUtil } from 'src/app/common/utils/str.util';
+import { SysUtil } from 'src/app/common/utils/sys.util';
 import { ChatItem, Message, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -158,7 +158,7 @@ export class ChatPage implements OnInit {
       });
     }
     // 暴力兼容苹果内核
-    const isAppleWebKit = Util.isAppleWebKit();
+    const isAppleWebKit = SysUtil.isAppleWebKit();
     isAppleWebKit && (this.ionContent.scrollY = false);
     this.loadRecords(() => {
       isAppleWebKit && (this.ionContent.scrollY = true);

@@ -55,6 +55,14 @@ export class HandlePage implements OnInit {
         }, 250);
       }
     });
+
+    this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest>) => {
+      if (result.code == 0 && result.data.selfId == this.user.id) {
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 250);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -74,13 +82,14 @@ export class HandlePage implements OnInit {
         }
       }
     ], (data: KeyValue<string, any>) => {
-      this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias'] || null);
+      this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias'] || undefined);
     });
   }
 
   reject() {
     this.presentAlertWithInput('拒绝申请', [
       {
+        name: 'rejectReason',
         type: 'textarea',
         placeholder: '或许可以告诉对方你拒绝的原因',
         cssClass: 'ipt-primary',
@@ -89,8 +98,8 @@ export class HandlePage implements OnInit {
           maxlength: 50
         }
       }
-    ], () => {
-
+    ], (data: KeyValue<string, any>) => {
+      this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason'] || undefined);
     });
   }
 

@@ -34,7 +34,24 @@ export class NewComponent implements OnInit {
         }
       }
     ], (data: KeyValue<string, any>) => {
-      this.socketService.friendRequestAgree(friendRequestId, data['selfAlias'] || null);
+      this.socketService.friendRequestAgree(friendRequestId, data['selfAlias'] || undefined);
+    });
+  }
+
+  friendRequestReject(friendRequestId: number) {
+    this.presentAlertWithInput('拒绝申请', [
+      {
+        name: 'rejectReason',
+        type: 'textarea',
+        placeholder: '或许可以告诉对方你拒绝的原因',
+        cssClass: 'ipt-primary',
+        attributes: {
+          rows: 4,
+          maxlength: 50
+        }
+      }
+    ], (data: KeyValue<string, any>) => {
+      this.socketService.friendRequestReject(friendRequestId, data['rejectReason'] || undefined);
     });
   }
 

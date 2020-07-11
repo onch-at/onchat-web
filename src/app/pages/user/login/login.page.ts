@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { StrUtil } from 'src/app/common/util/str';
+import { StrUtil } from 'src/app/common/utils/str.util';
 import { Login } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
 import { SocketService } from 'src/app/services/socket.service';

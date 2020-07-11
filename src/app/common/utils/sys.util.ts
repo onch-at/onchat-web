@@ -1,6 +1,6 @@
 import { Renderer2 } from '@angular/core';
 
-export class Util {
+export class SysUtil {
     /**
      * 复制节点文本
      * @param element 

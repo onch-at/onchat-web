@@ -78,6 +78,18 @@ export class SocketService {
   }
 
   /**
+   * 拒绝好友申请
+   * @param friendRequestId 好友申请实体ID
+   * @param rejectReason 拒绝原因
+   */
+  friendRequestReject(friendRequestId: number, rejectReason: string = null) {
+    this.emit(SocketEvent.FriendRequestReject, {
+      friendRequestId,
+      rejectReason
+    });
+  }
+
+  /**
    * 发送事件
    * @param eventName 事件名
    * @param data 数据

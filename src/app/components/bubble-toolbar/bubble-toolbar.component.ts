@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MessageType } from 'src/app/common/enum';
-import { Util } from 'src/app/common/util/util';
+import { SysUtil } from 'src/app/common/utils/sys.util';
 import { Message } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -31,7 +31,7 @@ export class BubbleToolbarComponent implements OnInit {
    * 复制文本消息
    */
   copyText() {
-    Util.copyText(this.element);
+    SysUtil.copyText(this.element);
     this.dismiss();
   }
 

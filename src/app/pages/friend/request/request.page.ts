@@ -80,7 +80,7 @@ export class RequestPage implements OnInit {
   }
 
   friendRequest() {
-    this.socketService.friendRequest(this.user.id, this.targetAlias || null, this.requestReason || null);
+    this.socketService.friendRequest(this.user.id, this.targetAlias || undefined, this.requestReason || undefined);
   }
 
 }

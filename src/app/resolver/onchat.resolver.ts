@@ -80,19 +80,3 @@ export class FriendRequestResolve implements Resolve<Result<FriendRequest>> {
         return this.onChatService.getFriendRequestById(friendRequestId);
     }
 }
-
-@Injectable({
-    providedIn: 'root',
-})
-export class TestResolve implements Resolve<boolean> {
-    constructor(
-        private onChatService: OnChatService
-    ) { }
-
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        console.log('route: ', route);
-
-
-        return true;
-    }
-}

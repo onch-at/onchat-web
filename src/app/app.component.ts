@@ -3,6 +3,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
+import { EntityUtil } from './common/utils/entity.util';
 import { ChatItem, FriendRequest, Message, Result } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit {
     const data = this.localStorageService.get(LocalStorageKey.ChatList);
     data && (this.onChatService.chatList = data);
 
+    // 连接打通时
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
       if (this.onChatService.isLogin == null) {
         this.onChatService.checkLogin().subscribe((result: Result<number>) => {
@@ -57,29 +59,28 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.FriendRequest).subscribe((o: Result<FriendRequest | FriendRequest[]>) => {
+    // 发起/收到好友申请时
+    this.socketService.on(SocketEvent.FriendRequest).subscribe((o: Result<FriendRequest>) => {
       console.log('o: ', o);
       if (o.code != 0) { return; } //TODO
-      if (Array.isArray(o.data)) {
-        this.onChatService.friendRequests = o.data.sort((a: FriendRequest, b: FriendRequest) => b.updateTime - a.updateTime);
-        this.feedbackService.dingDengAudio.play();
-      } else {
-        const friendRequest = o.data as FriendRequest;
-        if (friendRequest.targetId == this.onChatService.userId) {
-          const friendRequests = this.onChatService.friendRequests;
-          const index = friendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
-          // 如果这条好友申请已经在列表里
-          if (index >= 0) {
-            this.onChatService.friendRequests[index] = friendRequest;
-          } else {
-            this.onChatService.friendRequests.push(friendRequest);
-            this.feedbackService.dingDengAudio.play();
-          }
-          this.onChatService.friendRequests = friendRequests.sort((a: FriendRequest, b: FriendRequest) => b.updateTime - a.updateTime);
+      const friendRequest = o.data as FriendRequest;
+      // 收到好友申请提示，判断自己是不是被申请人
+      if (friendRequest.targetId == this.onChatService.userId) {
+        const friendRequests = this.onChatService.friendRequests;
+        const index = friendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
+        // 如果这条好友申请已经在列表里
+        if (index >= 0) {
+          this.onChatService.friendRequests[index] = friendRequest; // 静默更改
+        } else {
+          this.onChatService.friendRequests.unshift(friendRequest);
+          this.feedbackService.dingDengAudio.play();
         }
+
+        this.onChatService.friendRequests = EntityUtil.sortByUpdateTime(friendRequests) as FriendRequest[];
       }
     });
 
+    // 同意好友申请/收到同意好友申请
     this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<any>) => {
       console.log('result: ', result);
       if (result.code == 0) {
@@ -98,10 +99,30 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.Init).subscribe((o) => {
-      console.log(o)
+    // 拒绝好友申请/收到拒绝好友申请
+    this.socketService.on(SocketEvent.FriendRequestReject).subscribe((result: Result<FriendRequest>) => {
+      console.log('result: ', result);
+      if (result.code == 0) {
+        const friendRequest = result.data;
+        // 如果申请人是自己，就播放提示音
+        friendRequest.selfId == this.onChatService.userId && this.feedbackService.dingDengAudio.play();
+
+        friendRequest.targetId == this.onChatService.userId && this.presentToast('已拒绝该好友申请');
+
+        const index = this.onChatService.friendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
+
+        index >= 0 && this.onChatService.friendRequests.splice(index, 1);
+
+        // this.onChatService.friendRequests.unshift(friendRequest);
+      }
     });
 
+    // 初始化时 暂时没有信息返回
+    // this.socketService.on(SocketEvent.Init).subscribe((o) => {
+    //   console.log(o)
+    // });
+
+    // 收到消息时
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<Message>) => {
       console.log(o)
       // 如果消息不是自己的话，就播放提示音
@@ -126,6 +147,7 @@ export class AppComponent implements OnInit {
       }
     });
 
+    // 撤回消息时
     this.socketService.on(SocketEvent.RevokeMsg).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
       if (o.code != 0) { return; }
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
@@ -142,10 +164,12 @@ export class AppComponent implements OnInit {
       }
     });
 
+    // 连接断开时
     this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
       this.presentToast('与服务器断开连接！');
     });
 
+    // 重连时
     this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
       this.onChatService.checkLogin().subscribe((result: Result<number>) => {
         this.onChatService.isLogin = Boolean(result.data);

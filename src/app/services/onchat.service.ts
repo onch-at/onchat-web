@@ -36,7 +36,9 @@ export class OnChatService {
   set chatList(chatList: ChatItem[]) {
     this._chatList = sortChatList(chatList);
     this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
-    if (this.unreadMsgNum > 0) { this.unreadMsgNum = 0; }
+
+    this.unreadMsgNum > 0 && (this.unreadMsgNum = 0);
+
     for (const chatItem of chatList) {
       // 计算未读消息总数
       // 如果有未读消息，且总未读数大于100，则停止遍历，提升性能
@@ -51,6 +53,7 @@ export class OnChatService {
 
   /** 好友申请列表 */
   friendRequests: FriendRequest[] = [];
+
   /** 气泡消息工具条的实例 */
   bubbleToolbarPopover: HTMLIonPopoverElement;
 
@@ -61,14 +64,22 @@ export class OnChatService {
   ) { }
 
   init(): void {
+    /** 获取聊天列表 */
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.chatList = result.data;
       // 看看有没有未读消息，有就放提示音
       this.chatList.some((v: ChatItem) => v.unread > 0) && this.feedbackService.booAudio.play();
     });
 
-    this.userId == null && this.getUserId().subscribe((o: Result<number>) => {
-      if (o.code == 0) { this.userId = o.data; }
+    this.getFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
+      if (result.data.length > 0) {
+        this.friendRequests = result.data;
+        this.feedbackService.dingDengAudio.play();
+      }
+    });
+
+    !this.userId && this.getUserId().subscribe((o: Result<number>) => {
+      o.code == 0 && (this.userId = o.data);
     });
   }
 
@@ -183,6 +194,13 @@ export class OnChatService {
   }
 
   /**
+   * 获取所有正在等待验证的好友申请
+   */
+  getFriendRequests(): Observable<Result<FriendRequest[]>> {
+    return this.http.get<Result<FriendRequest[]>>(env.friendUrl + '/request');
+  }
+
+  /**
    * 根据被申请人的UID来获取FriendRequest
    * @param targetId 被申请人的ID
    */
@@ -222,7 +240,6 @@ export class OnChatService {
  */
 export function sortChatList(chatList: ChatItem[]): ChatItem[] {
   chatList.sort((a: ChatItem, b: ChatItem) => b.updateTime - a.updateTime);
-
   chatList.sort((a: ChatItem, b: ChatItem) => +b.sticky - +a.sticky);
 
   return chatList;

@@ -230,15 +230,13 @@ ion-alert {
   .alert-wrapper.sc-ion-alert-ios {
     min-width: 16rem;
     max-width: 85vw;
-    background: var(--custom-color-white);
+    background: rgba(var(--custom-color-white-rgb), 0.9);
     border-radius: 1rem;
     box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
   }
 
   .alert-head.sc-ion-alert-ios {
-    -webkit-padding-start: 1rem;
     padding-inline-start: 1rem;
-    -webkit-padding-end: 1rem;
     padding-inline-end: 1rem;
     padding-top: 0.75rem;
     padding-bottom: 0.5rem;
@@ -299,11 +297,15 @@ ion-alert {
     height: 2.5rem;
     border-width: 0.25px;
     color: var(--custom-color-dark);
-  }
 
-  .alert-button.sc-ion-alert-ios:last-child {
-    font-weight: normal;
-    color: var(--custom-color-primary);
+    &:last-child {
+      font-weight: normal;
+      color: var(--custom-color-primary);
+    }
+
+    &.ion-activated {
+      background-color: var(--custom-color-secondary);
+    }
   }
 
   .alert-button-inner {
