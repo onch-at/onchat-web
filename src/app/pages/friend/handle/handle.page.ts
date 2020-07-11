@@ -1,6 +1,10 @@
+import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
@@ -15,7 +19,7 @@ export class HandlePage implements OnInit {
   /** 用户 */
   user: User;
   friendRequest: FriendRequest;
-  text = ''
+  subject: Subject<unknown> = new Subject();
 
   constructor(
     public onChatService: OnChatService,
@@ -43,6 +47,19 @@ export class HandlePage implements OnInit {
 
       this.friendRequest = data.friendRequest.data;
     });
+
+    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.subject)).subscribe((result: Result<any>) => {
+      if (result.code == 0 && result.data.selfId == this.user.id) {
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 250);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
   agree() {
@@ -52,13 +69,12 @@ export class HandlePage implements OnInit {
         type: 'text',
         placeholder: '顺便给对方起个好听的别名吧',
         cssClass: 'ipt-primary',
-        value: this.text,
         attributes: {
           maxlength: 30
         }
       }
-    ], (data: { [key: string]: any }) => {
-      this.socketService.friendRequestAgree(this.friendRequest.id, data.selfAlias);
+    ], (data: KeyValue<string, any>) => {
+      this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias'] || null);
     });
   }
 
@@ -88,7 +104,7 @@ export class HandlePage implements OnInit {
           handler: () => { cancelHandler && cancelHandler(); }
         }, {
           text: '确认',
-          handler: (data: { [key: string]: any }) => confirmHandler(data)
+          handler: (data: KeyValue<string, any>) => confirmHandler(data)
         }
       ]
     });

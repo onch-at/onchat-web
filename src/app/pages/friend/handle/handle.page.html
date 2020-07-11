@@ -24,7 +24,7 @@
 
     <ion-item lines="none">
       <ion-label position="stacked">申请原因</ion-label>
-      <p>{{ friendRequest.requestReason }}</p>
+      <p>{{ friendRequest.requestReason || user.username + ' 申请添加你为好友' }}</p>
     </ion-item>
 
     <div style="flex: auto;"></div>

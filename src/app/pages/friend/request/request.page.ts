@@ -60,8 +60,8 @@ export class RequestPage implements OnInit {
       this.presentToast(o.msg);
 
       o.code == 0 && setTimeout(() => {
-        this.router.navigate(['/'])
-      }, 500);
+        this.router.navigate(['/']);
+      }, 250);
     });
   }
 

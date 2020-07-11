@@ -62,6 +62,7 @@ export class AppComponent implements OnInit {
       if (o.code != 0) { return; } //TODO
       if (Array.isArray(o.data)) {
         this.onChatService.friendRequests = o.data.sort((a: FriendRequest, b: FriendRequest) => b.updateTime - a.updateTime);
+        this.feedbackService.dingDengAudio.play();
       } else {
         const friendRequest = o.data as FriendRequest;
         if (friendRequest.targetId == this.onChatService.userId) {
@@ -80,9 +81,12 @@ export class AppComponent implements OnInit {
     });
 
     this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<any>) => {
+      console.log('result: ', result);
       if (result.code == 0) {
         // 如果申请人是自己，就播放提示音
         result.data.selfId == this.onChatService.userId && this.feedbackService.booAudio.play();
+
+        result.data.targetId == this.onChatService.userId && this.presentToast('成功添加新好友');
 
         this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
           this.onChatService.chatList = result.data;
@@ -157,7 +161,7 @@ export class AppComponent implements OnInit {
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
-      message: message,
+      message,
       duration: 2000,
       color: 'dark'
     });
