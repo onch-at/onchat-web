@@ -4,7 +4,7 @@
   </li>
   <ng-container *ngFor="let item of data; let index = index; trackBy: trackByFn">
     <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
-      <span>{{ item.createTime | detailDate }} {{ item.createTime | date:'aaahh:mm' }}</span>
+      <span>{{ item.createTime | detailDate }} {{ item.createTime | date:'BBBBhh:mm' }}</span>
     </li>
 
     <ng-container [ngSwitch]="item.type">

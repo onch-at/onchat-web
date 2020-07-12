@@ -97,7 +97,8 @@ export class ChatPage implements OnInit {
         for (const msgItem of this.msgList) {
           if (msgItem.id == o.data.msgId) { // 移除被撤回的那条消息
             msgItem.type = MessageType.Tips;
-            msgItem.data.content = `<a target="_blank" href="/card/${msgItem.userId}">${msgItem.nickname}</a> 撤回了一条消息`;
+            const name = msgItem.userId == this.onChatService.userId ? '我' : msgItem.nickname;
+            msgItem.data.content = `<a target="_blank" href="/card/${msgItem.userId}">${name}</a> 撤回了一条消息`;
             break;
           }
         }

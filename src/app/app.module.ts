@@ -1,5 +1,6 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import localeExtraZhHans from '@angular/common/locales/extra/zh-Hans';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,7 +19,7 @@ import { PopoverComponent } from './components/popover/popover.component';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 
-registerLocaleData(localeZhHans);
+registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
 
 @NgModule({
   declarations: [AppComponent, PopoverComponent],
