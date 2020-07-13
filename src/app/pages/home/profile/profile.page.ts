@@ -36,7 +36,7 @@ export class ProfilePage implements OnInit {
           text: '取消',
           handler: () => { cancelHandler && cancelHandler(); }
         }, {
-          text: '确定',
+          text: '确认',
           handler: () => confirmHandler()
         }
       ]
@@ -50,7 +50,8 @@ export class ProfilePage implements OnInit {
       this.onChatService.isLogin = false;
       this.onChatService.userId = null;
       this.onChatService.chatList = [];
-      this.onChatService.friendRequests = [];
+      this.onChatService.receiveFriendRequests = [];
+      this.onChatService.sendFriendRequests = [];
       this.socketService.unload();
       this.router.navigate(['/login']);
     });

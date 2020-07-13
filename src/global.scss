@@ -339,9 +339,18 @@ ion-item-options {
   border: none;
   background: var(--custom-color-white);
 
-  ion-item-option {
+  &.item-options-start > ion-item-option:last-child {
+    border-radius: 0 0.75rem 0.75rem 0;
+  }
+
+  &.item-options-end > ion-item-option:first-child {
+    border-radius: 0.75rem 0 0 0.75rem;
+  }
+
+  > ion-item-option {
     color: var(--custom-color-white);
     min-width: 4.5rem;
+    overflow: hidden;
   }
 }
 

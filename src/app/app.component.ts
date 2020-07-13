@@ -3,7 +3,6 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
-import { EntityUtil } from './common/utils/entity.util';
 import { ChatItem, FriendRequest, Message, Result } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -63,20 +62,25 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.FriendRequest).subscribe((o: Result<FriendRequest>) => {
       console.log('o: ', o);
       if (o.code != 0) { return; } //TODO
-      const friendRequest = o.data as FriendRequest;
+      const friendRequest = o.data;
       // 收到好友申请提示，判断自己是不是被申请人
       if (friendRequest.targetId == this.onChatService.userId) {
-        const friendRequests = this.onChatService.friendRequests;
-        const index = friendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
+        const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
         // 如果这条好友申请已经在列表里
         if (index >= 0) {
-          this.onChatService.friendRequests[index] = friendRequest; // 静默更改
+          this.onChatService.receiveFriendRequests[index] = friendRequest; // 静默更改
         } else {
-          this.onChatService.friendRequests.unshift(friendRequest);
+          this.onChatService.receiveFriendRequests.unshift(friendRequest);
           this.feedbackService.dingDengAudio.play();
         }
-
-        this.onChatService.friendRequests = EntityUtil.sortByUpdateTime(friendRequests) as FriendRequest[];
+      } else if (friendRequest.selfId == this.onChatService.userId) {
+        const index = this.onChatService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
+        // 如果这条好友申请已经在列表里
+        if (index >= 0) {
+          this.onChatService.sendFriendRequests[index] = friendRequest; // 静默更改
+        } else {
+          this.onChatService.sendFriendRequests.unshift(friendRequest);
+        }
       }
     });
 
@@ -93,9 +97,9 @@ export class AppComponent implements OnInit {
           this.onChatService.chatList = result.data;
         });
 
-        const index = this.onChatService.friendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
+        const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
 
-        index >= 0 && this.onChatService.friendRequests.splice(index, 1);
+        index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
       }
     });
 
@@ -109,11 +113,11 @@ export class AppComponent implements OnInit {
 
         friendRequest.targetId == this.onChatService.userId && this.presentToast('已拒绝该好友申请');
 
-        const index = this.onChatService.friendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
+        const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
 
-        index >= 0 && this.onChatService.friendRequests.splice(index, 1);
+        index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
 
-        // this.onChatService.friendRequests.unshift(friendRequest);
+        // this.onChatService.receiveFriendRequests.unshift(friendRequest);
       }
     });
 

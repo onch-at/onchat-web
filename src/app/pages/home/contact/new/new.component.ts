@@ -1,6 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { FriendRequestStatus } from 'src/app/common/enum';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -10,6 +11,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./new.component.scss'],
 })
 export class NewComponent implements OnInit {
+  friendRequestStatus: typeof FriendRequestStatus = FriendRequestStatus;
 
   constructor(
     public onChatService: OnChatService,

@@ -51,8 +51,10 @@ export class OnChatService {
     return this._chatList;
   }
 
-  /** 好友申请列表 */
-  friendRequests: FriendRequest[] = [];
+  /** 我的收到好友申请列表 */
+  receiveFriendRequests: FriendRequest[] = [];
+  /** 我的发起的好友申请列表 */
+  sendFriendRequests: FriendRequest[] = [];
 
   /** 气泡消息工具条的实例 */
   bubbleToolbarPopover: HTMLIonPopoverElement;
@@ -71,10 +73,16 @@ export class OnChatService {
       this.chatList.some((v: ChatItem) => v.unread > 0) && this.feedbackService.booAudio.play();
     });
 
-    this.getFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
+    this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data.length > 0) {
-        this.friendRequests = result.data;
+        this.receiveFriendRequests = result.data;
         this.feedbackService.dingDengAudio.play();
+      }
+    });
+
+    this.getSendFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
+      if (result.data.length > 0) {
+        this.sendFriendRequests = result.data;
       }
     });
 
@@ -194,10 +202,17 @@ export class OnChatService {
   }
 
   /**
-   * 获取所有正在等待验证的好友申请
+   * 获取我的收到好友申请
    */
-  getFriendRequests(): Observable<Result<FriendRequest[]>> {
-    return this.http.get<Result<FriendRequest[]>>(env.friendUrl + '/request');
+  getReceiveFriendRequests(): Observable<Result<FriendRequest[]>> {
+    return this.http.get<Result<FriendRequest[]>>(env.friendUrl + '/requests/receive');
+  }
+
+  /**
+   * 获取我的发起的好友申请（不包含已经同意的）
+   */
+  getSendFriendRequests(): Observable<Result<FriendRequest[]>> {
+    return this.http.get<Result<FriendRequest[]>>(env.friendUrl + '/requests/send');
   }
 
   /**

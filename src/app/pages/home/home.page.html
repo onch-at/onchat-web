@@ -15,9 +15,9 @@
       <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/contact']"
         routerLinkActive="active">
         <ion-icon slot="icon-only" name="people"></ion-icon>
-        <ion-badge [ngClass]="{'visibility-hidden': onChatService.friendRequests.length <= 0}" class="bg-danger"
+        <ion-badge [ngClass]="{'visibility-hidden': onChatService.receiveFriendRequests.length <= 0}" class="bg-danger"
           mode="ios">
-          {{ onChatService.friendRequests.length | numLimit }}
+          {{ onChatService.receiveFriendRequests.length | numLimit }}
         </ion-badge>
       </ion-button>
 
