@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/utils/str.util';
 import { SysUtil } from 'src/app/common/utils/sys.util';
-import { ChatItem, Message, Result } from 'src/app/models/onchat.model';
+import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -49,8 +49,7 @@ export class ChatPage implements OnInit {
     private socketService: SocketService,
     private route: ActivatedRoute,
     private router: Router,
-    private renderer2: Renderer2,
-    private element: ElementRef
+    private renderer2: Renderer2
   ) { }
 
   ngOnInit() {
@@ -66,13 +65,14 @@ export class ChatPage implements OnInit {
       this.roomName = this.onChatService.chatList[index].name;
       this.chatroomType = this.onChatService.chatList[index].type;
     } else {
-      this.onChatService.getChatroomName(this.onChatService.chatroomId).subscribe((result: Result<string>) => {
+      this.onChatService.getChatroom(this.onChatService.chatroomId).subscribe((result: Result<Chatroom>) => {
         if (result.code === 0) {
-          this.roomName = result.data;
+          const chatroom = result.data
+          this.roomName = chatroom.name;
+          this.chatroomType = chatroom.type;
         }
       });
     }
-
 
     this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<Message>) => {
       // 如果请求成功，并且收到的消息是这个房间的

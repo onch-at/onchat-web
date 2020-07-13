@@ -153,6 +153,14 @@ export class OnChatService {
   }
 
   /**
+   * 获取聊天室
+   * @param id 聊天室ID
+   */
+  getChatroom(id: number): Observable<Result<Chatroom>> {
+    return this.http.get<Result<Chatroom>>(env.chatroomUrl + id);
+  }
+
+  /**
    * 获取聊天室名称
    * @param id 聊天室ID
    */
