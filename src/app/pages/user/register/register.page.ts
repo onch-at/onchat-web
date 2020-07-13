@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { StrUtil } from 'src/app/common/utils/str.util';
 import { Register } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { environment as env } from '../../../../environments/environment';
 
@@ -60,7 +60,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private router: Router,
     private onChatService: OnChatService,
-    private toastController: ToastController,
+    private overlayService: OverlayService,
     private fb: FormBuilder,
     private socketService: SocketService,
   ) {
@@ -73,33 +73,26 @@ export class RegisterPage implements OnInit {
   register() {
     if (this.registerForm.invalid || this.loading) { return; }
     this.loading = true;
-    this.onChatService.register(new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe((result: Result<number>) => {
+    this.onChatService.register(new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe(async (result: Result<number>) => {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }
-      this.presentToast(result);
-    });
-  }
 
-  async presentToast(result: Result<number>) {
-    const toast = await this.toastController.create({
-      message: ' ' + result.msg,
-      duration: result.code === 0 ? 1000 : 2000,
-      color: 'dark',
-    });
-    toast.present();
-    if (result.code === 0) {
-      this.onChatService.isLogin = true;
-      this.onChatService.userId = result.data;
-      this.onChatService.init();
-      this.socketService.init();
-      toast.onWillDismiss().then(() => { // 在Toast即将关闭前
-        this.router.navigate(['/']);
+      const toast = this.overlayService.presentMsgToast(result.msg, result.code === 0 ? 1000 : 2000);
+      if (result.code === 0) {
+        this.onChatService.isLogin = true;
+        this.onChatService.userId = result.data;
+        this.onChatService.init();
+        this.socketService.init();
+
+        (await toast).onWillDismiss().then(() => { // 在Toast即将关闭前
+          this.router.navigate(['/']);
+          this.loading = false;
+        });
+      } else {
         this.loading = false;
-      });
-    } else {
-      this.loading = false;
-    }
+      }
+    });
   }
 
   /***

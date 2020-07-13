@@ -39,7 +39,16 @@
 
       <ion-label>
         <h2 class="font-weight-bold">{{ item.targetUsername }}</h2>
-        <p>{{ item.requestReason || '申请添加对方为好友' }}</p>
+
+        <ng-container [ngSwitch]="item.selfStatus || friendRequestStatus.Wait">
+          <p *ngSwitchCase="friendRequestStatus.Wait">
+            {{ item.requestReason ? '申请原因：' +  item.requestReason : '申请添加对方为好友' }}
+          </p>
+          <p *ngSwitchCase="friendRequestStatus.Reject">
+            {{ item.rejectReason ? '拒绝原因：' +  item.rejectReason : '对方拒绝了你的好友申请' }}
+          </p>
+          <p *ngSwitchDefault>申请添加对方为好友</p>
+        </ng-container>
       </ion-label>
 
       <ng-container [ngSwitch]="item.selfStatus || friendRequestStatus.Wait">

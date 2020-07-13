@@ -248,6 +248,15 @@ export class OnChatService {
   }
 
   /**
+   * 设置好友别名
+   * @param chatroomId 私聊聊天室ID
+   * @param alias 别名
+   */
+  setFriendAlias(chatroomId: number, alias: string): Observable<Result<null>> {
+    return this.http.put<Result<null>>(env.friendUrl + '/alias/' + chatroomId, { alias });
+  }
+
+  /**
    * 判断自己跟对方是否为好友关系
    * 如果是好友关系，则返回私聊房间号；否则返回零
    * @param targetId 对方UserId

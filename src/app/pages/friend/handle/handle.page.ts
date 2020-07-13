@@ -1,12 +1,13 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -25,7 +26,7 @@ export class HandlePage implements OnInit {
     public onChatService: OnChatService,
     private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
-    private toastController: ToastController,
+    private overlayService: OverlayService,
     private alertController: AlertController,
     private route: ActivatedRoute,
     private router: Router
@@ -41,7 +42,7 @@ export class HandlePage implements OnInit {
       }
 
       if (data.friendRequest.code != 0) {
-        this.presentToast(data.friendRequest.msg);
+        this.overlayService.presentMsgToast(data.friendRequest.msg);
         return this.router.navigate(['/']);
       }
 
@@ -71,7 +72,7 @@ export class HandlePage implements OnInit {
   }
 
   agree() {
-    this.presentAlertWithInput('同意申请', [
+    this.overlayService.presentInputAlert('同意申请', [
       {
         name: 'selfAlias',
         type: 'text',
@@ -87,7 +88,7 @@ export class HandlePage implements OnInit {
   }
 
   reject() {
-    this.presentAlertWithInput('拒绝申请', [
+    this.overlayService.presentInputAlert('拒绝申请', [
       {
         name: 'rejectReason',
         type: 'textarea',
@@ -101,33 +102,6 @@ export class HandlePage implements OnInit {
     ], (data: KeyValue<string, any>) => {
       this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason'] || undefined);
     });
-  }
-
-  async presentAlertWithInput(header: string, inputs: any[], confirmHandler: CallableFunction, cancelHandler?: CallableFunction) {
-    const alert = await this.alertController.create({
-      header,
-      inputs,
-      buttons: [
-        {
-          text: '取消',
-          handler: () => { cancelHandler && cancelHandler(); }
-        }, {
-          text: '确认',
-          handler: (data: KeyValue<string, any>) => confirmHandler(data)
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: ' ' + message,
-      duration: 2000,
-      color: 'dark',
-    });
-    toast.present();
   }
 
 }

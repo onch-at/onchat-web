@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { Component, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
@@ -8,6 +9,7 @@ import { StrUtil } from 'src/app/common/utils/str.util';
 import { SysUtil } from 'src/app/common/utils/sys.util';
 import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 // 文本消息最长长度
@@ -49,7 +51,8 @@ export class ChatPage implements OnInit {
     private socketService: SocketService,
     private route: ActivatedRoute,
     private router: Router,
-    private renderer2: Renderer2
+    private renderer2: Renderer2,
+    private overlayService: OverlayService,
   ) { }
 
   ngOnInit() {
@@ -60,7 +63,6 @@ export class ChatPage implements OnInit {
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
     const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.onChatService.chatroomId);
-
     if (index >= 0) {
       this.roomName = this.onChatService.chatList[index].name;
       this.chatroomType = this.onChatService.chatList[index].type;
@@ -253,6 +255,43 @@ export class ChatPage implements OnInit {
    */
   disable() {
     return (StrUtil.trimAll(this.msg) == '' || this.msg.length > MSG_MAX_LENGTH);
+  }
+
+  /**
+   * 设置好友别名
+   */
+  setFriendAlias() {
+    // 只有私聊才可改好友别名
+    if (this.chatroomType != ChatroomType.Private) {
+      return;
+    }
+
+    this.overlayService.presentInputAlert('好友别名', [
+      {
+        name: 'alias',
+        type: 'text',
+        value: this.roomName,
+        placeholder: '给对方起个好听的别名吧',
+        cssClass: 'ipt-primary',
+        attributes: {
+          maxlength: 30
+        }
+      }
+    ], (data: KeyValue<string, any>) => {
+      this.onChatService.setFriendAlias(this.onChatService.chatroomId, data['alias']).subscribe((result: Result<null>) => {
+        if (result.code == 0) {
+          this.roomName = data['alias'];
+          const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.onChatService.chatroomId);
+          if (index >= 0) {
+            this.onChatService.chatList[index].name = data['alias'];
+            this.onChatService.chatList = this.onChatService.chatList;
+          }
+          this.overlayService.presentMsgToast('成功修改好友别名', 1000);
+        } else {
+          this.overlayService.presentMsgToast(result.msg);
+        }
+      });
+    });
   }
 
 }

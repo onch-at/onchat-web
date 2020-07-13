@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -27,7 +27,7 @@ export class RequestPage implements OnInit {
     public onChatService: OnChatService,
     private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
-    private toastController: ToastController,
+    private overlayService: OverlayService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -57,7 +57,7 @@ export class RequestPage implements OnInit {
 
       o.code == 0 && (o.msg = '好友申请已发出，等待对方验证');
 
-      this.presentToast(o.msg);
+      this.overlayService.presentMsgToast(o.msg);
 
       o.code == 0 && setTimeout(() => {
         this.router.navigate(['/']);
@@ -68,15 +68,6 @@ export class RequestPage implements OnInit {
   ngOnDestroy() {
     this.subject.next();
     this.subject.complete();
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: ' ' + message,
-      duration: 2000,
-      color: 'dark',
-    });
-    toast.present();
   }
 
   friendRequest() {

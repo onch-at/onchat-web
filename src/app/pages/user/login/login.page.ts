@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { StrUtil } from 'src/app/common/utils/str.util';
 import { Login } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { OnChatService } from '../../../services/onchat.service';
 
@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
   constructor(
     private onChatService: OnChatService,
     private router: Router,
-    private toastController: ToastController,
+    private overlayService: OverlayService,
     private fb: FormBuilder,
     private socketService: SocketService,
   ) { }
@@ -51,31 +51,24 @@ export class LoginPage implements OnInit {
   login() {
     if (this.loginForm.invalid || this.loading) { return; }
     this.loading = true;
-    this.onChatService.login(new Login(this.loginForm.value.username, this.loginForm.value.password)).subscribe((result: Result<number>) => {
-      this.presentToast(result);
-    })
-  }
+    this.onChatService.login(new Login(this.loginForm.value.username, this.loginForm.value.password)).subscribe(async (result: Result<number>) => {
+      const toast = this.overlayService.presentMsgToast(result.msg, result.code === 0 ? 1000 : 2000);
 
-  async presentToast(result: Result<number>) {
-    const toast = await this.toastController.create({
-      message: ' ' + result.msg,
-      duration: result.code === 0 ? 1000 : 2000,
-      color: 'dark'
-    });
-    toast.present();
-    if (result.code === 0) {
-      this.onChatService.isLogin = true;
-      this.onChatService.userId = result.data;
-      this.socketService.init();
-      toast.onWillDismiss().then(() => { // 在Toast即将关闭前
-        return this.router.navigate(['/']);
-      }).then(() => {
-        this.onChatService.init();
+      if (result.code === 0) {
+        this.onChatService.isLogin = true;
+        this.onChatService.userId = result.data;
+        this.socketService.init();
+
+        (await toast).onWillDismiss().then(() => { // 在Toast即将关闭前
+          return this.router.navigate(['/']);
+        }).then(() => {
+          this.onChatService.init();
+          this.loading = false;
+        });
+      } else {
         this.loading = false;
-      });
-    } else {
-      this.loading = false;
-    }
+      }
+    })
   }
 
   /**

@@ -1,8 +1,8 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { FriendRequestStatus } from 'src/app/common/enum';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class NewComponent implements OnInit {
   constructor(
     public onChatService: OnChatService,
     private socketService: SocketService,
-    private alertController: AlertController,
+    private overlayService: OverlayService,
   ) { }
 
   ngOnInit() { }
@@ -25,7 +25,7 @@ export class NewComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.presentAlertWithInput('同意申请', [
+    this.overlayService.presentInputAlert('同意申请', [
       {
         name: 'selfAlias',
         type: 'text',
@@ -41,7 +41,7 @@ export class NewComponent implements OnInit {
   }
 
   friendRequestReject(friendRequestId: number) {
-    this.presentAlertWithInput('拒绝申请', [
+    this.overlayService.presentInputAlert('拒绝申请', [
       {
         name: 'rejectReason',
         type: 'textarea',
@@ -55,24 +55,6 @@ export class NewComponent implements OnInit {
     ], (data: KeyValue<string, any>) => {
       this.socketService.friendRequestReject(friendRequestId, data['rejectReason'] || undefined);
     });
-  }
-
-  async presentAlertWithInput(header: string, inputs: any[], confirmHandler: CallableFunction, cancelHandler?: CallableFunction) {
-    const alert = await this.alertController.create({
-      header,
-      inputs,
-      buttons: [
-        {
-          text: '取消',
-          handler: () => { cancelHandler && cancelHandler(); }
-        }, {
-          text: '确认',
-          handler: (data: KeyValue<string, any>) => confirmHandler(data)
-        }
-      ]
-    });
-
-    await alert.present();
   }
 
 }

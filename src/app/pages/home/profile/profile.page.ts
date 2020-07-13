@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -14,38 +14,23 @@ export class ProfilePage implements OnInit {
   constructor(
     private onChatService: OnChatService,
     private router: Router,
-    private alertController: AlertController,
+    private overlayService: OverlayService,
     private socketService: SocketService,
   ) { }
 
   ngOnInit() {
   }
 
-  async presentAlertLogoutConfirm() {
-    return this.presentAlertConfirm('退出登录', ' 你确定要退出登录吗？', () => {
-      this.logout();
+  async logout() {
+    return this.overlayService.presentMsgAlert('退出登录', ' 你确定要退出登录吗？', () => {
+      this.doLogout();
     });
   }
 
-  async presentAlertConfirm(header: string, message: string, confirmHandler: CallableFunction, cancelHandler?: CallableFunction) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: [
-        {
-          text: '取消',
-          handler: () => { cancelHandler && cancelHandler(); }
-        }, {
-          text: '确认',
-          handler: () => confirmHandler()
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
-  logout() {
+  /**
+   * 退出登录
+   */
+  doLogout() {
     this.onChatService.logout().subscribe(() => {
       this.onChatService.isLogin = false;
       this.onChatService.userId = null;
@@ -53,6 +38,7 @@ export class ProfilePage implements OnInit {
       this.onChatService.receiveFriendRequests = [];
       this.onChatService.sendFriendRequests = [];
       this.socketService.unload();
+
       this.router.navigate(['/login']);
     });
   }
