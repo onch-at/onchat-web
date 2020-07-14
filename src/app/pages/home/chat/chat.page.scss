@@ -33,6 +33,7 @@ ion-item {
 
   p {
     font-size: 0.7rem;
+    color: var(--custom-color-muted);
   }
 }
 
@@ -45,7 +46,7 @@ ion-item-option {
 
   time {
     display: block;
-    color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.4);
+    color: var(--custom-color-muted);
     font-size: 0.65rem;
     margin-bottom: 0.25rem;
   }

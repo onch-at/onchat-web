@@ -74,11 +74,6 @@ ion-item {
     border-radius: 1rem;
     overflow: hidden;
 
-    &:focus-within {
-        box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
-        transition: box-shadow 0.2s ease-in-out;
-    }
-
     > ion-label {
         font-size: 0.95rem;
         margin: 0.6rem 0 0;
@@ -92,20 +87,6 @@ ion-item {
         padding: 0.25rem 0;
         color: var(--custom-color-medium);
     }
-
-    > ion-input,
-    > ion-textarea {
-        font-size: 1rem;
-        margin-bottom: 0.35rem;
-        --padding-top: 0.25rem;
-        --padding-bottom: 0.25rem;
-        --padding-end: 0;
-        --color: var(--custom-color-medium);
-    }
-
-    ::ng-deep ion-input .input-clear-icon {
-        opacity: 0.75;
-    }
 }
 
 ion-buttons {
@@ -118,7 +99,7 @@ ion-buttons {
     }
 }
 
-ion-buttons,
+.bottom-bar,
 ion-item {
     width: 90vw;
     flex-shrink: 0;

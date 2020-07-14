@@ -27,8 +27,10 @@
 
     <app-msg-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-msg-list>
 
-    <button appActiveClass [duration]="200" class="tips" [ngClass]="{'show': hasUnread}" (tap)="scrollToBottom()">收到新消息
-      <ion-icon name="arrow-down-outline"></ion-icon></button>
+    <button appActiveClass [duration]="200" class="tips" [ngClass]="{'show': hasUnread}" (tap)="scrollToBottom()">
+      收到新消息
+      <ion-icon name="arrow-down-outline"></ion-icon>
+    </button>
   </main>
 
   <div #bottomBar class="bottom-bar">

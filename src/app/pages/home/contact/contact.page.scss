@@ -74,5 +74,5 @@ aside {
 router-outlet::ng-deep + * > * {
   /* 路由转场淡入 */
   opacity: 0.5;
-  animation: fade-in 0.25s ease-out forwards;
+  animation: zoom-out 0.25s ease-out forwards;
 }

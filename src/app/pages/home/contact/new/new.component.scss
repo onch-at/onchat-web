@@ -8,8 +8,8 @@ ion-item {
     border-radius: 1rem;
   }
 
-  span {
-    color: var(--custom-color-medium);
+  .status {
+    color: var(--custom-color-muted);
     font-size: 0.75rem;
     margin-right: 0.2rem;
   }

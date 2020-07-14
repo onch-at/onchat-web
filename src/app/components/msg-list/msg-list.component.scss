@@ -9,6 +9,8 @@
 .tip-item {
   margin: 1rem 0 0.25rem;
   text-align: center;
+  opacity: 0;
+  animation: fade-in 0.3s ease 0.25s forwards;
 
   > span {
     display: inline-block;

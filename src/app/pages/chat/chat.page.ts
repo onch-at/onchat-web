@@ -156,7 +156,7 @@ export class ChatPage implements OnInit {
    */
   loadMoreRecords(event) {
     if (this.first) {
-      return this.scrollToBottom(() => {
+      return this.scrollToBottom(undefined, () => {
         event.target.complete();
       });
     }
@@ -198,7 +198,7 @@ export class ChatPage implements OnInit {
         }
 
         // 如果是第一次查记录，就执行滚动
-        this.msgId == 0 && this.scrollToBottom(() => {
+        this.msgId == 0 && this.scrollToBottom(0, () => {
           this.first = false;
         });
 
@@ -231,8 +231,8 @@ export class ChatPage implements OnInit {
   /**
    * 滚到底部
    */
-  scrollToBottom(complete?: CallableFunction) {
-    this.ionContent.scrollToBottom(500).then(() => {
+  scrollToBottom(duration: number = 500, complete?: CallableFunction) {
+    this.ionContent.scrollToBottom(duration).then(() => {
       complete && complete();
     });
   }

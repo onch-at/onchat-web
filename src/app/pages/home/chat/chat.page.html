@@ -1,59 +1,59 @@
 <ion-content>
-  <ion-refresher slot="fixed" [pullFactor]="0.5" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-down" pullingText="下拉刷新" refreshingSpinner="dots" refreshingText=" 正在刷新…">
-    </ion-refresher-content>
-  </ion-refresher>
+	<ion-refresher slot="fixed" [pullFactor]="0.5" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content pullingIcon="arrow-down" pullingText="下拉刷新" refreshingSpinner="dots"
+			refreshingText=" 正在刷新…">
+		</ion-refresher-content>
+	</ion-refresher>
 
-  <!-- <ion-searchbar animated placeholder="搜索"></ion-searchbar> -->
+	<!-- <ion-searchbar animated placeholder="搜索"></ion-searchbar> -->
 
-  <ion-list class="chat-list">
-    <ion-item-sliding mode="md" *ngFor="let item of onChatService.chatList; let i = index; trackBy: trackByFn">
-      <ion-item-options side="start">
-        <ion-item-option (tap)="doSticky(item, i)" class="bg-gray color-medium">
-          {{ item.sticky ? '取消置顶' : '置顶' }}
-        </ion-item-option>
-      </ion-item-options>
+	<ion-list class="chat-list">
+		<ion-item-sliding mode="md" *ngFor="let item of onChatService.chatList; let i = index; trackBy: trackByFn">
+			<ion-item-options side="start">
+				<ion-item-option (tap)="doSticky(item, i)" class="bg-gray color-medium">
+					{{ item.sticky ? '取消置顶' : '置顶' }}
+				</ion-item-option>
+			</ion-item-options>
 
-      <ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
-        [routerLink]="['/chat', item.chatroomId]"
-        (tap)="item.unread = 0; onChatService.chatList = onChatService.chatList;">
-        <ion-thumbnail slot="start">
-          <ion-img [alt]="'@' + item.name" src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg">
-          </ion-img>
-        </ion-thumbnail>
-        <ion-label>
-          <h2 class="font-weight-bold">{{ item.name }}</h2>
-          <p *ngIf="item.latestMsg">
-            <ng-container [ngSwitch]="item.latestMsg.type">
-              <ng-container *ngSwitchCase="msgType.Text">
-                {{ item.latestMsg.userId == onChatService.userId ? '我' : item.latestMsg.nickname }}：
-                <span [innerHTML]="item.latestMsg.data.content"></span>
-              </ng-container>
+			<ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
+				[routerLink]="['/chat', item.chatroomId]"
+				(tap)="item.unread = 0; onChatService.chatList = onChatService.chatList;">
+				<ion-thumbnail slot="start">
+					<ion-img src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg"></ion-img>
+				</ion-thumbnail>
 
-              <ng-container *ngSwitchCase="msgType.Tips">
-                <span [innerHTML]="item.latestMsg.data.content"></span>
-              </ng-container>
-            </ng-container>
-          </p>
-          <p *ngIf="!item.latestMsg">进去打个招呼吧？</p>
-        </ion-label>
-        <div class="info">
-          <time>
-            {{ item.updateTime | detailDate }}
-            <ng-container *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime | date:'BBBBhh:mm' }}</ng-container>
-          </time>
-          <ion-badge [ngClass]="{'visibility-hidden': item.unread <= 0}" class="bg-danger" mode="ios">
-            {{ item.unread | numLimit }}</ion-badge>
-        </div>
-      </ion-item>
+				<ion-label>
+					<h2 class="font-weight-bold">{{ item.name }}</h2>
 
-      <ion-item-options side="end">
-        <ion-item-option class="bg-primary" (tap)="doRead(item, i)">
-          {{ item.unread == 0 ? '设为未读' : '设为已读' }}
-        </ion-item-option>
-        <ion-item-option class="bg-danger" (tap)="removeChatItem(i)">移除</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
+					<ng-container *ngIf="item.latestMsg" [ngSwitch]="item.latestMsg.type">
+						<p *ngSwitchCase="msgType.Text">
+							{{ (item.latestMsg.userId == onChatService.userId ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.content }}
+						</p>
 
-  </ion-list>
+						<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.latestMsg.data.content"></p>
+					</ng-container>
+
+					<p *ngIf="!item.latestMsg">进去打个招呼吧？</p>
+				</ion-label>
+
+				<div class="info">
+					<time>
+						{{ item.updateTime | detailDate }}
+						<ng-container *ngIf="isSameWeek(item.updateTime)">{{ item.updateTime | date:'BBBBhh:mm' }}
+						</ng-container>
+					</time>
+					<ion-badge [ngClass]="{'visibility-hidden': item.unread <= 0}" class="bg-danger" mode="ios">
+						{{ item.unread | numLimit }}</ion-badge>
+				</div>
+			</ion-item>
+
+			<ion-item-options side="end">
+				<ion-item-option class="bg-primary" (tap)="doRead(item, i)">
+					{{ item.unread == 0 ? '设为未读' : '设为已读' }}
+				</ion-item-option>
+				<ion-item-option class="bg-danger" (tap)="removeChatItem(i)">移除</ion-item-option>
+			</ion-item-options>
+		</ion-item-sliding>
+
+	</ion-list>
 </ion-content>

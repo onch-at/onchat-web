@@ -18,7 +18,7 @@ ion-header {
     font-size: 1.075rem;
     color: var(--custom-color-dark);
     transform: translateY(1.5rem);
-    animation: show 0.5s ease-out 1.25s forwards;
+    animation: title-show 0.5s ease-out 1.25s forwards;
 
     &:not(.brand) {
       font-size: 1rem;
@@ -144,7 +144,7 @@ ion-back-button::part(text) {
   }
 }
 
-@keyframes show {
+@keyframes title-show {
   from {
     transform: translate3d(0, 1.5rem, 0);
   }

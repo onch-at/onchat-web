@@ -565,8 +565,8 @@ form.ng-pristine .feedback-form-invalid {
     transform: scale3d(1.1, 1.1, 1);
   }
 }
-// 淡入动画
-@keyframes fade-in {
+// 缩小入场动画
+@keyframes zoom-out {
   from {
     transform: scale3d(1.075, 1.075, 1);
     opacity: 0.5;
@@ -584,5 +584,14 @@ form.ng-pristine .feedback-form-invalid {
   to {
     transform: scale3d(1, 1, 1);
     opacity: 0;
+  }
+}
+// 淡入动画
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
