@@ -89,10 +89,14 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<any>) => {
       console.log('result: ', result);
       if (result.code == 0) {
-        // 如果申请人是自己，就播放提示音
+        // 如果申请人是自己（我的好友申请被同意了）
         if (result.data.selfId == this.onChatService.userId) {
-          const index = this.onChatService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
+          // 去我发出的申请列表里面找这条FriendRequest，并删除
+          let index = this.onChatService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
           index >= 0 && this.onChatService.sendFriendRequests.splice(index, 1);
+          // 去我收到的申请列表里面通过找这条FriendRequest，并删除
+          index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.selfId == result.data.targetId);
+          index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
 
           this.feedbackService.booAudio.play();
         } else if (result.data.targetId == this.onChatService.userId) { // 如果自己是被申请人

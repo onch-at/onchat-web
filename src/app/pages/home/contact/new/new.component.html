@@ -16,8 +16,8 @@
 				<p>{{ item.requestReason || '申请添加你为好友' }}</p>
 			</ion-label>
 
-			<button appActiveClass [duration]="200" (touchend)="$event.preventDefault()"
-				(tap)="friendRequestAgree(item.id)" class="ion-activatable ripple-parent btn-primary">
+			<button appActiveClass [duration]="200" (tap)="friendRequestAgree(item.id)"
+				(touchend)="$event.preventDefault()" class="ion-activatable ripple-parent btn-primary">
 				同意
 				<ion-ripple-effect></ion-ripple-effect>
 			</button>
