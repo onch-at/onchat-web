@@ -124,10 +124,10 @@ export class OnChatService {
 
   /**
    * 通过用户ID获取用户
-   * @param $userId 用户ID
+   * @param userId 用户ID
    */
-  getUser($userId: number): Observable<Result<User>> {
-    return this.http.get<Result<User>>(env.userUrl + $userId);
+  getUser(userId: number): Observable<Result<User>> {
+    return this.http.get<Result<User>>(env.userUrl + userId);
   }
 
   /**

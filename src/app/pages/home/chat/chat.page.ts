@@ -11,7 +11,7 @@ import { SocketService } from 'src/app/services/socket.service';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
-  styleUrls: ['./chat.page.scss'],
+  styleUrls: ['./chat.page.scss']
 })
 export class ChatPage implements OnInit {
   subject: Subject<unknown> = new Subject();

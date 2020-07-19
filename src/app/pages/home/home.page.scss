@@ -107,7 +107,7 @@ ion-router-outlet {
 
   /* 路由转场淡入 */
   &::ng-deep .ion-page > * {
-    opacity: 0.5;
+    opacity: 0.25;
     animation: zoom-out 0.25s ease-out forwards;
   }
 }

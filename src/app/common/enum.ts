@@ -93,7 +93,7 @@ export enum LocalStorageKey {
 }
 
 /**
- * 枚举h会话储存的KEY
+ * 枚举会话储存的KEY
  */
 export enum SessionStorageKey {
     /** 用户Map缓存 */

@@ -1,7 +1,22 @@
 aside {
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
   display: flex;
-  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  z-index: 1;
+  background: var(--custom-color-white);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 0.5rem;
+    background: linear-gradient(var(--custom-color-white), transparent);
+  }
 
   button {
     position: relative;
@@ -61,7 +76,7 @@ aside {
 
   .slider {
     position: absolute;
-    bottom: 0;
+    bottom: 0.35rem;
     height: 0.25rem;
     font-size: 0.75rem;
     transform: translateX(-50%);
@@ -69,10 +84,4 @@ aside {
     border-radius: 0.25rem;
     transition: left 0.25s ease-in-out, width 0.25s ease-in-out;
   }
-}
-
-router-outlet::ng-deep + * > * {
-  /* 路由转场淡入 */
-  opacity: 0.5;
-  animation: zoom-out 0.25s ease-out forwards;
 }
