@@ -4,6 +4,7 @@ import { ChatroomType, MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { BubbleToolbarComponent } from '../bubble-toolbar/bubble-toolbar.component';
 
 @Component({
@@ -27,12 +28,13 @@ export class MsgListComponent implements OnInit {
     private popoverController: PopoverController,
     private feedbackService: FeedbackService,
     public onChatService: OnChatService,
+    private overlayService: OverlayService,
   ) { }
 
   ngOnInit() { }
 
   ngOnDestroy() {
-    this.onChatService.bubbleToolbarPopover = null;
+    this.overlayService.bubbleToolbarPopover = null;
   }
 
   /**
@@ -52,20 +54,25 @@ export class MsgListComponent implements OnInit {
    * @param event
    */
   async presentBubbleToolbarPopover(msgItem: Message, event: any) {
-    this.onChatService.bubbleToolbarPopover = await this.popoverController.create({
+    this.overlayService.bubbleToolbarPopover = await this.popoverController.create({
       component: BubbleToolbarComponent,
       componentProps: {
         element: event.target,
-        msgItem: msgItem,
+        msgItem,
       },
       cssClass: 'bubble-toolbar-popover',
-      event: event,
+      event,
       showBackdrop: false,
-      keyboardClose: false
+      keyboardClose: false,
+      backdropDismiss: false
     });
 
-    return this.onChatService.bubbleToolbarPopover.present().then(() => {
+    return this.overlayService.bubbleToolbarPopover.present().then(() => {
       this.feedbackService.vibrate();
+      // 延迟300ms后才打开点击背景关闭popover
+      setTimeout(() => {
+        this.overlayService.bubbleToolbarPopover.backdropDismiss = true;
+      }, 300);
     });
   }
 

@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { ChatroomType, FriendRequestStatus, MessageType } from '../common/enum';
 
-export interface Result<T> {
+export interface Result<T = null> {
     code: number;
     msg: string;
     data: T;

@@ -83,7 +83,7 @@ export class ChatPage implements OnInit {
    */
   doSticky(item: ChatItem, i: number) {
     if (item.sticky) {
-      return this.onChatService.unstickyChatItem(item.id).subscribe((result: Result<null>) => {
+      return this.onChatService.unstickyChatItem(item.id).subscribe((result: Result) => {
         if (result.code == 0) {
           item.sticky = false;
           this.onChatService.chatList = this.onChatService.chatList;
@@ -93,7 +93,7 @@ export class ChatPage implements OnInit {
       });
     }
 
-    this.onChatService.stickyChatItem(item.id).subscribe((result: Result<null>) => {
+    this.onChatService.stickyChatItem(item.id).subscribe((result: Result) => {
       if (result.code == 0) {
         item.sticky = true;
         this.onChatService.chatList = this.onChatService.chatList;
@@ -110,7 +110,7 @@ export class ChatPage implements OnInit {
    */
   doRead(item: ChatItem, i: number) {
     if (item.unread == 0) {
-      return this.onChatService.unread(item.chatroomId).subscribe((result: Result<null>) => {
+      return this.onChatService.unread(item.chatroomId).subscribe((result: Result) => {
         if (result.code == 0) {
           item.unread = 1;
           this.onChatService.chatList = this.onChatService.chatList;
@@ -120,7 +120,7 @@ export class ChatPage implements OnInit {
       });
     }
 
-    this.onChatService.readed(item.chatroomId).subscribe((result: Result<null>) => {
+    this.onChatService.readed(item.chatroomId).subscribe((result: Result) => {
       if (result.code == 0) {
         item.unread = 0;
         this.onChatService.chatList = this.onChatService.chatList;

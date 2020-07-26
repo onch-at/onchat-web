@@ -56,9 +56,6 @@ export class OnChatService {
   /** 我的发起的好友申请列表 */
   sendFriendRequests: FriendRequest[] = [];
 
-  /** 气泡消息工具条的实例 */
-  bubbleToolbarPopover: HTMLIonPopoverElement;
-
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService,
@@ -96,7 +93,7 @@ export class OnChatService {
    * @param o
    */
   login(o: Login): Observable<Result<number>> {
-    return this.http.post<Result<null>>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
+    return this.http.post<Result>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
   }
 
   /**
@@ -119,7 +116,7 @@ export class OnChatService {
    * @param o
    */
   register(o: Register): Observable<Result<number>> {
-    return this.http.post<Result<null>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
+    return this.http.post<Result>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
   }
 
   /**
@@ -181,32 +178,32 @@ export class OnChatService {
    * 置顶聊天列表子项
    * @param id 聊天列表子项ID
    */
-  stickyChatItem(id: number): Observable<Result<null>> {
-    return this.http.put<Result<null>>(env.chatListStickyUrl + id, null);
+  stickyChatItem(id: number): Observable<Result> {
+    return this.http.put<Result>(env.chatListStickyUrl + id, null);
   }
 
   /**
    * 取消置顶聊天列表子项
    * @param id 聊天列表子项ID
    */
-  unstickyChatItem(id: number): Observable<Result<null>> {
-    return this.http.put<Result<null>>(env.chatListUnstickyUrl + id, null);
+  unstickyChatItem(id: number): Observable<Result> {
+    return this.http.put<Result>(env.chatListUnstickyUrl + id, null);
   }
 
   /**
    * 将聊天列表子项设为已读
    * @param chatroomId 聊天室ID
    */
-  readed(chatroomId: number): Observable<Result<null>> {
-    return this.http.put<Result<null>>(env.chatListReadedUrl + chatroomId, null);
+  readed(chatroomId: number): Observable<Result> {
+    return this.http.put<Result>(env.chatListReadedUrl + chatroomId, null);
   }
 
   /**
    * 将聊天列表子项设为未读
    * @param chatroomId 聊天室ID
    */
-  unread(chatroomId: number): Observable<Result<null>> {
-    return this.http.put<Result<null>>(env.chatListUnreadUrl + chatroomId, null);
+  unread(chatroomId: number): Observable<Result> {
+    return this.http.put<Result>(env.chatListUnreadUrl + chatroomId, null);
   }
 
   /**
@@ -252,8 +249,8 @@ export class OnChatService {
    * @param chatroomId 私聊聊天室ID
    * @param alias 别名
    */
-  setFriendAlias(chatroomId: number, alias: string): Observable<Result<null>> {
-    return this.http.put<Result<null>>(env.friendUrl + '/alias/' + chatroomId, { alias });
+  setFriendAlias(chatroomId: number, alias: string): Observable<Result> {
+    return this.http.put<Result>(env.friendUrl + '/alias/' + chatroomId, { alias });
   }
 
   /**

@@ -3,6 +3,7 @@ import { MessageType } from 'src/app/common/enum';
 import { SysUtil } from 'src/app/common/utils/sys.util';
 import { Message } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class BubbleToolbarComponent implements OnInit {
 
   constructor(
     public onChatService: OnChatService,
+    private overlayService: OverlayService,
     private socketService: SocketService,
   ) { }
 
@@ -47,8 +49,8 @@ export class BubbleToolbarComponent implements OnInit {
    * 关闭气泡消息工具条
    */
   dismiss() {
-    this.onChatService.bubbleToolbarPopover && this.onChatService.bubbleToolbarPopover.dismiss().then(() => {
-      this.onChatService.bubbleToolbarPopover = null;
+    this.overlayService.bubbleToolbarPopover && this.overlayService.bubbleToolbarPopover.dismiss().then(() => {
+      this.overlayService.bubbleToolbarPopover = null;
     });
   }
 

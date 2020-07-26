@@ -6,6 +6,8 @@ import { AlertController, ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class OverlayService {
+  /** 气泡消息工具条的实例 */
+  bubbleToolbarPopover: HTMLIonPopoverElement;
 
   constructor(
     private toastController: ToastController,

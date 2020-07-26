@@ -152,7 +152,7 @@ export class ChatPage implements OnInit {
 
   /**
    * 加载更多消息
-   * @param event 
+   * @param event
    */
   loadMoreRecords(event) {
     if (this.first) {
@@ -180,7 +180,7 @@ export class ChatPage implements OnInit {
 
   /**
    * 加载聊天记录
-   * @param complete 
+   * @param complete
    */
   loadRecords(complete?: CallableFunction) {
     if (this.end) { return complete && complete(); }
@@ -278,7 +278,7 @@ export class ChatPage implements OnInit {
         }
       }
     ], (data: KeyValue<string, any>) => {
-      this.onChatService.setFriendAlias(this.onChatService.chatroomId, data['alias']).subscribe((result: Result<null>) => {
+      this.onChatService.setFriendAlias(this.onChatService.chatroomId, data['alias']).subscribe((result: Result) => {
         if (result.code == 0) {
           this.roomName = data['alias'];
           const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.onChatService.chatroomId);
