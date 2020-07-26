@@ -17,7 +17,6 @@
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
-    <!-- <span class="bubble-tips" [ngClass]="{'show': !first}">技巧：点击标题栏的文字可快速回到底部</span> -->
   </ion-header>
 
   <main [ngStyle]="{ 'padding-bottom': 'calc(0.75rem + ' + bottomBar.clientHeight + 'px)' } ">
@@ -26,17 +25,17 @@
     </ion-infinite-scroll>
 
     <app-msg-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-msg-list>
-
-    <button appActiveClass [duration]="200" class="tips" [ngClass]="{'show': hasUnread}" (tap)="scrollToBottom()">
-      收到新消息
-      <ion-icon name="arrow-down-outline"></ion-icon>
-    </button>
   </main>
 
   <div #bottomBar class="bottom-bar">
-    <textarea #textarea id="message" name="message" rows="1" class="ipt-primary"
-      [ngClass]="{'invalid': msg.length > MSG_MAX_LENGTH}" (keyup)="onKeyup($event)" placeholder="来说点什么吧！"
-      [(ngModel)]="msg"></textarea>
+    <button appActiveClass [duration]="200" class="tips-btn btn-primary" [ngClass]="{'show': hasUnread}"
+      (tap)="scrollToBottom()">
+      收到新消息
+      <ion-icon name="arrow-down-outline"></ion-icon>
+    </button>
+
+    <textarea #textarea id="message" name="message" rows="1" [ngClass]="{'invalid': msg.length > MSG_MAX_LENGTH}"
+      (keyup)="onKeyup($event)" placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
     <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
     <label for="message">
       <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn"

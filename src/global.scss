@@ -169,6 +169,7 @@ ion-refresher {
   }
 
   .refresher-pulling-icon > * {
+    font-size: 2rem;
     color: var(--custom-color-dark) !important;
   }
 
@@ -371,6 +372,10 @@ ion-item {
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
     }
+  }
+
+  .item-content {
+    margin: 0.75rem 0;
   }
 }
 

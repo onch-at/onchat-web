@@ -5,6 +5,7 @@ ion-item {
   --padding-end: 0;
   --padding-top: 0.25rem;
   --padding-bottom: 0.25rem;
+  --min-height: auto;
 
   &.sticky::before {
     content: "";

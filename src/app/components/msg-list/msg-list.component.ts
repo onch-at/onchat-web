@@ -49,9 +49,9 @@ export class MsgListComponent implements OnInit {
   /**
    * 弹出BubbleToolbar气泡工具条
    * @param msgItem 气泡对应的Message
-   * @param event 
+   * @param event
    */
-  async presentPopover(msgItem: Message, event: any) {
+  async presentBubbleToolbarPopover(msgItem: Message, event: any) {
     this.onChatService.bubbleToolbarPopover = await this.popoverController.create({
       component: BubbleToolbarComponent,
       componentProps: {
@@ -61,6 +61,7 @@ export class MsgListComponent implements OnInit {
       cssClass: 'bubble-toolbar-popover',
       event: event,
       showBackdrop: false,
+      keyboardClose: false
     });
 
     return this.onChatService.bubbleToolbarPopover.present().then(() => {

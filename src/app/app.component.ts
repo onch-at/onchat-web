@@ -57,6 +57,11 @@ export class AppComponent implements OnInit {
         this.onChatService.init();
         this.socketService.init();
       }
+
+      // setInterval(() => {
+      //   this.socketService.init();
+      //   console.log('d')
+      // }, 50)
     });
 
     // 发起/收到好友申请时

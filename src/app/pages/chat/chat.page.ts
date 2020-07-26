@@ -52,7 +52,7 @@ export class ChatPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private renderer2: Renderer2,
-    private overlayService: OverlayService,
+    private overlayService: OverlayService
   ) { }
 
   ngOnInit() {

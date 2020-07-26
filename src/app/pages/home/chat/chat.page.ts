@@ -59,7 +59,7 @@ export class ChatPage implements OnInit {
 
   /**
    * 是否在同一周
-   * @param date 
+   * @param date
    */
   isSameWeek(date: number) {
     return DateUtil.isSameWeek(new Date(date));
@@ -67,7 +67,7 @@ export class ChatPage implements OnInit {
 
   /**
    * 移除聊天列表子项
-   * @param index 
+   * @param index
    */
   removeChatItem(index: number) {
     // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
@@ -78,8 +78,8 @@ export class ChatPage implements OnInit {
 
   /**
    * 置顶聊天列表子项
-   * @param item 
-   * @param i 
+   * @param item
+   * @param i
    */
   doSticky(item: ChatItem, i: number) {
     if (item.sticky) {
@@ -105,8 +105,8 @@ export class ChatPage implements OnInit {
 
   /**
    * 将聊天列表子项设置为已读
-   * @param item 
-   * @param i 
+   * @param item
+   * @param i
    */
   doRead(item: ChatItem, i: number) {
     if (item.unread == 0) {
@@ -132,7 +132,7 @@ export class ChatPage implements OnInit {
 
   /**
    * 合上IonItemSliding
-   * @param i 
+   * @param i
    */
   closeIonItemSliding(i: number) {
     this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
