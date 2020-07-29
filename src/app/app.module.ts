@@ -1,3 +1,4 @@
+import { OverlayModule } from "@angular/cdk/overlay";
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import localeExtraZhHans from '@angular/common/locales/extra/zh-Hans';
@@ -15,6 +16,7 @@ import { SocketIoModule } from 'ngx-socket-io';
 import { environment as env, environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NotificationComponent } from './components/notification/notification.component';
 import { PopoverComponent } from './components/popover/popover.component';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
@@ -22,11 +24,17 @@ import { OnChatService } from './services/onchat.service';
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
 
 @NgModule({
-  declarations: [AppComponent, PopoverComponent],
+  declarations: [
+    AppComponent,
+    PopoverComponent,
+    NotificationComponent
+  ],
   entryComponents: [
-    PopoverComponent
+    PopoverComponent,
+    NotificationComponent
   ],
   imports: [
+    OverlayModule,
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,

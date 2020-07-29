@@ -58,9 +58,10 @@ export class AppComponent implements OnInit {
         this.socketService.init();
       }
 
+      // let num = 0;
       // setInterval(() => {
       //   this.socketService.init();
-      //   console.log('d')
+      //   console.log(++num);
       // }, 50)
     });
 
