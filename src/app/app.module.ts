@@ -18,6 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { PopoverComponent } from './components/popover/popover.component';
+import { SharedModule } from './modules/shared.module';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 
@@ -34,6 +35,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     NotificationComponent
   ],
   imports: [
+    SharedModule,
     OverlayModule,
     BrowserAnimationsModule,
     BrowserModule,

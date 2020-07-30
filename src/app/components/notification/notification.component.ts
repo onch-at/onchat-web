@@ -1,5 +1,5 @@
 import { OverlayRef } from '@angular/cdk/overlay';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-notification',
@@ -8,14 +8,30 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class NotificationComponent implements OnInit {
   @Input() title: string = 'title';
+  @Input() description: string = 'description';
   @Input() overlayRef: OverlayRef;
+  @Input() overlayDuration: number;
+  hostElement: HTMLElement;
+  unlistener: () => void;
 
-  constructor() { }
+  constructor(
+    private element: ElementRef,
+    private renderer2: Renderer2
+  ) { }
 
   ngOnInit() {
+    this.hostElement = this.element.nativeElement.querySelector('.notification');
+
     setTimeout(() => {
-      this.overlayRef && this.overlayRef.dispose();
-    }, 10000);
+      this.renderer2.addClass(this.hostElement, 'hide');
+      this.unlistener = this.renderer2.listen(this.hostElement, 'transitionend', () => {
+        this.overlayRef.dispose();
+      });
+    }, 3000);
+  }
+
+  ngOnDestroy() {
+    this.unlistener && this.unlistener();
   }
 
 }

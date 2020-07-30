@@ -7,10 +7,18 @@
     background: var(--custom-color-light);
     border-radius: 1.5rem;
     box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
-    animation: slide-down 0.25s ease-out forwards;
+    animation: slide-in-down 0.25s ease-out;
+    transition: transform 0.1s ease-out;
 
     &.active {
         transform: scale(0.95);
+    }
+
+    &.hide {
+        transition: all 0.25s ease-out;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
     }
 }
 

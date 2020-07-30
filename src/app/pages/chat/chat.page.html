@@ -28,7 +28,7 @@
   </main>
 
   <div #bottomBar class="bottom-bar">
-    <button appActiveClass [duration]="200" class="tips-btn btn-primary" [ngClass]="{'show': hasUnread}"
+    <button appActiveClass [appActiveClassDuration]="200" class="tips-btn btn-primary" [ngClass]="{'show': hasUnread}"
       (tap)="scrollToBottom()">
       收到新消息
       <ion-icon name="arrow-down-outline"></ion-icon>
@@ -38,7 +38,7 @@
       (keyup)="onKeyup($event)" placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
     <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
     <label for="message">
-      <button appActiveClass [duration]="200" class="ion-activatable ripple-parent btn-primary send-btn"
+      <button appActiveClass [appActiveClassDuration]="200" class="ion-activatable ripple-parent btn-primary send-btn"
         (tap)="send(textarea)" [disabled]="disable()">
         <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
         <ion-ripple-effect></ion-ripple-effect>

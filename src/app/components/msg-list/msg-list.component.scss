@@ -75,7 +75,7 @@
     padding-left: 0.75rem;
     padding-right: 4rem;
     transform: translateX(-100%);
-    animation: slide-right 0.45s ease forwards;
+    animation: slide-in-right 0.45s ease forwards;
 
     > div {
       padding-left: 0.5rem;
@@ -91,7 +91,7 @@
     padding-left: 4rem;
     padding-right: 0.75rem;
     transform: translateX(100%);
-    animation: slide-left 0.45s ease forwards;
+    animation: slide-in-left 0.45s ease forwards;
 
     > div {
       padding-right: 0.5rem;

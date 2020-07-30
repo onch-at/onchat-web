@@ -522,7 +522,7 @@ form.ng-pristine .feedback-form-invalid {
 }
 
 // 向左滑出
-@keyframes slide-left {
+@keyframes slide-in-left {
   from {
     transform: translate3d(100%, 0, 0);
   }
@@ -531,7 +531,7 @@ form.ng-pristine .feedback-form-invalid {
   }
 }
 // 向右滑出
-@keyframes slide-right {
+@keyframes slide-in-right {
   from {
     transform: translate3d(-100%, 0, 0);
   }
@@ -540,7 +540,7 @@ form.ng-pristine .feedback-form-invalid {
   }
 }
 // 向上滑出
-@keyframes slide-up {
+@keyframes slide-in-up {
   from {
     transform: translate3d(0, 100%, 0);
   }
@@ -549,7 +549,7 @@ form.ng-pristine .feedback-form-invalid {
   }
 }
 // 向下滑出
-@keyframes slide-down {
+@keyframes slide-in-down {
   from {
     transform: translate3d(0, -100%, 0);
   }

@@ -80,14 +80,14 @@
     </div>
   </div>
   <aside class="bottom-bar">
-    <button *ngIf="chatroomId" appActiveClass [duration]="200" [routerLink]="['/chat', chatroomId]"
+    <button *ngIf="chatroomId" appActiveClass [appActiveClassDuration]="200" [routerLink]="['/chat', chatroomId]"
       class="ion-activatable ripple-parent btn-primary btn-block">
       跟Ta聊天
       <ion-ripple-effect></ion-ripple-effect>
     </button>
 
     <!-- TODO 这边以后可以和自己聊天 -->
-    <button *ngIf="!chatroomId && onChatService.userId != user.id" appActiveClass [duration]="200"
+    <button *ngIf="!chatroomId && onChatService.userId != user.id" appActiveClass [appActiveClassDuration]="200"
       [routerLink]="['/friend/request', user.id]" class="ion-activatable ripple-parent btn-primary btn-block">
       加Ta好友
       <ion-ripple-effect></ion-ripple-effect>
