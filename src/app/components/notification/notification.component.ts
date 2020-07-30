@@ -7,31 +7,37 @@ import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
   styleUrls: ['./notification.component.scss'],
 })
 export class NotificationComponent implements OnInit {
-  @Input() title: string = 'title';
-  @Input() description: string = 'description';
+  @Input() title: string;
+  @Input() description: string;
+  @Input() iconUrl: string;
   @Input() overlayRef: OverlayRef;
   @Input() overlayDuration: number;
-  hostElement: HTMLElement;
+  element: HTMLElement;
   unlistener: () => void;
 
   constructor(
-    private element: ElementRef,
+    private elementRef: ElementRef,
     private renderer2: Renderer2
   ) { }
 
   ngOnInit() {
-    this.hostElement = this.element.nativeElement.querySelector('.notification');
-
-    setTimeout(() => {
-      this.renderer2.addClass(this.hostElement, 'hide');
-      this.unlistener = this.renderer2.listen(this.hostElement, 'transitionend', () => {
-        this.overlayRef.dispose();
-      });
-    }, 3000);
+    this.element = this.elementRef.nativeElement.querySelector('.notification');
   }
 
   ngOnDestroy() {
     this.unlistener && this.unlistener();
+  }
+
+  dismiss(): Promise<null> {
+    this.renderer2.addClass(this.element, 'hide');
+    return new Promise((resolve: (value?: any) => void) => {
+      this.unlistener = this.renderer2.listen(this.element, 'transitionend', () => {
+        this.overlayRef.dispose();
+        this.unlistener();
+        this.unlistener = null;
+        resolve();
+      });
+    });
   }
 
 }

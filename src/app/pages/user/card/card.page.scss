@@ -39,7 +39,7 @@ ion-header {
   width: 100%;
   min-height: calc(100% - 35.75vh);
   transform: translateX(-100%);
-  animation: slide-in-right 0.35s ease 0.05s forwards;
+  animation: slide-in-right 0.35s ease 0.025s forwards;
 
   @media (prefers-color-scheme: dark) {
     background: rgba(var(--custom-color-white-rgb), 0.5);
