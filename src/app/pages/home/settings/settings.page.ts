@@ -17,8 +17,8 @@ export class SettingsPage implements OnInit {
 
   showOverlayGlobalPanelCenter() {
     this.overlayService.presentNotification({
-      title: 'title',
-      description: 'description'
+      title: 'Title',
+      description: 'description description description description description description'
     });
   }
 
