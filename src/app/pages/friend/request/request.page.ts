@@ -21,6 +21,8 @@ export class RequestPage implements OnInit {
   targetAlias: string = null;
   /** 申请原因 */
   requestReason: string = null;
+  /** 对方的拒绝原因 */
+  rejectReason: string = null;
   subject: Subject<unknown> = new Subject();
 
   constructor(
@@ -46,6 +48,7 @@ export class RequestPage implements OnInit {
       if (resultFriendRequest.code == 0) {
         this.targetAlias = resultFriendRequest.data.targetAlias || '';
         this.requestReason = resultFriendRequest.data.requestReason || '';
+        this.rejectReason = resultFriendRequest.data.rejectReason || null;
       }
     });
 

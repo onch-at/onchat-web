@@ -66,7 +66,7 @@ export class ChatPage implements OnInit {
     if (index >= 0) {
       this.roomName = this.onChatService.chatList[index].name;
       this.chatroomType = this.onChatService.chatList[index].type;
-    } else {
+    } else { // TODO 把数据缓存下来
       this.onChatService.getChatroom(this.onChatService.chatroomId).subscribe((result: Result<Chatroom>) => {
         if (result.code === 0) {
           const chatroom = result.data

@@ -1,8 +1,7 @@
-import { Overlay } from '@angular/cdk/overlay';
 import { KeyValue } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { NotificationController } from '../providers/notification.controller';
+import { NotificationController, NotificationOptions } from '../providers/notification.controller';
 
 @Injectable({
   providedIn: 'root'
@@ -14,25 +13,15 @@ export class OverlayService {
   constructor(
     private toastController: ToastController,
     private alertController: AlertController,
-    private notificationController: NotificationController,
-    private overlay: Overlay,
+    private notificationController: NotificationController
   ) { }
 
-
-  presentNotification() {
-    this.notificationController.create({
-      title: 't',
-      description: 'd',
-      iconUrl: '',
-      duration: 3000,
-      tapHandler: () => { }
-    }).present();
-
-    // overlayRef.overlayElement.addEventListener('click', () => {
-    //   console.log(111)
-    //   // overlayRef.dispose();
-    //   // positionStrategy.top(0 + 'px')
-    // })
+  /**
+   * 弹出消息通知
+   * @param opts
+   */
+  presentNotification(opts: NotificationOptions) {
+    return this.notificationController.create(opts).present();
   }
 
   /**

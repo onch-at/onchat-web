@@ -19,6 +19,11 @@
     <img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5">
     <h1>{{ user.username }}</h1>
 
+    <ion-item lines="none" *ngIf="rejectReason">
+      <ion-label position="stacked">对方的拒绝原因</ion-label>
+      <p>{{ rejectReason }}</p>
+    </ion-item>
+
     <ion-item lines="none">
       <ion-label position="stacked">好友别名</ion-label>
       <ion-input [(ngModel)]="targetAlias" clearInput maxlength="30" placeholder="给对方起个好听的别名吧"></ion-input>

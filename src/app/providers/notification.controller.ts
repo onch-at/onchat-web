@@ -1,6 +1,7 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NotificationComponent } from '../components/notification/notification.component';
 
 @Injectable({
@@ -19,18 +20,23 @@ export class NotificationController {
   iconUrl: string;
   /** 持续时间 */
   duration: number;
+  /** 点击事件处理函数 */
+  tapHandler: (event: Event) => void;
 
   dismissTimeout: number;
+
+  subscription: Subscription;
 
   constructor(private overlay: Overlay) {
     this.overlayConfig.positionStrategy = this.overlay.position().global().centerHorizontally().top();
   }
 
-  create({ title, description, iconUrl, duration, tapHandler }: Opt): NotificationController {
-    this.title = title || '';
-    this.description = description || '';
-    this.iconUrl = iconUrl || '';
-    this.duration = duration || 3000;
+  create(opts: NotificationOptions): NotificationController {
+    this.title = opts.title;
+    this.description = opts.description || '';
+    this.iconUrl = opts.iconUrl || '';
+    this.duration = opts.duration || 3000;
+    this.tapHandler = opts.tapHandler || (() => { });
 
     if (!this.overlayRef) {
       this.overlayRef = this.overlay.create(this.overlayConfig);
@@ -39,7 +45,7 @@ export class NotificationController {
     return this;
   }
 
-  present() {
+  present(): NotificationController {
     this.dismissTimeout != null && this.clearDismissTimeout();
 
     if (!this.componentRef) {
@@ -51,29 +57,41 @@ export class NotificationController {
     this.componentRef.instance.description = this.description;
     this.componentRef.instance.iconUrl = this.iconUrl;
     this.componentRef.instance.overlayDuration = this.duration;
+    this.componentRef.instance.tapHandler = this.tapHandler;
+
+    this.subscription && this.subscription.unsubscribe();
+    this.subscription = this.componentRef.instance.onDismiss().subscribe(() => {
+      this.componentRef = null;
+      this.overlayRef = null;
+      this.clearDismissTimeout();
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    });
 
     this.dismissTimeout = window.setTimeout(() => {
       this.dismiss();
     }, this.duration);
+
+    return this;
+  }
+
+  async dismiss(): Promise<void> {
+    await this.componentRef.instance.dismiss();
+    this.componentRef = null;
+    this.overlayRef = null;
+    return this.clearDismissTimeout();
   }
 
   private clearDismissTimeout(): void {
     clearTimeout(this.dismissTimeout);
     this.dismissTimeout = null;
   }
-
-  async dismiss() {
-    await this.componentRef.instance.dismiss();
-    this.componentRef = null;
-    this.overlayRef = null;
-    return this.clearDismissTimeout();
-  }
 }
 
-interface Opt {
+export interface NotificationOptions {
   title: string;
-  description: string;
-  iconUrl: string;
-  duration: number;
-  tapHandler: () => void;
+  description?: string;
+  iconUrl?: string;
+  duration?: number;
+  tapHandler?: (event: Event) => void;
 }

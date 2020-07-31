@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
@@ -18,6 +19,7 @@ import { SocketService } from './services/socket.service';
 export class AppComponent implements OnInit {
 
   constructor(
+    private router: Router,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
@@ -80,6 +82,14 @@ export class AppComponent implements OnInit {
           this.onChatService.receiveFriendRequests.unshift(friendRequest);
           this.feedbackService.dingDengAudio.play();
         }
+
+        this.overlayService.presentNotification({
+          title: '收到好友申请',
+          description: '用户 ' + friendRequest.selfUsername + ' 申请添加你为好友',
+          tapHandler: () => {
+            this.router.navigate(['/friend/handle', friendRequest.selfId]);
+          }
+        });
       } else if (friendRequest.selfId == this.onChatService.userId) {
         const index = this.onChatService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
         // 如果这条好友申请已经在列表里
@@ -105,6 +115,14 @@ export class AppComponent implements OnInit {
           index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
 
           this.feedbackService.booAudio.play();
+
+          this.overlayService.presentNotification({
+            title: '好友申请已同意',
+            description: '已和 ' + result.data.targetUsername + ' 成为好友',
+            tapHandler: () => {
+              this.router.navigate(['/chat', result.data.chatroomId]);
+            }
+          });
         } else if (result.data.targetId == this.onChatService.userId) { // 如果自己是被申请人
           const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
           index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
@@ -134,6 +152,14 @@ export class AppComponent implements OnInit {
           }
 
           this.feedbackService.dingDengAudio.play();
+
+          this.overlayService.presentNotification({
+            title: '好友申请被拒绝',
+            description: '用户 ' + result.data.targetUsername + ' 拒绝了你的好友申请',
+            tapHandler: () => {
+              this.router.navigate(['/friend/request', result.data.targetId]);
+            }
+          });
         } else if (friendRequest.targetId == this.onChatService.userId) { // 如果自己是被申请人
           const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
           index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
@@ -150,20 +176,36 @@ export class AppComponent implements OnInit {
 
     // 收到消息时
     this.socketService.on(SocketEvent.Message).subscribe((o: Result<Message>) => {
+      const msg = o.data;
       console.log(o)
-      // 如果消息不是自己的话，就播放提示音
-      o.data.userId != this.onChatService.userId && this.feedbackService.booAudio.play();
+      // 先去聊天列表缓存里面查，看看有没有这个房间的数据
+      const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == msg.chatroomId);
 
-      // 然后去列表里面找
-      const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == o.data.chatroomId);
+      // 如果消息不是自己的话，就播放提示音
+      if (msg.userId != this.onChatService.userId) {
+        // 并且不在同一个房间，就弹出通知
+        if (msg.chatroomId != this.onChatService.chatroomId) {
+          const roomName = index >= 0 ? this.onChatService.chatList[index].name : '收到新消息';
+
+          this.overlayService.presentNotification({
+            title: roomName,
+            description: msg.nickname + '：' + (msg.type == MessageType.Text ? msg.data.content : '[MESSAGE]'),
+            tapHandler: () => {
+              this.router.navigate(['/chat', msg.chatroomId]);
+            }
+          });
+        }
+
+        this.feedbackService.booAudio.play();
+      }
 
       if (index >= 0) {
-        if (this.onChatService.chatroomId == o.data.chatroomId) { // 如果用户已经进入消息所属房间
+        if (this.onChatService.chatroomId == msg.chatroomId) { // 如果用户已经进入消息所属房间
           this.onChatService.chatList[index].unread = 0;
         } else {
           this.onChatService.chatList[index].unread++;
         }
-        this.onChatService.chatList[index].latestMsg = o.data;
+        this.onChatService.chatList[index].latestMsg = msg;
         this.onChatService.chatList[index].updateTime = Date.now();
         this.onChatService.chatList = this.onChatService.chatList;
       } else { // 如果不存在于列表当中，就刷新数据

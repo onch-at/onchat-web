@@ -79,6 +79,14 @@ ion-item {
         transition: box-shadow 0.2s ease-in-out;
     }
 
+    > p {
+        flex: 1;
+        font-size: 1rem;
+        margin: 0 0 0.4rem;
+        padding: 0.25rem 0;
+        color: var(--custom-color-medium);
+    }
+
     > ion-label {
         font-size: 0.95rem;
         margin: 0.6rem 0 0;
