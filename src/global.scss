@@ -189,9 +189,10 @@ ion-refresher {
 // Popover
 ion-popover {
   --max-width: 75vw;
-}
-.popover-content {
-  border-radius: 1rem !important;
+
+  .popover-content {
+    border-radius: 1rem !important;
+  }
 }
 
 // 无限滚动
@@ -383,8 +384,17 @@ ion-item {
 
 // 自定义的Toast样式
 ion-toast {
+  &::part(container) {
+    padding: 0 0.25rem;
+  }
+
+  &::part(message) {
+    font-size: 0.85rem;
+  }
+
   --start: 10px;
   --end: 10px;
+  --height: 3rem;
   --border-radius: 1.5rem;
 }
 
