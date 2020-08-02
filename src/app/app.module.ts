@@ -8,8 +8,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { SocketIoModule } from 'ngx-socket-io';
@@ -58,8 +56,6 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LOCALE_ID, useValue: 'zh-Hans' },
-    StatusBar,
-    SplashScreen,
     OnChatService,
     LocalStorageService,
     CookieService,

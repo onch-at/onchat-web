@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { KeyValue } from '@angular/common';
 import { Component, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
@@ -6,7 +7,6 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
 import { StrUtil } from 'src/app/common/utils/str.util';
-import { SysUtil } from 'src/app/common/utils/sys.util';
 import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -50,6 +50,7 @@ export class ChatPage implements OnInit {
 
   constructor(
     public onChatService: OnChatService,
+    private platform: Platform,
     private socketService: SocketService,
     private route: ActivatedRoute,
     private router: Router,
@@ -175,10 +176,10 @@ export class ChatPage implements OnInit {
       });
     }
     // 暴力兼容苹果内核
-    const isAppleWebKit = SysUtil.isAppleWebKit();
-    isAppleWebKit && (this.ionContent.scrollY = false);
+    const isIos = this.platform.IOS;
+    isIos && (this.ionContent.scrollY = false);
     this.loadRecords(() => {
-      isAppleWebKit && (this.ionContent.scrollY = true);
+      isIos && (this.ionContent.scrollY = true);
       event.target.complete();
     });
   }

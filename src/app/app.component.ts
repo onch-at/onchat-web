@@ -1,8 +1,6 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Platform } from '@ionic/angular';
 import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
 import { ChatItem, FriendRequest, Message, Result } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
@@ -20,24 +18,12 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private socketService: SocketService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
     private overlayService: OverlayService,
     private localStorageService: LocalStorageService,
-  ) {
-    this.initializeApp();
-  }
-
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
-  }
+  ) { }
 
   ngOnInit() {
     // 首先加载出缓存数据，保证用户体验
