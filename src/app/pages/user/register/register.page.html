@@ -26,7 +26,7 @@
               </div>
             </div>
             <div class="form-group">
-              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password"
+              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" autocomplete="off"
                 formControlName="password" (keyup)="trimAll('password')" placeholder="密码" maxlength="50" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
                 (tap)="togglePwdInputType()"></ion-icon>
