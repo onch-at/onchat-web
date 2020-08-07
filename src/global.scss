@@ -462,10 +462,6 @@ form.ng-pristine .feedback-form-invalid {
   color: #424242;
   background-color: var(--custom-color-primary);
 
-  &:hover {
-    background-color: rgba(var(--custom-color-primary-rgb), 0.75);
-  }
-
   &.active {
     box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
   }
@@ -482,9 +478,6 @@ form.ng-pristine .feedback-form-invalid {
   color: var(--custom-color-dark);
   background-color: var(--custom-color-secondary);
 
-  &:hover {
-    background-color: var(--custom-color-light);
-  }
   &.active {
     box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-secondary-rgb), 0.75);
   }

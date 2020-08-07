@@ -21,7 +21,9 @@ export class NewComponent implements OnInit {
 
   ngOnInit() { }
 
-  friendRequestAgree(friendRequestId: number) {
+  friendRequestAgree(friendRequestId: number, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
 
     this.overlayService.presentInputAlert('同意申请', [
       {
