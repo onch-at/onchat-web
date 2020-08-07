@@ -1,8 +1,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { race } from 'rxjs';
 import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
-import { ChatItem, FriendRequest, Message, Result } from './models/onchat.model';
+import { ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
@@ -32,16 +33,15 @@ export class AppComponent implements OnInit {
 
     // 连接打通时
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
-      if (this.onChatService.isLogin == null) {
-        this.onChatService.checkLogin().subscribe((result: Result<number>) => {
-          this.onChatService.isLogin = Boolean(result.data);
-          this.onChatService.userId = result.data || undefined;
+      if (this.onChatService.user == null) {
+        this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
+          this.onChatService.user = result.data ? result.data as User : null;
           if (result.data) {
             this.socketService.init();
             this.onChatService.init();
           }
         });
-      } else if (this.onChatService.isLogin) {
+      } else {
         this.onChatService.init();
         this.socketService.init();
       }
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
       if (o.code != 0) { return; } //TODO
       const friendRequest = o.data;
       // 收到好友申请提示，判断自己是不是被申请人
-      if (friendRequest.targetId == this.onChatService.userId) {
+      if (friendRequest.targetId == this.onChatService.user.id) {
         const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
         // 如果这条好友申请已经在列表里
         if (index >= 0) {
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
             this.router.navigate(['/friend/handle', friendRequest.selfId]);
           }
         });
-      } else if (friendRequest.selfId == this.onChatService.userId) {
+      } else if (friendRequest.selfId == this.onChatService.user.id) {
         const index = this.onChatService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
         // 如果这条好友申请已经在列表里
         if (index >= 0) {
@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
       console.log('result: ', result);
       if (result.code == 0) {
         // 如果申请人是自己（我的好友申请被同意了）
-        if (result.data.selfId == this.onChatService.userId) {
+        if (result.data.selfId == this.onChatService.user.id) {
           // 去我发出的申请列表里面找这条FriendRequest，并删除
           let index = this.onChatService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
           index >= 0 && this.onChatService.sendFriendRequests.splice(index, 1);
@@ -109,7 +109,7 @@ export class AppComponent implements OnInit {
               this.router.navigate(['/chat', result.data.chatroomId]);
             }
           });
-        } else if (result.data.targetId == this.onChatService.userId) { // 如果自己是被申请人
+        } else if (result.data.targetId == this.onChatService.user.id) { // 如果自己是被申请人
           const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
           index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
 
@@ -129,7 +129,7 @@ export class AppComponent implements OnInit {
       if (result.code == 0) {
         const friendRequest = result.data;
         // 如果申请人是自己
-        if (friendRequest.selfId == this.onChatService.userId) {
+        if (friendRequest.selfId == this.onChatService.user.id) {
           const index = this.onChatService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
           if (index >= 0) {
             this.onChatService.sendFriendRequests[index] = friendRequest;
@@ -146,7 +146,7 @@ export class AppComponent implements OnInit {
               this.router.navigate(['/friend/request', result.data.targetId]);
             }
           });
-        } else if (friendRequest.targetId == this.onChatService.userId) { // 如果自己是被申请人
+        } else if (friendRequest.targetId == this.onChatService.user.id) { // 如果自己是被申请人
           const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
           index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
 
@@ -168,7 +168,7 @@ export class AppComponent implements OnInit {
       const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == msg.chatroomId);
 
       // 如果消息不是自己的话，就播放提示音
-      if (msg.userId != this.onChatService.userId) {
+      if (msg.userId != this.onChatService.user.id) {
         // 并且不在同一个房间，就弹出通知
         if (msg.chatroomId != this.onChatService.chatroomId) {
           const roomName = index >= 0 ? this.onChatService.chatList[index].name : '收到新消息';
@@ -211,7 +211,7 @@ export class AppComponent implements OnInit {
         chatItem.unread > 0 && chatItem.unread--;
         chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
         chatItem.latestMsg.type = MessageType.Tips;
-        const name = chatItem.latestMsg.userId == this.onChatService.userId ? '我' : chatItem.latestMsg.nickname;
+        const name = chatItem.latestMsg.userId == this.onChatService.user.id ? '我' : chatItem.latestMsg.nickname;
         chatItem.latestMsg.data.content = name + ' 撤回了一条消息';
         chatItem.updateTime = Date.now();
         this.onChatService.chatList[index] = chatItem;
@@ -224,12 +224,19 @@ export class AppComponent implements OnInit {
       this.overlayService.presentMsgToast('与服务器断开连接！');
     });
 
+    // 连接失败时
+    race(
+      this.socketService.on(SocketEvent.ConnectError),
+      this.socketService.on(SocketEvent.ReconnectError)
+    ).subscribe(() => {
+      this.overlayService.presentMsgToast('服务器连接失败！');
+    });
+
     // 重连时
     this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
-      this.onChatService.checkLogin().subscribe((result: Result<number>) => {
-        this.onChatService.isLogin = Boolean(result.data);
-        this.onChatService.userId = result.data || undefined;
-        if (this.onChatService.isLogin) {
+      this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
+        this.onChatService.user = result.data ? result.data as User : null;
+        if (this.onChatService.user) {
           this.socketService.init();
           this.onChatService.init();
         }

@@ -29,7 +29,7 @@
 
 					<ng-container *ngIf="item.latestMsg" [ngSwitch]="item.latestMsg.type">
 						<p *ngSwitchCase="msgType.Text"
-							[innerHTML]="(item.latestMsg.userId == onChatService.userId ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.content">
+							[innerHTML]="(item.latestMsg.userId == onChatService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.content">
 						</p>
 
 						<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.latestMsg.data.content"></p>

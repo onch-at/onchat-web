@@ -29,6 +29,9 @@ export enum SocketEvent {
     Disconnect = 'disconnect',
     /** 重新连接时 */
     Reconnect = 'reconnect',
+    /** 连接失败时 */
+    ConnectError = 'connect_error',
+    ReconnectError = 'reconnect_error',
     /** 初始化 */
     Init = 'init',
     /** 卸载时 */
@@ -42,11 +45,7 @@ export enum SocketEvent {
     /** 同意好友申请 */
     FriendRequestAgree = 'friend_request_agree',
     /** 拒绝好友申请 */
-    FriendRequestReject = 'friend_request_reject',
-    /** 加入房间 */
-    JoinRoom = 'join_room',
-    /** 退出房间 */
-    LeaveRoom = 'leave_room'
+    FriendRequestReject = 'friend_request_reject'
 }
 
 /**

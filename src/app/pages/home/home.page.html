@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true" class="bg-white">
   <aside class="sidebar">
     <img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5"
-      [routerLink]="['/card', onChatService.userId]">
+      [routerLink]="['/card', onChatService.user ? onChatService.user.id : 0]">
 
     <div class="button-group d-flex">
       <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/chat']"

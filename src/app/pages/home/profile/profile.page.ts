@@ -18,11 +18,10 @@ export class ProfilePage implements OnInit {
     private socketService: SocketService,
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
-  async logout() {
-    return this.overlayService.presentMsgAlert('退出登录', ' 你确定要退出登录吗？', () => {
+  logout() {
+    this.overlayService.presentMsgAlert('退出登录', ' 你确定要退出登录吗？', () => {
       this.doLogout();
     });
   }
@@ -32,8 +31,7 @@ export class ProfilePage implements OnInit {
    */
   doLogout() {
     this.onChatService.logout().subscribe(() => {
-      this.onChatService.isLogin = false;
-      this.onChatService.userId = null;
+      this.onChatService.user = null;
       this.onChatService.chatList = [];
       this.onChatService.receiveFriendRequests = [];
       this.onChatService.sendFriendRequests = [];

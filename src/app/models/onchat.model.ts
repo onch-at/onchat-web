@@ -95,10 +95,13 @@ export class Message extends Entity {
     data: any;
     /** 回复消息的消息记录ID */
     replyId?: number;
+    /** 消息在客户端发送的时间 */
+    sendTime?: number;
 
     constructor(chatroomId: number) {
         super();
         this.chatroomId = chatroomId;
+        this.sendTime = Date.now();
     }
 }
 

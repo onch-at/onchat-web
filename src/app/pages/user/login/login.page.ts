@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StrUtil } from 'src/app/common/utils/str.util';
 import { Login } from 'src/app/models/form.model';
-import { Result } from 'src/app/models/onchat.model';
+import { Result, User } from 'src/app/models/onchat.model';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { OnChatService } from '../../../services/onchat.service';
@@ -51,12 +51,13 @@ export class LoginPage implements OnInit {
   login() {
     if (this.loginForm.invalid || this.loading) { return; }
     this.loading = true;
-    this.onChatService.login(new Login(this.loginForm.value.username, this.loginForm.value.password)).subscribe(async (result: Result<number>) => {
+    this.onChatService.login(
+      new Login(this.loginForm.value.username, this.loginForm.value.password)
+    ).subscribe(async (result: Result<User>) => {
       const toast = this.overlayService.presentMsgToast(result.msg, result.code === 0 ? 1000 : 2000);
 
       if (result.code === 0) {
-        this.onChatService.isLogin = true;
-        this.onChatService.userId = result.data;
+        this.onChatService.user = result.data;
         this.socketService.init();
 
         (await toast).onWillDismiss().then(() => { // 在Toast即将关闭前

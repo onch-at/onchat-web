@@ -15,14 +15,14 @@ export class NotFriendGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Observable(observer => {
       this.onChatService.isFriend(+next.params.userId).subscribe((result: Result<number>) => {
-        // TODO 写完单聊之后，自己跟自己也是好友，把this.onChatService.userId == next.params.userId删除
-        const isFriend = Boolean(result.data) || this.onChatService.userId == next.params.userId;
+        // TODO 写完单聊之后，自己跟自己也是好友，把this.onChatService.user.id == next.params.userId删除
+        const isFriend = !!result.data || this.onChatService.user.id == next.params.userId;
         isFriend && history.go(-1);
         observer.next(!isFriend);
-        return observer.complete();
+        observer.complete();
       }, () => {
         observer.next(false);
-        return observer.complete();
+        observer.complete();
       });
     });
   }

@@ -24,8 +24,8 @@ const HTTP_OPTIONS_FORM = {
 export class OnChatService {
   /** 缓存登录状态 */
   isLogin: boolean = null;
-  /** 缓存用户ID */
-  userId: number = null;
+  /** 当前用户 */
+  user: User = null;
   /** 记录当前所在的聊天室ID */
   chatroomId: number = null;
   /** 未读消息总数 */
@@ -82,18 +82,14 @@ export class OnChatService {
         this.sendFriendRequests = result.data;
       }
     });
-
-    !this.userId && this.getUserId().subscribe((o: Result<number>) => {
-      o.code == 0 && (this.userId = o.data);
-    });
   }
 
   /**
    * 登录
    * @param o
    */
-  login(o: Login): Observable<Result<number>> {
-    return this.http.post<Result>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
+  login(o: Login): Observable<Result<User>> {
+    return this.http.post<Result<User>>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
   }
 
   /**
@@ -105,18 +101,18 @@ export class OnChatService {
 
   /**
    * 检测是否已经登录
-   * 成功登录则返回用户ID，否则返回零
+   * 成功登录,则返回User；否则返回false
    */
-  checkLogin(): Observable<Result<number>> {
-    return this.http.get<Result<number>>(env.userCheckLoginUrl);
+  checkLogin(): Observable<Result<boolean | User>> {
+    return this.http.get<Result<boolean | User>>(env.userCheckLoginUrl);
   }
 
   /**
    * 注册
    * @param o
    */
-  register(o: Register): Observable<Result<number>> {
-    return this.http.post<Result>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
+  register(o: Register): Observable<Result<User>> {
+    return this.http.post<Result<User>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
   }
 
   /**

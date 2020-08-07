@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Result } from '../models/onchat.model';
+import { Result, User } from '../models/onchat.model';
 import { OnChatService } from '../services/onchat.service';
 
 @Injectable({
@@ -11,18 +11,20 @@ export class NotAuthGuard implements CanActivate, CanLoad {
   constructor(private onChatService: OnChatService, private router: Router) { }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
-    const isLogin = this.onChatService.isLogin;
-    if (isLogin !== null) { return !isLogin; }
+    if (this.onChatService.user !== null) { return false; }
 
     return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<number>) => {
-        this.onChatService.isLogin = Boolean(result.data);
-        this.onChatService.userId = result.data || undefined;
-        observer.next(!this.onChatService.isLogin);
-        return observer.complete();
+      this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
+        if (result.data) {
+          this.onChatService.user = result.data as User;
+          this.router.navigate(['/']); // 如果登录了就返回主页
+        }
+
+        observer.next(!result.data);
+        observer.complete();
       }, () => {
         observer.next(false);
-        return observer.complete();
+        observer.complete();
       });
     });
   }
@@ -31,23 +33,20 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const isLogin = this.onChatService.isLogin;
-    if (isLogin !== null) {
-      isLogin && this.router.navigate(['/']);
-      return !isLogin;
-    }
+    if (this.onChatService.user !== null) { return false; }
 
     return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<number>) => {
-        this.onChatService.isLogin = Boolean(result.data);
-        this.onChatService.userId = result.data || undefined;
-        result.data && this.router.navigate(['/']); // 如果已经登录了，就直接跳回首页
+      this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
+        if (result.data) {
+          this.onChatService.user = result.data as User;
+          this.router.navigate(['/']); // 如果登录了就返回主页
+        }
 
-        observer.next(!this.onChatService.isLogin);
-        return observer.complete();
+        observer.next(!result.data);
+        observer.complete();
       }, () => {
         observer.next(false);
-        return observer.complete();
+        observer.complete();
       });
     });
   }

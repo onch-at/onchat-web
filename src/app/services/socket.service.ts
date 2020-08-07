@@ -31,7 +31,7 @@ export class SocketService {
 
   /**
    * 发送消息
-   * @param msg 
+   * @param msg
    */
   message(msg: Message) {
     this.emit(SocketEvent.Message, {
@@ -41,8 +41,8 @@ export class SocketService {
 
   /**
    * 撤回消息
-   * @param chatroomId 
-   * @param msgId 
+   * @param chatroomId
+   * @param msgId
    */
   revokeMsg(chatroomId: number, msgId: number) {
     this.emit(SocketEvent.RevokeMsg, {
@@ -93,10 +93,9 @@ export class SocketService {
    * 发送事件
    * @param eventName 事件名
    * @param data 数据
-   * @param callback 回调
    */
-  emit(eventName: string, data?: any, callback?: CallableFunction) {
-    return this.socket.emit(eventName, data, callback);
+  emit(eventName: string, data?: any) {
+    return this.socket.emit(eventName, data);
   }
 
   /**

@@ -54,7 +54,7 @@ export class RequestPage implements OnInit {
 
     this.socketService.on(SocketEvent.FriendRequest).pipe(takeUntil(this.subject)).subscribe((o: Result<FriendRequest | FriendRequest[]>) => {
       const friendRequest = o.data;
-      if (Array.isArray(friendRequest) || friendRequest.selfId != this.onChatService.userId || friendRequest.targetId != this.user.id) {
+      if (Array.isArray(friendRequest) || friendRequest.selfId != this.onChatService.user.id || friendRequest.targetId != this.user.id) {
         return;
       }
 

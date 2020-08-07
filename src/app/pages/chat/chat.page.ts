@@ -98,13 +98,13 @@ export class ChatPage implements OnInit {
 
         this.msgList.push(o.data);
         // 如果是自己发的消息，或者当前滚动的位置允许滚动
-        if (o.data.userId == this.onChatService.userId || canScrollToBottom) {
+        if (o.data.userId == this.onChatService.user.id || canScrollToBottom) {
           this.scrollToBottom();
         } else {
           this.hasUnread = true;
         }
         // 如果消息不是自己的，就设为已读
-        o.data.userId != this.onChatService.userId && this.onChatService.readed(this.chatroomId).subscribe();
+        o.data.userId != this.onChatService.user.id && this.onChatService.readed(this.chatroomId).subscribe();
       }
     });
 
@@ -114,7 +114,7 @@ export class ChatPage implements OnInit {
         for (const msgItem of this.msgList) {
           if (msgItem.id == o.data.msgId) { // 移除被撤回的那条消息
             msgItem.type = MessageType.Tips;
-            const name = msgItem.userId == this.onChatService.userId ? '我' : msgItem.nickname;
+            const name = msgItem.userId == this.onChatService.user.id ? '我' : msgItem.nickname;
             msgItem.data.content = `<a target="_blank" href="/card/${msgItem.userId}">${name}</a> 撤回了一条消息`;
             break;
           }
@@ -124,7 +124,7 @@ export class ChatPage implements OnInit {
   }
 
   ngOnDestroy() {
-    this.chatroomId = null;
+    this.onChatService.chatroomId = null;
     this.subject.next();
     this.subject.complete();
   }
@@ -148,7 +148,7 @@ export class ChatPage implements OnInit {
 
   onKeyup(e: any) {
     this.renderer2.setStyle(e.target, 'height', 'auto');
-    this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 'px');
+    this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 2 + 'px');
     const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
 
     (diff <= 50 && diff >= 5) && this.scrollToBottom();
@@ -262,7 +262,8 @@ export class ChatPage implements OnInit {
     msg.data = this.msg;
     this.socketService.message(msg);
     this.msg = '';
-    textareaElement.style.height = 'auto';
+
+    this.renderer2.setStyle(textareaElement, 'height', 'auto');
   }
 
   /**

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } fro
 import { Router } from '@angular/router';
 import { StrUtil } from 'src/app/common/utils/str.util';
 import { Register } from 'src/app/models/form.model';
-import { Result } from 'src/app/models/onchat.model';
+import { Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -73,15 +73,16 @@ export class RegisterPage implements OnInit {
   register() {
     if (this.registerForm.invalid || this.loading) { return; }
     this.loading = true;
-    this.onChatService.register(new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)).subscribe(async (result: Result<number>) => {
+    this.onChatService.register(
+      new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)
+    ).subscribe(async (result: Result<User>) => {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }
 
       const toast = this.overlayService.presentMsgToast(result.msg, result.code === 0 ? 1000 : 2000);
       if (result.code === 0) {
-        this.onChatService.isLogin = true;
-        this.onChatService.userId = result.data;
+        this.onChatService.user = result.data;
         this.onChatService.init();
         this.socketService.init();
 
@@ -126,7 +127,7 @@ export class RegisterPage implements OnInit {
 
 /**
  * 验证器：用于验证密码与确认密码的值是否相等
- * @param control 
+ * @param control
  */
 export const equalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
   const password = control.get('password');

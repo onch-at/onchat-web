@@ -44,8 +44,8 @@
             </div>
             <div class="form-group">
               <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="confirm-password"
-                formControlName="confirmPassword" (keyup)="trimAll('confirmPassword')" placeholder="确认密码" maxlength="30"
-                required>
+                autocomplete="off" formControlName="confirmPassword" (keyup)="trimAll('confirmPassword')"
+                placeholder="确认密码" maxlength="30" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
                 (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
