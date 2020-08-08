@@ -41,11 +41,12 @@ export class ChatPage implements OnInit {
   contentElement: HTMLElement;
   /** IonContent滚动元素初始可视高度 */
   contentClientHeight: number;
-  resizeTimeout: any = null;
+  resizeTimeout: number = null;
   /** 是否有未读消息 */
   hasUnread: boolean = false;
   /** 聊天室类型 */
   chatroomType: ChatroomType = ChatroomType.Group;
+  sendMsgMap: Map<number, number> = new Map();
   subject: Subject<unknown> = new Subject();
 
   constructor(
@@ -93,18 +94,29 @@ export class ChatPage implements OnInit {
 
     this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<Message>) => {
       // 如果请求成功，并且收到的消息是这个房间的
-      if (o.code == 0 && o.data.chatroomId == this.chatroomId) {
-        const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
+      if (o.code != 0 || o.data.chatroomId != this.chatroomId) {
+        return;
+      }
 
+      // 如果是自己发的消息
+      if (o.data.userId == this.onChatService.user.id) {
+        const index = this.sendMsgMap.get(o.data.sendTime);
+        if (index !== null) {
+          this.msgList[index] = o.data;
+          this.sendMsgMap.delete(o.data.sendTime);
+        }
+      } else {
+        // 如果消息不是自己的，就设为已读
+        this.onChatService.readed(this.chatroomId).subscribe();
+
+        const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
         this.msgList.push(o.data);
-        // 如果是自己发的消息，或者当前滚动的位置允许滚动
-        if (o.data.userId == this.onChatService.user.id || canScrollToBottom) {
+
+        if (canScrollToBottom) { // 当前滚动的位置允许滚动
           this.scrollToBottom();
         } else {
           this.hasUnread = true;
         }
-        // 如果消息不是自己的，就设为已读
-        o.data.userId != this.onChatService.user.id && this.onChatService.readed(this.chatroomId).subscribe();
       }
     });
 
@@ -148,7 +160,7 @@ export class ChatPage implements OnInit {
 
   onKeyup(e: any) {
     this.renderer2.setStyle(e.target, 'height', 'auto');
-    this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 2 + 'px');
+    this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 3 + 'px');
     const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
 
     (diff <= 50 && diff >= 5) && this.scrollToBottom();
@@ -160,7 +172,7 @@ export class ChatPage implements OnInit {
       clearTimeout(this.resizeTimeout);
       this.resizeTimeout = null;
     }
-    this.resizeTimeout = setTimeout(() => {
+    this.resizeTimeout = window.setTimeout(() => {
       this.upliftScroll();
     }, 100);
   }
@@ -183,15 +195,6 @@ export class ChatPage implements OnInit {
       event.target.complete();
     });
   }
-
-  /**
-   * 点击加载更多
-   */
-  // tapToLoadRecords() {
-  //   this.loadRecords(() => {
-  //     this.ionContent.scrollToTop(500);
-  //   });
-  // }
 
   /**
    * 加载聊天记录
@@ -258,9 +261,19 @@ export class ChatPage implements OnInit {
   send(textareaElement: HTMLTextAreaElement) {
     if (this.msg.length > MSG_MAX_LENGTH) { return; }
     const msg = new Message(+this.chatroomId);
-    // TODO 封装成一个文字消息类
-    msg.data = this.msg;
+    msg.data = this.msg; // TODO 封装成一个文字消息类
     this.socketService.message(msg);
+
+    this.sendMsgMap.set(msg.sendTime, this.msgList.length);
+
+    this.msgList.push(Object.assign(msg, {
+      userId: this.onChatService.user.id,
+      data: { content: this.msg },
+      createTime: msg.sendTime,
+      loading: true
+    }));
+    this.scrollToBottom();
+
     this.msg = '';
 
     this.renderer2.setStyle(textareaElement, 'height', 'auto');

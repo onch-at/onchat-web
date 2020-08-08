@@ -31,4 +31,5 @@ npm-debug.log*
 /www
 
 /package-lock.json
-*.pem
+/.npmrc
+/*.pem

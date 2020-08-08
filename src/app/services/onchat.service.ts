@@ -22,8 +22,6 @@ const HTTP_OPTIONS_FORM = {
   providedIn: 'root'
 })
 export class OnChatService {
-  /** 缓存登录状态 */
-  isLogin: boolean = null;
   /** 当前用户 */
   user: User = null;
   /** 记录当前所在的聊天室ID */

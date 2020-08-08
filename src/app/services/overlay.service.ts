@@ -31,8 +31,7 @@ export class OverlayService {
   async presentMsgToast(message: string, duration: number = 2000): Promise<HTMLIonToastElement> {
     const toast = await this.toastController.create({
       message,
-      duration,
-      color: 'dark'
+      duration
     });
 
     toast.present();

@@ -61,7 +61,7 @@ export class NotificationComponent implements OnInit {
 
   /**
    * 手势移动时
-   * @param event 
+   * @param event
    */
   private onMove(event: GestureDetail) {
     this.animation.progressStart(false);
@@ -70,13 +70,13 @@ export class NotificationComponent implements OnInit {
 
   /**
    * 手势结束时
-   * @param event 
+   * @param event
    */
   private onEnd(event: GestureDetail) {
     this.gesture.enable(false);
 
     const step = this.getStep(event);
-    const shouldComplete = step > 0.45;
+    const shouldComplete = step > 0.4;
 
     this.animation.progressEnd(shouldComplete ? 1 : 0, step);
     this.animation.onFinish(() => {

@@ -50,7 +50,6 @@
   }
 
   .msg-bubble {
-    // position: relative;
     padding: 0.4rem 0.75rem;
     margin-top: 0.35rem;
     min-height: 2rem;
@@ -97,6 +96,15 @@
       text-align: right;
     }
 
+    .send-spinner {
+      display: block;
+      margin: -0.5rem 0.575rem -0.5rem auto;
+      height: 1.5rem;
+      width: 2rem;
+      font-size: 999rem;
+      --color: var(--custom-color-primary);
+    }
+
     .username {
       text-align: right;
     }
@@ -104,11 +112,6 @@
     .msg-bubble {
       background: var(--custom-color-primary);
       text-align: left;
-
-      &.msg-bubble-danger {
-        color: var(--custom-color-white);
-        background: var(--custom-color-danger);
-      }
     }
   }
 }

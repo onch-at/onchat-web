@@ -382,7 +382,7 @@ ion-item {
   }
 }
 
-// 自定义的Toast样式
+// Toast
 ion-toast {
   &::part(container) {
     padding: 0 0.25rem;
@@ -396,7 +396,8 @@ ion-toast {
   --end: 10px;
   --height: 3rem;
   --border-radius: 1.5rem;
-  --background: var(--custom-color-dark);
+  --color: var(--custom-color-light);
+  --background: var(--custom-color-black);
 }
 
 input,

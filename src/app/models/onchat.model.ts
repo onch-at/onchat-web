@@ -97,6 +97,8 @@ export class Message extends Entity {
     replyId?: number;
     /** 消息在客户端发送的时间 */
     sendTime?: number;
+    /** 发送中 */
+    loading?: boolean;
 
     constructor(chatroomId: number) {
         super();
