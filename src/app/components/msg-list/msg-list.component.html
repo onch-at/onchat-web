@@ -21,7 +21,8 @@
           [routerLink]="['/card', item.userId]"></ion-img>
 
         <div>
-          <div class="username" *ngIf="item.userId != onChatService.user.id">{{ item.nickname }}</div>
+          <div class="username" *ngIf="item.userId != onChatService.user.id && chatroomType == chatroomTypes.Group">
+            {{ item.nickname }}</div>
           <span class="msg-bubble ion-activatable ripple-parent" (press)="presentBubbleToolbarPopover(item, $event)"
             [innerHTML]="item.data.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
           </span>
