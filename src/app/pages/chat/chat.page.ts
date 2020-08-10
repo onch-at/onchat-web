@@ -102,6 +102,7 @@ export class ChatPage implements OnInit {
       if (o.data.userId == this.onChatService.user.id) {
         const index = this.sendMsgMap.get(o.data.sendTime);
         if (index !== null) {
+          o.data.avatarThumbnail = this.onChatService.user.avatarThumbnail;
           this.msgList[index] = o.data;
           this.sendMsgMap.delete(o.data.sendTime);
         }
@@ -268,6 +269,7 @@ export class ChatPage implements OnInit {
 
     this.msgList.push(Object.assign(msg, {
       userId: this.onChatService.user.id,
+      avatarThumbnail: this.onChatService.user.avatarThumbnail,
       data: { content: this.msg },
       createTime: msg.sendTime,
       loading: true
