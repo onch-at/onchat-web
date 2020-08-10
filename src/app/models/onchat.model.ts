@@ -37,8 +37,26 @@ export interface User extends IEntity {
     email: string;
     /** 电话号 */
     telephone: string;
+    /** 头像 */
+    avatar: string;
     /** 头像缩略图 */
     avatarThumbnail: string;
+    /** 年龄 */
+    age?: number;
+    /** 个人卡片背景图 */
+    backgroundImage: string;
+    /** 生日 */
+    birthday?: number;
+    /** 星座 */
+    constellation?: number;
+    /** 性别 */
+    gender?: number;
+    /** 登录时间 */
+    loginTime: number;
+    /** 心情 */
+    mood?: number;
+    /** 个性签名 */
+    signature?: string;
 }
 
 /**

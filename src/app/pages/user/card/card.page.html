@@ -13,11 +13,11 @@
     </ion-toolbar>
   </ion-header>
 
-  <img class="bg-img" src="http://static.hypergo.net/img/rkph.jpg">
+  <img class="bg-img" [src]="user.backgroundImage">
 
   <div class="card">
     <div class="card-header">
-      <img class="avatar" src="https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5">
+      <img class="avatar" [src]="user.avatarThumbnail">
       <div class="info">
         <h4>{{ user.username }}</h4>
         <div class="account">
@@ -29,13 +29,13 @@
 
     <div class="card-content">
       <article class="signature ion-activatable ripple-parent">
-        A true great man will neither trample on a worm, nor sneak to an emperpor.
+        {{ user.signature || '这个人很懒，什么都没写~' }}
         <ion-ripple-effect></ion-ripple-effect>
       </article>
 
       <div class="last-online ion-activatable ripple-parent">
         <ion-icon name="time"></ion-icon>
-        最近一次上线时间：{{ user.updateTime | date:'yyyy年M月d日' }}
+        最近一次上线时间：{{ user.loginTime | date:'yyyy年M月d日' }}
         <ion-ripple-effect></ion-ripple-effect>
       </div>
 
