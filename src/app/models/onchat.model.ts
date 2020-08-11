@@ -147,11 +147,11 @@ export class FriendRequest extends Entity {
     /** 申请人的用户名 */
     selfUsername: string;
     /** 申请人的头像 */
-    selfAvatarThumbnail: string;
+    selfAvatarThumbnail?: string;
     /** 被申请人的用户名 */
     targetUsername: string;
     /** 被申请人的头像 */
-    targetAvatarThumbnail: string;
+    targetAvatarThumbnail?: string;
 }
 
 

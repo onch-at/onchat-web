@@ -70,6 +70,7 @@ export class AppComponent implements OnInit {
         }
 
         this.overlayService.presentNotification({
+          iconUrl: friendRequest.selfAvatarThumbnail,
           title: '收到好友申请',
           description: '用户 ' + friendRequest.selfUsername + ' 申请添加你为好友',
           tapHandler: () => {
@@ -103,6 +104,7 @@ export class AppComponent implements OnInit {
           this.feedbackService.booAudio.play();
 
           this.overlayService.presentNotification({
+            iconUrl: result.data.targetAvatarThumbnail,
             title: '好友申请已同意',
             description: '已和 ' + result.data.targetUsername + ' 成为好友',
             tapHandler: () => {
@@ -140,10 +142,11 @@ export class AppComponent implements OnInit {
           this.feedbackService.dingDengAudio.play();
 
           this.overlayService.presentNotification({
+            iconUrl: friendRequest.targetAvatarThumbnail,
             title: '好友申请被拒绝',
-            description: '用户 ' + result.data.targetUsername + ' 拒绝了你的好友申请',
+            description: '用户 ' + friendRequest.targetUsername + ' 拒绝了你的好友申请',
             tapHandler: () => {
-              this.router.navigate(['/friend/request', result.data.targetId]);
+              this.router.navigate(['/friend/request', friendRequest.targetId]);
             }
           });
         } else if (friendRequest.targetId == this.onChatService.user.id) { // 如果自己是被申请人
@@ -174,8 +177,8 @@ export class AppComponent implements OnInit {
           const roomName = index >= 0 ? this.onChatService.chatList[index].name : '收到新消息';
 
           this.overlayService.presentNotification({
+            iconUrl: msg.avatarThumbnail || null, // TODO 群聊的头像
             title: roomName,
-            iconUrl: msg.avatarThumbnail || null,
             description: msg.nickname + '：' + (msg.type == MessageType.Text ? msg.data.content : '[MESSAGE]'),
             tapHandler: () => {
               this.router.navigate(['/chat', msg.chatroomId]);
