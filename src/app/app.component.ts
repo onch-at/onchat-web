@@ -175,6 +175,7 @@ export class AppComponent implements OnInit {
 
           this.overlayService.presentNotification({
             title: roomName,
+            iconUrl: msg.avatarThumbnail || null,
             description: msg.nickname + '：' + (msg.type == MessageType.Text ? msg.data.content : '[MESSAGE]'),
             tapHandler: () => {
               this.router.navigate(['/chat', msg.chatroomId]);

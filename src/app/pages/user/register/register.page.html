@@ -67,7 +67,7 @@
             <div class="form-group form-group-row">
               <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha"
                 (keyup)="trimAll('captcha')" placeholder="验证码" maxlength="4" required>
-              <img appActiveClass [appActiveClassDuration]="200" class="captcha" [src]="captchaUrl" alt="CAPTCHA"
+              <img appActiveClass [appActiveClassDuration]="200" class="captcha" [src]="captchaUrl"
                 (tap)="updateCaptcha()">
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>

@@ -1,7 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SocketEvent } from 'src/app/common/enum';
@@ -27,7 +26,6 @@ export class HandlePage implements OnInit {
     private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
     private overlayService: OverlayService,
-    private alertController: AlertController,
     private route: ActivatedRoute,
     private router: Router
   ) { }
