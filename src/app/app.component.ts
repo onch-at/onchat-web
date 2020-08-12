@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { race } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
 import { ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
@@ -32,25 +33,14 @@ export class AppComponent implements OnInit {
     data && (this.onChatService.chatList = data);
 
     // 连接打通时
-    this.socketService.on(SocketEvent.Connect).subscribe(() => {
-      if (this.onChatService.user == null) {
-        this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
-          this.onChatService.user = result.data ? result.data as User : null;
-          if (result.data) {
-            this.socketService.init();
-            this.onChatService.init();
-          }
-        });
-      } else {
-        this.onChatService.init();
+    this.socketService.on(SocketEvent.Connect).pipe(
+      mergeMap(() => this.onChatService.checkLogin())
+    ).subscribe((result: Result<boolean | User>) => {
+      this.onChatService.user = result.data ? result.data as User : null;
+      if (result.data) {
         this.socketService.init();
+        this.onChatService.init();
       }
-
-      // let num = 0;
-      // setInterval(() => {
-      //   this.socketService.init();
-      //   console.log(++num);
-      // }, 10)
     });
 
     // 发起/收到好友申请时
@@ -237,15 +227,17 @@ export class AppComponent implements OnInit {
     });
 
     // 重连时
-    this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
-        this.onChatService.user = result.data ? result.data as User : null;
-        if (this.onChatService.user) {
-          this.socketService.init();
-          this.onChatService.init();
-        }
-      });
-      this.overlayService.presentMsgToast('与服务器重连成功！');
+    this.socketService.on(SocketEvent.Reconnect).pipe(
+      mergeMap(() => this.onChatService.checkLogin())
+    ).subscribe((result: Result<boolean | User>) => {
+      this.onChatService.user = result.data ? result.data as User : null;
+      if (result.data) {
+        this.socketService.init();
+        this.onChatService.init();
+        this.overlayService.presentMsgToast('与服务器重连成功！');
+      } else {
+        this.router.navigate(['/login']);
+      }
     });
   }
 }

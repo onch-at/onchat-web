@@ -46,6 +46,10 @@ export class ChatPage implements OnInit {
   hasUnread: boolean = false;
   /** 聊天室类型 */
   chatroomType: ChatroomType = ChatroomType.Group;
+  /**
+   * 用户发送的消息体
+   * sendTime => 在msgList中的index
+   */
   sendMsgMap: Map<number, number> = new Map();
   subject: Subject<unknown> = new Subject();
 
@@ -78,10 +82,10 @@ export class ChatPage implements OnInit {
     this.loadRecords();
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-    const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.chatroomId);
-    if (index >= 0) {
-      this.roomName = this.onChatService.chatList[index].name;
-      this.chatroomType = this.onChatService.chatList[index].type;
+    const chatItem = this.onChatService.chatList.find((v: ChatItem) => v.chatroomId == this.chatroomId);
+    if (chatItem) {
+      this.roomName = chatItem.name;
+      this.chatroomType = chatItem.type;
     } else { // TODO 把数据缓存下来
       this.onChatService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
         if (result.code === 0) {
@@ -161,7 +165,7 @@ export class ChatPage implements OnInit {
 
   onKeyup(e: any) {
     this.renderer2.setStyle(e.target, 'height', 'auto');
-    this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 3 + 'px');
+    this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 2.5 + 'px');
     const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
 
     (diff <= 50 && diff >= 5) && this.scrollToBottom();
@@ -182,7 +186,7 @@ export class ChatPage implements OnInit {
    * 加载更多消息
    * @param event
    */
-  loadMoreRecords(event) {
+  loadMoreRecords(event: any) {
     if (this.first) {
       return this.scrollToBottom(undefined, () => {
         event.target.complete();
@@ -216,6 +220,7 @@ export class ChatPage implements OnInit {
           this.msgList.unshift(msgItem);
         }
 
+
         // 如果是第一次查记录，就执行滚动
         this.msgId == 0 && this.scrollToBottom(0, () => {
           this.first = false;
@@ -228,6 +233,7 @@ export class ChatPage implements OnInit {
       } else if (result.code == 1) { // 如果没有消息
         this.end = true;
       } else if (result.code == -3) { // 如果没有权限
+        this.overlayService.presentMsgToast('你还没有权限进入此聊天室！');
         this.router.navigate(['/']); // 没权限还想进来，回首页去吧
       }
       complete && complete();
@@ -285,7 +291,7 @@ export class ChatPage implements OnInit {
    * 是否禁用发送按钮
    */
   disable() {
-    return (StrUtil.trimAll(this.msg) == '' || this.msg.length > MSG_MAX_LENGTH);
+    return StrUtil.trimAll(this.msg) == '' || this.msg.length > MSG_MAX_LENGTH;
   }
 
   /**
