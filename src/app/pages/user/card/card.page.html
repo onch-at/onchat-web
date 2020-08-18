@@ -17,7 +17,7 @@
 
   <div class="card">
     <div class="card-header">
-      <img class="avatar" [src]="user.avatarThumbnail">
+      <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/avatar', user.id]">
       <div class="info">
         <h4>{{ user.username }}</h4>
         <div class="account">

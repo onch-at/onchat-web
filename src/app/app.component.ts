@@ -1,4 +1,5 @@
 
+import { PlatformLocation } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { race } from 'rxjs';
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
     private feedbackService: FeedbackService,
     private overlayService: OverlayService,
     private localStorageService: LocalStorageService,
+    private platformLocation: PlatformLocation,
   ) { }
 
   ngOnInit() {
@@ -238,6 +240,11 @@ export class AppComponent implements OnInit {
       } else {
         this.router.navigate(['/user/login']);
       }
+    });
+
+    // 如果用户手动返回，就震动一下，表示阻止
+    this.platformLocation.onPopState(() => {
+      this.onChatService.globalLoading && this.feedbackService.vibrate();
     });
   }
 }

@@ -1,10 +1,8 @@
-import { PlatformLocation } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { SysUtil } from 'src/app/common/utils/sys.util';
 import { Result } from 'src/app/models/onchat.model';
-import { FeedbackService } from 'src/app/services/feedback.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 
@@ -20,16 +18,11 @@ export class AvatarCropperComponent implements OnInit {
 
   constructor(
     public onChatService: OnChatService,
-    private feedbackService: FeedbackService,
     private modalController: ModalController,
-    private platformLocation: PlatformLocation,
     private overlayService: OverlayService
   ) { }
 
-  ngOnInit() {
-    // 如果用户手动返回，就震动一下，表示阻止
-    this.platformLocation.onPopState(() => this.feedbackService.vibrate());
-  }
+  ngOnInit() { }
 
   /**
    * 关闭自己
