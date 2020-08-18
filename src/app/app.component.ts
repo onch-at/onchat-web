@@ -236,7 +236,7 @@ export class AppComponent implements OnInit {
         this.onChatService.init();
         this.overlayService.presentMsgToast('与服务器重连成功！');
       } else {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/user/login']);
       }
     });
   }

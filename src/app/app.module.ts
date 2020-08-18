@@ -17,8 +17,6 @@ import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { PopoverComponent } from './components/popover/popover.component';
 import { SharedModule } from './modules/shared.module';
-import { LocalStorageService } from './services/local-storage.service';
-import { OnChatService } from './services/onchat.service';
 
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
 
@@ -56,8 +54,6 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LOCALE_ID, useValue: 'zh-Hans' },
-    OnChatService,
-    LocalStorageService,
     CookieService,
   ],
   bootstrap: [AppComponent]

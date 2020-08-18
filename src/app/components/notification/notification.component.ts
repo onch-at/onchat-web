@@ -45,7 +45,8 @@ export class NotificationComponent implements OnInit {
     this.animation = this.animationCtrl.create()
       .addElement(this.elementRef.nativeElement)
       .duration(200)
-      .fromTo('transform', 'translateY(0)', `translateY(-100%)`)
+      .fromTo('transform', 'translateY(0)', 'translateY(-100%)')
+      .fromTo('opacity', '1', '.5')
       .easing('ease-out');
     this.animation.progressStart(false);
 

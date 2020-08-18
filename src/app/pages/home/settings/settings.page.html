@@ -19,6 +19,9 @@
       <ion-label>Checkbox</ion-label>
       <ion-checkbox slot="start" mode="md"></ion-checkbox>
     </ion-item>
+
+    <ion-item lines="none" [detail]="false">
+      <ion-button (tap)="showOverlayGlobalPanelCenter()">测试全局浮层通知</ion-button>
+    </ion-item>
   </ion-list>
-  <button (tap)="showOverlayGlobalPanelCenter()">over</button>
 </ion-content>

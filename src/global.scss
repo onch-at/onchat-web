@@ -223,6 +223,67 @@ ion-progress-bar {
   --progress-background: rgba(var(--custom-color-primary-rgb), 0.625);
 }
 
+// loading
+ion-loading.ion-loading {
+  --background: rgba(var(--custom-color-light-rgb), 0.9);
+
+  .loading-wrapper {
+    height: 9rem;
+    width: 9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
+    backdrop-filter: saturate(125%) blur(5px);
+  }
+
+  ion-spinner {
+    --spinner-color: var(--custom-color-dark);
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .loading-content {
+    color: var(--custom-color-dark);
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: normal;
+    margin-inline-start: 0 !important;
+  }
+}
+
+// action sheet
+ion-action-sheet.ion-action-sheet {
+  --color: var(--custom-color-dark);
+  --background: rgba(var(--custom-color-light-rgb), 0.9);
+  --button-color: var(--custom-color-dark);
+  --button-color-hover: var(--custom-color-dark);
+  --button-color-activated: var(--custom-color-dark);
+  --button-color-focused: var(--custom-color-dark);
+  --button-color-selected: var(--custom-color-dark);
+
+  .action-sheet-group {
+    border-radius: 1.5rem;
+    backdrop-filter: saturate(125%) blur(5px);
+  }
+
+  button.action-sheet-button {
+    height: 3rem;
+    font-size: 1rem;
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .action-sheet-icon {
+    font-size: 1.125rem !important;
+  }
+}
+
 // 警告框
 ion-alert {
   backdrop-filter: saturate(125%) blur(2.5px);
@@ -398,6 +459,10 @@ ion-toast {
   --border-radius: 1.5rem;
   --color: var(--custom-color-light);
   --background: var(--custom-color-black);
+
+  @media (prefers-color-scheme: dark) {
+    --background: var(--custom-color-dark);
+  }
 }
 
 input,

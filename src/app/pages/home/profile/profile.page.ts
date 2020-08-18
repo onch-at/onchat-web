@@ -12,7 +12,7 @@ import { SocketService } from 'src/app/services/socket.service';
 export class ProfilePage implements OnInit {
 
   constructor(
-    private onChatService: OnChatService,
+    public onChatService: OnChatService,
     private router: Router,
     private overlayService: OverlayService,
     private socketService: SocketService,

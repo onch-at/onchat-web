@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 
 @Component({
@@ -10,6 +11,7 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private overlayService: OverlayService,
+    private onChatService: OnChatService,
   ) { }
 
   ngOnInit() {
@@ -17,6 +19,7 @@ export class SettingsPage implements OnInit {
 
   showOverlayGlobalPanelCenter() {
     this.overlayService.presentNotification({
+      iconUrl: 'https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5',
       title: 'Title',
       description: 'description description description description description description'
     });

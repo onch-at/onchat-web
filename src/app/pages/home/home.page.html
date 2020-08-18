@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true" class="bg-white">
   <aside class="sidebar">
     <img *ngIf="onChatService.user" class="avatar" [src]="onChatService.user.avatarThumbnail"
-      [routerLink]="['/card', onChatService.user.id]">
+      [routerLink]="['/user/card', onChatService.user.id]">
 
     <div class="button-group d-flex">
       <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/chat']"

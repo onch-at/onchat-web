@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { NotificationController, NotificationOptions } from '../providers/notification.controller';
 
 @Injectable({
@@ -13,6 +13,8 @@ export class OverlayService {
   constructor(
     private toastController: ToastController,
     private alertController: AlertController,
+    private actionSheetController: ActionSheetController,
+    private loadingController: LoadingController,
     private notificationController: NotificationController
   ) { }
 
@@ -88,6 +90,33 @@ export class OverlayService {
 
     alert.present();
     return alert;
+  }
+
+  /**
+   * 弹出Action Sheet
+   * @param header 标头文字
+   * @param buttons 按钮组
+   */
+  async presentActionSheet(header: string = undefined, buttons: any[]): Promise<HTMLIonActionSheetElement> {
+    const actionSheet = await this.actionSheetController.create({
+      header,
+      cssClass: 'ion-action-sheet',
+      buttons
+    });
+
+    actionSheet.present();
+    return actionSheet;
+  }
+
+  async presentLoading(message: string = '正在加载…') {
+    const loading = await this.loadingController.create({
+      cssClass: 'ion-loading',
+      spinner: 'crescent',
+      message,
+    });
+
+    loading.present();
+    return loading;
   }
 
 }

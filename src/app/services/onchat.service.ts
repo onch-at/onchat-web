@@ -18,6 +18,11 @@ const HTTP_OPTIONS_FORM = {
   withCredentials: true
 };
 
+const HTTP_OPTIONS_DEFAULT = {
+  headers: new HttpHeaders(),
+  withCredentials: true
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,6 +33,8 @@ export class OnChatService {
   chatroomId: number = null;
   /** 未读消息总数 */
   unreadMsgNum: number = 0;
+  /** 全局阻塞加载 */
+  globalLoading: boolean = false;
 
   /** 缓存聊天列表 */
   private _chatList: ChatItem[] = [];
@@ -111,6 +118,16 @@ export class OnChatService {
    */
   register(o: Register): Observable<Result<User>> {
     return this.http.post<Result<User>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
+  }
+
+  /**
+   * 上传用户头像
+   */
+  uploadUserAvatar(avatar: Blob): Observable<Result> {
+    const formData: FormData = new FormData();
+    formData.append('image', avatar);
+
+    return this.http.post<Result>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
   }
 
   /**

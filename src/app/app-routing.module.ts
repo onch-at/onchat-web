@@ -7,16 +7,20 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'login',
+    path: 'user/login',
     loadChildren: () => import('./pages/user/login/login.module').then(m => m.LoginPageModule)
   },
   {
-    path: 'register',
+    path: 'user/register',
     loadChildren: () => import('./pages/user/register/register.module').then(m => m.RegisterPageModule)
   },
   {
-    path: 'card',
+    path: 'user/card',
     loadChildren: () => import('./pages/user/card/card.module').then(m => m.CardPageModule)
+  },
+  {
+    path: 'user/avatar',
+    loadChildren: () => import('./pages/user/avatar/avatar.module').then(m => m.AvatarPageModule)
   },
   {
     path: 'chat',

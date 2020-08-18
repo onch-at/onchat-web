@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate, CanLoad {
         if (result.data) {
           this.onChatService.user = result.data as User;
         } else {
-          this.router.navigate(['/login']); // 返回登录页面
+          this.router.navigate(['/user/login']); // 返回登录页面
         }
 
         observer.next(!!result.data);
@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate, CanLoad {
         if (result.data) {
           this.onChatService.user = result.data as User;
         } else {
-          this.router.navigate(['/login']); // 返回登录页面
+          this.router.navigate(['/user/login']); // 返回登录页面
         }
 
         observer.next(!!result.data);

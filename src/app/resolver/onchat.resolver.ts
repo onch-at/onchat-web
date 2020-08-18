@@ -19,7 +19,13 @@ export class UserResolve implements Resolve<Result<User> | User> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<User>> | User {
         const userId = +route.params.userId;
-        // 先去缓存里面找找
+
+        // 如果是自己
+        if (this.onChatService.user && userId == this.onChatService.user.id) {
+            return this.onChatService.user
+        }
+
+        // 去缓存里面找找
         const user = this.sessionStorageService.getUser(userId);
         if (user) { return user; }
 

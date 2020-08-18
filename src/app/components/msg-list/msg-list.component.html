@@ -17,7 +17,7 @@
         'msg-item-left': onChatService.user && onChatService.user.id != item.userId
       }">
 
-        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/card', item.userId]"></ion-img>
+        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user/card', item.userId]"></ion-img>
 
         <div>
           <div class="username" *ngIf="item.userId != onChatService.user.id && chatroomType == chatroomTypes.Group">
