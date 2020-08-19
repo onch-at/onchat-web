@@ -67,11 +67,11 @@ export class SysUtil {
     }
 
     /**
-     * 是否支持WebP格式
+     * 是否支持JPEG格式
      */
-    static isSupportWebP(): boolean {
+    static isSupportJPEG(): boolean {
         try {
-            return document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0;
+            return document.createElement('canvas').toDataURL('image/jpeg').indexOf('data:image/jpeg') === 0;
         } catch (e) {
             return false;
         }

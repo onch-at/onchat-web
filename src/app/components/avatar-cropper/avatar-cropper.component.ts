@@ -15,8 +15,8 @@ export class AvatarCropperComponent implements OnInit {
   @ViewChild('imageCropper', { static: true }) imageCropper: ImageCropperComponent;
   @Input() imageChangedEvent: Event;
   @Output() uploaded: EventEmitter<string> = new EventEmitter<string>();
-  /** 图片格式，优先webp */
-  format: string = SysUtil.isSupportWebP() ? 'webp' : 'jpeg';
+  /** 图片格式，优先jpeg */
+  format: string = SysUtil.isSupportJPEG() ? 'jpeg' : 'png';
 
   constructor(
     public onChatService: OnChatService,
