@@ -62,7 +62,7 @@
     display: inline-block;
     white-space: pre-wrap;
     touch-action: auto !important;
-    user-select: auto !important;
+    // user-select: auto !important;
 
     @media (prefers-color-scheme: dark) {
       color: var(--custom-color-white);

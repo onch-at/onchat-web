@@ -123,11 +123,11 @@ export class OnChatService {
   /**
    * 上传用户头像
    */
-  uploadUserAvatar(avatar: Blob): Observable<Result> {
+  uploadUserAvatar(avatar: Blob): Observable<Result<{ avatar: string, avatarThumbnail: string }>> {
     const formData: FormData = new FormData();
     formData.append('image', avatar);
 
-    return this.http.post<Result>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
+    return this.http.post<Result<{ avatar: string, avatarThumbnail: string }>>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
   }
 
   /**

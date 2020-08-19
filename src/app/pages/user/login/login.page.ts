@@ -5,6 +5,7 @@ import { StrUtil } from 'src/app/common/utils/str.util';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { OverlayService } from 'src/app/services/overlay.service';
+import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { OnChatService } from '../../../services/onchat.service';
 
@@ -40,10 +41,11 @@ export class LoginPage implements OnInit {
 
   constructor(
     private onChatService: OnChatService,
-    private router: Router,
     private overlayService: OverlayService,
-    private fb: FormBuilder,
+    private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
+    private fb: FormBuilder,
+    private router: Router,
   ) { }
 
   ngOnInit() { }
@@ -58,6 +60,7 @@ export class LoginPage implements OnInit {
 
       if (result.code === 0) {
         this.onChatService.user = result.data;
+        this.sessionStorageService.setUser(result.data);
         this.socketService.init();
 
         (await toast).onWillDismiss().then(() => { // 在Toast即将关闭前

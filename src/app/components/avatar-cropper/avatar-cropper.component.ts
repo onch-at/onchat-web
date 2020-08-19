@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { SysUtil } from 'src/app/common/utils/sys.util';
 import { Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
+import { SessionStorageService } from 'src/app/services/session-storage.service';
 
 @Component({
   selector: 'app-avatar-cropper',
@@ -14,13 +15,13 @@ import { OverlayService } from 'src/app/services/overlay.service';
 export class AvatarCropperComponent implements OnInit {
   @ViewChild('imageCropper', { static: true }) imageCropper: ImageCropperComponent;
   @Input() imageChangedEvent: Event;
-  @Output() uploaded: EventEmitter<string> = new EventEmitter<string>();
-  /** 图片格式，优先jpeg */
-  format: string = SysUtil.isSupportJPEG() ? 'jpeg' : 'png';
+  /** 图片格式，优先级：webp -> jpeg -> png */
+  format: string = SysUtil.isSupportWEBP() ? 'webp' : SysUtil.isSupportJPEG() ? 'jpeg' : 'png';
 
   constructor(
     public onChatService: OnChatService,
     private modalController: ModalController,
+    private sessionStorageService: SessionStorageService,
     private overlayService: OverlayService
   ) { }
 
@@ -38,7 +39,7 @@ export class AvatarCropperComponent implements OnInit {
    * 上传图片
    */
   uploadImage() {
-    SysUtil.uploadFile('image/*').then((event: Event) => {
+    SysUtil.uploadFile('image/webp,image/jpeg,image/png,image/gif').then((event: Event) => {
       this.imageChangedEvent = event;
     });
   }
@@ -52,12 +53,20 @@ export class AvatarCropperComponent implements OnInit {
     this.onChatService.globalLoading = true;
     const event = this.imageCropper.crop();
 
-    this.onChatService.uploadUserAvatar(SysUtil.dataURItoBlob(event.base64)).subscribe(async (result: Result) => {
+    const imageBlob = SysUtil.dataURItoBlob(event.base64);
+
+    if (imageBlob.size > 1048576) {
+      return this.overlayService.presentMsgToast('文件体积过大（' + (imageBlob.size / 1048576).toFixed(2) + 'MB），仅接受体积为1MB以内的文件');
+    }
+
+    this.onChatService.uploadUserAvatar(imageBlob).subscribe(async (result: Result<{ avatar: string, avatarThumbnail: string }>) => {
       this.onChatService.globalLoading = false;
 
       if (result.code === 0) {
-        this.onChatService.user.avatar = event.base64;
-        this.onChatService.user.avatarThumbnail = event.base64;
+        this.onChatService.user.avatar = result.data.avatar;
+        this.onChatService.user.avatarThumbnail = result.data.avatarThumbnail;
+
+        this.sessionStorageService.setUser(this.onChatService.user);
 
         this.dismiss(event.base64);
         this.overlayService.presentMsgToast('头像上传成功！');

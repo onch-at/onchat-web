@@ -3,12 +3,17 @@ import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStat
 import { Observable } from 'rxjs';
 import { Result, User } from '../models/onchat.model';
 import { OnChatService } from '../services/onchat.service';
+import { SessionStorageService } from '../services/session-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotAuthGuard implements CanActivate, CanLoad {
-  constructor(private onChatService: OnChatService, private router: Router) { }
+  constructor(
+    private onChatService: OnChatService,
+    private sessionStorageService: SessionStorageService,
+    private router: Router
+  ) { }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
     if (this.onChatService.user !== null) { return false; }
@@ -16,7 +21,9 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
-          this.onChatService.user = result.data as User;
+          const user = result.data as User;
+          this.onChatService.user = user;
+          this.sessionStorageService.setUser(user);
           this.router.navigate(['/']); // 如果登录了就返回主页
         }
 
@@ -38,7 +45,9 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
-          this.onChatService.user = result.data as User;
+          const user = result.data as User;
+          this.onChatService.user = user;
+          this.sessionStorageService.setUser(user);
           this.router.navigate(['/']); // 如果登录了就返回主页
         }
 

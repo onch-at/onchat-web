@@ -6,6 +6,7 @@ import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
+import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { environment as env } from '../../../../environments/environment';
 
@@ -59,13 +60,12 @@ export class RegisterPage implements OnInit {
 
   constructor(
     private router: Router,
+    private fb: FormBuilder,
     private onChatService: OnChatService,
     private overlayService: OverlayService,
-    private fb: FormBuilder,
+    private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
   }
@@ -83,6 +83,7 @@ export class RegisterPage implements OnInit {
       const toast = this.overlayService.presentMsgToast(result.msg, result.code === 0 ? 1000 : 2000);
       if (result.code === 0) {
         this.onChatService.user = result.data;
+        this.sessionStorageService.setUser(result.data);
         this.onChatService.init();
         this.socketService.init();
 

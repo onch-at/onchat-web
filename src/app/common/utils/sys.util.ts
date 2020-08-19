@@ -5,12 +5,14 @@ export class SysUtil {
      * 复制节点文本
      * @param element
      */
-    static copyText(element: Element): void {
+    static copyText(element: HTMLElement): void {
+        element.style.userSelect = 'text';
         const range = document.createRange();
         range.selectNode(element);
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
         document.execCommand('copy');
+        element.style.userSelect = 'none';
         window.getSelection().removeAllRanges();
     }
 
@@ -64,6 +66,17 @@ export class SysUtil {
                 document.body.removeChild(input);
             };
         });
+    }
+
+    /**
+     * 是否支持WebP格式
+     */
+    static isSupportWEBP(): boolean {
+        try {
+            return document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0;
+        } catch (e) {
+            return false;
+        }
     }
 
     /**

@@ -3,12 +3,17 @@ import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStat
 import { Observable } from 'rxjs';
 import { Result, User } from '../models/onchat.model';
 import { OnChatService } from '../services/onchat.service';
+import { SessionStorageService } from '../services/session-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanLoad {
-  constructor(private onChatService: OnChatService, private router: Router) { }
+  constructor(
+    private onChatService: OnChatService,
+    private sessionStorageService: SessionStorageService,
+    private router: Router
+  ) { }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
     if (this.onChatService.user !== null) { return true; }
@@ -16,7 +21,9 @@ export class AuthGuard implements CanActivate, CanLoad {
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
-          this.onChatService.user = result.data as User;
+          const user = result.data as User;
+          this.onChatService.user = user;
+          this.sessionStorageService.setUser(user);
         } else {
           this.router.navigate(['/user/login']); // 返回登录页面
         }
@@ -39,7 +46,9 @@ export class AuthGuard implements CanActivate, CanLoad {
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
-          this.onChatService.user = result.data as User;
+          const user = result.data as User;
+          this.onChatService.user = user;
+          this.sessionStorageService.setUser(user);
         } else {
           this.router.navigate(['/user/login']); // 返回登录页面
         }

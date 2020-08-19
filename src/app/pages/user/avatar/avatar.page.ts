@@ -61,7 +61,7 @@ export class AvatarPage implements OnInit {
       {
         text: '更换头像',
         handler: async () => {
-          SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
+          SysUtil.uploadFile('image/webp,image/jpeg,image/png,image/gif').then((event: Event) => this.modalController.create({
             component: AvatarCropperComponent,
             componentProps: {
               imageChangedEvent: event
@@ -69,7 +69,9 @@ export class AvatarPage implements OnInit {
           })).then((modal: HTMLIonModalElement) => {
             modal.present();
             modal.onWillDismiss().then((e: { data: string }) => {
-              this.user.avatar = e.data;
+              if (e.data) {
+                this.user.avatar = e.data;
+              }
             });
           });
         }

@@ -10,6 +10,7 @@ import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 import { OverlayService } from './services/overlay.service';
+import { SessionStorageService } from './services/session-storage.service';
 import { SocketService } from './services/socket.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
     private overlayService: OverlayService,
     private localStorageService: LocalStorageService,
     private platformLocation: PlatformLocation,
+    private sessionStorageService: SessionStorageService,
   ) { }
 
   ngOnInit() {
@@ -42,6 +44,7 @@ export class AppComponent implements OnInit {
       if (result.data) {
         this.socketService.init();
         this.onChatService.init();
+        this.sessionStorageService.setUser(result.data as User);
       }
     });
 
@@ -236,6 +239,7 @@ export class AppComponent implements OnInit {
       if (result.data) {
         this.socketService.init();
         this.onChatService.init();
+        this.sessionStorageService.setUser(result.data as User);
         this.overlayService.presentMsgToast('与服务器重连成功！');
       } else {
         this.router.navigate(['/user/login']);

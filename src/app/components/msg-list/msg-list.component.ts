@@ -28,7 +28,7 @@ export class MsgListComponent implements OnInit {
     private popoverController: PopoverController,
     private feedbackService: FeedbackService,
     public onChatService: OnChatService,
-    private overlayService: OverlayService,
+    private overlayService: OverlayService
   ) { }
 
   ngOnInit() { }
@@ -58,7 +58,7 @@ export class MsgListComponent implements OnInit {
       component: BubbleToolbarComponent,
       componentProps: {
         element: event.target,
-        msgItem,
+        msgItem
       },
       cssClass: 'bubble-toolbar-popover',
       event,

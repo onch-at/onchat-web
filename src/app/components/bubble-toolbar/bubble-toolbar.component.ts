@@ -13,7 +13,7 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class BubbleToolbarComponent implements OnInit {
   /** 气泡节点 */
-  @Input() element: Element;
+  @Input() element: HTMLElement;
   /** 消息体 */
   @Input() msgItem: Message;
   /** 当前时间戳 */
