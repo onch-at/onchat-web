@@ -15,7 +15,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <image-cropper #imageCropper format="webp" [roundCropper]="true" [imageChangedEvent]="imageChangedEvent"
+  <image-cropper #imageCropper [format]="format" [roundCropper]="true" [imageChangedEvent]="imageChangedEvent"
     [maintainAspectRatio]="true" [aspectRatio]="1" [imageQuality]="90" [autoCrop]="false" backgroundColor="#f0f0f0"
     [cropperMinWidth]="256"></image-cropper>
 

@@ -66,6 +66,17 @@ export class SysUtil {
         });
     }
 
+    /**
+     * 是否支持WebP格式
+     */
+    static isSupportWebP(): boolean {
+        try {
+            return document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0;
+        } catch (e) {
+            return false;
+        }
+    }
+
     // /**
     //  * 压缩图片并返回base64
     //  * @param imgSrc 图片URL/URI
