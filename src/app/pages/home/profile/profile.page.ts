@@ -37,7 +37,7 @@ export class ProfilePage implements OnInit {
       this.onChatService.sendFriendRequests = [];
       this.socketService.unload();
 
-      this.router.navigate(['/login']);
+      this.router.navigate(['/user/login']);
     });
   }
 
