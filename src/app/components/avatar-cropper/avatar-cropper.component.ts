@@ -47,7 +47,7 @@ export class AvatarCropperComponent implements OnInit {
   /**
    * 提交
    */
-  submit() {
+  async submit() {
     const loading = this.overlayService.presentLoading('正在上传…');
     // 打开全局加载
     this.onChatService.globalLoading = true;
@@ -56,6 +56,9 @@ export class AvatarCropperComponent implements OnInit {
     const imageBlob = SysUtil.dataURItoBlob(event.base64);
 
     if (imageBlob.size > 1048576) {
+      this.onChatService.globalLoading = false;
+      (await loading).dismiss();
+
       return this.overlayService.presentMsgToast('文件体积过大（' + (imageBlob.size / 1048576).toFixed(2) + 'MB），仅接受体积为1MB以内的文件');
     }
 
