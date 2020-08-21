@@ -6,12 +6,17 @@ ion-header {
     height: 3rem;
     background: transparent;
 
-    ion-buttons > * {
+    ion-buttons > *,
+    ion-title {
         --color: #fff;
         opacity: 0.95;
-        border-radius: 50%;
         filter: drop-shadow(0 0 0.5rem #000);
     }
+}
+
+ion-title {
+    font-weight: normal;
+    font-size: 0.9rem;
 }
 
 ion-content {
@@ -23,10 +28,10 @@ image-cropper {
     --cropper-outline-color: #000;
     --cropper-overlay-color: #000;
 
-    position: fixed;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     ::ng-deep {
         padding: 0;
@@ -64,9 +69,9 @@ image-cropper {
     left: 0;
     bottom: 0;
     width: 100%;
-    padding-bottom: 2rem;
-    display: flex;
-    justify-content: center;
+    padding-bottom: 1.5rem;
+    text-align: center;
+    z-index: 1;
 }
 
 .submit-btn {
@@ -78,5 +83,12 @@ image-cropper {
 
     ion-icon {
         --ionicon-stroke-width: 3.5rem;
+        color: #424242;
+    }
+
+    ion-spinner {
+        --color: #424242;
+        width: 2rem;
+        height: 2rem;
     }
 }

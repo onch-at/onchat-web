@@ -15,8 +15,8 @@ export enum WeekDay {
  * 枚举天
  */
 export enum Day {
-    TODAY = '今天',
-    YESTERDAY = '昨天'
+    Today = '今天',
+    Yesterday = '昨天'
 }
 
 /**

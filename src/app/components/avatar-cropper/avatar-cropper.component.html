@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content [scrollY]="false">
   <ion-header class="d-flex align-items-center">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -6,6 +6,10 @@
           <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
+
+      <ion-title>
+        质量：{{imageCropper.imageQuality}}%
+      </ion-title>
 
       <ion-buttons slot="end">
         <ion-button (tap)="uploadImage()">
@@ -15,14 +19,17 @@
     </ion-toolbar>
   </ion-header>
 
-  <image-cropper #imageCropper [format]="format" [roundCropper]="true" [imageChangedEvent]="imageChangedEvent"
-    [maintainAspectRatio]="true" [aspectRatio]="1" [imageQuality]="90" [autoCrop]="false" backgroundColor="#f0f0f0"
-    [cropperMinWidth]="256"></image-cropper>
+  <image-cropper [format]="format" [roundCropper]="true" [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="true" [autoCrop]="false" [aspectRatio]="1" [resizeToWidth]="512" [imageQuality]="90"
+    backgroundColor="#f0f0f0" [cropperMinWidth]="256" (imageLoaded)="onImageLoaded()"
+    (loadImageFailed)="onLoadImageFailed()">
+  </image-cropper>
 
   <div class="buttom-bar">
-    <button (tap)="submit()" appActiveClass [appActiveClassDuration]="200"
+    <button (tap)="submit()" appActiveClass [appActiveClassDuration]="200" [disabled]="loading"
       class="ion-activatable ripple-parent btn-primary submit-btn">
-      <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+      <ion-icon *ngIf="!loading" name="checkmark-outline"></ion-icon>
+      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
       <ion-ripple-effect></ion-ripple-effect>
     </button>
   </div>

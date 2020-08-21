@@ -73,7 +73,7 @@ export class ChatPage implements OnInit {
     // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
     setTimeout(() => {
       this.onChatService.chatList.splice(index, 1);
-    }, 15);
+    }, 50);
   }
 
   /**

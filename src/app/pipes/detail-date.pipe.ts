@@ -21,11 +21,11 @@ export class DetailDatePipe implements PipeTransform {
     const time = Date.parse(value);
     const date = new Date(isNaN(time) ? value : time);
     if (date.toLocaleDateString() == nowDate.toLocaleDateString()) { // 如果是今天
-      return Day.TODAY;
+      return Day.Today;
     }
 
     if (DateUtil.isYestday(date)) { // 如果是昨天
-      return Day.YESTERDAY;
+      return Day.Yesterday;
     }
 
     if (DateUtil.isSameWeek(date)) { // 如果在本周

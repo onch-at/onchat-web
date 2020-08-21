@@ -13,10 +13,14 @@ import { SessionStorageService } from 'src/app/services/session-storage.service'
   styleUrls: ['./avatar-cropper.component.scss'],
 })
 export class AvatarCropperComponent implements OnInit {
-  @ViewChild('imageCropper', { static: true }) imageCropper: ImageCropperComponent;
+  /** 文件变更事件 */
   @Input() imageChangedEvent: Event;
+  /** 图片裁剪组件 */
+  @ViewChild(ImageCropperComponent, { static: true }) imageCropper: ImageCropperComponent;
   /** 图片格式，优先级：webp -> jpeg -> png */
   format: string = SysUtil.isSupportWEBP() ? 'webp' : SysUtil.isSupportJPEG() ? 'jpeg' : 'png';
+  /** 加载中 */
+  loading: boolean = true;
 
   constructor(
     public onChatService: OnChatService,
@@ -29,9 +33,9 @@ export class AvatarCropperComponent implements OnInit {
 
   /**
    * 关闭自己
-   * @param data 需要传回的数据
+   * @param data 需要传回一个image src
    */
-  dismiss(data: any = null) {
+  dismiss(data: string = null) {
     this.modalController.dismiss(data);
   }
 
@@ -39,31 +43,57 @@ export class AvatarCropperComponent implements OnInit {
    * 上传图片
    */
   uploadImage() {
-    SysUtil.uploadFile('image/webp,image/jpeg,image/png,image/gif').then((event: Event) => {
+    SysUtil.uploadFile('image/*').then(async (event: Event) => {
+      this.loading = true;
+      this.imageCropper.imageQuality = 90;
       this.imageChangedEvent = event;
     });
+  }
+
+  /**
+   * 图像加载完成时
+   */
+  onImageLoaded() {
+    this.loading = false;
+  }
+
+  /**
+   * 图像加载失败时
+   */
+  onLoadImageFailed() {
+    this.overlayService.presentMsgToast('图像加载失败！');
   }
 
   /**
    * 提交
    */
   async submit() {
-    const loading = this.overlayService.presentLoading('正在上传…');
-    // 打开全局加载
-    this.onChatService.globalLoading = true;
+    this.loading = true;
+
     const event = this.imageCropper.crop();
-
     const imageBlob = SysUtil.dataURItoBlob(event.base64);
+    const size = imageBlob.size;
 
-    if (imageBlob.size > 1048576) {
-      this.onChatService.globalLoading = false;
-      (await loading).dismiss();
+    this.loading = false;
 
-      return this.overlayService.presentMsgToast('文件体积过大（' + (imageBlob.size / 1048576).toFixed(2) + 'MB），仅接受体积为1MB以内的文件');
+    // 如果文件大于1MB
+    if (size > 1048576) {
+      // 如果质量大于0，可以继续压缩
+      if (this.imageCropper.imageQuality > 0) {
+        this.imageCropper.imageQuality -= 5;
+        this.overlayService.presentMsgToast('图片文件体积过大，正在尝试进一步压缩…');
+        return this.submit();
+      } else {
+        return this.overlayService.presentMsgToast('文件体积过大(' + (size / 1048576).toFixed(2) + 'MB)，仅接受体积为1MB以内的文件');
+      }
     }
 
+    const loading = await this.overlayService.presentLoading('正在上传…');
+    // 打开全局加载
+    this.onChatService.globalLoading = true;
+
     this.onChatService.uploadUserAvatar(imageBlob).subscribe(async (result: Result<{ avatar: string, avatarThumbnail: string }>) => {
-      this.onChatService.globalLoading = false;
+      loading.dismiss();
 
       if (result.code === 0) {
         this.onChatService.user.avatar = result.data.avatar;
@@ -77,7 +107,7 @@ export class AvatarCropperComponent implements OnInit {
         this.overlayService.presentMsgToast(result.msg);
       }
 
-      (await loading).dismiss();
+      this.onChatService.globalLoading = false;
     });
   }
 

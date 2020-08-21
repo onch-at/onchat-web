@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { SysUtil } from 'src/app/common/utils/sys.util';
 import { AvatarCropperComponent } from 'src/app/components/avatar-cropper/avatar-cropper.component';
@@ -33,6 +33,7 @@ export class AvatarPage implements OnInit {
     private feedbackService: FeedbackService,
     private sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
+    private router: Router,
     private modalController: ModalController,
   ) { }
 
@@ -43,6 +44,9 @@ export class AvatarPage implements OnInit {
       } else if ((data.user as Result<User>).code == 0) {
         this.user = (data.user as Result<User>).data;
         this.sessionStorageService.setUser(this.user);
+      } else {
+        this.overlayService.presentMsgToast('用户不存在！');
+        this.router.navigate(['/']);
       }
     });
   }
@@ -61,7 +65,7 @@ export class AvatarPage implements OnInit {
       {
         text: '更换头像',
         handler: async () => {
-          SysUtil.uploadFile('image/webp,image/jpeg,image/png,image/gif').then((event: Event) => this.modalController.create({
+          SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
             component: AvatarCropperComponent,
             componentProps: {
               imageChangedEvent: event

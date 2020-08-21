@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 
 @Component({
@@ -17,8 +18,10 @@ export class CardPage implements OnInit {
 
   constructor(
     public onChatService: OnChatService,
+    public overlayService: OverlayService,
     private sessionStorageService: SessionStorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -28,6 +31,9 @@ export class CardPage implements OnInit {
       } else if ((data.user as Result<User>).code == 0) {
         this.user = (data.user as Result<User>).data;
         this.sessionStorageService.setUser(this.user);
+      } else {
+        this.overlayService.presentMsgToast('用户不存在！');
+        this.router.navigate(['/']);
       }
     });
 
