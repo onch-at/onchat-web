@@ -61,28 +61,25 @@ export class AvatarPage implements OnInit {
       return;
     }
 
-    this.overlayService.presentActionSheet(undefined, [
-      {
-        text: '更换头像',
-        handler: async () => {
-          SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
-            component: AvatarCropperComponent,
-            componentProps: {
-              imageChangedEvent: event
-            }
-          })).then((modal: HTMLIonModalElement) => {
-            modal.present();
-            modal.onWillDismiss().then((e: { data: string }) => {
-              if (e.data) {
-                this.user.avatar = e.data;
-              }
-            });
-          });
+    const handler = async () => {
+      SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
+        component: AvatarCropperComponent,
+        componentProps: {
+          imageChangedEvent: event
         }
-      },
-      {
-        text: '取消'
-      }
+      })).then((modal: HTMLIonModalElement) => {
+        modal.present();
+        modal.onWillDismiss().then((e: { data: string }) => {
+          if (e.data) {
+            this.user.avatar = e.data;
+          }
+        });
+      });
+    };
+
+    this.overlayService.presentActionSheet(undefined, [
+      { text: '更换头像', handler },
+      { text: '取消' }
     ]);
   }
 

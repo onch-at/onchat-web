@@ -24,14 +24,33 @@ ion-content {
     height: 100vh;
 }
 
-image-cropper {
-    --cropper-outline-color: #000;
-    --cropper-overlay-color: #000;
+.warning-tips {
+    color: var(--custom-color-danger);
+    flex-direction: column;
 
-    height: 100vh;
+    > div {
+        margin-top: -0.5rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: bolder;
+    }
+
+    > ion-icon {
+        font-size: 7.5rem;
+    }
+}
+
+.warning-tips,
+image-cropper {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100vh;
+}
+
+image-cropper {
+    --cropper-outline-color: #000;
+    --cropper-overlay-color: #000;
 
     ::ng-deep {
         padding: 0;
@@ -69,7 +88,7 @@ image-cropper {
     left: 0;
     bottom: 0;
     width: 100%;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.75rem;
     text-align: center;
     z-index: 1;
 }
@@ -83,11 +102,11 @@ image-cropper {
 
     ion-icon {
         --ionicon-stroke-width: 3.5rem;
-        color: #424242;
+        color: #000;
     }
 
     ion-spinner {
-        --color: #424242;
+        --color: #000;
         width: 2rem;
         height: 2rem;
     }

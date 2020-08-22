@@ -36,7 +36,7 @@ export class OverlayService {
       duration
     });
 
-    toast.present();
+    await toast.present();
     return toast;
   }
 
@@ -62,7 +62,7 @@ export class OverlayService {
       ]
     });
 
-    alert.present();
+    await alert.present();
     return alert;
   }
 
@@ -88,7 +88,7 @@ export class OverlayService {
       ]
     });
 
-    alert.present();
+    await alert.present();
     return alert;
   }
 
@@ -104,7 +104,7 @@ export class OverlayService {
       buttons
     });
 
-    actionSheet.present();
+    await actionSheet.present();
     return actionSheet;
   }
 
@@ -115,7 +115,7 @@ export class OverlayService {
       message,
     });
 
-    loading.present();
+    await loading.present();
     return loading;
   }
 
