@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="bg-white">
+<ion-content [fullscreen]="true">
   <aside class="sidebar">
     <img *ngIf="onChatService.user" class="avatar" [src]="onChatService.user.avatarThumbnail"
       [routerLink]="['/user/card', onChatService.user.id]">
@@ -7,7 +7,7 @@
       <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/chat']"
         routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
-        <ion-badge [ngClass]="{'visibility-hidden': onChatService.unreadMsgNum <= 0}" class="bg-danger" mode="ios">
+        <ion-badge [ngClass]="{'visibility-hidden': onChatService.unreadMsgNum <= 0}" class="bg-danger">
           {{ onChatService.unreadMsgNum | numLimit }}
         </ion-badge>
       </ion-button>
@@ -15,8 +15,7 @@
       <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/contact']"
         routerLinkActive="active">
         <ion-icon slot="icon-only" name="people"></ion-icon>
-        <ion-badge [ngClass]="{'visibility-hidden': onChatService.receiveFriendRequests.length <= 0}" class="bg-danger"
-          mode="ios">
+        <ion-badge [ngClass]="{'visibility-hidden': onChatService.receiveFriendRequests.length <= 0}" class="bg-danger">
           {{ onChatService.receiveFriendRequests.length | numLimit }}
         </ion-badge>
       </ion-button>

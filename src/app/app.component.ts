@@ -1,8 +1,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, Router } from '@angular/router';
-import { race, Subject } from 'rxjs';
-import { filter, mergeMap, takeUntil } from 'rxjs/operators';
+import { race } from 'rxjs';
+import { filter, mergeMap } from 'rxjs/operators';
 import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
 import { ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
@@ -18,7 +18,6 @@ import { SocketService } from './services/socket.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  subject: Subject<unknown> = new Subject();
 
   constructor(
     private router: Router,
@@ -37,8 +36,7 @@ export class AppComponent implements OnInit {
 
     // 连接打通时
     this.socketService.on(SocketEvent.Connect).pipe(
-      mergeMap(() => this.onChatService.checkLogin()),
-      takeUntil(this.subject)
+      mergeMap(() => this.onChatService.checkLogin())
     ).subscribe((result: Result<boolean | User>) => {
       this.onChatService.user = result.data ? result.data as User : null;
       if (result.data) {
@@ -49,7 +47,7 @@ export class AppComponent implements OnInit {
     });
 
     // 发起/收到好友申请时
-    this.socketService.on(SocketEvent.FriendRequest).pipe(takeUntil(this.subject)).subscribe((o: Result<FriendRequest>) => {
+    this.socketService.on(SocketEvent.FriendRequest).subscribe((o: Result<FriendRequest>) => {
       console.log('o: ', o);
       if (o.code != 0) { return; } //TODO
       const friendRequest = o.data;
@@ -84,7 +82,7 @@ export class AppComponent implements OnInit {
     });
 
     // 同意好友申请/收到同意好友申请
-    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.subject)).subscribe((result: Result<any>) => {
+    this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<any>) => {
       console.log('result: ', result);
       if (result.code == 0) {
         // 如果申请人是自己（我的好友申请被同意了）
@@ -121,7 +119,7 @@ export class AppComponent implements OnInit {
     });
 
     // 拒绝好友申请/收到拒绝好友申请
-    this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest>) => {
+    this.socketService.on(SocketEvent.FriendRequestReject).subscribe((result: Result<FriendRequest>) => {
       console.log('result: ', result);
       if (result.code == 0) {
         const friendRequest = result.data;
@@ -159,7 +157,7 @@ export class AppComponent implements OnInit {
     // });
 
     // 收到消息时
-    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<Message>) => {
+    this.socketService.on(SocketEvent.Message).subscribe((o: Result<Message>) => {
       const msg = o.data;
       console.log(o)
       // 先去聊天列表缓存里面查，看看有没有这个房间的数据
@@ -201,7 +199,7 @@ export class AppComponent implements OnInit {
     });
 
     // 撤回消息时
-    this.socketService.on(SocketEvent.RevokeMsg).pipe(takeUntil(this.subject)).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
+    this.socketService.on(SocketEvent.RevokeMsg).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
       if (o.code != 0) { return; }
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
       const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == o.data.chatroomId);
@@ -219,7 +217,7 @@ export class AppComponent implements OnInit {
     });
 
     // 连接断开时
-    this.socketService.on(SocketEvent.Disconnect).pipe(takeUntil(this.subject)).subscribe(() => {
+    this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
       this.overlayService.presentMsgToast('与服务器断开连接！');
     });
 
@@ -227,14 +225,13 @@ export class AppComponent implements OnInit {
     race(
       this.socketService.on(SocketEvent.ConnectError),
       this.socketService.on(SocketEvent.ReconnectError)
-    ).pipe(takeUntil(this.subject)).subscribe(() => {
+    ).subscribe(() => {
       this.overlayService.presentMsgToast('服务器连接失败！');
     });
 
     // 重连时
     this.socketService.on(SocketEvent.Reconnect).pipe(
-      mergeMap(() => this.onChatService.checkLogin()),
-      takeUntil(this.subject)
+      mergeMap(() => this.onChatService.checkLogin())
     ).subscribe((result: Result<boolean | User>) => {
       this.onChatService.user = result.data ? result.data as User : null;
       if (result.data) {
@@ -249,13 +246,8 @@ export class AppComponent implements OnInit {
 
     // 如果路由返回被取消，就震动一下，表示阻止
     this.router.events.pipe(
-      filter(event => event instanceof NavigationCancel),
-      takeUntil(this.subject)
+      filter(event => event instanceof NavigationCancel)
     ).subscribe(() => this.feedbackService.vibrate());
   }
 
-  ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
-  }
 }
