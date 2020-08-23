@@ -1,7 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { NavigationEnd, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from 'ngx-image-cropper';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { SysUtil } from 'src/app/common/utils/sys.util';
 import { Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -26,17 +29,29 @@ export class AvatarCropperComponent implements OnInit {
   ionLoading: Promise<HTMLIonLoadingElement>;
   /** 无法加载图片 */
   error: boolean = false;
+  subject: Subject<unknown> = new Subject();
 
   constructor(
     public onChatService: OnChatService,
     private modalController: ModalController,
     private sessionStorageService: SessionStorageService,
     private overlayService: OverlayService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.ionLoading = this.overlayService.presentLoading('正在加载…');
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntil(this.subject)
+    ).subscribe(() => this.dismiss());
+  }
+
+  ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
   /**
@@ -52,7 +67,6 @@ export class AvatarCropperComponent implements OnInit {
    */
   uploadImage() {
     SysUtil.uploadFile('image/*').then((event: any) => {
-      console.log('event: ', event.target.files[0]);
       this.ionLoading = this.overlayService.presentLoading('正在加载…');
       this.error = false;
       this.imageCropper.imageQuality = 90;
