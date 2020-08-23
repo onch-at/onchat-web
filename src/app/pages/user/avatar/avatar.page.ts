@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { SysUtil } from 'src/app/common/utils/sys.util';
@@ -69,9 +70,9 @@ export class AvatarPage implements OnInit {
         }
       })).then((modal: HTMLIonModalElement) => {
         modal.present();
-        modal.onWillDismiss().then((e: { data: string }) => {
+        modal.onWillDismiss().then((e: { data: SafeUrl }) => {
           if (e.data) {
-            this.user.avatar = e.data;
+            this.user.avatar = e.data as string;
           }
         });
       });

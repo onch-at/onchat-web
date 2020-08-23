@@ -8,7 +8,7 @@ import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 
-type ImageCropData = { imageBlob: Blob, imageSrc: string | SafeUrl };
+type ImageCropData = { imageBlob: Blob, imageSrc: SafeUrl };
 
 @Component({
   selector: 'app-avatar-cropper',
@@ -43,7 +43,7 @@ export class AvatarCropperComponent implements OnInit {
    * 关闭自己
    * @param data 需要传回一个image src
    */
-  dismiss(data: string | SafeUrl = null) {
+  dismiss(data: SafeUrl = null) {
     this.modalController.dismiss(data);
   }
 
@@ -51,7 +51,8 @@ export class AvatarCropperComponent implements OnInit {
    * 上传图片
    */
   uploadImage() {
-    SysUtil.uploadFile('image/*').then(async (event: Event) => {
+    SysUtil.uploadFile('image/*').then((event: any) => {
+      console.log('event: ', event.target.files[0]);
       this.ionLoading = this.overlayService.presentLoading('正在加载…');
       this.error = false;
       this.imageCropper.imageQuality = 90;
@@ -114,7 +115,7 @@ export class AvatarCropperComponent implements OnInit {
         return { imageBlob, imageSrc };
       }
 
-      const run = () => new Promise<ImageCropData>((resolve, reject) => {
+      return await new Promise<ImageCropData>((resolve, reject) => {
         worker.onmessage = ({ data }) => {
           imageBlob = data.blob;
           imageSrc = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageBlob));
@@ -123,7 +124,10 @@ export class AvatarCropperComponent implements OnInit {
           resolve({ imageBlob, imageSrc });
         };
 
-        worker.onerror = () => reject({ imageBlob, imageSrc });
+        worker.onerror = () => {
+          worker.terminate();
+          reject({ imageBlob, imageSrc });
+        }
 
         worker.postMessage({
           format,
@@ -143,15 +147,13 @@ export class AvatarCropperComponent implements OnInit {
 
         this.imageCropper.startCropImage.emit();
       });
-
-      return await run();
-    } else {
-      const event = this.imageCropper.crop();
-      imageBlob = SysUtil.dataURItoBlob(event.base64);
-      imageSrc = event.base64;
-
-      return { imageBlob, imageSrc };
     }
+
+    const event = this.imageCropper.crop();
+    imageBlob = SysUtil.dataURItoBlob(event.base64);
+    imageSrc = imageSrc = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageBlob));
+
+    return { imageBlob, imageSrc };
   }
 
   /**

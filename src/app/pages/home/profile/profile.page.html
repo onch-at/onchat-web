@@ -1,5 +1,5 @@
-<ion-content>
-  <div class="user-card" *ngIf="onChatService.user">
+<ion-content *ngIf="onChatService.user">
+  <div class="user-card">
     <img class="avatar" [src]="onChatService.user.avatarThumbnail"
       [routerLink]="['/user/avatar', onChatService.user.id]">
     <div class="info">

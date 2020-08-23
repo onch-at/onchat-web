@@ -60,8 +60,6 @@ addEventListener('message', async ({ data }) => {
     quality: quality
   })
 
-  // this.imageCropped.emit(output);
-
   postMessage(output);
 });
 
