@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserResolve } from 'src/app/resolver/onchat.resolver';
+import { UserResolve } from 'src/app/resolvers/onchat.resolver';
 import { CardPage } from './card.page';
 
 

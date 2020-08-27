@@ -125,7 +125,9 @@ export class ChatPage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.RevokeMsg).pipe(takeUntil(this.subject)).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
+    this.socketService.on(SocketEvent.RevokeMsg).pipe(
+      takeUntil(this.subject)
+    ).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
       // 如果请求成功，并且收到的消息是这个房间的
       if (o.code == 0 && o.data.chatroomId == this.chatroomId) {
         for (const msgItem of this.msgList) {
@@ -138,6 +140,11 @@ export class ChatPage implements OnInit {
         }
       }
     });
+
+    // TODO 重新连接时候检查还有没有未发送的
+    // this.socketService.on(SocketEvent.Reconnect).pipe(takeUntil(this.subject)).subscribe(() => {
+
+    // });
   }
 
   ngOnDestroy() {
@@ -219,7 +226,6 @@ export class ChatPage implements OnInit {
         for (const msgItem of result.data) {
           this.msgList.unshift(msgItem);
         }
-
 
         // 如果是第一次查记录，就执行滚动
         this.msgId == 0 && this.scrollToBottom(0, () => {

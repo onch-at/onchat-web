@@ -1,25 +1,22 @@
-<ion-content>
-    <aside>
-        <button [routerLink]="['/home/contact/new']" routerLinkActive="active">
-            <ion-icon name="person-add-outline"></ion-icon>
-            <div>新朋友</div>
-            <ion-badge [ngClass]="{'visibility-hidden': onChatService.receiveFriendRequests.length <= 0}"
-                class="bg-danger">
-                {{ onChatService.receiveFriendRequests.length | numLimit }}
-            </ion-badge>
-        </button>
-        <button [routerLink]="['/home/contact/buddy']" routerLinkActive="active">
-            <ion-icon name="person-outline"></ion-icon>
-            <div>好友</div>
-        </button>
-        <button [routerLink]="['/home/contact/chatroom']" routerLinkActive="active">
-            <ion-icon name="people-outline"></ion-icon>
-            <div>聊天室</div>
-        </button>
-        <span class="slider"></span>
-    </aside>
+<aside>
+    <button [routerLink]="['/home/contact/new']" routerLinkActive="active">
+        <ion-icon name="person-add-outline"></ion-icon>
+        <div>新朋友</div>
+        <ion-badge [ngClass]="{'visibility-hidden': onChatService.receiveFriendRequests.length <= 0}" class="bg-danger">
+            {{ onChatService.receiveFriendRequests.length | numLimit }}
+        </ion-badge>
+    </button>
+    <button [routerLink]="['/home/contact/buddy']" routerLinkActive="active">
+        <ion-icon name="person-outline"></ion-icon>
+        <div>好友</div>
+    </button>
+    <button [routerLink]="['/home/contact/chatroom']" routerLinkActive="active">
+        <ion-icon name="people-outline"></ion-icon>
+        <div>聊天室</div>
+    </button>
+    <span class="slider"></span>
+</aside>
 
-    <div [@horizontalSlideInAnimation]="prepareRoute(outlet)" style="margin-top: 5.25rem;">
-        <router-outlet #outlet="outlet"></router-outlet>
-    </div>
-</ion-content>
+<div [@horizontalSlideInAnimation]="prepareRoute(outlet)" style="margin-top: 5.25rem;">
+    <router-outlet #outlet="outlet"></router-outlet>
+</div>

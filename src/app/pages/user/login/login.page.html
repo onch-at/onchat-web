@@ -45,7 +45,8 @@
 
         <ion-col style="padding-right: .55rem;">
           <button appActiveClass [appActiveClassDuration]="200" class="ion-activatable ripple-parent btn-primary"
-            [routerLink]="['/user/register']">注册<ion-ripple-effect></ion-ripple-effect></button>
+            [routerLink]="['/user/register']" [queryParams]="{username: loginForm.value.username}">注册<ion-ripple-effect>
+            </ion-ripple-effect></button>
         </ion-col>
 
         <ion-col style="padding-left: .55rem;">

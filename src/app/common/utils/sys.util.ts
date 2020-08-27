@@ -6,14 +6,16 @@ export class SysUtil {
      * @param element
      */
     static copyText(element: HTMLElement): void {
+        const selection = window.getSelection();
+        selection.removeAllRanges();
         element.style.userSelect = 'text';
         const range = document.createRange();
-        range.selectNode(element);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
+        range.selectNodeContents(element);
+
+        selection.addRange(range);
         document.execCommand('copy');
         element.style.userSelect = 'none';
-        window.getSelection().removeAllRanges();
+        selection.removeAllRanges();
     }
 
     /**

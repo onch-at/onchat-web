@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StrUtil } from 'src/app/common/utils/str.util';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
@@ -59,6 +59,7 @@ export class RegisterPage implements OnInit {
   }, { validators: equalValidator });
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private onChatService: OnChatService,
@@ -68,6 +69,10 @@ export class RegisterPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    const username = this.route.snapshot.queryParams.username;
+    if (username) {
+      this.registerForm.controls.username.setValue(username);
+    }
   }
 
   register() {
@@ -109,11 +114,7 @@ export class RegisterPage implements OnInit {
    * 切换密码输入框的TYPE值
    */
   togglePwdInputType() {
-    if (this.pwdInputType == 'password') {
-      this.pwdInputType = 'text';
-    } else {
-      this.pwdInputType = 'password';
-    }
+    this.pwdInputType = this.pwdInputType == 'text' ? 'password' : 'text';
   }
 
   /**

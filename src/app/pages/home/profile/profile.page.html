@@ -1,16 +1,15 @@
-<ion-content *ngIf="onChatService.user">
+<div *ngIf="user">
   <div class="user-card">
-    <img class="avatar" [src]="onChatService.user.avatarThumbnail"
-      [routerLink]="['/user/avatar', onChatService.user.id]">
+    <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/avatar', user.id]">
     <div class="info">
-      <h5 class="m-0 font-weight-bold">{{ onChatService.user.username }}</h5>
-      <div>UserID：{{ onChatService.user.id }}</div>
-      <div>昵称：{{ onChatService.user.nickname }}</div>
+      <h5 class="m-0 font-weight-bold">{{ user.username }}</h5>
+      <div>UserID：{{ user.id }}</div>
+      <div>昵称：{{ user.nickname }}</div>
     </div>
   </div>
 
   <article class="signature ion-activatable ripple-parent">
-    {{ onChatService.user.signature || '这个人很懒，什么都没写~' }}
+    {{ user.signature || '这个人很懒，什么都没写~' }}
     <ion-ripple-effect></ion-ripple-effect>
   </article>
 
@@ -49,7 +48,7 @@
 
     <li class="details-item">
       <label>电子邮箱</label>
-      <span>{{ onChatService.user.email || '未绑定' }}</span>
+      <span>{{ user.email || '未绑定' }}</span>
     </li>
   </ul>
 
@@ -58,4 +57,4 @@
     退出登录
     <ion-ripple-effect></ion-ripple-effect>
   </button>
-</ion-content>
+</div>
