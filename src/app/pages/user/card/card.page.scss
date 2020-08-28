@@ -102,7 +102,7 @@ ion-header {
   }
 
   .card-content {
-    padding: 0 1rem 4rem;
+    padding: 0 1rem 4.5rem;
 
     > *:first-child {
       margin-top: 0.75rem;
@@ -171,10 +171,9 @@ ion-header {
 
 .bottom-bar {
   position: fixed;
-  left: 0.75rem;
-  bottom: 0;
-  padding-bottom: 0.75rem;
-  width: calc(100vw - 1.5rem);
+  left: 1rem;
+  bottom: 1rem;
+  width: calc(100vw - 2rem);
   transform: translateY(100%);
   animation: slide-in-up 0.25s ease 0.1s forwards;
 }

@@ -6,10 +6,16 @@ ion-header {
     height: 3rem;
     background: transparent;
 
-    ion-buttons > * {
+    ion-buttons > *,
+    ion-title {
         --color: var(--custom-color-white);
         opacity: 0.95;
         filter: drop-shadow(0 0 0.5rem var(--custom-color-black));
+    }
+
+    ion-title {
+        font-weight: normal;
+        font-size: 0.9rem;
     }
 }
 
@@ -34,9 +40,9 @@ main {
     flex-direction: column;
     align-items: center;
     z-index: 1;
-    padding: 3rem 0 1rem;
+    padding: 4rem 0 1rem;
     background: linear-gradient(to bottom, transparent, rgba(var(--custom-color-white-rgb), 0.5));
-    backdrop-filter: saturate(100%) blur(5px);
+    backdrop-filter: saturate(100%) blur(10px);
 }
 
 .avatar {
@@ -52,7 +58,7 @@ h1 {
     font-weight: bolder;
     font-size: 1.5rem;
     text-shadow: 0 0 0.75rem rgba(var(--custom-color-black-rgb), 0.5);
-    margin: 1.25rem 0;
+    margin: 1rem 0 1.25rem;
 }
 
 ion-item {
@@ -99,6 +105,6 @@ ion-item {
 
 .btn-block,
 ion-item {
-    width: 90vw;
+    width: calc(100vw - 2rem);
     flex-shrink: 0;
 }
