@@ -1,5 +1,9 @@
 import { animate, animateChild, group, query, style, transition, trigger } from '@angular/animations';
 
+const options = {
+    optional: true
+};
+
 /**
  * 水平滑动动画
  */
@@ -15,22 +19,22 @@ export const horizontalSlideAnimation = trigger('horizontalSlideInAnimation', [
                 left: 0,
                 width: '100%'
             })
-        ]),
+        ], options),
         query(':enter', [
             style({
                 left: '100%'
             })
-        ]),
-        query(':leave', animateChild()),
+        ], options),
+        query(':leave', animateChild(), options),
         group([
             query(':leave', [
                 animate('250ms ease-out', style({ left: '-100%' }))
-            ]),
+            ], options),
             query(':enter', [
                 animate('250ms ease-out', style({ left: '0%' }))
-            ])
+            ], options)
         ]),
-        query(':enter', animateChild()),
+        query(':enter', animateChild(), options),
     ]),
 
     transition('2 => 1, 3 => *', [
@@ -44,22 +48,22 @@ export const horizontalSlideAnimation = trigger('horizontalSlideInAnimation', [
                 left: 0,
                 width: '100%'
             })
-        ]),
+        ], options),
         query(':enter', [
             style({
                 left: '-100%'
             })
-        ]),
-        query(':leave', animateChild()),
+        ], options),
+        query(':leave', animateChild(), options),
         group([
             query(':leave', [
                 animate('300ms ease-out', style({ left: '100%' }))
-            ]),
+            ], options),
             query(':enter', [
                 animate('300ms ease-out', style({ left: '0%' }))
-            ])
+            ], options)
         ]),
-        query(':enter', animateChild()),
+        query(':enter', animateChild(), options),
     ]),
 ]);
 
