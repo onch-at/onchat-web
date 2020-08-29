@@ -12,32 +12,41 @@
           <form [formGroup]="loginForm">
             <div class="form-group">
               <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username"
-                (keyup)="trimAll('username')" placeholder="用户名" maxlength="30" required>
+                (keyup)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <span [hidden]="!loginForm.controls.username.errors || !loginForm.controls.username.errors.required">
-                  用户名不能为空！
-                </span>
-                <span
-                  [hidden]="!loginForm.controls.username.errors || (!(loginForm.controls.username.errors.minlength) && !(loginForm.controls.username.errors.maxlength))">
-                  用户名长度必须在5~30位字符之间！
-                </span>
+                <ng-container *ngIf="loginForm.controls.username.errors">
+                  <span [hidden]="!loginForm.controls.username.errors.pattern">
+                    用户名只能包含字母/汉字/数字/下划线/横杠
+                  </span>
+                  <span [hidden]="!loginForm.controls.username.errors.required">
+                    用户名不能为空！
+                  </span>
+                  <span
+                    [hidden]="!loginForm.controls.username.errors.minlength && !loginForm.controls.username.errors.maxlength">
+                    用户名长度必须在5~15位字符之间！
+                  </span>
+                </ng-container>
               </div>
             </div>
+
             <div class="form-group">
               <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" autocomplete="off"
-                formControlName="password" (keyup)="trimAll('password')" placeholder="密码" maxlength="50" required>
+                formControlName="password" (keyup)="trimAll('password')" placeholder="密码"
+                [maxlength]="passwordMaxLength" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
                 (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <span [hidden]="!loginForm.controls.password.errors || !loginForm.controls.password.errors.required">
-                  密码不能为空！
-                </span>
-                <span
-                  [hidden]="!loginForm.controls.password.errors || (!(loginForm.controls.password.errors.minlength) && !(loginForm.controls.password.errors.maxlength))">
-                  密码长度必须在8~50位字符之间！
-                </span>
+                <ng-container *ngIf="loginForm.controls.password.errors">
+                  <span [hidden]="!loginForm.controls.password.errors.required">
+                    密码不能为空！
+                  </span>
+                  <span
+                    [hidden]="!loginForm.controls.password.errors.minlength && !loginForm.controls.password.errors.maxlength">
+                    密码长度必须在8~50位字符之间！
+                  </span>
+                </ng-container>
               </div>
             </div>
           </form>

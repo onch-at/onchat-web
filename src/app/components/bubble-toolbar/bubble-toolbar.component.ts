@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MessageType } from 'src/app/common/enum';
-import { SysUtil } from 'src/app/common/utils/sys.util';
 import { Message } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
   selector: 'app-bubble-toolbar',

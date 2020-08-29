@@ -12,58 +12,68 @@
           <form [formGroup]="registerForm">
             <div class="form-group">
               <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username"
-                (keyup)="trimAll('username')" placeholder="用户名" maxlength="30" required>
+                (keyup)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <span
-                  [hidden]="!registerForm.controls.username.errors || !registerForm.controls.username.errors.required">
-                  用户名不能为空！
-                </span>
-                <span
-                  [hidden]="!registerForm.controls.username.errors || (!(registerForm.controls.username.errors.minlength) && !(registerForm.controls.username.errors.maxlength))">
-                  用户名长度必须在5~30位字符之间！
-                </span>
+                <ng-container *ngIf="registerForm.controls.username.errors">
+                  <span [hidden]="!registerForm.controls.username.errors.pattern">
+                    用户名只能包含字母/汉字/数字/下划线/横杠
+                  </span>
+                  <span [hidden]="!registerForm.controls.username.errors.required">
+                    用户名不能为空！
+                  </span>
+                  <span
+                    [hidden]="!registerForm.controls.username.errors.minlength && !registerForm.controls.username.errors.maxlength">
+                    用户名长度必须在5~15位字符之间！
+                  </span>
+                </ng-container>
               </div>
             </div>
+
             <div class="form-group">
               <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" autocomplete="off"
-                formControlName="password" (keyup)="trimAll('password')" placeholder="密码" maxlength="50" required>
+                formControlName="password" (keyup)="trimAll('password')" placeholder="密码"
+                [maxlength]="passwordMaxLength" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
                 (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <span
-                  [hidden]="!registerForm.controls.password.errors || !registerForm.controls.password.errors.required">
-                  密码不能为空！
-                </span>
-                <span
-                  [hidden]="!registerForm.controls.password.errors || (!(registerForm.controls.password.errors.minlength) && !(registerForm.controls.password.errors.maxlength))">
-                  密码长度必须在8~50位字符之间！
-                </span>
+                <ng-container *ngIf="registerForm.controls.password.errors">
+                  <span [hidden]="!registerForm.controls.password.errors.required">
+                    密码不能为空！
+                  </span>
+                  <span
+                    [hidden]="!registerForm.controls.password.errors.minlength && !registerForm.controls.password.errors.maxlength">
+                    密码长度必须在8~50位字符之间！
+                  </span>
+                </ng-container>
               </div>
             </div>
+
             <div class="form-group">
               <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="confirm-password"
                 autocomplete="off" formControlName="confirmPassword" (keyup)="trimAll('confirmPassword')"
-                placeholder="确认密码" maxlength="30" required>
+                placeholder="确认密码" [maxlength]="passwordMaxLength" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
                 (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <span
-                  [hidden]="!registerForm.controls.confirmPassword.errors || !registerForm.controls.confirmPassword.errors.required">
-                  确认密码不能为空！
-                </span>
-                <span
-                  [hidden]="!registerForm.controls.confirmPassword.errors || (!(registerForm.controls.confirmPassword.errors.minlength) && !(registerForm.controls.confirmPassword.errors.maxlength))">
-                  密码长度必须在8~50位字符之间！
-                </span>
+                <ng-container *ngIf="registerForm.controls.confirmPassword.errors">
+                  <span [hidden]="!registerForm.controls.confirmPassword.errors.required">
+                    确认密码不能为空！
+                  </span>
+                  <span
+                    [hidden]="!registerForm.controls.confirmPassword.errors.minlength && !registerForm.controls.confirmPassword.errors.maxlength">
+                    密码长度必须在8~50位字符之间！
+                  </span>
+                </ng-container>
               </div>
               <div class="feedback-form-invalid" [hidden]="!registerForm.errors || !registerForm.errors.equal">
                 <ion-icon name="warning"></ion-icon>
                 <span> 确认密码与密码不一致！</span>
               </div>
             </div>
+
             <div class="form-group form-group-row">
               <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha"
                 (keyup)="trimAll('captcha')" placeholder="验证码" maxlength="4" required>
@@ -71,14 +81,15 @@
                 (tap)="updateCaptcha()">
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <span
-                  [hidden]="!registerForm.controls.captcha.errors || !registerForm.controls.captcha.errors.required">
-                  验证码不能为空！
-                </span>
-                <span
-                  [hidden]="!registerForm.controls.captcha.errors || (!(registerForm.controls.captcha.errors.minlength) && !(registerForm.controls.captcha.errors.maxlength))">
-                  验证码长度必须为4位字符！
-                </span>
+                <ng-container *ngIf="registerForm.controls.captcha.errors">
+                  <span [hidden]="!registerForm.controls.captcha.errors.required">
+                    验证码不能为空！
+                  </span>
+                  <span
+                    [hidden]="!registerForm.controls.captcha.errors.minlength && !registerForm.controls.captcha.errors.maxlength">
+                    验证码长度必须为4位字符！
+                  </span>
+                </ng-container>
               </div>
             </div>
           </form>

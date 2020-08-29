@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StrUtil } from 'src/app/common/utils/str.util';
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from 'src/app/common/constant';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { StrUtil } from 'src/app/utils/str.util';
+import { SysUtil } from 'src/app/utils/sys.util';
 import { OnChatService } from '../../../services/onchat.service';
 
 @Component({
@@ -19,22 +21,23 @@ export class LoginPage implements OnInit {
   loading: boolean = false;
   /** 密码框类型 */
   pwdInputType: string = 'password';
+  usernameMaxLength: number = USERNAME_MAX_LENGTH;
+  passwordMaxLength: number = PASSWORD_MAX_LENGTH;
 
   loginForm = this.fb.group({
     username: [
-      '',
-      [
+      null, [
+        Validators.pattern(SysUtil.usernamePattern),
         Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(30)
+        Validators.minLength(USERNAME_MIN_LENGTH),
+        Validators.maxLength(USERNAME_MAX_LENGTH)
       ]
     ],
     password: [
-      '',
-      [
+      null, [
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(50)
+        Validators.minLength(PASSWORD_MIN_LENGTH),
+        Validators.maxLength(PASSWORD_MAX_LENGTH)
       ]
     ],
   });

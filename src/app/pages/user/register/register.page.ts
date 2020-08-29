@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StrUtil } from 'src/app/common/utils/str.util';
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { StrUtil } from 'src/app/utils/str.util';
+import { SysUtil } from 'src/app/utils/sys.util';
 import { environment as env } from '../../../../environments/environment';
 
 @Component({
@@ -22,35 +24,34 @@ export class RegisterPage implements OnInit {
   pwdInputType: string = 'password';
   /** 验证码URL */
   captchaUrl: string = env.captchaUrl;
+  usernameMaxLength: number = USERNAME_MAX_LENGTH;
+  passwordMaxLength: number = PASSWORD_MAX_LENGTH;
 
   registerForm = this.fb.group({
     username: [
-      '',
-      [
+      null, [
+        Validators.pattern(SysUtil.usernamePattern),
         Validators.required,
         Validators.minLength(5),
-        Validators.maxLength(30)
+        Validators.maxLength(USERNAME_MAX_LENGTH)
       ]
     ],
     password: [
-      '',
-      [
+      null, [
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(50)
+        Validators.minLength(PASSWORD_MIN_LENGTH),
+        Validators.maxLength(PASSWORD_MAX_LENGTH)
       ]
     ],
     confirmPassword: [
-      '',
-      [
+      null, [
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(50)
+        Validators.minLength(PASSWORD_MIN_LENGTH),
+        Validators.maxLength(PASSWORD_MAX_LENGTH)
       ]
     ],
     captcha: [
-      '',
-      [
+      null, [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(4)

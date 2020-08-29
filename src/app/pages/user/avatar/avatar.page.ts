@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { SysUtil } from 'src/app/common/utils/sys.util';
 import { AvatarCropperComponent } from 'src/app/components/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
+import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
   selector: 'app-avatar',

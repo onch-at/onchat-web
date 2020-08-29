@@ -5,15 +5,14 @@ import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
-import { StrUtil } from 'src/app/common/utils/str.util';
 import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { StrUtil } from 'src/app/utils/str.util';
 
-// 文本消息最长长度
-const MSG_MAX_LENGTH: number = 3000;
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +20,7 @@ const MSG_MAX_LENGTH: number = 3000;
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-  MSG_MAX_LENGTH: number = MSG_MAX_LENGTH;
+  textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
   msg: string = '';
   /** 当前房间名字 */
   roomName: string = '';
@@ -97,31 +96,29 @@ export class ChatPage implements OnInit {
     }
 
     this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<Message>) => {
+      const msg = o.data;
       // 如果请求成功，并且收到的消息是这个房间的
-      if (o.code != 0 || o.data.chatroomId != this.chatroomId) {
+      if (o.code != 0 || msg.chatroomId != this.chatroomId) {
         return;
       }
 
       // 如果是自己发的消息
-      if (o.data.userId == this.onChatService.user.id) {
-        const index = this.sendMsgMap.get(o.data.sendTime);
-        if (index !== null) {
-          o.data.avatarThumbnail = this.onChatService.user.avatarThumbnail;
-          this.msgList[index] = o.data;
-          this.sendMsgMap.delete(o.data.sendTime);
+      if (msg.userId == this.onChatService.user.id) {
+        const index = this.sendMsgMap.get(msg.sendTime);
+        msg.avatarThumbnail = this.onChatService.user.avatarThumbnail;
+
+        if (index >= 0) {
+          this.msgList[index] = msg;
+          this.sendMsgMap.delete(msg.sendTime);
+        } else {
+          this.msgList.push(msg);
+          this.tryToScrollToBottom();
         }
       } else {
         // 如果消息不是自己的，就设为已读
         this.onChatService.readed(this.chatroomId).subscribe();
-
-        const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
-        this.msgList.push(o.data);
-
-        if (canScrollToBottom) { // 当前滚动的位置允许滚动
-          this.scrollToBottom();
-        } else {
-          this.hasUnread = true;
-        }
+        this.msgList.push(msg);
+        this.tryToScrollToBottom();
       }
     });
 
@@ -269,10 +266,23 @@ export class ChatPage implements OnInit {
   }
 
   /**
+   * 尝试滚动到底部
+   */
+  tryToScrollToBottom() {
+    const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
+
+    if (canScrollToBottom) { // 当前滚动的位置允许滚动
+      this.scrollToBottom();
+    } else {
+      this.hasUnread = true;
+    }
+  }
+
+  /**
    * 发送消息
    */
   send(textareaElement: HTMLTextAreaElement) {
-    if (this.msg.length > MSG_MAX_LENGTH) { return; }
+    if (this.msg.length > TEXT_MSG_MAX_LENGTH) { return; }
     const msg = new Message(+this.chatroomId);
     msg.data = this.msg; // TODO 封装成一个文字消息类
     this.socketService.message(msg);
@@ -297,7 +307,7 @@ export class ChatPage implements OnInit {
    * 是否禁用发送按钮
    */
   disable() {
-    return StrUtil.trimAll(this.msg) == '' || this.msg.length > MSG_MAX_LENGTH;
+    return StrUtil.trimAll(this.msg) == '' || this.msg.length > TEXT_MSG_MAX_LENGTH;
   }
 
   /**

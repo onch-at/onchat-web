@@ -36,7 +36,7 @@
 
     <!-- 这里的ID将附加上房间号来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
     <textarea #textarea [id]="'message-' + chatroomId" name="message" rows="1"
-      [ngClass]="{'invalid': msg.length > MSG_MAX_LENGTH}" (keyup)="onKeyup($event)" placeholder="来说点什么吧！"
+      [ngClass]="{'invalid': msg.length > textMsgMaxLength}" (keyup)="onKeyup($event)" placeholder="来说点什么吧！"
       [(ngModel)]="msg"></textarea>
     <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
     <label [for]="'message-' + chatroomId">
