@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from 'src/app/common/constant';
 import { Login } from 'src/app/models/form.model';
@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
   usernameMaxLength: number = USERNAME_MAX_LENGTH;
   passwordMaxLength: number = PASSWORD_MAX_LENGTH;
 
-  loginForm = this.fb.group({
+  loginForm: FormGroup = this.fb.group({
     username: [
       null, [
         Validators.pattern(SysUtil.usernamePattern),
@@ -41,6 +41,9 @@ export class LoginPage implements OnInit {
       ]
     ],
   });
+
+  usernameFeedback: (errors: ValidationErrors) => string = usernameFeedback;
+  passwordFeedback: (errors: ValidationErrors) => string = passwordFeedback;
 
   constructor(
     private onChatService: OnChatService,
@@ -98,3 +101,21 @@ export class LoginPage implements OnInit {
   }
 
 }
+
+export const usernameFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
+  if (errors.required) {
+    return '用户名不能为空！';
+  } else if (errors.pattern) {
+    return '用户名只能包含字母/汉字/数字/下划线/横杠！';
+  } else if (errors.minlength || errors.maxlength) {
+    return `用户名长度必须在${USERNAME_MIN_LENGTH}~${USERNAME_MAX_LENGTH}位字符之间！`;
+  }
+};
+
+export const passwordFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
+  if (errors.required) {
+    return '密码不能为空！';
+  } else if (errors.minlength || errors.maxlength) {
+    return `密码长度必须在${PASSWORD_MIN_LENGTH}~${PASSWORD_MAX_LENGTH}位字符之间！`;
+  }
+};

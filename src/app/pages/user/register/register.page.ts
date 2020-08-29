@@ -11,6 +11,7 @@ import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 import { environment as env } from '../../../../environments/environment';
+import { passwordFeedback, usernameFeedback } from '../login/login.page';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +28,7 @@ export class RegisterPage implements OnInit {
   usernameMaxLength: number = USERNAME_MAX_LENGTH;
   passwordMaxLength: number = PASSWORD_MAX_LENGTH;
 
-  registerForm = this.fb.group({
+  registerForm: FormGroup = this.fb.group({
     username: [
       null, [
         Validators.pattern(SysUtil.usernamePattern),
@@ -58,6 +59,16 @@ export class RegisterPage implements OnInit {
       ]
     ],
   }, { validators: equalValidator });
+
+  usernameFeedback: (errors: ValidationErrors) => string = usernameFeedback;
+  passwordFeedback: (errors: ValidationErrors) => string = passwordFeedback;
+  captchaFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
+    if (errors.required) {
+      return '验证码不能为空！';
+    } else if (errors.minlength || errors.maxlength) {
+      return '验证码长度必须为4位字符！';
+    }
+  };
 
   constructor(
     private route: ActivatedRoute,

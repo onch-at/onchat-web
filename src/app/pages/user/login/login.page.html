@@ -15,18 +15,9 @@
                 (keyup)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <ng-container *ngIf="loginForm.controls.username.errors">
-                  <span [hidden]="!loginForm.controls.username.errors.pattern">
-                    用户名只能包含字母/汉字/数字/下划线/横杠
-                  </span>
-                  <span [hidden]="!loginForm.controls.username.errors.required">
-                    用户名不能为空！
-                  </span>
-                  <span
-                    [hidden]="!loginForm.controls.username.errors.minlength && !loginForm.controls.username.errors.maxlength">
-                    用户名长度必须在5~15位字符之间！
-                  </span>
-                </ng-container>
+                <span *ngIf="loginForm.controls.username.errors">
+                  {{ usernameFeedback(loginForm.controls.username.errors) }}
+                </span>
               </div>
             </div>
 
@@ -38,15 +29,9 @@
                 (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <ng-container *ngIf="loginForm.controls.password.errors">
-                  <span [hidden]="!loginForm.controls.password.errors.required">
-                    密码不能为空！
-                  </span>
-                  <span
-                    [hidden]="!loginForm.controls.password.errors.minlength && !loginForm.controls.password.errors.maxlength">
-                    密码长度必须在8~50位字符之间！
-                  </span>
-                </ng-container>
+                <span *ngIf="loginForm.controls.password.errors">
+                  {{ passwordFeedback(loginForm.controls.password.errors) }}
+                </span>
               </div>
             </div>
           </form>

@@ -15,18 +15,9 @@
                 (keyup)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <ng-container *ngIf="registerForm.controls.username.errors">
-                  <span [hidden]="!registerForm.controls.username.errors.pattern">
-                    用户名只能包含字母/汉字/数字/下划线/横杠
-                  </span>
-                  <span [hidden]="!registerForm.controls.username.errors.required">
-                    用户名不能为空！
-                  </span>
-                  <span
-                    [hidden]="!registerForm.controls.username.errors.minlength && !registerForm.controls.username.errors.maxlength">
-                    用户名长度必须在5~15位字符之间！
-                  </span>
-                </ng-container>
+                <span *ngIf="registerForm.controls.username.errors">
+                  {{ usernameFeedback(registerForm.controls.username.errors) }}
+                </span>
               </div>
             </div>
 
@@ -38,15 +29,9 @@
                 (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <ng-container *ngIf="registerForm.controls.password.errors">
-                  <span [hidden]="!registerForm.controls.password.errors.required">
-                    密码不能为空！
-                  </span>
-                  <span
-                    [hidden]="!registerForm.controls.password.errors.minlength && !registerForm.controls.password.errors.maxlength">
-                    密码长度必须在8~50位字符之间！
-                  </span>
-                </ng-container>
+                <span *ngIf="registerForm.controls.password.errors">
+                  {{ passwordFeedback(registerForm.controls.password.errors) }}
+                </span>
               </div>
             </div>
 
@@ -58,15 +43,9 @@
                 (tap)="togglePwdInputType()"></ion-icon>
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <ng-container *ngIf="registerForm.controls.confirmPassword.errors">
-                  <span [hidden]="!registerForm.controls.confirmPassword.errors.required">
-                    确认密码不能为空！
-                  </span>
-                  <span
-                    [hidden]="!registerForm.controls.confirmPassword.errors.minlength && !registerForm.controls.confirmPassword.errors.maxlength">
-                    密码长度必须在8~50位字符之间！
-                  </span>
-                </ng-container>
+                <span *ngIf="registerForm.controls.confirmPassword.errors">
+                  {{ passwordFeedback(registerForm.controls.confirmPassword.errors) }}
+                </span>
               </div>
               <div class="feedback-form-invalid" [hidden]="!registerForm.errors || !registerForm.errors.equal">
                 <ion-icon name="warning"></ion-icon>
@@ -81,15 +60,9 @@
                 (tap)="updateCaptcha()">
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
-                <ng-container *ngIf="registerForm.controls.captcha.errors">
-                  <span [hidden]="!registerForm.controls.captcha.errors.required">
-                    验证码不能为空！
-                  </span>
-                  <span
-                    [hidden]="!registerForm.controls.captcha.errors.minlength && !registerForm.controls.captcha.errors.maxlength">
-                    验证码长度必须为4位字符！
-                  </span>
-                </ng-container>
+                <span *ngIf="registerForm.controls.captcha.errors">
+                  {{ captchaFeedback(registerForm.controls.captcha.errors) }}
+                </span>
               </div>
             </div>
           </form>
