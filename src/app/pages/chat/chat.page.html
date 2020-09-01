@@ -19,7 +19,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <main [ngStyle]="{ 'padding-bottom': 'calc(0.75rem + ' + bottomBar.clientHeight + 'px)' } ">
+  <main [ngStyle]="{ 'padding-bottom': 'calc(0.75rem + ' + bottomBar.clientHeight + 'px)' } " (click)="hideDrawer()">
     <ion-infinite-scroll position="top" threshold="-10px" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
@@ -34,17 +34,32 @@
       <ion-icon name="arrow-down-outline"></ion-icon>
     </button>
 
-    <!-- 这里的ID将附加上房间号来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
-    <textarea #textarea [id]="'message-' + chatroomId" name="message" rows="1"
-      [ngClass]="{'invalid': msg.length > textMsgMaxLength}" (keyup)="onKeyup($event)" placeholder="来说点什么吧！"
-      [(ngModel)]="msg"></textarea>
-    <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
-    <label [for]="'message-' + chatroomId">
-      <button appActiveClass [appActiveClassDuration]="200" class="ion-activatable ripple-parent btn-primary send-btn"
-        (tap)="send(textarea)" [disabled]="disable()">
-        <ion-icon slot="icon-only" name="arrow-up"></ion-icon>
+    <div class="bottom-bar-header">
+      <!-- 这里的ID将附加上房间号来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
+      <textarea #textarea [id]="'message-' + chatroomId" name="message" rows="1"
+        [ngClass]="{'invalid': msg.length > textMsgMaxLength}" (keyup)="onKeyup($event)" (focus)="hideDrawer()"
+        placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
+
+      <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
+      <button [hidden]="!showSendBtn()" appActiveClass [appActiveClassDuration]="200"
+        class="ion-activatable ripple-parent btn-primary send-btn" (click)="send(textarea)"
+        [disabled]="disableSendBtn()">
+        <label [for]="'message-' + chatroomId" class="d-flex align-items-center justify-content-center">
+          <ion-icon name="arrow-up"></ion-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </label>
+      </button>
+
+      <button [hidden]="showSendBtn()" appActiveClass [appActiveClassDuration]="200"
+        class="ion-activatable ripple-parent btn-secondary more-btn" (click)="toggleDrawer()">
+        <ion-icon name="add-circle-outline"></ion-icon>
         <ion-ripple-effect></ion-ripple-effect>
       </button>
-    </label>
+    </div>
+
+    <div #drawer class="drawer"
+      [ngStyle]="{'height': showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0}">
+
+    </div>
   </div>
 </ion-content>

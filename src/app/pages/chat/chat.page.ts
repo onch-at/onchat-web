@@ -1,6 +1,6 @@
 import { Platform } from '@angular/cdk/platform';
 import { KeyValue } from '@angular/common';
-import { Component, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -36,6 +36,8 @@ export class ChatPage implements OnInit {
   end: boolean = false;
   /** IonContent */
   @ViewChild('ionContent', { static: true }) ionContent: IonContent;
+  /** 抽屉 */
+  @ViewChild('drawer', { static: true }) drawer: ElementRef;
   /** IonContent滚动元素 */
   contentElement: HTMLElement;
   /** IonContent滚动元素初始可视高度 */
@@ -51,6 +53,12 @@ export class ChatPage implements OnInit {
    */
   sendMsgMap: Map<number, number> = new Map();
   subject: Subject<unknown> = new Subject();
+  /** 是否显示抽屉 */
+  showDrawer: boolean = false;
+  /** 键盘高度 */
+  keyboardHeight: number;
+  /** 解除监听的函数集合 */
+  unlistenFns: Function[] = [];
 
   constructor(
     public onChatService: OnChatService,
@@ -148,6 +156,10 @@ export class ChatPage implements OnInit {
     this.onChatService.chatroomId = null;
     this.subject.next();
     this.subject.complete();
+
+    for (const unlistenFn of this.unlistenFns) {
+      unlistenFn();
+    }
   }
 
   ngAfterViewInit() {
@@ -155,6 +167,12 @@ export class ChatPage implements OnInit {
       this.contentElement = element;
       this.contentClientHeight = element.clientHeight;
     });
+
+    this.unlistenFns.push(this.renderer2.listen(this.drawer.nativeElement, 'transitionend', (e: any) => {
+      const clientHeight = e.target.clientHeight;
+      // 只有当抽屉显示（高度不为零）的时候，做抬升滚动
+      clientHeight && this.ionContent.scrollByPoint(0, clientHeight, 0);
+    }));
   }
 
   /**
@@ -170,13 +188,12 @@ export class ChatPage implements OnInit {
   onKeyup(e: any) {
     this.renderer2.setStyle(e.target, 'height', 'auto');
     this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 2.5 + 'px');
-    const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
-
-    (diff <= 50 && diff >= 5) && this.scrollToBottom();
+    // const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
+    // (diff <= 50 && diff >= 5) && this.scrollToBottom();
   }
 
   @HostListener('window:resize')
-  onResize() {
+  onWindowResize() {
     if (this.resizeTimeout) {
       clearTimeout(this.resizeTimeout);
       this.resizeTimeout = null;
@@ -250,7 +267,11 @@ export class ChatPage implements OnInit {
     const diffHeight = this.contentClientHeight - this.contentElement.clientHeight;
     // 如果现在的高度与初始高度的差值是正数，则代表窗口高度变小了
     if (diffHeight > 0) {
-      this.ionContent.scrollByPoint(0, diffHeight, 500);
+      // 只有当抬起高度大于250像素才被认为是键盘高度
+      if (diffHeight > 250) {
+        this.keyboardHeight = diffHeight;
+      }
+      this.ionContent.scrollByPoint(0, diffHeight, 125);
     } else if (diffHeight < 0) { // 如果窗口高度变大了，就重新设置一下初始高度
       this.contentClientHeight = this.contentElement.clientHeight;
     }
@@ -306,8 +327,33 @@ export class ChatPage implements OnInit {
   /**
    * 是否禁用发送按钮
    */
-  disable() {
-    return StrUtil.trimAll(this.msg) == '' || this.msg.length > TEXT_MSG_MAX_LENGTH;
+  disableSendBtn() {
+    return this.msg.length > TEXT_MSG_MAX_LENGTH;
+  }
+
+  /**
+   * 是否显示发送按钮
+   */
+  showSendBtn() {
+    return StrUtil.trimAll(this.msg).length > 0;
+  }
+
+  /**
+   * 显示/隐藏抽屉
+   */
+  toggleDrawer() {
+    setTimeout(() => {
+      this.showDrawer = !this.showDrawer;
+    }, 75);
+  }
+
+  /**
+   * 隐藏抽屉
+   */
+  hideDrawer() {
+    if (this.showDrawer) {
+      this.showDrawer = false;
+    }
   }
 
   /**

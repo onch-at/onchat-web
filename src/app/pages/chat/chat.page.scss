@@ -43,17 +43,11 @@ ion-header {
   left: 0;
   width: 100%;
   padding: 0.45rem;
-  display: flex;
-  align-items: center;
   background: var(--custom-color-light);
   border-radius: 1.5rem 1.5rem 0 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   transform: translateY(100%);
   animation: slide-in-up 0.25s ease-out 0.25s forwards;
-
-  > *:not(:last-child) {
-    margin-right: 0.45rem;
-  }
 
   > .tips-btn {
     position: fixed;
@@ -77,6 +71,15 @@ ion-header {
     }
   }
 
+  .bottom-bar-header {
+    display: flex;
+    align-items: center;
+
+    // > *:not(:last-child) {
+    //   margin-right: 0.45rem;
+    // }
+  }
+
   textarea {
     resize: none;
     flex: auto;
@@ -87,13 +90,15 @@ ion-header {
     background: var(--custom-color-white);
     max-height: 10em;
     min-height: 100%;
+    margin-right: 0.425rem;
 
     &::-webkit-scrollbar {
       display: none;
     }
   }
 
-  .send-btn {
+  .send-btn,
+  .more-btn {
     height: 2.45rem;
     width: 2.45rem;
     border-radius: 50%;
@@ -101,10 +106,24 @@ ion-header {
     line-height: 1rem;
     flex-shrink: 0;
   }
+
+  .send-btn > label {
+    width: 100%;
+    height: 100%;
+  }
+
+  .more-btn > ion-icon {
+    font-size: 2.45rem;
+  }
 }
 
 main {
   padding: 2.75rem 0 4rem;
+}
+
+.drawer {
+  overflow: hidden;
+  transition: height 0.1s ease-out;
 }
 
 ion-back-button::part(text) {

@@ -56,7 +56,9 @@ export enum MessageType {
     System = 0,
     /** 文本 */
     Text = 1,
-    Tips = 2
+    Tips = 2,
+    /** 富文本 */
+    RichText = 3
 }
 
 /** 好友申请的状态 */

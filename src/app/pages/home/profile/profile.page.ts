@@ -23,16 +23,7 @@ export class ProfilePage implements OnInit {
   ngOnInit() { }
 
   logout() {
-    this.overlayService.presentMsgAlert('退出登录', ' 你确定要退出登录吗？', () => {
-      this.doLogout();
-    });
-  }
-
-  /**
-   * 退出登录
-   */
-  doLogout() {
-    this.onChatService.logout().subscribe(() => {
+    this.overlayService.presentMsgAlert('退出登录', ' 你确定要退出登录吗？', () => this.onChatService.logout().subscribe(() => {
       this.onChatService.user = null;
       this.onChatService.chatList = [];
       this.onChatService.receiveFriendRequests = [];
@@ -40,7 +31,7 @@ export class ProfilePage implements OnInit {
       this.socketService.unload();
 
       this.router.navigate(['/user/login']);
-    });
+    }));
   }
 
 }
