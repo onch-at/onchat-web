@@ -1,0 +1,34 @@
+ion-slides {
+    --bullet-background-active: var(--custom-color-primary);
+    --bullet-background: var(--custom-color-primary);
+
+    height: 100%;
+    width: 100%;
+    padding: 2rem 1rem 20%;
+}
+
+ion-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 3.75rem);
+    grid-template-rows: repeat(2, 3.75rem);
+    /* grid-row-gap: 25%; */
+    /* grid-column-gap: 7vw; */
+    justify-content: space-around;
+    align-content: space-around;
+    width: 100%;
+    height: 100%;
+
+    > button {
+        border-radius: 1.25rem;
+
+        > ion-icon {
+            font-size: 2rem;
+        }
+    }
+}

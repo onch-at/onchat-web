@@ -25,6 +25,8 @@
     </ion-infinite-scroll>
 
     <app-msg-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-msg-list>
+
+    <!-- <quill-editor></quill-editor> -->
   </main>
 
   <div #bottomBar class="bottom-bar">
@@ -59,7 +61,7 @@
 
     <div #drawer class="drawer"
       [ngStyle]="{'height': showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0}">
-
+      <app-drawer></app-drawer>
     </div>
   </div>
 </ion-content>

@@ -54,7 +54,7 @@ export class ChatPage implements OnInit {
   sendMsgMap: Map<number, number> = new Map();
   subject: Subject<unknown> = new Subject();
   /** 是否显示抽屉 */
-  showDrawer: boolean = false;
+  showDrawer: boolean = true;
   /** 键盘高度 */
   keyboardHeight: number;
   /** 解除监听的函数集合 */
@@ -271,7 +271,7 @@ export class ChatPage implements OnInit {
       if (diffHeight > 250) {
         this.keyboardHeight = diffHeight;
       }
-      this.ionContent.scrollByPoint(0, diffHeight, 125);
+      this.ionContent.scrollByPoint(0, diffHeight, 250);
     } else if (diffHeight < 0) { // 如果窗口高度变大了，就重新设置一下初始高度
       this.contentClientHeight = this.contentElement.clientHeight;
     }

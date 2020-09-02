@@ -1,0 +1,307 @@
+/*
+ * 覆盖Ionic的样式
+ */
+
+// 下拉刷新
+ion-refresher {
+    height: 4rem;
+
+    .refresher-refreshing-icon > * {
+        color: var(--custom-color-primary) !important;
+        transform: scale(1.25);
+    }
+
+    .refresher-pulling-icon > * {
+        font-size: 2rem;
+        color: var(--custom-color-dark) !important;
+    }
+
+    .refresher-refreshing-text {
+        margin-top: -0.5rem;
+    }
+
+    .refresher-refreshing-text,
+    .refresher-pulling-text {
+        font-size: 0.75rem;
+        color: var(--custom-color-medium) !important;
+    }
+}
+
+// Popover
+ion-popover {
+    --max-width: 75vw;
+
+    .popover-content {
+        border-radius: 1rem !important;
+    }
+}
+
+// 无限滚动
+ion-infinite-scroll {
+    ion-infinite-scroll-content {
+        min-height: 5rem;
+        margin: 0 0 -1.75rem;
+    }
+
+    .infinite-loading {
+        margin: 0;
+    }
+
+    .infinite-loading-spinner > * {
+        color: var(--custom-color-primary) !important;
+        transform: scale(1.25);
+    }
+}
+
+ion-content {
+    --color: var(--custom-color-dark);
+    --background: var(--custom-color-white);
+}
+
+// 进度条
+ion-progress-bar {
+    --background: rgba(var(--custom-color-primary-rgb), 0.125);
+    --progress-background: rgba(var(--custom-color-primary-rgb), 0.625);
+}
+
+// loading
+ion-loading.ion-loading {
+    --background: rgba(var(--custom-color-light-rgb), 0.9);
+
+    .loading-wrapper {
+        height: 9rem;
+        width: 9rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
+        backdrop-filter: saturate(125%) blur(5px);
+    }
+
+    ion-spinner {
+        --spinner-color: var(--custom-color-dark);
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .loading-content {
+        color: var(--custom-color-dark);
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        font-weight: normal;
+        margin-inline-start: 0 !important;
+    }
+}
+
+// action sheet
+ion-action-sheet.ion-action-sheet {
+    --color: var(--custom-color-dark);
+    --background: rgba(var(--custom-color-light-rgb), 0.9);
+    --button-color: var(--custom-color-dark);
+    --button-color-hover: var(--custom-color-dark);
+    --button-color-activated: var(--custom-color-dark);
+    --button-color-focused: var(--custom-color-dark);
+    --button-color-selected: var(--custom-color-dark);
+
+    .action-sheet-group {
+        border-radius: 1.5rem;
+        backdrop-filter: saturate(125%) blur(5px);
+    }
+
+    button.action-sheet-button {
+        height: 3rem;
+        font-size: 1rem;
+        padding-inline-start: 1rem;
+        padding-inline-end: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .action-sheet-icon {
+        font-size: 1.125rem !important;
+    }
+}
+
+// 警告框
+ion-alert {
+    backdrop-filter: saturate(125%) blur(2.5px);
+
+    @media (prefers-color-scheme: dark) {
+        backdrop-filter: saturate(100%) blur(2.5px);
+    }
+
+    .alert-wrapper.sc-ion-alert-ios {
+        min-width: 16rem;
+        max-width: 85vw;
+        background: rgba(var(--custom-color-white-rgb), 0.9);
+        border-radius: 1rem;
+        box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
+    }
+
+    .alert-head.sc-ion-alert-ios {
+        padding-inline-start: 1rem;
+        padding-inline-end: 1rem;
+        padding-top: 0.75rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .alert-title.sc-ion-alert-ios {
+        color: var(--custom-color-dark);
+        font-weight: bold;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .alert-message.sc-ion-alert-ios {
+        color: var(--custom-color-dark);
+        font-size: 0.85rem;
+        padding-inline-start: 1rem;
+        padding-inline-end: 1rem;
+        padding-bottom: 1.325rem;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    .alert-input-group.sc-ion-alert-ios {
+        color: var(--custom-color-dark);
+        font-size: 0.85rem;
+        padding-inline-start: 1rem;
+        padding-inline-end: 1rem;
+        padding-bottom: 1rem;
+
+        .alert-input.sc-ion-alert-ios {
+            margin-top: 0.5rem;
+            border-radius: 0.75rem;
+            width: 16rem;
+        }
+
+        input {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        textarea {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+
+        input,
+        textarea {
+            padding-inline-start: 0.5rem;
+            padding-inline-end: 0.5rem;
+            background: var(--custom-color-white);
+            border: 0.05rem solid var(--custom-color-gray);
+        }
+    }
+
+    .alert-button.sc-ion-alert-ios {
+        height: 2.5rem;
+        border-width: 0.25px;
+        color: var(--custom-color-dark);
+
+        &:last-child {
+            font-weight: normal;
+            color: var(--custom-color-primary);
+        }
+
+        &.ion-activated {
+            background-color: var(--custom-color-secondary);
+        }
+    }
+
+    .alert-button-inner {
+        font-size: 1rem;
+    }
+}
+
+.header-ios ion-toolbar:last-of-type {
+    --border-width: 0;
+    --background: transparent;
+}
+
+ion-grid,
+ion-col {
+    padding: 0;
+}
+
+// 返回按钮图标
+ion-back-button {
+    --padding-start: 0.25rem;
+    --color: var(--custom-color-medium);
+    font-size: 1.05rem;
+}
+
+ion-list.list-ios {
+    margin: 0;
+}
+
+// 滑动列表里面的按钮
+ion-item-options {
+    border: none;
+    background: var(--custom-color-white);
+
+    &.item-options-start > ion-item-option:last-child {
+        border-radius: 0 0.75rem 0.75rem 0;
+    }
+
+    &.item-options-end > ion-item-option:first-child {
+        border-radius: 0.75rem 0 0 0.75rem;
+    }
+
+    > ion-item-option {
+        color: var(--custom-color-white);
+        min-width: 4.5rem;
+        overflow: hidden;
+    }
+}
+
+// 标徽
+ion-badge {
+    padding: 0.1rem 0.25rem;
+    font-weight: 500;
+    font-size: 0.65rem;
+}
+
+ion-item {
+    --background: var(--custom-color-white);
+
+    ion-thumbnail {
+        --border-radius: 50%;
+        background: var(--custom-color-secondary);
+
+        @media (prefers-color-scheme: dark) {
+            filter: brightness(0.75);
+        }
+    }
+
+    .item-content {
+        margin: 0.75rem 0;
+    }
+}
+
+// Toast
+ion-toast {
+    &::part(container) {
+        padding: 0 0.25rem;
+    }
+
+    &::part(message) {
+        font-size: 0.85rem;
+    }
+
+    --start: 10px;
+    --end: 10px;
+    --height: 3rem;
+    --border-radius: 1.5rem;
+    --color: var(--custom-color-light);
+    --background: var(--custom-color-black);
+
+    @media (prefers-color-scheme: dark) {
+        --background: var(--custom-color-dark);
+    }
+}
