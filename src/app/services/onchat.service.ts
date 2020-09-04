@@ -33,8 +33,8 @@ export class OnChatService {
   chatroomId: number = null;
   /** 未读消息总数 */
   unreadMsgNum: number = 0;
-  /** 全局阻塞加载 */
-  globalLoading: boolean = false;
+  /** 是否可以销毁（返回上一页） */
+  canDeactivate: boolean = true;
 
   /** 缓存聊天列表 */
   private _chatList: ChatItem[] = [];

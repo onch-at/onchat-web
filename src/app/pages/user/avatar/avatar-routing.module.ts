@@ -11,7 +11,9 @@ const routes: Routes = [
     resolve: {
       user: UserResolve
     },
-    canDeactivate: [CanDeactivateGuard]
+    canDeactivate: [
+      CanDeactivateGuard
+    ]
   }
 ];
 

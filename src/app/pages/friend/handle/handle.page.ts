@@ -70,35 +70,43 @@ export class HandlePage implements OnInit {
   }
 
   agree() {
-    this.overlayService.presentInputAlert('同意申请', [
-      {
-        name: 'selfAlias',
-        type: 'text',
-        placeholder: '顺便给对方起个好听的别名吧',
-        cssClass: 'ipt-primary',
-        attributes: {
-          maxlength: 30
+    this.overlayService.presentAlert({
+      header: '同意申请',
+      confirmHandler: (data: KeyValue<string, any>) => {
+        this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias'] || undefined);
+      },
+      inputs: [
+        {
+          name: 'selfAlias',
+          type: 'text',
+          placeholder: '顺便给对方起个好听的别名吧',
+          cssClass: 'ipt-primary',
+          attributes: {
+            maxlength: 30
+          }
         }
-      }
-    ], (data: KeyValue<string, any>) => {
-      this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias'] || undefined);
+      ]
     });
   }
 
   reject() {
-    this.overlayService.presentInputAlert('拒绝申请', [
-      {
-        name: 'rejectReason',
-        type: 'textarea',
-        placeholder: '或许可以告诉对方你拒绝的原因',
-        cssClass: 'ipt-primary',
-        attributes: {
-          rows: 4,
-          maxlength: 50
+    this.overlayService.presentAlert({
+      header: '拒绝申请',
+      confirmHandler: (data: KeyValue<string, any>) => {
+        this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason'] || undefined);
+      },
+      inputs: [
+        {
+          name: 'rejectReason',
+          type: 'textarea',
+          placeholder: '或许可以告诉对方你拒绝的原因',
+          cssClass: 'ipt-primary',
+          attributes: {
+            rows: 4,
+            maxlength: 50
+          }
         }
-      }
-    ], (data: KeyValue<string, any>) => {
-      this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason'] || undefined);
+      ]
     });
   }
 

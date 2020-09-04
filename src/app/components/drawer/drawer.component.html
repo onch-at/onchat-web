@@ -6,7 +6,8 @@
         <ion-ripple-effect></ion-ripple-effect>
       </button>
 
-      <button appActiveClass [appActiveClassDuration]="200" class="ion-activatable ripple-parent btn-light">
+      <button appActiveClass [appActiveClassDuration]="200" class="ion-activatable ripple-parent btn-light"
+        (tap)="editRichText()">
         <ion-icon name="brush"></ion-icon>
         <ion-ripple-effect></ion-ripple-effect>
       </button>

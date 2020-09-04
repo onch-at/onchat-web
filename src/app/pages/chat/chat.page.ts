@@ -54,7 +54,7 @@ export class ChatPage implements OnInit {
   sendMsgMap: Map<number, number> = new Map();
   subject: Subject<unknown> = new Subject();
   /** 是否显示抽屉 */
-  showDrawer: boolean = true;
+  showDrawer: boolean = false;
   /** 键盘高度 */
   keyboardHeight: number;
   /** 解除监听的函数集合 */
@@ -365,8 +365,24 @@ export class ChatPage implements OnInit {
       return;
     }
 
-    this.overlayService.presentInputAlert('好友别名', [
-      {
+    this.overlayService.presentAlert({
+      header: '好友别名',
+      confirmHandler: (data: KeyValue<string, any>) => {
+        this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result) => {
+          if (result.code == 0) {
+            this.roomName = data['alias'];
+            const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.chatroomId);
+            if (index >= 0) {
+              this.onChatService.chatList[index].name = data['alias'];
+              this.onChatService.chatList = this.onChatService.chatList;
+            }
+            this.overlayService.presentMsgToast('成功修改好友别名', 1000);
+          } else {
+            this.overlayService.presentMsgToast(result.msg);
+          }
+        });
+      },
+      inputs: [{
         name: 'alias',
         type: 'text',
         value: this.roomName,
@@ -375,21 +391,7 @@ export class ChatPage implements OnInit {
         attributes: {
           maxlength: 30
         }
-      }
-    ], (data: KeyValue<string, any>) => {
-      this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result) => {
-        if (result.code == 0) {
-          this.roomName = data['alias'];
-          const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.chatroomId);
-          if (index >= 0) {
-            this.onChatService.chatList[index].name = data['alias'];
-            this.onChatService.chatList = this.onChatService.chatList;
-          }
-          this.overlayService.presentMsgToast('成功修改好友别名', 1000);
-        } else {
-          this.overlayService.presentMsgToast(result.msg);
-        }
-      });
+      }]
     });
   }
 

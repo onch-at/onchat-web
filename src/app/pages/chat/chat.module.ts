@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { QuillModule } from 'ngx-quill';
 import { BubbleToolbarComponent } from 'src/app/components/bubble-toolbar/bubble-toolbar.component';
 import { DrawerComponent } from 'src/app/components/drawer/drawer.component';
+import { RichTextEditorComponent } from 'src/app/components/modals/rich-text-editor/rich-text-editor.component';
 import { SharedModule } from 'src/app/modules/shared.module';
 import { MsgListComponent } from '../../components/msg-list/msg-list.component';
 import { ChatPageRoutingModule } from './chat-routing.module';
@@ -25,10 +26,12 @@ import { ChatPage } from './chat.page';
     ChatPage,
     MsgListComponent,
     BubbleToolbarComponent,
-    DrawerComponent
+    DrawerComponent,
+    RichTextEditorComponent
   ],
   entryComponents: [
-    BubbleToolbarComponent
+    BubbleToolbarComponent,
+    RichTextEditorComponent
   ],
 })
 export class ChatPageModule { }

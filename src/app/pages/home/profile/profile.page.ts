@@ -23,15 +23,19 @@ export class ProfilePage implements OnInit {
   ngOnInit() { }
 
   logout() {
-    this.overlayService.presentMsgAlert('退出登录', ' 你确定要退出登录吗？', () => this.onChatService.logout().subscribe(() => {
-      this.onChatService.user = null;
-      this.onChatService.chatList = [];
-      this.onChatService.receiveFriendRequests = [];
-      this.onChatService.sendFriendRequests = [];
-      this.socketService.unload();
+    this.overlayService.presentAlert({
+      header: '退出登录',
+      message: ' 你确定要退出登录吗？',
+      confirmHandler: () => this.onChatService.logout().subscribe(() => {
+        this.onChatService.user = null;
+        this.onChatService.chatList = [];
+        this.onChatService.receiveFriendRequests = [];
+        this.onChatService.sendFriendRequests = [];
+        this.socketService.unload();
 
-      this.router.navigate(['/user/login']);
-    }));
+        this.router.navigate(['/user/login']);
+      })
+    });
   }
 
 }

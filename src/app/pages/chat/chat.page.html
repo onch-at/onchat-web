@@ -6,9 +6,9 @@
           defaultHref="home"></ion-back-button>
       </ion-buttons>
 
-      <ion-title class="font-weight-bold">
+      <ion-title>
         <div class="brand"></div>
-        <div (tap)="setFriendAlias()">{{ roomName }}</div>
+        <div class="font-weight-bold" (tap)="setFriendAlias()">{{ roomName }}</div>
       </ion-title>
 
       <ion-buttons slot="end">
@@ -25,8 +25,6 @@
     </ion-infinite-scroll>
 
     <app-msg-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-msg-list>
-
-    <!-- <quill-editor></quill-editor> -->
   </main>
 
   <div #bottomBar class="bottom-bar">

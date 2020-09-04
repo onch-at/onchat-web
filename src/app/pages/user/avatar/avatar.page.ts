@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { AvatarCropperComponent } from 'src/app/components/avatar-cropper/avatar-cropper.component';
+import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { OnChatService } from 'src/app/services/onchat.service';

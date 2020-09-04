@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { CanDeactivateGuard } from 'src/app/guards/can-deactivate.guard';
 import { ChatPage } from './chat.page';
 
 const routes: Routes = [
@@ -16,6 +17,9 @@ const routes: Routes = [
     canLoad: [
       AuthGuard
     ],
+    canDeactivate: [
+      CanDeactivateGuard
+    ]
   }
 ];
 

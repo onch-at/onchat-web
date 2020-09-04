@@ -25,8 +25,12 @@ export class NewComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.overlayService.presentInputAlert('同意申请', [
-      {
+    this.overlayService.presentAlert({
+      header: '同意申请',
+      confirmHandler: (data: KeyValue<string, any>) => {
+        this.socketService.friendRequestAgree(friendRequestId, data['selfAlias'] || undefined);
+      },
+      inputs: [{
         name: 'selfAlias',
         type: 'text',
         placeholder: '顺便给对方起个好听的别名吧',
@@ -34,15 +38,17 @@ export class NewComponent implements OnInit {
         attributes: {
           maxlength: 30
         }
-      }
-    ], (data: KeyValue<string, any>) => {
-      this.socketService.friendRequestAgree(friendRequestId, data['selfAlias'] || undefined);
+      }]
     });
   }
 
   friendRequestReject(friendRequestId: number) {
-    this.overlayService.presentInputAlert('拒绝申请', [
-      {
+    this.overlayService.presentAlert({
+      header: '拒绝申请',
+      confirmHandler: (data: KeyValue<string, any>) => {
+        this.socketService.friendRequestReject(friendRequestId, data['rejectReason'] || undefined);
+      },
+      inputs: [{
         name: 'rejectReason',
         type: 'textarea',
         placeholder: '或许可以告诉对方你拒绝的原因',
@@ -51,9 +57,7 @@ export class NewComponent implements OnInit {
           rows: 4,
           maxlength: 50
         }
-      }
-    ], (data: KeyValue<string, any>) => {
-      this.socketService.friendRequestReject(friendRequestId, data['rejectReason'] || undefined);
+      }]
     });
   }
 

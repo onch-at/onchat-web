@@ -15,7 +15,7 @@ export class CanDeactivateGuard implements CanDeactivate<boolean> {
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot
   ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return !this.onChatService.globalLoading;
+    return this.onChatService.canDeactivate;
   }
 
 }

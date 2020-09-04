@@ -4,25 +4,21 @@ ion-slides {
 
     height: 100%;
     width: 100%;
-    padding: 2rem 1rem 20%;
+    padding: 2rem 10px 35px;
 }
 
 ion-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
 }
 
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 3.75rem);
     grid-template-rows: repeat(2, 3.75rem);
-    /* grid-row-gap: 25%; */
-    /* grid-column-gap: 7vw; */
     justify-content: space-around;
     align-content: space-around;
     width: 100%;
-    height: 100%;
+    height: 80%;
 
     > button {
         border-radius: 1.25rem;

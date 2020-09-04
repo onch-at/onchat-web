@@ -2,6 +2,7 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { NotificationOptions } from '../common/interface';
 import { NotificationComponent } from '../components/notification/notification.component';
 
 @Injectable({
@@ -106,17 +107,4 @@ export class NotificationController {
     this.componentRef = null;
     this.overlayRef = null;
   }
-}
-
-export interface NotificationOptions {
-  /** 标题 */
-  title: string;
-  /** 描述 */
-  description?: string;
-  /** 图标URL */
-  iconUrl?: string;
-  /** 持续时间 */
-  duration?: number;
-  /** 点击事件处理 */
-  tapHandler?: (event: Event) => void;
 }

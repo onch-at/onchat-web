@@ -1,7 +1,8 @@
-import { KeyValue } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ActionSheetController, AlertController, LoadingController, ToastController } from '@ionic/angular';
-import { NotificationController, NotificationOptions } from '../providers/notification.controller';
+import { AlertOptions, NotificationOptions } from '../common/interface';
+import { NotificationController } from '../providers/notification.controller';
+import { OnChatService } from './onchat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,25 @@ export class OverlayService {
   bubbleToolbarPopover: HTMLIonPopoverElement;
 
   constructor(
+    public onChatService: OnChatService,
     private toastController: ToastController,
     private alertController: AlertController,
     private actionSheetController: ActionSheetController,
     private loadingController: LoadingController,
     private notificationController: NotificationController
   ) { }
+
+  private canDeactivate() {
+    if (!this.onChatService.canDeactivate) {
+      this.onChatService.canDeactivate = true;
+    }
+  }
+
+  private notCanDeactivate() {
+    if (this.onChatService.canDeactivate) {
+      this.onChatService.canDeactivate = false;
+    }
+  }
 
   /**
    * 弹出消息通知
@@ -41,54 +55,35 @@ export class OverlayService {
   }
 
   /**
-   * 弹出文字提示框
-   * @param header 标题
-   * @param message 提示文字
-   * @param confirmHandler 确认时的回调函数
-   * @param cancelHandler 取消时的回调函数
+   * 弹出提示框
+   * @param opts 提示框参数
    */
-  async presentMsgAlert(header: string, message: string, confirmHandler: CallableFunction, cancelHandler?: CallableFunction) {
+  async presentAlert(opts: AlertOptions) {
+    const { header, message, confirmHandler, cancelHandler, inputs } = opts;
     const alert = await this.alertController.create({
       header,
       message,
-      buttons: [
-        {
-          text: '取消',
-          handler: () => { cancelHandler && cancelHandler(); }
-        }, {
-          text: '确认',
-          handler: () => confirmHandler()
-        }
-      ]
-    });
-
-    await alert.present();
-    return alert;
-  }
-
-  /**
-   * 弹出带有Input的文字提示框
-   * @param header 标题
-   * @param inputs inpust组
-   * @param confirmHandler 确认时的回调函数
-   * @param cancelHandler 取消时的回调函数
-   */
-  async presentInputAlert(header: string, inputs: any[], confirmHandler: CallableFunction, cancelHandler?: CallableFunction): Promise<HTMLIonAlertElement> {
-    const alert = await this.alertController.create({
-      header,
       inputs,
       buttons: [
         {
           text: '取消',
-          handler: () => { cancelHandler && cancelHandler(); }
-        }, {
+          handler: (data) => {
+            cancelHandler && cancelHandler(data);
+            this.canDeactivate();
+          }
+        },
+        {
           text: '确认',
-          handler: (data: KeyValue<string, any>) => confirmHandler(data)
+          handler: (data) => {
+            confirmHandler(data);
+            this.canDeactivate();
+          }
         }
       ]
     });
 
     await alert.present();
+    this.notCanDeactivate();
     return alert;
   }
 
@@ -108,6 +103,10 @@ export class OverlayService {
     return actionSheet;
   }
 
+  /**
+   * 弹出加载中
+   * @param message 文字
+   */
   async presentLoading(message: string = '正在加载…') {
     const loading = await this.loadingController.create({
       cssClass: 'ion-loading',
