@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { NavigationCancel, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { Subject } from 'rxjs';
@@ -41,12 +41,10 @@ export class AvatarCropperComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.onChatService.canDeactivate = false;
-
     this.ionLoading = this.overlayService.presentLoading('正在加载…');
 
     this.router.events.pipe(
-      filter(event => event instanceof NavigationCancel),
+      filter(event => event instanceof NavigationEnd),
       takeUntil(this.subject)
     ).subscribe(() => this.dismiss());
   }
@@ -201,6 +199,7 @@ export class AvatarCropperComponent implements OnInit {
       }
     }
 
+    this.onChatService.canDeactivate = false;
     this.ionLoading = this.overlayService.presentLoading('正在上传…');
 
     this.onChatService.uploadUserAvatar(imageBlob).subscribe(async (result: Result<{ avatar: string, avatarThumbnail: string }>) => {
