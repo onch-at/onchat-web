@@ -247,7 +247,7 @@ export class AppComponent implements OnInit {
       this.socketService.on(SocketEvent.ConnectError),
       this.socketService.on(SocketEvent.ReconnectError)
     ).subscribe(() => {
-      // this.overlayService.presentToast('服务器连接失败！');
+      this.overlayService.presentToast('服务器连接失败！');
     });
 
     // 重连成功时

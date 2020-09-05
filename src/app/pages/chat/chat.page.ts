@@ -55,7 +55,7 @@ export class ChatPage implements OnInit {
   sendMsgMap: Map<number, number> = new Map();
   subject: Subject<unknown> = new Subject();
   /** 是否显示抽屉 */
-  showDrawer: boolean = true;
+  showDrawer: boolean = false;
   /** 键盘高度 */
   keyboardHeight: number;
   /** 解除监听的函数集合 */
