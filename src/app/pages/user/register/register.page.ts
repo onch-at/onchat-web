@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
+import { SessionStorageKey } from 'src/app/common/enum';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -97,10 +98,14 @@ export class RegisterPage implements OnInit {
         this.updateCaptcha();
       }
 
-      const toast = this.overlayService.presentMsgToast(result.msg, result.code === 0 ? 1000 : 2000);
+      const toast = this.overlayService.presentToast(result.msg, result.code === 0 ? 1000 : 2000);
       if (result.code === 0) {
         this.onChatService.user = result.data;
-        this.sessionStorageService.setUser(result.data);
+        this.sessionStorageService.setItemToMap(
+          SessionStorageKey.UserMap,
+          result.data.id,
+          result.data
+        );
         this.onChatService.init();
         this.socketService.init();
 

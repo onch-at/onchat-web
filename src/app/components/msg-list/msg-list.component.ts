@@ -51,13 +51,14 @@ export class MsgListComponent implements OnInit {
   /**
    * 弹出BubbleToolbar气泡工具条
    * @param msgItem 气泡对应的Message
+   * @param element
    * @param event
    */
-  async presentBubbleToolbarPopover(msgItem: Message, event: any) {
+  async presentBubbleToolbarPopover(msgItem: Message, element: Element, event: any) {
     this.overlayService.bubbleToolbarPopover = await this.popoverController.create({
       component: BubbleToolbarComponent,
       componentProps: {
-        element: event.target,
+        element,
         msgItem
       },
       cssClass: 'bubble-toolbar-popover',

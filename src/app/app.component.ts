@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, Router } from '@angular/router';
 import { race } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
-import { LocalStorageKey, MessageType, SocketEvent } from './common/enum';
+import { LocalStorageKey, MessageType, SessionStorageKey, SocketEvent } from './common/enum';
+import { RichTextMessage, TextMessage } from './models/form.model';
 import { ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -42,7 +43,12 @@ export class AppComponent implements OnInit {
       if (result.data) {
         this.socketService.init();
         this.onChatService.init();
-        this.sessionStorageService.setUser(result.data as User);
+        const user = result.data as User;
+        this.sessionStorageService.setItemToMap(
+          SessionStorageKey.UserMap,
+          user.id,
+          user
+        );
       }
     });
 
@@ -108,7 +114,7 @@ export class AppComponent implements OnInit {
           const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
           index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
 
-          this.overlayService.presentMsgToast('成功添加新好友');
+          this.overlayService.presentToast('成功添加新好友');
         }
 
         // 更新一下聊天列表
@@ -146,7 +152,7 @@ export class AppComponent implements OnInit {
           const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
           index >= 0 && this.onChatService.receiveFriendRequests.splice(index, 1);
 
-          this.overlayService.presentMsgToast('已拒绝该好友申请');
+          this.overlayService.presentToast('已拒绝该好友申请');
         }
       }
     });
@@ -157,9 +163,13 @@ export class AppComponent implements OnInit {
     // });
 
     // 收到消息时
-    this.socketService.on(SocketEvent.Message).subscribe((o: Result<Message>) => {
-      const msg = o.data;
-      console.log(o)
+    this.socketService.on(SocketEvent.Message).subscribe((result: Result<Message>) => {
+      if (result.code != 0) {
+        return;
+      }
+
+      const msg = result.data;
+      console.log(result)
       // 先去聊天列表缓存里面查，看看有没有这个房间的数据
       const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == msg.chatroomId);
 
@@ -169,10 +179,21 @@ export class AppComponent implements OnInit {
         if (msg.chatroomId != this.onChatService.chatroomId) {
           const roomName = index >= 0 ? this.onChatService.chatList[index].name : '收到新消息';
 
+          let content = '[收到新消息]';
+          switch (msg.type) {
+            case MessageType.Text:
+              content = (msg.data as TextMessage).content;
+              break;
+
+            case MessageType.RichText:
+              content = (msg.data as RichTextMessage).text;
+              break;
+          }
+
           this.overlayService.presentNotification({
             iconUrl: msg.avatarThumbnail || null, // TODO 群聊的头像
             title: roomName,
-            description: msg.nickname + '：' + (msg.type == MessageType.Text ? msg.data.content : '[MESSAGE]'),
+            description: msg.nickname + '：' + content,
             tapHandler: () => {
               this.router.navigate(['/chat', msg.chatroomId]);
             }
@@ -209,7 +230,7 @@ export class AppComponent implements OnInit {
         chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
         chatItem.latestMsg.type = MessageType.Tips;
         const name = chatItem.latestMsg.userId == this.onChatService.user.id ? '我' : chatItem.latestMsg.nickname;
-        chatItem.latestMsg.data.content = name + ' 撤回了一条消息';
+        (chatItem.latestMsg.data as any).content = name + ' 撤回了一条消息';
         chatItem.updateTime = Date.now();
         this.onChatService.chatList[index] = chatItem;
         this.onChatService.chatList = this.onChatService.chatList;
@@ -218,7 +239,7 @@ export class AppComponent implements OnInit {
 
     // 连接断开时
     this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
-      this.overlayService.presentMsgToast('与服务器断开连接！');
+      this.overlayService.presentToast('与服务器断开连接！');
     });
 
     // 连接失败时
@@ -226,10 +247,10 @@ export class AppComponent implements OnInit {
       this.socketService.on(SocketEvent.ConnectError),
       this.socketService.on(SocketEvent.ReconnectError)
     ).subscribe(() => {
-      this.overlayService.presentMsgToast('服务器连接失败！');
+      // this.overlayService.presentToast('服务器连接失败！');
     });
 
-    // 重连时
+    // 重连成功时
     this.socketService.on(SocketEvent.Reconnect).pipe(
       mergeMap(() => this.onChatService.checkLogin())
     ).subscribe((result: Result<boolean | User>) => {
@@ -237,8 +258,13 @@ export class AppComponent implements OnInit {
       if (result.data) {
         this.socketService.init();
         this.onChatService.init();
-        this.sessionStorageService.setUser(result.data as User);
-        this.overlayService.presentMsgToast('与服务器重连成功！');
+        const user = result.data as User;
+        this.sessionStorageService.setItemToMap(
+          SessionStorageKey.UserMap,
+          user.id,
+          user
+        );
+        this.overlayService.presentToast('与服务器重连成功！');
       } else {
         this.router.navigate(['/user/login']);
       }

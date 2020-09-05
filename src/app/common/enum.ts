@@ -56,9 +56,9 @@ export enum MessageType {
     System = 0,
     /** 文本 */
     Text = 1,
-    Tips = 2,
     /** 富文本 */
-    RichText = 3
+    RichText = 2,
+    Tips = 3,
 }
 
 /** 好友申请的状态 */
@@ -90,7 +90,9 @@ export enum ChatroomType {
  */
 export enum LocalStorageKey {
     /** 聊天会话列表缓存 */
-    ChatList = 'chat_list'
+    ChatList = 'chat_list',
+    /** 聊天富文本草稿 */
+    ChatRichTextMap = 'chat_rich_text_map'
 }
 
 /**

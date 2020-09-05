@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { SessionStorageKey } from '../common/enum';
 import { Result, User } from '../models/onchat.model';
 import { OnChatService } from '../services/onchat.service';
 import { SessionStorageService } from '../services/session-storage.service';
@@ -23,7 +24,11 @@ export class AuthGuard implements CanActivate, CanLoad {
         if (result.data) {
           const user = result.data as User;
           this.onChatService.user = user;
-          this.sessionStorageService.setUser(user);
+          this.sessionStorageService.setItemToMap(
+            SessionStorageKey.UserMap,
+            user.id,
+            user
+          );
         } else {
           this.router.navigate(['/user/login']); // 返回登录页面
         }
@@ -48,7 +53,11 @@ export class AuthGuard implements CanActivate, CanLoad {
         if (result.data) {
           const user = result.data as User;
           this.onChatService.user = user;
-          this.sessionStorageService.setUser(user);
+          this.sessionStorageService.setItemToMap(
+            SessionStorageKey.UserMap,
+            user.id,
+            user
+          );
         } else {
           this.router.navigate(['/user/login']); // 返回登录页面
         }

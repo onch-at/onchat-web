@@ -62,10 +62,29 @@
     display: inline-block;
     white-space: pre-wrap;
     touch-action: auto !important;
-    // user-select: auto !important;
 
     @media (prefers-color-scheme: dark) {
       color: var(--custom-color-white);
+    }
+
+    &.ql-editor ::ng-deep {
+      blockquote {
+        margin: 0.25rem 0;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        border-width: 0.25rem;
+        border-color: rgba(var(--custom-color-medium-rgb), 0.3);
+        background: rgba(var(--custom-color-secondary-rgb), 0.5);
+      }
+
+      ol,
+      ul {
+        padding-left: 1.25em;
+      }
+
+      pre.ql-syntax {
+        border-radius: 0.5rem;
+      }
     }
   }
 
@@ -114,4 +133,8 @@
       text-align: left;
     }
   }
+}
+
+.ql-container.ql-snow {
+  border: none;
 }

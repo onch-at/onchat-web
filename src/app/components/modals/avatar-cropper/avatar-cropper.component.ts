@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { SessionStorageKey } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -88,7 +89,7 @@ export class AvatarCropperComponent implements OnInit {
   async onLoadImageFailed() {
     this.error = true;
     (await this.ionLoading).dismiss();
-    this.overlayService.presentMsgToast('图像加载失败！');
+    this.overlayService.presentToast('图像加载失败！');
   }
 
   async crop(): Promise<ImageCropData> {
@@ -192,10 +193,10 @@ export class AvatarCropperComponent implements OnInit {
       if (this.imageCropper.imageQuality > 0) {
         this.imageCropper.imageQuality -= 5;
 
-        await this.overlayService.presentMsgToast('图片文件体积过大，尝试进一步压缩…');
+        await this.overlayService.presentToast('图片文件体积过大，尝试进一步压缩…');
         return this.submit();
       } else {
-        return this.overlayService.presentMsgToast('文件体积过大(' + (size / 1048576).toFixed(2) + 'MB)，仅接受体积为1MB以内的文件');
+        return this.overlayService.presentToast('文件体积过大(' + (size / 1048576).toFixed(2) + 'MB)，仅接受体积为1MB以内的文件');
       }
     }
 
@@ -207,12 +208,16 @@ export class AvatarCropperComponent implements OnInit {
         this.onChatService.user.avatar = result.data.avatar;
         this.onChatService.user.avatarThumbnail = result.data.avatarThumbnail;
 
-        this.sessionStorageService.setUser(this.onChatService.user);
+        this.sessionStorageService.setItemToMap(
+          SessionStorageKey.UserMap,
+          this.onChatService.user.id,
+          this.onChatService.user
+        );
 
         this.dismiss(imageSrc);
-        this.overlayService.presentMsgToast('头像上传成功！');
+        this.overlayService.presentToast('头像上传成功！');
       } else {
-        this.overlayService.presentMsgToast(result.msg);
+        this.overlayService.presentToast(result.msg);
       }
 
       (await this.ionLoading).dismiss();

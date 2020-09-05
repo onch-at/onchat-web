@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
+import { TextMessage } from 'src/app/models/form.model';
 import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -54,7 +55,7 @@ export class ChatPage implements OnInit {
   sendMsgMap: Map<number, number> = new Map();
   subject: Subject<unknown> = new Subject();
   /** 是否显示抽屉 */
-  showDrawer: boolean = false;
+  showDrawer: boolean = true;
   /** 键盘高度 */
   keyboardHeight: number;
   /** 解除监听的函数集合 */
@@ -103,10 +104,10 @@ export class ChatPage implements OnInit {
       });
     }
 
-    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((o: Result<Message>) => {
-      const msg = o.data;
+    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((result: Result<Message>) => {
+      const msg = result.data;
       // 如果请求成功，并且收到的消息是这个房间的
-      if (o.code != 0 || msg.chatroomId != this.chatroomId) {
+      if (result.code != 0 || msg.chatroomId != this.chatroomId) {
         return;
       }
 
@@ -120,7 +121,7 @@ export class ChatPage implements OnInit {
           this.sendMsgMap.delete(msg.sendTime);
         } else {
           this.msgList.push(msg);
-          this.tryToScrollToBottom();
+          this.scrollToBottom();
         }
       } else {
         // 如果消息不是自己的，就设为已读
@@ -139,17 +140,21 @@ export class ChatPage implements OnInit {
           if (msgItem.id == o.data.msgId) { // 移除被撤回的那条消息
             msgItem.type = MessageType.Tips;
             const name = msgItem.userId == this.onChatService.user.id ? '我' : msgItem.nickname;
-            msgItem.data.content = `<a target="_blank" href="/user/card/${msgItem.userId}">${name}</a> 撤回了一条消息`;
+            (msgItem.data as any).content = `<a target="_blank" href="/user/card/${msgItem.userId}">${name}</a> 撤回了一条消息`;
             break;
           }
         }
       }
     });
 
-    // TODO 重新连接时候检查还有没有未发送的
-    // this.socketService.on(SocketEvent.Reconnect).pipe(takeUntil(this.subject)).subscribe(() => {
-
-    // });
+    // 重新连接时候检查还有没有未发送的
+    this.socketService.on(SocketEvent.Reconnect).pipe(takeUntil(this.subject)).subscribe(() => {
+      if (this.sendMsgMap.size > 0) {
+        for (const index of this.sendMsgMap.values()) {
+          this.socketService.message(this.msgList[index]);
+        }
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -253,7 +258,7 @@ export class ChatPage implements OnInit {
       } else if (result.code == 1) { // 如果没有消息
         this.end = true;
       } else if (result.code == -3) { // 如果没有权限
-        this.overlayService.presentMsgToast('你还没有权限进入此聊天室！');
+        this.overlayService.presentToast('你还没有权限进入此聊天室！');
         this.router.navigate(['/']); // 没权限还想进来，回首页去吧
       }
       complete && complete();
@@ -305,7 +310,7 @@ export class ChatPage implements OnInit {
   send(textareaElement: HTMLTextAreaElement) {
     if (this.msg.length > TEXT_MSG_MAX_LENGTH) { return; }
     const msg = new Message(+this.chatroomId);
-    msg.data = this.msg; // TODO 封装成一个文字消息类
+    msg.data = new TextMessage(this.msg);
     this.socketService.message(msg);
 
     this.sendMsgMap.set(msg.sendTime, this.msgList.length);
@@ -313,7 +318,6 @@ export class ChatPage implements OnInit {
     this.msgList.push(Object.assign(msg, {
       userId: this.onChatService.user.id,
       avatarThumbnail: this.onChatService.user.avatarThumbnail,
-      data: { content: this.msg },
       createTime: msg.sendTime,
       loading: true
     }));
@@ -368,6 +372,10 @@ export class ChatPage implements OnInit {
     this.overlayService.presentAlert({
       header: '好友别名',
       confirmHandler: (data: KeyValue<string, any>) => {
+        if (data['alias'] == this.roomName) {
+          return;
+        }
+
         this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result) => {
           if (result.code == 0) {
             this.roomName = data['alias'];
@@ -376,9 +384,9 @@ export class ChatPage implements OnInit {
               this.onChatService.chatList[index].name = data['alias'];
               this.onChatService.chatList = this.onChatService.chatList;
             }
-            this.overlayService.presentMsgToast('成功修改好友别名', 1000);
+            this.overlayService.presentToast('成功修改好友别名', 1000);
           } else {
-            this.overlayService.presentMsgToast(result.msg);
+            this.overlayService.presentToast(result.msg);
           }
         });
       },

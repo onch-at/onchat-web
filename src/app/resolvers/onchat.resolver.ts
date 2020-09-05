@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
+import { SessionStorageKey } from '../common/enum';
 import { FriendRequest, Result, User } from '../models/onchat.model';
 import { OnChatService } from '../services/onchat.service';
 import { SessionStorageService } from '../services/session-storage.service';
@@ -21,7 +22,7 @@ export class UserResolve implements Resolve<Result<User> | User> {
         const userId = +route.params.userId;
 
         // 去缓存里面找找
-        const user = this.sessionStorageService.getUser(userId);
+        const user = this.sessionStorageService.getItemFromMap<User>(SessionStorageKey.UserMap, userId);
         if (user) { return user; }
 
         return this.onChatService.getUser(userId);

@@ -44,7 +44,7 @@ export class OverlayService {
    * 弹出文字Toast
    * @param message 文字
    */
-  async presentMsgToast(message: string, duration: number = 2000): Promise<HTMLIonToastElement> {
+  async presentToast(message: string, duration: number = 2000): Promise<HTMLIonToastElement> {
     const toast = await this.toastController.create({
       message,
       duration

@@ -59,7 +59,7 @@
 
     <div #drawer class="drawer"
       [ngStyle]="{'height': showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0}">
-      <app-drawer></app-drawer>
+      <app-drawer [page]="this"></app-drawer>
     </div>
   </div>
 </ion-content>

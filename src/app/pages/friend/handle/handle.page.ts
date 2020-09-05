@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SocketEvent } from 'src/app/common/enum';
+import { SessionStorageKey, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -36,11 +36,15 @@ export class HandlePage implements OnInit {
         this.user = data.user as User;
       } else if ((data.user as Result<User>).code == 0) {
         this.user = (data.user as Result<User>).data;
-        this.sessionStorageService.setUser(this.user);
+        this.sessionStorageService.setItemToMap(
+          SessionStorageKey.UserMap,
+          this.user.id,
+          this.user
+        );
       }
 
       if (data.friendRequest.code != 0) {
-        this.overlayService.presentMsgToast(data.friendRequest.msg);
+        this.overlayService.presentToast(data.friendRequest.msg);
         return this.router.navigate(['/']);
       }
 

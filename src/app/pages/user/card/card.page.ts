@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SessionStorageKey } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -30,9 +31,13 @@ export class CardPage implements OnInit {
         this.user = data.user as User;
       } else if ((data.user as Result<User>).code == 0) {
         this.user = (data.user as Result<User>).data;
-        this.sessionStorageService.setUser(this.user);
+        this.sessionStorageService.setItemToMap(
+          SessionStorageKey.UserMap,
+          this.user.id,
+          this.user
+        );
       } else {
-        this.overlayService.presentMsgToast('用户不存在！');
+        this.overlayService.presentToast('用户不存在！');
         this.router.navigate(['/']);
       }
     });

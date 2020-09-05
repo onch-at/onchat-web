@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { SessionStorageKey } from 'src/app/common/enum';
 import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -44,9 +45,13 @@ export class AvatarPage implements OnInit {
         this.user = data.user as User;
       } else if ((data.user as Result<User>).code == 0) {
         this.user = (data.user as Result<User>).data;
-        this.sessionStorageService.setUser(this.user);
+        this.sessionStorageService.setItemToMap(
+          SessionStorageKey.UserMap,
+          this.user.id,
+          this.user
+        );
       } else {
-        this.overlayService.presentMsgToast('用户不存在！');
+        this.overlayService.presentToast('用户不存在！');
         this.router.navigate(['/']);
       }
     });

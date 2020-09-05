@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
+import { LocalStorageKey } from '../common/enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
-  constructor() { }
 
   /**
    * 保存数据
    * @param key 键名
    * @param value 数据
    */
-  set(key: any, value: any): void {
+  set(key: LocalStorageKey, value: any): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
@@ -19,7 +19,7 @@ export class LocalStorageService {
    * 获取数据
    * @param key 键名
    */
-  get(key: any): any {
+  get(key: LocalStorageKey): any {
     const data = localStorage.getItem(key);
     if (!data) { return false; }
     return JSON.parse(data);
@@ -29,7 +29,24 @@ export class LocalStorageService {
    * 移除数据
    * @param key 键名
    */
-  remove(key: any): void {
+  remove(key: LocalStorageKey): void {
     localStorage.removeItem(key);
+  }
+
+  setItemToMap<T = any>(storageKey: LocalStorageKey, key: string | number, value: T): void {
+    const map = this.get(storageKey) || {};
+    map[key] = value;
+    this.set(storageKey, map);
+  }
+
+  getItemFromMap<T = any>(storageKey: LocalStorageKey, key: string | number): T {
+    const map = this.get(storageKey) || {};
+    return map[key];
+  }
+
+  removeItemFromMap(storageKey: LocalStorageKey, key: string | number): void {
+    const map = this.get(storageKey) || {};
+    delete map[key];
+    this.set(storageKey, map);
   }
 }

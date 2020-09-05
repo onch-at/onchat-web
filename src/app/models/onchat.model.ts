@@ -1,5 +1,6 @@
 import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { ChatroomType, FriendRequestStatus, MessageType } from '../common/enum';
+import { RichTextMessage, TextMessage } from './form.model';
 
 export interface Result<T = null> {
     code: number;
@@ -108,9 +109,9 @@ export class Message extends Entity {
     /** 消息发送者的头像缩略图 */
     avatarThumbnail?: string;
     /** 消息类型 */
-    type: MessageType = MessageType.Text;
+    type: MessageType;
     /** 消息内容 */
-    data: any;
+    data: TextMessage | RichTextMessage;
     /** 回复消息的消息记录ID */
     replyId?: number;
     /** 消息在客户端发送的时间 */
@@ -118,9 +119,10 @@ export class Message extends Entity {
     /** 发送中 */
     loading?: boolean;
 
-    constructor(chatroomId: number) {
+    constructor(chatroomId: number, type: MessageType = MessageType.Text) {
         super();
         this.chatroomId = chatroomId;
+        this.type = type;
         this.sendTime = Date.now();
     }
 }

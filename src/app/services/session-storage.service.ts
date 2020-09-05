@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import { SessionStorageKey } from '../common/enum';
-import { User } from '../models/onchat.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionStorageService {
 
-  constructor() { }
-
   /**
    * 保存数据
    * @param key 键名
    * @param value 数据
    */
-  set(key: any, value: any): void {
+  set(key: SessionStorageKey, value: any): void {
     sessionStorage.setItem(key, JSON.stringify(value));
   }
 
@@ -22,7 +19,7 @@ export class SessionStorageService {
    * 获取数据
    * @param key 键名
    */
-  get(key: any): any {
+  get(key: SessionStorageKey): any {
     const data = sessionStorage.getItem(key);
     if (!data) { return false; }
     return JSON.parse(data);
@@ -32,26 +29,19 @@ export class SessionStorageService {
    * 移除数据
    * @param key 键名
    */
-  remove(key: any): void {
+  remove(key: SessionStorageKey): void {
     sessionStorage.removeItem(key);
   }
 
-  /**
-   * 添加用户到会话储存
-   * @param user 用户实体
-   */
-  setUser(user: User): void {
-    const userMap: { [index: number]: User } = this.get(SessionStorageKey.UserMap) || {};
-    userMap[user.id] = user;
-    this.set(SessionStorageKey.UserMap, userMap);
+  setItemToMap<T = any>(storageKey: SessionStorageKey, key: string | number, value: T): void {
+    const map = this.get(storageKey) || {};
+    map[key] = value;
+    this.set(storageKey, map);
   }
 
-  /**
-   * 从会话储存获取用户
-   * @param userId 用户ID
-   */
-  getUser(userId: number): User {
-    const userMap: { [index: number]: User } = this.get(SessionStorageKey.UserMap) || {};
-    return userMap[userId];
+  getItemFromMap<T = any>(storageKey: SessionStorageKey, key: string | number): T {
+    const map = this.get(storageKey) || {};
+    return map[key];
   }
+
 }

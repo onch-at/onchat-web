@@ -26,3 +26,21 @@ export class Register extends Login {
         this.captcha = captcha;
     }
 }
+
+export class TextMessage {
+    content: string;
+
+    constructor(content: string) {
+        this.content = content;
+    }
+}
+
+export class RichTextMessage {
+    html: string;
+    text: string;
+
+    constructor(html: string, text: string) {
+        this.html = html;
+        this.text = text;
+    }
+}

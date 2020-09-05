@@ -10,7 +10,7 @@
       <ion-title>文本编辑器</ion-title>
 
       <ion-buttons slot="end">
-        <ion-button>
+        <ion-button (tap)="send()">
           <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -18,7 +18,7 @@
   </ion-header>
 
   <main>
-    <quill-editor class="flex-col-container" [(ngModel)]="content" [modules]="config"
+    <quill-editor class="flex-col-container" [(ngModel)]="html" [modules]="modules"
       (onContentChanged)="onContentChanged($event)">
     </quill-editor>
   </main>
