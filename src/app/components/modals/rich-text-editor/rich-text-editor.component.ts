@@ -95,7 +95,7 @@ export class RichTextEditorComponent implements OnInit {
       const msg = result.data;
       // 如果请求成功，并且收到的消息是这个房间的
       if (result.code != 0 || msg.chatroomId != this.onChatService.chatroomId) {
-        return;
+        return subscription.unsubscribe();
       }
 
       // 如果是自己发的消息，并且是刚刚这一条

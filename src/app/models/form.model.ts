@@ -27,7 +27,11 @@ export class Register extends Login {
     }
 }
 
+/**
+ * 纯文本消息
+ */
 export class TextMessage {
+    /** 内容 */
     content: string;
 
     constructor(content: string) {
@@ -35,8 +39,13 @@ export class TextMessage {
     }
 }
 
+/**
+ * 富文本消息
+ */
 export class RichTextMessage {
+    /** HTML */
     html: string;
+    /** 文本 */
     text: string;
 
     constructor(html: string, text: string) {
