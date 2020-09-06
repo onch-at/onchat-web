@@ -69,20 +69,29 @@
 
     &.ql-editor ::ng-deep {
       blockquote {
-        margin: 0.25rem 0;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        border-width: 0.25rem;
-        border-color: rgba(var(--custom-color-medium-rgb), 0.3);
-        background: rgba(var(--custom-color-secondary-rgb), 0.5);
+        display: inline-block;
+        width: 100%;
+        border: none;
+        background: rgba(#fff, 0.4);
+        padding: 0.3rem 0.75rem;
       }
 
       ol,
       ul {
-        padding-left: 1.25em;
+        padding-left: 0.5em;
       }
 
       pre.ql-syntax {
+        color: #d4d4d4;
+        background: #1e1e1e;
+        white-space: pre;
+        overflow-x: auto;
+        padding: 0.5rem 0.75rem;
+      }
+
+      blockquote,
+      pre.ql-syntax {
+        margin: 0.4rem 0;
         border-radius: 0.5rem;
       }
     }

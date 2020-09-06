@@ -44,6 +44,33 @@ quill-editor ::ng-deep {
         &.ql-blank::before {
             color: var(--custom-color-dark);
         }
+
+        blockquote {
+            display: inline-block;
+            width: 100%;
+            border: none;
+            padding: 0.3rem 0.75rem;
+            background: var(--custom-color-gray);
+        }
+
+        ol,
+        ul {
+            padding-left: 0.5em;
+        }
+
+        pre.ql-syntax {
+            color: #d4d4d4;
+            background: #1e1e1e;
+            white-space: pre;
+            overflow-x: auto;
+            padding: 0.4rem 0.75rem;
+        }
+
+        blockquote,
+        pre.ql-syntax {
+            margin: 0.4rem 0;
+            border-radius: 0.5rem;
+        }
     }
 
     .ql-toolbar {

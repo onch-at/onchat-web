@@ -75,6 +75,10 @@ export class RichTextEditorComponent implements OnInit {
 
   }
 
+  showSendBtn() {
+    return StrUtil.trimAll(this.text).length > 0;
+  }
+
   /**
    * 发送
    */
