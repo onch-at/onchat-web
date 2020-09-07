@@ -49,14 +49,16 @@ export class AppComponent implements OnInit {
           user.id,
           user
         );
+      } else {
+        this.router.navigate(['/user/login']);
       }
     });
 
     // 发起/收到好友申请时
-    this.socketService.on(SocketEvent.FriendRequest).subscribe((o: Result<FriendRequest>) => {
-      console.log('o: ', o);
-      if (o.code != 0) { return; } //TODO
-      const friendRequest = o.data;
+    this.socketService.on(SocketEvent.FriendRequest).subscribe((result: Result<FriendRequest>) => {
+      console.log('result: ', result);
+      if (result.code != 0) { return; } //TODO
+      const friendRequest = result.data;
       // 收到好友申请提示，判断自己是不是被申请人
       if (friendRequest.targetId == this.onChatService.user.id) {
         const index = this.onChatService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
@@ -157,11 +159,6 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // 初始化时 暂时没有信息返回
-    // this.socketService.on(SocketEvent.Init).subscribe((o) => {
-    //   console.log(o)
-    // });
-
     // 收到消息时
     this.socketService.on(SocketEvent.Message).subscribe((result: Result<Message>) => {
       if (result.code != 0) {
@@ -251,23 +248,8 @@ export class AppComponent implements OnInit {
     });
 
     // 重连成功时
-    this.socketService.on(SocketEvent.Reconnect).pipe(
-      mergeMap(() => this.onChatService.checkLogin())
-    ).subscribe((result: Result<boolean | User>) => {
-      this.onChatService.user = result.data ? result.data as User : null;
-      if (result.data) {
-        this.socketService.init();
-        this.onChatService.init();
-        const user = result.data as User;
-        this.sessionStorageService.setItemToMap(
-          SessionStorageKey.UserMap,
-          user.id,
-          user
-        );
-        this.overlayService.presentToast('与服务器重连成功！');
-      } else {
-        this.router.navigate(['/user/login']);
-      }
+    this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
+      this.overlayService.presentToast('与服务器重连成功！');
     });
 
     // 如果路由返回被取消，就震动一下，表示阻止

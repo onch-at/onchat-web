@@ -55,6 +55,7 @@ export class MsgListComponent implements OnInit {
    * @param event
    */
   async presentBubbleToolbarPopover(msgItem: Message, element: Element, event: any) {
+    event.preventDefault();
     this.overlayService.bubbleToolbarPopover = await this.popoverController.create({
       component: BubbleToolbarComponent,
       componentProps: {

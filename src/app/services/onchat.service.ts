@@ -36,6 +36,11 @@ export class OnChatService {
   /** 是否可以销毁（返回上一页） */
   canDeactivate: boolean = true;
 
+  /** 我的收到好友申请列表 */
+  receiveFriendRequests: FriendRequest[] = [];
+  /** 我的发起的好友申请列表 */
+  sendFriendRequests: FriendRequest[] = [];
+
   /** 缓存聊天列表 */
   private _chatList: ChatItem[] = [];
   set chatList(chatList: ChatItem[]) {
@@ -55,11 +60,6 @@ export class OnChatService {
   get chatList(): ChatItem[] {
     return this._chatList;
   }
-
-  /** 我的收到好友申请列表 */
-  receiveFriendRequests: FriendRequest[] = [];
-  /** 我的发起的好友申请列表 */
-  sendFriendRequests: FriendRequest[] = [];
 
   constructor(
     private http: HttpClient,

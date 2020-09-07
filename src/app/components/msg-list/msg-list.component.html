@@ -26,6 +26,7 @@
 
           <span #bubble class="msg-bubble ion-activatable ripple-parent"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
             [innerHTML]="item.data.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
           </span>
 
@@ -47,6 +48,7 @@
 
           <span #bubble class="msg-bubble ion-activatable ripple-parent ql-editor"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
             [innerHTML]=" item.data.html + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
         </div>
       </li>

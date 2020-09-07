@@ -148,10 +148,14 @@ export class ChatPage implements OnInit {
     });
 
     // 重新连接时候检查还有没有未发送的
-    this.socketService.on(SocketEvent.Reconnect).pipe(takeUntil(this.subject)).subscribe(() => {
+    // 重新连接后会重新初始化
+    this.socketService.onInit().pipe(takeUntil(this.subject)).subscribe(() => {
       if (this.sendMsgMap.size > 0) {
+        let msg: Message;
         for (const index of this.sendMsgMap.values()) {
-          this.socketService.message(this.msgList[index]);
+          msg = this.msgList[index];
+          delete msg.loading;
+          this.socketService.message(msg);
         }
       }
     });

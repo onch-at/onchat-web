@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 import { SocketEvent } from '../common/enum';
 import { Message } from '../models/onchat.model';
 
@@ -9,17 +10,27 @@ import { Message } from '../models/onchat.model';
   providedIn: 'root'
 })
 export class SocketService {
+  /** 初始化后的可观察对象 */
+  private init$: Subject<void> = new Subject();
 
   constructor(
     private socket: Socket,
     private cookieService: CookieService,
   ) { }
 
+  onInit(): Observable<void> {
+    return this.init$;
+  }
+
   /**
    * 初始化时执行，让后端把用户加入相应的房间
    */
   init() {
     this.emit(SocketEvent.Init, { sessId: this.cookieService.get('PHPSESSID') });
+    const init = this.on(SocketEvent.Init).pipe(timeout(5000)).subscribe(() => {
+      this.init$.next();
+      init.unsubscribe();
+    });
   }
 
   /**
