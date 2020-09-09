@@ -2,7 +2,7 @@
 
 A Simple Instant Messaging Website Built with Angular and Ionic.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.25.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.0.
 
 ## Development server
 
