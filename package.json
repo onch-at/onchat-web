@@ -22,7 +22,6 @@
     "@angular/forms": "~8.2.14",
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
-    "@angular/pwa": "^0.900.7",
     "@angular/router": "~8.2.14",
     "@angular/service-worker": "~8.2.14",
     "@ionic/angular": "^5.3.2",
