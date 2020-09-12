@@ -1,4 +1,4 @@
-<section *ngIf="user">
+<ion-content *ngIf="user">
   <div class="user-card">
     <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/avatar', user.id]">
     <div class="info">
@@ -57,4 +57,4 @@
     退出登录
     <ion-ripple-effect></ion-ripple-effect>
   </button>
-</section>
+</ion-content>

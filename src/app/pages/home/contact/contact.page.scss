@@ -15,7 +15,7 @@ aside {
     left: 0;
     width: 100%;
     height: 0.5rem;
-    background: linear-gradient(var(--custom-color-white), transparent);
+    background: linear-gradient(var(--custom-color-white), rgba(0, 0, 0, 0));
   }
 
   button {
