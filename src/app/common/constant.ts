@@ -16,4 +16,3 @@ export {
     PASSWORD_MAX_LENGTH,
     TEXT_MSG_MAX_LENGTH
 };
-

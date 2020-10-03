@@ -1,25 +1,15 @@
 <ion-content [fullscreen]="true">
   <ion-header class="d-flex align-items-center">
     <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
-      </ion-buttons>
-
+      <ion-back-button slot="start" text="&nbsp;" defaultHref="home"></ion-back-button>
       <ion-title class="color-white">好友申请</ion-title>
-
-      <ion-buttons slot="end">
-        <ion-button [routerLink]="['/user/card', user.id]">
-          <ion-icon slot="icon-only" name="person-outline" style="font-size: 1.5rem; --ionicon-stroke-width: 45px;">
-          </ion-icon>
-        </ion-button>
-      </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
   <img class="bg-img" [src]="user.avatarThumbnail">
 
   <main>
-    <img class="avatar" [src]="user.avatarThumbnail">
+    <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/card', user.id]">
     <h1>{{ user.username }}</h1>
 
     <ion-item lines="none">

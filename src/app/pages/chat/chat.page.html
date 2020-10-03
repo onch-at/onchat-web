@@ -1,10 +1,9 @@
 <ion-content #ionContent [fullscreen]="true" [scrollEvents]="hasUnread" (ionScrollEnd)="onIonScrollEnd()">
   <ion-header class="d-flex align-items-center">
     <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button [text]="(onChatService.unreadMsgNum == 0 ? '' : onChatService.unreadMsgNum) | numLimit"
-          defaultHref="home"></ion-back-button>
-      </ion-buttons>
+      <ion-back-button slot="start"
+        [text]="(onChatService.unreadMsgNum == 0 ? '' : onChatService.unreadMsgNum) | numLimit" defaultHref="home">
+      </ion-back-button>
 
       <ion-title>
         <div class="brand"></div>

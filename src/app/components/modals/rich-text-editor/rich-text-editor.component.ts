@@ -68,11 +68,11 @@ export class RichTextEditorComponent implements OnInit {
    * 关闭自己
    */
   dismiss() {
-    this.modalController.dismiss();
-
-    this.onChatService.canDeactivate = true;
-    StrUtil.trimAll(this.text).length > 0 && this.cache();
-
+    setTimeout(() => {
+      this.modalController.dismiss();
+      this.onChatService.canDeactivate = true;
+      StrUtil.trimAll(this.text).length > 0 && this.cache();
+    }, 50);
   }
 
   showSendBtn() {

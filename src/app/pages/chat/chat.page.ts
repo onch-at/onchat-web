@@ -6,6 +6,7 @@ import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
+import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
 import { TextMessage } from 'src/app/models/form.model';
 import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
@@ -13,7 +14,6 @@ import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
-
 
 @Component({
   selector: 'app-chat',
@@ -43,7 +43,6 @@ export class ChatPage implements OnInit {
   contentElement: HTMLElement;
   /** IonContent滚动元素初始可视高度 */
   contentClientHeight: number;
-  resizeTimeout: number = null;
   /** 是否有未读消息 */
   hasUnread: boolean = false;
   /** 聊天室类型 */
@@ -202,14 +201,10 @@ export class ChatPage implements OnInit {
   }
 
   @HostListener('window:resize')
+  @Throttle(100)
   onWindowResize() {
-    if (this.resizeTimeout) {
-      clearTimeout(this.resizeTimeout);
-      this.resizeTimeout = null;
-    }
-    this.resizeTimeout = window.setTimeout(() => {
-      this.upliftScroll();
-    }, 100);
+    this.upliftScroll();
+    console.log(666);
   }
 
   /**
@@ -380,12 +375,12 @@ export class ChatPage implements OnInit {
           return;
         }
 
-        this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result) => {
+        this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
           if (result.code == 0) {
-            this.roomName = data['alias'];
+            this.roomName = result.data;
             const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.chatroomId);
             if (index >= 0) {
-              this.onChatService.chatList[index].name = data['alias'];
+              this.onChatService.chatList[index].name = result.data;
               this.onChatService.chatList = this.onChatService.chatList;
             }
             this.overlayService.presentToast('成功修改好友别名', 1000);

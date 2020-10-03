@@ -99,6 +99,26 @@ export class SysUtil {
         }
     }
 
+    static throttle(fn: Function, wait: number) {
+        let timer = null;
+        return () => {
+            timer && clearTimeout(timer);
+            timer = setTimeout(() => {
+                fn.apply(this, arguments);
+            }, wait);
+        }
+    }
+
+    static debounce(fn: Function, wait: number) {
+        let timer = null;
+        return () => {
+            timer === null && (timer = setTimeout(() => {
+                fn.apply(this, arguments);
+                timer = null;
+            }, wait));
+        }
+    }
+
     // /**
     //  * 压缩图片并返回base64
     //  * @param imgSrc 图片URL/URI

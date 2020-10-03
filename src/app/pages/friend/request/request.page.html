@@ -1,9 +1,7 @@
 <ion-content [fullscreen]="true">
   <ion-header class="d-flex align-items-center">
     <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
-      </ion-buttons>
+      <ion-back-button slot="start" text="&nbsp;" defaultHref="home"></ion-back-button>
 
       <ion-title>添加好友</ion-title>
 
@@ -18,7 +16,7 @@
   <img class="bg-img" [src]="user.avatarThumbnail">
 
   <main>
-    <img class="avatar" [src]="user.avatarThumbnail">
+    <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/card', user.id]">
     <h1>{{ user.username }}</h1>
 
     <ion-item lines="none" *ngIf="rejectReason">
