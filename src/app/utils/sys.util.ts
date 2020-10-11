@@ -74,6 +74,10 @@ export class SysUtil {
                 resolve(event);
                 document.body.removeChild(input);
             };
+
+            const rejector = (event: Event) => reject(event);
+            input.onerror = rejector;
+            input.oncancel = rejector;
         });
     }
 

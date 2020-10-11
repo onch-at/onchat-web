@@ -1,9 +1,11 @@
 <ion-content [fullscreen]="true" [scrollY]="false">
   <ion-header class="d-flex align-items-center">
     <ion-toolbar>
-      <ion-button slot="start" (tap)="dismiss()">
-        <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
-      </ion-button>
+      <ion-buttons slot="start">
+        <ion-button (tap)="dismiss()">
+          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
 
       <ion-title>头像裁剪</ion-title>
 

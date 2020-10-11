@@ -20,16 +20,8 @@ export class OverlayService {
     private notificationController: NotificationController
   ) { }
 
-  private canDeactivate() {
-    if (!this.onChatService.canDeactivate) {
-      this.onChatService.canDeactivate = true;
-    }
-  }
-
-  private notCanDeactivate() {
-    if (this.onChatService.canDeactivate) {
-      this.onChatService.canDeactivate = false;
-    }
+  private setDeactivate(deactivate: boolean) {
+    this.onChatService.canDeactivate = deactivate;
   }
 
   /**
@@ -69,21 +61,20 @@ export class OverlayService {
           text: '取消',
           handler: (data) => {
             cancelHandler && cancelHandler(data);
-            this.canDeactivate();
           }
         },
         {
           text: '确认',
           handler: (data) => {
             confirmHandler(data);
-            this.canDeactivate();
           }
         }
       ]
     });
 
+    alert.onWillDismiss().then(() => this.setDeactivate(true));
     await alert.present();
-    this.notCanDeactivate();
+    this.setDeactivate(false);
     return alert;
   }
 
@@ -99,6 +90,7 @@ export class OverlayService {
       buttons
     });
 
+    actionSheet.onWillDismiss().then(() => this.setDeactivate(true));
     await actionSheet.present();
     return actionSheet;
   }
