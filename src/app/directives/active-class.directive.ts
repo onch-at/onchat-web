@@ -14,7 +14,8 @@ export class ActiveClassDirective {
 
   constructor(private elementRef: ElementRef, private renderer2: Renderer2) { }
 
-  @HostListener('tap') onTap() {
+  @HostListener('tap')
+  onTap() {
     this.renderer2.addClass(this.elementRef.nativeElement, this.appActiveClass || 'active');
 
     this.appActiveClassDuration && setTimeout(() => {
