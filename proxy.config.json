@@ -1,6 +1,6 @@
 {
     "/onchat": {
-        "target": "http://localhost:8000",
+        "target": "http://localhost:9501",
         "secure": "false",
         "logLevel": "debug",
         "changeOrigin": true,
