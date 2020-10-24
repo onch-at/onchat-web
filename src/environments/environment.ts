@@ -25,5 +25,6 @@ export const environment = {
 
   friendUrl: '/onchat/friend/',
 
-  socketUrl: 'https://onchat.dev',
+  socketUrl: '',
+  socketPath: '/ws/socket.io',
 };

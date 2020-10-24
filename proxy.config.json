@@ -7,5 +7,15 @@
         "pathRewrite": {
             "^/onchat": ""
         }
+    },
+    "/ws": {
+        "target": "http://localhost:9501",
+        "secure": "false",
+        "ws": true,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/ws": ""
+        }
     }
 }

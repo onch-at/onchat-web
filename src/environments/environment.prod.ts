@@ -21,5 +21,6 @@ export const environment = {
 
   friendUrl: '/onchat/friend/',
 
-  socketUrl: 'https://api.chat.hypergo.net',
+  socketUrl: '',
+  socketPath: '/ws/socket.io',
 };

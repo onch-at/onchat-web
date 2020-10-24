@@ -45,7 +45,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     SocketIoModule.forRoot({
       url: env.socketUrl,
       options: {
-        path: '/ws/socket.io',
+        path: env.socketPath,
         transports: ['websocket'] // 只使用WebSocket连接
       }
     }),
