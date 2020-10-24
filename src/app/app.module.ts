@@ -11,7 +11,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { SocketIoModule } from 'ngx-socket-io';
-import { environment as env, environment } from '../environments/environment';
+import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
@@ -45,11 +45,12 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     SocketIoModule.forRoot({
       url: env.socketUrl,
       options: {
+        path: '/ws/socket.io',
         transports: ['websocket'] // 只使用WebSocket连接
       }
     }),
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: env.production })
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },

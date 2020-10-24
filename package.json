@@ -7,6 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host=0.0.0.0",
+    "https": "ng serve --host=0.0.0.0 --ssl true --ssl-cert localhost.pem --ssl-key localhost-key.pem ",
     "build": "ionic build --prod --aot --build-optimizer --engine=browser",
     "test": "ng test",
     "lint": "ng lint",
