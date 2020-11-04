@@ -49,6 +49,10 @@ ion-header {
   transform: translateY(100%);
   animation: slide-in-up 0.25s ease-out 0.25s forwards;
 
+  &:focus-within {
+    padding: 0.45rem;
+  }
+
   > .tips-btn {
     position: fixed;
     left: 50%;

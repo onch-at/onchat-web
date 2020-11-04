@@ -69,8 +69,12 @@ button {
   animation: bounce-in-up 0.9s linear;
 }
 
-footer {
+ion-grid:focus-within + footer {
   padding: 0.55rem 1rem;
+}
+
+footer {
+  padding: 0.55rem 1rem calc(env(safe-area-inset-bottom) + 0.55rem);
   font-size: 0.7rem;
   color: #e0e0e0;
 
