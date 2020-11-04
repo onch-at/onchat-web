@@ -103,7 +103,7 @@ ion-header {
 }
 
 ion-router-outlet {
-  margin: 3rem 0 0 3rem;
+  margin: 3rem 0 env(safe-area-inset-bottom) 3rem;
 
   /* 路由转场淡入 */
   &::ng-deep .ion-page > * {

@@ -204,7 +204,6 @@ export class ChatPage implements OnInit {
   @Throttle(100)
   onWindowResize() {
     this.upliftScroll();
-    console.log(666);
   }
 
   /**

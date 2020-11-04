@@ -172,7 +172,7 @@ ion-header {
 .bottom-bar {
   position: fixed;
   left: 1rem;
-  bottom: 1rem;
+  bottom: calc(env(safe-area-inset-bottom) + 1rem);
   width: calc(100vw - 2rem);
   transform: translateY(100%);
   animation: slide-in-up 0.25s ease 0.1s forwards;

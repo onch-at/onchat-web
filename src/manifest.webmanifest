@@ -1,6 +1,7 @@
 {
   "name": "OnChat",
   "short_name": "OnChat",
+  "description": "世界都在聊",
   "theme_color": "#ffc107",
   "background_color": "#fafafa",
   "display": "standalone",

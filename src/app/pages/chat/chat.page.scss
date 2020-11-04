@@ -42,7 +42,7 @@ ion-header {
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 0.45rem;
+  padding: 0.45rem 0.45rem calc(env(safe-area-inset-bottom) + 0.45rem);
   background: var(--custom-color-light);
   border-radius: 1.5rem 1.5rem 0 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);

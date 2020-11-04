@@ -1,8 +1,8 @@
 .notification {
     display: flex;
-    width: 95vw;
+    width: calc(100vw - 20px);
     height: 4.5rem;
-    margin-top: 2.5vw;
+    margin-top: 10px;
     padding: 0.75rem 0.85rem;
     background: rgba(var(--custom-color-light-rgb), 0.9);
     backdrop-filter: saturate(125%) blur(2.5px);
