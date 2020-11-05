@@ -32,6 +32,12 @@ export class SysUtil {
      * @param styleSheet CSS样式
      */
     static injectStyleToShadowRoot(renderer: Renderer2, element: HTMLElement, styleSheet: string): void {
+        const styleElement = element.shadowRoot.querySelector('style');
+
+        if (styleElement) {
+            return styleElement.append(styleSheet);
+        }
+
         const style = renderer.createElement('style');
         style.innerHTML = styleSheet;
         element.shadowRoot.appendChild(style);

@@ -8,9 +8,9 @@ ion-header {
 
     ion-buttons > *,
     ion-title {
-        --color: var(--custom-color-white);
+        --color: var(--oc-color-white);
         opacity: 0.95;
-        filter: drop-shadow(0 0 0.5rem var(--custom-color-black));
+        filter: drop-shadow(0 0 0.5rem var(--oc-color-black));
     }
 
     ion-title {
@@ -40,7 +40,7 @@ main {
     align-items: center;
     z-index: 1;
     padding: 4rem 0 calc(env(safe-area-inset-bottom) + 1rem);
-    background: linear-gradient(to bottom, transparent, rgba(var(--custom-color-white-rgb), 0.5));
+    background: linear-gradient(to bottom, transparent, rgba(var(--oc-color-white-rgb), 0.5));
     backdrop-filter: saturate(100%) blur(10px);
 }
 
@@ -48,20 +48,20 @@ main {
     width: 7.5rem;
     height: 7.5rem;
     border-radius: 5rem;
-    border: 0.25rem solid rgba(var(--custom-color-white-rgb), 0.85);
+    border: 0.25rem solid rgba(var(--oc-color-white-rgb), 0.85);
     object-fit: cover;
 }
 
 h1 {
-    color: var(--custom-color-white);
+    color: var(--oc-color-white);
     font-weight: bolder;
     font-size: 1.5rem;
-    text-shadow: 0 0 0.75rem rgba(var(--custom-color-black-rgb), 0.5);
+    text-shadow: 0 0 0.75rem rgba(var(--oc-color-black-rgb), 0.5);
     margin: 1rem 0 1.25rem;
 }
 
 ion-item {
-    --background: rgba(var(--custom-color-white-rgb), 0.85);
+    --background: rgba(var(--oc-color-white-rgb), 0.85);
     --padding-start: 1rem;
     --inner-padding-end: 1rem;
     margin-bottom: 1rem;
@@ -71,7 +71,7 @@ ion-item {
     > ion-label {
         font-size: 0.95rem;
         margin: 0.6rem 0 0;
-        --color: var(--custom-color-dark);
+        --color: var(--oc-color-dark);
     }
 
     > p {
@@ -79,7 +79,7 @@ ion-item {
         font-size: 1rem;
         margin: 0 0 0.4rem;
         padding: 0.25rem 0;
-        color: var(--custom-color-medium);
+        color: var(--oc-color-medium);
     }
 }
 

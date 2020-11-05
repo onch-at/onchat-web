@@ -14,11 +14,11 @@ img.captcha {
   height: 3.25rem;
   object-fit: cover;
   border-radius: 1.625rem;
-  border: 1.5px solid var(--custom-color-gray);
+  border: 1.5px solid var(--oc-color-gray);
   transition: box-shadow 0.125s ease-in-out;
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
   }
 
   @media (prefers-color-scheme: dark) {

@@ -1,7 +1,7 @@
 @import "../../../../assets/css/constellation.css";
 
 * {
-  color: var(--custom-color-dark);
+  color: var(--oc-color-dark);
 }
 
 .user-card {
@@ -15,7 +15,7 @@
   float: left;
   width: 5rem;
   height: 5rem;
-  background: var(--custom-color-secondary);
+  background: var(--oc-color-secondary);
   border-radius: 50%;
   box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.1);
 
@@ -52,8 +52,8 @@
   font-size: 0.9rem;
   margin: 0 1rem 0.5rem;
   padding: 0.5rem 1rem 0.75rem;
-  background: rgba(var(--custom-color-primary-rgb), 0.125);
-  border-left: 0.25rem solid rgba(var(--custom-color-primary-rgb), 0.5);
+  background: rgba(var(--oc-color-primary-rgb), 0.125);
+  border-left: 0.25rem solid rgba(var(--oc-color-primary-rgb), 0.5);
   border-radius: 0.35rem 0.5rem 0.5rem 0.35rem;
 
   &::first-letter {

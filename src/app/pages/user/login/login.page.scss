@@ -4,6 +4,10 @@ ion-progress-bar {
   left: 0;
 }
 
+ion-content::part(scroll) {
+  overflow: hidden;
+}
+
 .logo {
   margin-bottom: 2rem;
 
@@ -38,8 +42,8 @@ ion-progress-bar {
 }
 
 input {
-  border: none;
-  background: var(--custom-color-secondary);
+  border: 0;
+  background: var(--oc-color-secondary);
   padding: 0 3rem;
 }
 
@@ -69,8 +73,13 @@ button {
   animation: bounce-in-up 0.9s linear;
 }
 
-ion-grid:focus-within + footer {
-  padding: 0.55rem 1rem;
+ion-grid {
+  padding: 0 1.5rem 10vh;
+  flex: auto;
+
+  &:focus-within + footer {
+    padding: 0.55rem 1rem;
+  }
 }
 
 footer {

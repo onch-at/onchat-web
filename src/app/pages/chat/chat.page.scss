@@ -4,7 +4,7 @@ ion-header {
   left: 0;
   width: 100%;
   height: 3rem;
-  background: var(--custom-color-light);
+  background: var(--oc-color-light);
   border-radius: 0 0 1.5rem 1.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   transform: translateY(-100%);
@@ -16,7 +16,7 @@ ion-header {
 
   ion-title {
     font-size: 1.075rem;
-    color: var(--custom-color-dark);
+    color: var(--oc-color-dark);
     transform: translateY(1.5rem);
     animation: title-show 0.5s ease-out 1.25s forwards;
 
@@ -26,7 +26,7 @@ ion-header {
   }
 
   ion-buttons > * {
-    --color: var(--custom-color-medium);
+    --color: var(--oc-color-medium);
   }
 
   .brand {
@@ -43,7 +43,7 @@ ion-header {
   left: 0;
   width: 100%;
   padding: 0.45rem 0.45rem calc(env(safe-area-inset-bottom) + 0.45rem);
-  background: var(--custom-color-light);
+  background: var(--oc-color-light);
   border-radius: 1.5rem 1.5rem 0 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   transform: translateY(100%);
@@ -88,10 +88,10 @@ ion-header {
     resize: none;
     flex: auto;
     font-size: 1rem;
-    border: 0.075rem solid var(--custom-color-secondary);
+    border: 0.075rem solid var(--oc-color-secondary);
     border-radius: 1.5rem;
     padding: 0.5rem 0.75rem;
-    background: var(--custom-color-white);
+    background: var(--oc-color-white);
     max-height: 10em;
     min-height: 100%;
     margin-right: 0.425rem;
@@ -131,7 +131,7 @@ main {
 }
 
 ion-back-button::part(text) {
-  background: var(--custom-color-gray);
+  background: var(--oc-color-gray);
   padding: 0.2rem 0.4rem;
   font-size: 0.8rem;
   border-radius: 1rem;

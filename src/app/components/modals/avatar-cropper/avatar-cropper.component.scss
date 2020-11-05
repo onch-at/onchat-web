@@ -24,7 +24,7 @@ ion-content {
 }
 
 .warning-tips {
-    color: var(--custom-color-danger);
+    color: var(--oc-color-danger);
     flex-direction: column;
 
     > div {
@@ -70,7 +70,7 @@ image-cropper {
 
         .cropper {
             &::after {
-                border: none !important;
+                border: 0 !important;
                 opacity: 0.5 !important;
             }
 

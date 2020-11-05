@@ -7,13 +7,13 @@ ion-refresher {
     height: 4rem;
 
     .refresher-refreshing-icon > * {
-        color: var(--custom-color-primary) !important;
+        color: var(--oc-color-primary) !important;
         transform: scale(1.25);
     }
 
     .refresher-pulling-icon > * {
         font-size: 2rem;
-        color: var(--custom-color-dark) !important;
+        color: var(--oc-color-dark) !important;
     }
 
     .refresher-refreshing-text {
@@ -23,7 +23,7 @@ ion-refresher {
     .refresher-refreshing-text,
     .refresher-pulling-text {
         font-size: 0.75rem;
-        color: var(--custom-color-medium) !important;
+        color: var(--oc-color-medium) !important;
     }
 }
 
@@ -48,25 +48,30 @@ ion-infinite-scroll {
     }
 
     .infinite-loading-spinner > * {
-        color: var(--custom-color-primary) !important;
+        color: var(--oc-color-primary) !important;
         transform: scale(1.25);
     }
 }
 
 ion-content {
-    --color: var(--custom-color-dark);
-    --background: var(--custom-color-white);
+    --color: var(--oc-color-dark);
+    --background: var(--oc-color-white);
+
+    &::part(scroll) {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(var(--oc-color-dark-rgb), 0.125) transparent;
+    }
 }
 
 // 进度条
 ion-progress-bar {
-    --background: rgba(var(--custom-color-primary-rgb), 0.125);
-    --progress-background: rgba(var(--custom-color-primary-rgb), 0.625);
+    --background: rgba(var(--oc-color-primary-rgb), 0.125);
+    --progress-background: rgba(var(--oc-color-primary-rgb), 0.625);
 }
 
 // loading
 ion-loading.ion-loading {
-    --background: rgba(var(--custom-color-light-rgb), 0.9);
+    --background: rgba(var(--oc-color-light-rgb), 0.9);
 
     .loading-wrapper {
         height: 9rem;
@@ -82,13 +87,13 @@ ion-loading.ion-loading {
     }
 
     ion-spinner {
-        --spinner-color: var(--custom-color-dark);
+        --spinner-color: var(--oc-color-dark);
         width: 4rem;
         height: 4rem;
     }
 
     .loading-content {
-        color: var(--custom-color-dark);
+        color: var(--oc-color-dark);
         margin-top: 0.5rem;
         font-size: 1rem;
         font-weight: normal;
@@ -98,13 +103,13 @@ ion-loading.ion-loading {
 
 // action sheet
 ion-action-sheet.ion-action-sheet {
-    --color: var(--custom-color-dark);
-    --background: rgba(var(--custom-color-light-rgb), 0.9);
-    --button-color: var(--custom-color-dark);
-    --button-color-hover: var(--custom-color-dark);
-    --button-color-activated: var(--custom-color-dark);
-    --button-color-focused: var(--custom-color-dark);
-    --button-color-selected: var(--custom-color-dark);
+    --color: var(--oc-color-dark);
+    --background: rgba(var(--oc-color-light-rgb), 0.9);
+    --button-color: var(--oc-color-dark);
+    --button-color-hover: var(--oc-color-dark);
+    --button-color-activated: var(--oc-color-dark);
+    --button-color-focused: var(--oc-color-dark);
+    --button-color-selected: var(--oc-color-dark);
 
     .action-sheet-group {
         border-radius: 1.5rem;
@@ -136,7 +141,7 @@ ion-alert {
     .alert-wrapper.sc-ion-alert-ios {
         min-width: 16rem;
         max-width: 85vw;
-        background: rgba(var(--custom-color-white-rgb), 0.9);
+        background: rgba(var(--oc-color-white-rgb), 0.9);
         border-radius: 1rem;
         box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
     }
@@ -149,14 +154,14 @@ ion-alert {
     }
 
     .alert-title.sc-ion-alert-ios {
-        color: var(--custom-color-dark);
+        color: var(--oc-color-dark);
         font-weight: bold;
         font-size: 1rem;
         margin-top: 0.5rem;
     }
 
     .alert-message.sc-ion-alert-ios {
-        color: var(--custom-color-dark);
+        color: var(--oc-color-dark);
         font-size: 0.85rem;
         padding-inline-start: 1rem;
         padding-inline-end: 1rem;
@@ -168,7 +173,7 @@ ion-alert {
     }
 
     .alert-input-group.sc-ion-alert-ios {
-        color: var(--custom-color-dark);
+        color: var(--oc-color-dark);
         font-size: 0.85rem;
         padding-inline-start: 1rem;
         padding-inline-end: 1rem;
@@ -194,23 +199,23 @@ ion-alert {
         textarea {
             padding-inline-start: 0.5rem;
             padding-inline-end: 0.5rem;
-            background: var(--custom-color-white);
-            border: 0.05rem solid var(--custom-color-gray);
+            background: var(--oc-color-white);
+            border: 0.05rem solid var(--oc-color-gray);
         }
     }
 
     .alert-button.sc-ion-alert-ios {
         height: 2.5rem;
         border-width: 0.25px;
-        color: var(--custom-color-dark);
+        color: var(--oc-color-dark);
 
         &:last-child {
             font-weight: normal;
-            color: var(--custom-color-primary);
+            color: var(--oc-color-primary);
         }
 
         &.ion-activated {
-            background-color: var(--custom-color-secondary);
+            background-color: var(--oc-color-secondary);
         }
     }
 
@@ -232,7 +237,7 @@ ion-col {
 // 返回按钮图标
 ion-back-button {
     --padding-start: 0.25rem;
-    --color: var(--custom-color-medium);
+    --color: var(--oc-color-medium);
     font-size: 1.05rem;
 }
 
@@ -242,8 +247,8 @@ ion-list.list-ios {
 
 // 滑动列表里面的按钮
 ion-item-options {
-    border: none;
-    background: var(--custom-color-white);
+    border: 0;
+    background: var(--oc-color-white);
 
     &.item-options-start > ion-item-option:last-child {
         border-radius: 0 0.75rem 0.75rem 0;
@@ -254,7 +259,7 @@ ion-item-options {
     }
 
     > ion-item-option {
-        color: var(--custom-color-white);
+        color: var(--oc-color-white);
         min-width: 4.5rem;
         overflow: hidden;
     }
@@ -268,11 +273,11 @@ ion-badge {
 }
 
 ion-item {
-    --background: var(--custom-color-white);
+    --background: var(--oc-color-white);
 
     ion-thumbnail {
         --border-radius: 50%;
-        background: var(--custom-color-secondary);
+        background: var(--oc-color-secondary);
 
         @media (prefers-color-scheme: dark) {
             filter: brightness(0.75);
@@ -298,10 +303,10 @@ ion-toast {
     --end: 10px;
     --height: 3rem;
     --border-radius: 1.5rem;
-    --color: var(--custom-color-light);
-    --background: var(--custom-color-black);
+    --color: var(--oc-color-light);
+    --background: var(--oc-color-black);
 
     @media (prefers-color-scheme: dark) {
-        --background: var(--custom-color-dark);
+        --background: var(--oc-color-dark);
     }
 }

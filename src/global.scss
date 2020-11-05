@@ -36,55 +36,55 @@
   font-family: "Alibaba-Sans-Black" !important;
 }
 .color-primary {
-  color: var(--custom-color-primary) !important;
+  color: var(--oc-color-primary) !important;
 }
 .color-secondary {
-  color: var(--custom-color-secondary) !important;
+  color: var(--oc-color-secondary) !important;
 }
 .color-white {
-  color: var(--custom-color-white) !important;
+  color: var(--oc-color-white) !important;
 }
 .color-black {
-  color: var(--custom-color-black) !important;
+  color: var(--oc-color-black) !important;
 }
 .color-dark {
-  color: var(--custom-color-dark) !important;
+  color: var(--oc-color-dark) !important;
 }
 .color-danger {
-  color: var(--custom-color-danger) !important;
+  color: var(--oc-color-danger) !important;
 }
 .color-light {
-  color: var(--custom-color-light) !important;
+  color: var(--oc-color-light) !important;
 }
 .color-gray {
-  color: var(--custom-color-gray) !important;
+  color: var(--oc-color-gray) !important;
 }
 .color-medium {
-  color: var(--custom-color-medium) !important;
+  color: var(--oc-color-medium) !important;
 }
 .bg-primary {
-  background-color: var(--custom-color-primary) !important;
+  background-color: var(--oc-color-primary) !important;
 }
 .bg-secondary {
-  background-color: var(--custom-color-secondary) !important;
+  background-color: var(--oc-color-secondary) !important;
 }
 .bg-white {
-  background-color: var(--custom-color-white) !important;
+  background-color: var(--oc-color-white) !important;
 }
 .bg-black {
-  background-color: var(--custom-color-black) !important;
+  background-color: var(--oc-color-black) !important;
 }
 .bg-danger {
-  background-color: var(--custom-color-danger) !important;
+  background-color: var(--oc-color-danger) !important;
 }
 .bg-light {
-  background-color: var(--custom-color-light) !important;
+  background-color: var(--oc-color-light) !important;
 }
 .bg-gray {
-  background-color: var(--custom-color-gray) !important;
+  background-color: var(--oc-color-gray) !important;
 }
 .bg-medium {
-  background-color: var(--custom-color-medium) !important;
+  background-color: var(--oc-color-medium) !important;
 }
 .d-block {
   display: block !important;
@@ -129,7 +129,7 @@
   padding: 0 !important;
 }
 .outline-none {
-  outline: none !important;
+  outline: 0 !important;
 }
 .visibility-hidden {
   visibility: hidden;
@@ -147,11 +147,11 @@
 }
 
 * {
-  outline: none;
+  outline: 0;
 }
 
 body {
-  background: var(--custom-color-white);
+  background: var(--oc-color-white);
 }
 
 .flex-col-container {
@@ -169,8 +169,8 @@ body {
 input,
 textarea {
   &::selection {
-    color: var(--custom-color-white);
-    background: rgba(var(--custom-color-primary-rgb), 0.75);
+    color: var(--oc-color-white);
+    background: rgba(var(--oc-color-primary-rgb), 0.75);
   }
 }
 
@@ -186,31 +186,31 @@ textarea {
 
   &::after {
     content: "Chat";
-    color: var(--custom-color-primary);
+    color: var(--oc-color-primary);
   }
 }
 
 // 主要输入框
 .ipt-primary {
-  color: var(--custom-color-dark);
+  color: var(--oc-color-dark);
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
 
   &:focus {
-    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
   }
 
   &.ng-invalid:not(.ng-pristine),
   &.invalid {
-    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-danger-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-danger-rgb), 0.5);
   }
 }
 
 // 主要输入框的警告模式
 .ipt-primary ~ .feedback-control-invalid,
 form .feedback-form-invalid {
-  color: var(--custom-color-danger);
+  color: var(--oc-color-danger);
   opacity: 1;
   transition: all 0.125s ease-in-out;
 }
@@ -227,43 +227,43 @@ form.ng-pristine .feedback-form-invalid {
 // 主要按钮
 .btn-primary {
   color: #424242;
-  background-color: var(--custom-color-primary);
+  background-color: var(--oc-color-primary);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-primary-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
   }
 
   &[disabled] {
     color: rgba(#424242, 0.75);
-    background-color: rgba(var(--custom-color-primary-rgb), 0.5);
+    background-color: rgba(var(--oc-color-primary-rgb), 0.5);
     pointer-events: none;
   }
 }
 
 // 白色按钮
 .btn-light {
-  color: var(--custom-color-dark);
-  background-color: var(--custom-color-white);
+  color: var(--oc-color-dark);
+  background-color: var(--oc-color-white);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-white-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-white-rgb), 0.5);
   }
 }
 
 // 二级按钮
 .btn-secondary {
-  color: var(--custom-color-dark);
-  background-color: var(--custom-color-secondary);
+  color: var(--oc-color-dark);
+  background-color: var(--oc-color-secondary);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-secondary-rgb), 0.75);
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-secondary-rgb), 0.75);
   }
 }
 
 .btn-danger {
   position: relative;
-  color: var(--custom-color-danger);
-  background-color: var(--custom-color-white);
+  color: var(--oc-color-danger);
+  background-color: var(--oc-color-white);
 
   // &::after {
   //   content: "";
@@ -272,11 +272,11 @@ form.ng-pristine .feedback-form-invalid {
   //   left: 0;
   //   right: 0;
   //   bottom: 0;
-  //   background-color: rgba(var(--custom-color-danger-rgb), 0.3);
+  //   background-color: rgba(var(--oc-color-danger-rgb), 0.3);
   // }
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--custom-color-danger-rgb), 0.75);
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-danger-rgb), 0.75);
   }
 }
 

@@ -15,7 +15,7 @@ ion-item {
     width: 0;
     height: 0;
     border: 0.5rem solid;
-    border-color: transparent transparent rgba(var(--custom-color-primary-rgb), 0.5) transparent;
+    border-color: transparent transparent rgba(var(--oc-color-primary-rgb), 0.5) transparent;
     border-radius: 0.25rem;
     z-index: 2;
     transform: rotate(45deg);
@@ -28,13 +28,13 @@ ion-item {
   }
 
   h2 {
-    color: var(--custom-color-dark);
+    color: var(--oc-color-dark);
     font-size: 0.9rem;
   }
 
   p {
     font-size: 0.7rem;
-    color: var(--custom-color-muted);
+    color: var(--oc-color-muted);
   }
 }
 
@@ -47,15 +47,15 @@ ion-item-option {
 
   time {
     display: block;
-    color: var(--custom-color-muted);
+    color: var(--oc-color-muted);
     font-size: 0.65rem;
     margin-bottom: 0.25rem;
   }
 }
 
 // ion-searchbar {
-//   --color: var(--custom-color-dark);
-//   --background: var(--custom-color-secondary);
+//   --color: var(--oc-color-dark);
+//   --background: var(--oc-color-secondary);
 //   padding: 0.75rem 1rem 0.25rem;
 //   height: auto;
 //   contain: content;

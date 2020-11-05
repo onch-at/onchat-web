@@ -9,9 +9,9 @@ ion-header {
   background: transparent;
 
   ion-buttons > * {
-    --color: var(--custom-color-white);
+    --color: var(--oc-color-white);
     opacity: 0.95;
-    filter: drop-shadow(0 0 0.5rem var(--custom-color-black));
+    filter: drop-shadow(0 0 0.5rem var(--oc-color-black));
   }
 }
 
@@ -32,7 +32,7 @@ ion-header {
   position: absolute;
   top: 35.75vh;
   left: 0;
-  background: rgba(var(--custom-color-white-rgb), 0.75);
+  background: rgba(var(--oc-color-white-rgb), 0.75);
   backdrop-filter: saturate(200%) blur(5px);
   border-radius: 0 1.5rem 0 0;
   width: 100%;
@@ -41,7 +41,7 @@ ion-header {
   animation: slide-in-right 0.35s ease 0.025s forwards;
 
   @media (prefers-color-scheme: dark) {
-    background: rgba(var(--custom-color-white-rgb), 0.5);
+    background: rgba(var(--oc-color-white-rgb), 0.5);
   }
 
   .card-header {
@@ -55,7 +55,7 @@ ion-header {
     width: 6rem;
     height: 6rem;
     border-radius: 50%;
-    background: rgba(var(--custom-color-white-rgb), 0.5);
+    background: rgba(var(--oc-color-white-rgb), 0.5);
     padding: 0.25rem;
     flex-shrink: 0;
 
@@ -77,9 +77,9 @@ ion-header {
       padding-left: 0.75rem;
       height: 3rem;
       line-height: 3.5rem;
-      color: var(--custom-color-white);
+      color: var(--oc-color-white);
       font-weight: bolder;
-      text-shadow: 0 0 0.75rem var(--custom-color-black);
+      text-shadow: 0 0 0.75rem var(--oc-color-black);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -135,8 +135,8 @@ ion-header {
   .signature {
     padding: 0.5rem 1rem 0.75rem;
     font-size: 0.9rem;
-    background: rgba(var(--custom-color-primary-rgb), 0.25);
-    border-left: 0.25rem solid rgba(var(--custom-color-primary-rgb), 0.5);
+    background: rgba(var(--oc-color-primary-rgb), 0.25);
+    border-left: 0.25rem solid rgba(var(--oc-color-primary-rgb), 0.5);
     border-radius: 0.35rem 0.5rem 0.5rem 0.35rem;
 
     &::first-letter {
@@ -148,7 +148,7 @@ ion-header {
     padding: 0;
     margin: 0;
     list-style: none;
-    background: rgba(var(--custom-color-white-rgb), 0.4);
+    background: rgba(var(--oc-color-white-rgb), 0.4);
     border-radius: 1.25rem;
     overflow: hidden;
 

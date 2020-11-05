@@ -2,7 +2,7 @@
   padding: 0rem;
   margin: 0;
   list-style: none;
-  color: var(--custom-color-dark);
+  color: var(--oc-color-dark);
   contain: content;
 }
 
@@ -18,9 +18,9 @@
     text-align: left;
     font-size: 0.7rem;
     line-height: 0.95rem;
-    color: var(--custom-color-medium);
+    color: var(--oc-color-medium);
     padding: 0.25rem 0.75rem;
-    background: var(--custom-color-secondary);
+    background: var(--oc-color-secondary);
     border-radius: 0.75rem;
   }
 
@@ -36,7 +36,7 @@
   .avatar {
     width: 2.5rem;
     height: 2.5rem;
-    background: var(--custom-color-secondary);
+    background: var(--oc-color-secondary);
     border-radius: 2rem;
     overflow: hidden;
 
@@ -64,14 +64,14 @@
     touch-action: auto !important;
 
     @media (prefers-color-scheme: dark) {
-      color: var(--custom-color-white);
+      color: var(--oc-color-white);
     }
 
     &.ql-editor ::ng-deep {
       blockquote {
         display: inline-block;
         width: 100%;
-        border: none;
+        border: 0;
         background: rgba(#fff, 0.4);
         padding: 0.3rem 0.75rem;
       }
@@ -108,7 +108,7 @@
     }
 
     .msg-bubble {
-      background: var(--custom-color-gray);
+      background: var(--oc-color-gray);
     }
   }
 
@@ -130,7 +130,7 @@
       height: 1.5rem;
       width: 2rem;
       font-size: 999rem;
-      --color: var(--custom-color-muted);
+      --color: var(--oc-color-muted);
     }
 
     .username {
@@ -138,12 +138,12 @@
     }
 
     .msg-bubble {
-      background: var(--custom-color-primary);
+      background: var(--oc-color-primary);
       text-align: left;
     }
   }
 }
 
 .ql-container.ql-snow {
-  border: none;
+  border: 0;
 }

@@ -4,7 +4,7 @@
   left: 0;
   height: 100%;
   width: 3rem;
-  background: rgba(var(--custom-color-primary-rgb), 0.75);
+  background: rgba(var(--oc-color-primary-rgb), 0.75);
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
   overflow: hidden;
   z-index: 99;
@@ -15,8 +15,8 @@
     width: 2.3rem;
     height: 2.3rem;
     border-radius: 50%;
-    background: var(--custom-color-white);
-    border: 0.075rem solid var(--custom-color-white);
+    background: var(--oc-color-white);
+    border: 0.075rem solid var(--oc-color-white);
 
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.85);
@@ -30,10 +30,10 @@
   }
 
   ion-button {
-    --color: rgba(var(--custom-color-white-rgb), 0.55);
-    --color-hover: var(--custom-color-white);
-    --color-focused: var(--custom-color-white);
-    --color-activated: var(--custom-color-white);
+    --color: rgba(var(--oc-color-white-rgb), 0.55);
+    --color-hover: var(--oc-color-white);
+    --color-focused: var(--oc-color-white);
+    --color-activated: var(--oc-color-white);
     --padding-start: 0.6rem;
     --padding-end: 0.6rem;
     --padding-left: 0.6rem;
@@ -49,13 +49,13 @@
       position: absolute;
       height: 4.5rem;
       width: 4.5rem;
-      background: var(--custom-color-white);
+      background: var(--oc-color-white);
       border-radius: 50%;
       transform: scale(0);
     }
 
     &.active {
-      --color: var(--custom-color-white);
+      --color: var(--oc-color-white);
       animation: active 0.4s ease-out forwards;
     }
 
@@ -78,7 +78,7 @@ ion-header {
   height: 3rem;
   width: calc(100% - 3rem);
   overflow: hidden;
-  background: var(--custom-color-light);
+  background: var(--oc-color-light);
   border-radius: 0 0 1.5rem 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
 
@@ -87,7 +87,7 @@ ion-header {
     --background: transparent;
 
     ion-button {
-      --color: var(--custom-color-medium);
+      --color: var(--oc-color-medium);
 
       > ion-icon {
         font-size: 1.75rem;
@@ -114,7 +114,7 @@ ion-router-outlet {
 
 ::ng-deep {
   ion-popover {
-    --background: var(--custom-color-light) !important;
+    --background: var(--oc-color-light) !important;
   }
   .popover-content {
     --max-width: 8rem;

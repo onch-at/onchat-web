@@ -1,4 +1,4 @@
-<ion-content *ngIf="user">
+<ion-content *ngIf="user" appScrollbar>
   <div class="user-card">
     <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/avatar', user.id]">
     <div class="info">
