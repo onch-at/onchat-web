@@ -1,8 +1,4 @@
 ion-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
     height: 3rem;
     background: transparent;
 
@@ -10,7 +6,7 @@ ion-header {
     ion-title {
         --color: var(--oc-color-white);
         opacity: 0.95;
-        filter: drop-shadow(0 0 0.5rem var(--oc-color-black));
+        filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));
     }
 
     ion-title {
@@ -39,7 +35,7 @@ main {
     flex-direction: column;
     align-items: center;
     z-index: 1;
-    padding: 4rem 0 calc(env(safe-area-inset-bottom) + 1rem);
+    padding: 4rem 0 calc(var(--ion-safe-area-bottom, 0) + 1rem);
     background: linear-gradient(to bottom, transparent, rgba(var(--oc-color-white-rgb), 0.5));
     backdrop-filter: saturate(100%) blur(10px);
 }
@@ -56,7 +52,7 @@ h1 {
     color: var(--oc-color-white);
     font-weight: bolder;
     font-size: 1.5rem;
-    text-shadow: 0 0 0.75rem rgba(var(--oc-color-black-rgb), 0.5);
+    text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.5);
     margin: 1rem 0 1.25rem;
 }
 

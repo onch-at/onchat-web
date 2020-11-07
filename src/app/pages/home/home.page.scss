@@ -1,5 +1,4 @@
 .sidebar {
-  position: fixed;
   top: 0;
   left: 0;
   height: 100%;
@@ -72,7 +71,7 @@
 }
 
 ion-header {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   height: 3rem;
@@ -103,7 +102,7 @@ ion-header {
 }
 
 ion-router-outlet {
-  margin: 3rem 0 env(safe-area-inset-bottom) 3rem;
+  margin: 3rem 0 var(--ion-safe-area-bottom, 0) 3rem;
 
   /* 路由转场淡入 */
   &::ng-deep .ion-page > * {

@@ -83,7 +83,7 @@ ion-grid {
 }
 
 footer {
-  padding: 0.55rem 1rem calc(env(safe-area-inset-bottom) + 0.55rem);
+  padding: 0.55rem 1rem calc(var(--ion-safe-area-bottom, 0) + 0.55rem);
   font-size: 0.7rem;
   color: #e0e0e0;
 

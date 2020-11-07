@@ -43,9 +43,9 @@
 }
 
 .notification-title {
-    margin: -0.25rem 0 0.05rem;
+    margin: -0.25rem 0 0;
     color: var(--oc-color-dark);
-    line-height: 1.25rem;
+    line-height: 1.5;
     font-size: 0.9rem;
     font-weight: bold;
     text-overflow: ellipsis;
@@ -63,6 +63,6 @@
     margin: 0;
     color: var(--oc-color-muted);
     font-size: 0.8rem;
-    line-height: 1rem;
+    line-height: 1.25;
     overflow: hidden;
 }

@@ -1,6 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, Router } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 import { race } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { LocalStorageKey, MessageType, SessionStorageKey, SocketEvent } from './common/enum';
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private swUpdate: SwUpdate,
     private socketService: SocketService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
@@ -256,6 +258,14 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationCancel)
     ).subscribe(() => this.feedbackService.vibrate());
+
+    this.swUpdate.available.subscribe(() => this.swUpdate.activateUpdate().then(() => {
+      this.overlayService.presentAlert({
+        header: '发现新版本',
+        message: '是否立即重启以更新到新版本？',
+        confirmHandler: () => document.location.reload()
+      });
+    }));
   }
 
 }

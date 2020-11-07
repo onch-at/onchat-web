@@ -11,19 +11,10 @@ import { SysUtil } from '../utils/sys.util';
 })
 export class ScrollbarDirective {
 
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {
+  constructor(elementRef: ElementRef, renderer2: Renderer2) {
     const styleSheet = `
-      ::-webkit-scrollbar,::-webkit-scrollbar-track {
-        width: 7.5px;
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        border-radius: 5px;
-        background: rgba(var(--oc-color-dark-rgb),.125);
-        border: 0;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(var(--oc-color-dark-rgb),.25);
+      ::-webkit-scrollbar {
+        display:none;
       }
     `;
 

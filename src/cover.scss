@@ -60,6 +60,8 @@ ion-content {
     &::part(scroll) {
         scrollbar-width: thin;
         scrollbar-color: rgba(var(--oc-color-dark-rgb), 0.125) transparent;
+
+        will-change: scroll-position;
     }
 }
 

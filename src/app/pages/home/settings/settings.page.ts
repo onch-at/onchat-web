@@ -20,8 +20,8 @@ export class SettingsPage implements OnInit {
   showOverlayGlobalPanelCenter() {
     this.overlayService.presentNotification({
       iconUrl: 'https://q.qlogo.cn/headimg_dl?dst_uin=1838491745&spec=5',
-      title: 'Title',
-      description: 'description description description description description description'
+      title: 'Title标题',
+      description: 'description 描述 description description description description description'
     });
   }
 

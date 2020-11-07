@@ -1,5 +1,5 @@
 <ion-content appScrollbar [fullscreen]="true">
-  <ion-header class="d-flex align-items-center">
+  <ion-header class="d-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
@@ -80,6 +80,7 @@
       </ul>
     </div>
   </div>
+
   <aside class="bottom-bar">
     <button *ngIf="chatroomId" appActiveClass [appActiveClassDuration]="200" [routerLink]="['/chat', chatroomId]"
       class="ion-activatable ripple-parent btn-primary btn-block">

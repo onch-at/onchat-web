@@ -1,8 +1,4 @@
 ion-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
     height: 3rem;
     background: transparent;
 
@@ -85,7 +81,7 @@ image-cropper {
 .buttom-bar {
     position: fixed;
     left: 0;
-    bottom: calc(env(safe-area-inset-bottom) + 1.75rem);
+    bottom: calc(var(--ion-safe-area-bottom, 0) + 1.75rem);
     width: 100%;
     text-align: center;
     z-index: 1;

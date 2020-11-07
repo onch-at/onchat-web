@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <aside class="sidebar">
+  <aside class="sidebar" slot="fixed">
     <img *ngIf="onChatService.user" class="avatar" [src]="onChatService.user.avatarThumbnail"
       [routerLink]="['/user/card', onChatService.user.id]">
 
@@ -34,7 +34,7 @@
     </div>
   </aside>
 
-  <ion-header class="d-flex align-items-center">
+  <ion-header class="d-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <span class="brand"></span>
 

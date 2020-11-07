@@ -1,5 +1,5 @@
 <ion-content #ionContent appScrollbar [fullscreen]="true" [scrollEvents]="hasUnread" (ionScrollEnd)="onIonScrollEnd()">
-  <ion-header class="d-flex align-items-center">
+  <ion-header class="d-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button [text]="(onChatService.unreadMsgNum == 0 ? '' : onChatService.unreadMsgNum) | numLimit"
@@ -28,7 +28,7 @@
     <app-msg-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-msg-list>
   </main>
 
-  <div #bottomBar class="bottom-bar">
+  <div #bottomBar class="bottom-bar" slot="fixed">
     <button appActiveClass [appActiveClassDuration]="200" class="tips-btn btn-primary" [ngClass]="{'show': hasUnread}"
       (tap)="scrollToBottom()">
       收到新消息
