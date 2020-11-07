@@ -148,6 +148,8 @@
 
 * {
   outline: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--oc-color-dark-rgb), 0.125) transparent;
 }
 
 body {

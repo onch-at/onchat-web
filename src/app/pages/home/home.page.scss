@@ -4,7 +4,7 @@
   height: 100%;
   width: 3rem;
   background: rgba(var(--oc-color-primary-rgb), 0.75);
-  box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
   overflow: hidden;
   z-index: 99;
 
@@ -79,7 +79,7 @@ ion-header {
   overflow: hidden;
   background: var(--oc-color-light);
   border-radius: 0 0 1.5rem 0;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(#000000, 0.125);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
 
   ion-toolbar {
     --border-width: 0;

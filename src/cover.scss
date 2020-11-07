@@ -84,7 +84,7 @@ ion-loading.ion-loading {
         align-items: center;
         padding: 1rem;
         border-radius: 1.5rem;
-        box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
+        box-shadow: 0 0 0.5rem 0.05rem rgba(#000, 0.125);
         backdrop-filter: saturate(125%) blur(5px);
     }
 
@@ -140,84 +140,86 @@ ion-alert {
         backdrop-filter: saturate(100%) blur(2.5px);
     }
 
-    .alert-wrapper.sc-ion-alert-ios {
-        min-width: 16rem;
-        max-width: 85vw;
-        background: rgba(var(--oc-color-white-rgb), 0.9);
-        border-radius: 1rem;
-        box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.125);
-    }
-
-    .alert-head.sc-ion-alert-ios {
-        padding-inline-start: 1rem;
-        padding-inline-end: 1rem;
-        padding-top: 0.75rem;
-        padding-bottom: 0.5rem;
-    }
-
-    .alert-title.sc-ion-alert-ios {
-        color: var(--oc-color-dark);
-        font-weight: bold;
-        font-size: 1rem;
-        margin-top: 0.5rem;
-    }
-
-    .alert-message.sc-ion-alert-ios {
-        color: var(--oc-color-dark);
-        font-size: 0.85rem;
-        padding-inline-start: 1rem;
-        padding-inline-end: 1rem;
-        padding-bottom: 1.325rem;
-
-        &:empty {
-            display: none;
-        }
-    }
-
-    .alert-input-group.sc-ion-alert-ios {
-        color: var(--oc-color-dark);
-        font-size: 0.85rem;
-        padding-inline-start: 1rem;
-        padding-inline-end: 1rem;
-        padding-bottom: 1rem;
-
-        .alert-input.sc-ion-alert-ios {
-            margin-top: 0.5rem;
-            border-radius: 0.75rem;
-            width: 16rem;
+    .sc-ion-alert-ios {
+        &.alert-wrapper {
+            min-width: 16rem;
+            max-width: 85vw;
+            background: rgba(var(--oc-color-light-rgb), 0.9);
+            border-radius: 1rem;
+            box-shadow: 0 0 0.5rem 0.05rem rgba(#000, 0.125);
         }
 
-        input {
-            padding-top: 0.5rem;
+        &.alert-head {
+            padding-inline-start: 1rem;
+            padding-inline-end: 1rem;
+            padding-top: 0.75rem;
             padding-bottom: 0.5rem;
         }
 
-        textarea {
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
+        &.alert-title {
+            color: var(--oc-color-dark);
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 0.5rem;
         }
 
-        input,
-        textarea {
-            padding-inline-start: 0.5rem;
-            padding-inline-end: 0.5rem;
-            background: var(--oc-color-white);
-            border: 0.05rem solid var(--oc-color-gray);
-        }
-    }
+        &.alert-message {
+            color: var(--oc-color-dark);
+            font-size: 0.85rem;
+            padding-inline-start: 1rem;
+            padding-inline-end: 1rem;
+            padding-bottom: 1.325rem;
 
-    .alert-button.sc-ion-alert-ios {
-        height: 2.5rem;
-        border-width: 0.25px;
-        color: var(--oc-color-dark);
-
-        &:last-child {
-            font-weight: normal;
-            color: var(--oc-color-primary);
+            &:empty {
+                display: none;
+            }
         }
 
-        &.ion-activated {
-            background-color: var(--oc-color-secondary);
+        &.alert-input-group {
+            color: var(--oc-color-dark);
+            font-size: 0.85rem;
+            padding-inline-start: 1rem;
+            padding-inline-end: 1rem;
+            padding-bottom: 1rem;
+
+            .alert-input {
+                margin-top: 0.5rem;
+                border-radius: 0.75rem;
+                width: 16rem;
+            }
+
+            input {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+
+            textarea {
+                padding-top: 0.25rem;
+                padding-bottom: 0.25rem;
+            }
+
+            input,
+            textarea {
+                padding-inline-start: 0.5rem;
+                padding-inline-end: 0.5rem;
+                background: var(--oc-color-white);
+                border: 0;
+            }
+        }
+
+        &.alert-button {
+            height: 2.5rem;
+            border-width: 0.25px;
+            color: var(--oc-color-dark);
+
+            &:last-child {
+                font-weight: normal;
+                color: var(--oc-color-primary);
+            }
+
+            &.ion-activated {
+                background-color: var(--oc-color-gray);
+            }
         }
     }
 

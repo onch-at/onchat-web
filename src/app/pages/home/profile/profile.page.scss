@@ -17,7 +17,7 @@
   height: 5rem;
   background: var(--oc-color-secondary);
   border-radius: 50%;
-  box-shadow: 0 0 0.5rem 0.05rem rgba(#000000, 0.1);
+  box-shadow: 0 0 0.5rem 0.05rem rgba(#000, 0.1);
 
   @media (prefers-color-scheme: dark) {
     filter: brightness(0.75);
