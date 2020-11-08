@@ -30,11 +30,13 @@ ion-item {
   h2 {
     color: var(--oc-color-dark);
     font-size: 0.9rem;
+    margin: 0 0 0.125rem;
   }
 
   p {
     font-size: 0.7rem;
     color: var(--oc-color-muted);
+    margin: 0;
   }
 }
 
