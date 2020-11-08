@@ -75,7 +75,8 @@ ion-header {
       line-height: 3.5rem;
       color: var(--oc-color-white);
       font-weight: bold;
-      text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.5);
+      font-size: 1.25rem;
+      text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

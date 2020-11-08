@@ -1,56 +1,21 @@
 <ion-content *ngIf="user" appScrollbar>
-  <div class="user-card">
-    <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/avatar', user.id]">
-    <div class="info">
-      <h5 class="m-0 font-weight-bold">{{ user.username }}</h5>
-      <div>UserID：{{ user.id }}</div>
-      <div>昵称：{{ user.nickname }}</div>
+  <div class="profile-card ion-activatable ripple-parent">
+    <img class="profile-card-bg-img" [src]="'https://blog.hypergo.net/api/bing/image.php'">
+
+    <div class="profile-card-content">
+      <div class="d-flex">
+        <img class="profile-card-avatar" [src]="user.avatarThumbnail">
+
+        <div class="profile-card-info">
+          <h1 class="m-0 font-weight-bold">{{ user.username }}</h1>
+          <div>USER-ID：{{ user.id }}</div>
+          <div>昵称：{{ user.nickname }}</div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <article class="signature ion-activatable ripple-parent">
-    {{ user.signature || '这个人很懒，什么都没写~' }}
     <ion-ripple-effect></ion-ripple-effect>
-  </article>
-
-  <ul class="details-list">
-    <li class="details-item">
-      <label>我的心情</label>
-      <span class="d-flex align-items-center justify-content-end">
-        <ion-icon style="color: #ffc400; font-size: 1.25rem; margin-right: .25rem;" src="assets/svg/mood/grin-alt.svg">
-        </ion-icon>
-        <small>喜</small>
-      </span>
-    </li>
-
-    <li class="details-item">
-      <label>生 日</label>
-      <span>2000-11-19</span>
-    </li>
-
-    <li class="details-item">
-      <label>性 别</label>
-      <span>男</span>
-    </li>
-
-    <li class="details-item">
-      <label>年 龄</label>
-      <span>19岁</span>
-    </li>
-
-    <li class="details-item">
-      <label>十二星座</label>
-      <span>
-        <i class="icon-constellation-scorpio" style="color: #616161; font-size: 1.25rem;"></i>
-        天蝎座
-      </span>
-    </li>
-
-    <li class="details-item">
-      <label>电子邮箱</label>
-      <span>{{ user.email || '未绑定' }}</span>
-    </li>
-  </ul>
+  </div>
 
   <button appActiveClass [appActiveClassDuration]="200" (tap)="logout()"
     class="ion-activatable ripple-parent btn-secondary btn-block logout-btn">

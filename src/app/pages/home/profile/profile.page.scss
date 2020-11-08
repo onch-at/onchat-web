@@ -1,85 +1,67 @@
 @import "../../../../assets/css/constellation.css";
 
-* {
-  color: var(--oc-color-dark);
-}
-
-.user-card {
-  height: 7rem;
-  padding: 1rem;
-  width: 100%;
-  border-radius: 1.25rem;
-}
-
-.avatar {
-  float: left;
-  width: 5rem;
-  height: 5rem;
-  background: var(--oc-color-secondary);
-  border-radius: 50%;
-  box-shadow: 0 0 0.5rem 0.05rem rgba(#000, 0.1);
-
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.75);
-  }
-}
-
-.info {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0.25rem 0 0.25rem 1rem;
-  height: 5rem;
-
-  div {
-    width: 100%;
-    font-size: 0.9rem;
-  }
-
-  h5 {
-    font-size: 1.125rem;
-  }
-
-  h5,
-  div {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-.signature {
-  font-size: 0.9rem;
-  margin: 0 1rem 0.5rem;
-  padding: 0.5rem 1rem 0.75rem;
-  background: rgba(var(--oc-color-primary-rgb), 0.125);
-  border-left: 0.25rem solid rgba(var(--oc-color-primary-rgb), 0.5);
-  border-radius: 0.35rem 0.5rem 0.5rem 0.35rem;
-
-  &::first-letter {
-    font-size: 1.25rem;
-  }
-}
-
-.details-list {
-  padding: 0;
-  margin: 0 1rem 1rem;
-  list-style: none;
+.profile-card {
+  position: relative;
+  height: 6.5rem;
+  margin-bottom: 1rem;
+  color: var(--oc-color-white);
   overflow: hidden;
+  border-radius: 0 0 1.5rem 0;
 
-  .details-item {
+  .profile-card-bg-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+    @media (prefers-color-scheme: dark) {
+      filter: brightness(0.75);
+    }
+  }
+
+  .profile-card-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem;
+    backdrop-filter: saturate(150%) blur(5px);
+  }
+
+  .profile-card-avatar {
+    height: 5rem;
+    width: 5rem;
+    padding: 0.15rem;
+    border-radius: 50%;
+    background: rgba(var(--oc-color-white-rgb), 0.25);
+
+    @media (prefers-color-scheme: dark) {
+      filter: brightness(0.75);
+    }
+  }
+
+  .profile-card-info {
     display: flex;
+    justify-content: center;
     justify-content: space-between;
-    padding: 0.75rem 0.25rem;
-    font-size: 0.95rem;
+    flex-direction: column;
+    padding: 0.5rem 0.75rem;
+    overflow: hidden;
+    white-space: nowrap;
 
-    > span {
-      width: 50vw;
-      font-size: 0.85rem;
-      text-align: right;
+    > h1,
+    > div {
       text-overflow: ellipsis;
-      white-space: nowrap;
       overflow: hidden;
+      text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75);
+    }
+
+    > h1 {
+      font-size: 1.125rem;
+    }
+
+    > div {
+      font-size: 0.85rem;
     }
   }
 }
