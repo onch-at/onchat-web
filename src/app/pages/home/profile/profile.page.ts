@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/onchat.model';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -11,7 +10,6 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./profile.page.scss']
 })
 export class ProfilePage implements OnInit {
-  user: User = this.onChatService.user;
 
   constructor(
     public onChatService: OnChatService,

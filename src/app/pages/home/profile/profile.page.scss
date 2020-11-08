@@ -46,18 +46,16 @@
     justify-content: space-between;
     flex-direction: column;
     padding: 0.5rem 0.75rem;
-    overflow: hidden;
     white-space: nowrap;
 
     > h1,
     > div {
-      text-overflow: ellipsis;
-      overflow: hidden;
       text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75);
     }
 
     > h1 {
       font-size: 1.125rem;
+      margin: 0 0 0.25rem;
     }
 
     > div {
