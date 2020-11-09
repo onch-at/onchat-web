@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionStorageKey } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
@@ -18,7 +19,8 @@ export class CardPage implements OnInit {
   chatroomId: number;
 
   constructor(
-    public onChatService: OnChatService,
+    private onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
     public overlayService: OverlayService,
     private sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,

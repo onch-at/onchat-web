@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SessionStorageKey, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -22,7 +21,6 @@ export class HandlePage implements OnInit {
   subject: Subject<unknown> = new Subject();
 
   constructor(
-    public onChatService: OnChatService,
     private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
     private overlayService: OverlayService,

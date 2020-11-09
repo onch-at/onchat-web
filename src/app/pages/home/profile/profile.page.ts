@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -12,7 +13,8 @@ import { SocketService } from 'src/app/services/socket.service';
 export class ProfilePage implements OnInit {
 
   constructor(
-    public onChatService: OnChatService,
+    private onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
     private router: Router,
     private overlayService: OverlayService,
     private socketService: SocketService,
@@ -25,10 +27,10 @@ export class ProfilePage implements OnInit {
       header: '退出登录',
       message: ' 你确定要退出登录吗？',
       confirmHandler: () => this.onChatService.logout().subscribe(() => {
-        this.onChatService.user = null;
-        this.onChatService.chatList = [];
-        this.onChatService.receiveFriendRequests = [];
-        this.onChatService.sendFriendRequests = [];
+        this.globalDataService.user = null;
+        this.globalDataService.chatList = [];
+        this.globalDataService.receiveFriendRequests = [];
+        this.globalDataService.sendFriendRequests = [];
         this.socketService.unload();
 
         this.router.navigate(['/user/login']);

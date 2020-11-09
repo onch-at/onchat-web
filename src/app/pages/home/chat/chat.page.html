@@ -8,7 +8,7 @@
 	<!-- <ion-searchbar animated placeholder="搜索"></ion-searchbar> -->
 
 	<ion-list class="chat-list">
-		<ion-item-sliding mode="md" *ngFor="let item of onChatService.chatList; let i = index; trackBy: trackByFn">
+		<ion-item-sliding mode="md" *ngFor="let item of globalDataService.chatList; let i = index; trackBy: trackByFn">
 			<ion-item-options side="start">
 				<ion-item-option (tap)="doSticky(item, i)" class="bg-gray color-medium">
 					{{ item.sticky ? '取消置顶' : '置顶' }}
@@ -16,8 +16,7 @@
 			</ion-item-options>
 
 			<ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
-				[routerLink]="['/chat', item.chatroomId]"
-				(tap)="item.unread = 0; onChatService.chatList = onChatService.chatList;">
+				[routerLink]="['/chat', item.chatroomId]" (tap)="onTapIonItem(item)">
 				<ion-thumbnail slot="start">
 					<ion-img *ngIf="i > 9"
 						[src]="item.avatarThumbnail || 'https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg'">
@@ -32,11 +31,11 @@
 
 					<ng-container *ngIf="item.latestMsg" [ngSwitch]="item.latestMsg.type">
 						<p *ngSwitchCase="msgType.Text"
-							[innerHTML]="(item.latestMsg.userId == onChatService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.content">
+							[innerHTML]="(item.latestMsg.userId == globalDataService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.content">
 						</p>
 
 						<p *ngSwitchCase="msgType.RichText"
-							[innerHTML]="(item.latestMsg.userId == onChatService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.text">
+							[innerHTML]="(item.latestMsg.userId == globalDataService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.text">
 						</p>
 
 						<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.latestMsg.data.content"></p>

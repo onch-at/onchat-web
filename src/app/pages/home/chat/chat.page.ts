@@ -1,11 +1,10 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { MessageType } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
-import { SocketService } from 'src/app/services/socket.service';
 import { DateUtil } from 'src/app/utils/date.util';
 
 @Component({
@@ -21,9 +20,8 @@ export class ChatPage implements OnInit {
   @ViewChildren(IonItemSliding) ionItemSlidings: QueryList<IonItemSliding>;
 
   constructor(
-    public onChatService: OnChatService,
-    private route: ActivatedRoute,
-    private socketService: SocketService,
+    private onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
   ) { }
 
   ngOnInit() { }
@@ -46,7 +44,7 @@ export class ChatPage implements OnInit {
 
   refresh(complete?: CallableFunction) {
     this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
-      this.onChatService.chatList = result.data;
+      this.globalDataService.chatList = result.data;
       complete && complete();
     });
   }
@@ -72,7 +70,7 @@ export class ChatPage implements OnInit {
   removeChatItem(index: number) {
     // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
     setTimeout(() => {
-      this.onChatService.chatList.splice(index, 1);
+      this.globalDataService.chatList.splice(index, 1);
     }, 50);
   }
 
@@ -86,7 +84,7 @@ export class ChatPage implements OnInit {
       return this.onChatService.unstickyChatItem(item.id).subscribe((result: Result) => {
         if (result.code == 0) {
           item.sticky = false;
-          this.onChatService.chatList = this.onChatService.chatList;
+          this.globalDataService.chatList = this.globalDataService.chatList;
 
           this.closeIonItemSliding(i);
         }
@@ -96,7 +94,7 @@ export class ChatPage implements OnInit {
     this.onChatService.stickyChatItem(item.id).subscribe((result: Result) => {
       if (result.code == 0) {
         item.sticky = true;
-        this.onChatService.chatList = this.onChatService.chatList;
+        this.globalDataService.chatList = this.globalDataService.chatList;
 
         this.closeIonItemSliding(i);
       }
@@ -113,7 +111,7 @@ export class ChatPage implements OnInit {
       return this.onChatService.unread(item.chatroomId).subscribe((result: Result) => {
         if (result.code == 0) {
           item.unread = 1;
-          this.onChatService.chatList = this.onChatService.chatList;
+          this.globalDataService.chatList = this.globalDataService.chatList;
 
           this.closeIonItemSliding(i);
         }
@@ -123,11 +121,16 @@ export class ChatPage implements OnInit {
     this.onChatService.readed(item.chatroomId).subscribe((result: Result) => {
       if (result.code == 0) {
         item.unread = 0;
-        this.onChatService.chatList = this.onChatService.chatList;
+        this.globalDataService.chatList = this.globalDataService.chatList;
 
         this.closeIonItemSliding(i);
       }
     });
+  }
+
+  onTapIonItem(chatItem: ChatItem) {
+    chatItem.unread = 0;
+    this.globalDataService.chatList = this.globalDataService.chatList;
   }
 
   /**

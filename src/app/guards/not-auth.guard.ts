@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStat
 import { Observable } from 'rxjs';
 import { SessionStorageKey } from '../common/enum';
 import { Result, User } from '../models/onchat.model';
+import { GlobalDataService } from '../services/global-data.service';
 import { OnChatService } from '../services/onchat.service';
 import { SessionStorageService } from '../services/session-storage.service';
 
@@ -12,18 +13,19 @@ import { SessionStorageService } from '../services/session-storage.service';
 export class NotAuthGuard implements CanActivate, CanLoad {
   constructor(
     private onChatService: OnChatService,
+    private globalDataService: GlobalDataService,
     private sessionStorageService: SessionStorageService,
     private router: Router
   ) { }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
-    if (this.onChatService.user !== null) { return false; }
+    if (this.globalDataService.user !== null) { return false; }
 
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
           const user = result.data as User;
-          this.onChatService.user = user;
+          this.globalDataService.user = user;
           this.sessionStorageService.setItemToMap(
             SessionStorageKey.UserMap,
             user.id,
@@ -45,14 +47,14 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.onChatService.user !== null) { return false; }
+    if (this.globalDataService.user !== null) { return false; }
 
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
           const user = result.data as User;
-          this.onChatService.user = user;
-          this.onChatService.user = user;
+          this.globalDataService.user = user;
+          this.globalDataService.user = user;
           this.sessionStorageService.setItemToMap(
             SessionStorageKey.UserMap,
             user.id,

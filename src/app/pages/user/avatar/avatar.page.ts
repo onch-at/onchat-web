@@ -6,7 +6,7 @@ import { SessionStorageKey } from 'src/app/common/enum';
 import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { OnChatService } from 'src/app/services/onchat.service';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SysUtil } from 'src/app/utils/sys.util';
@@ -30,7 +30,7 @@ export class AvatarPage implements OnInit {
   };
 
   constructor(
-    public onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
     private overlayService: OverlayService,
     private feedbackService: FeedbackService,
     private sessionStorageService: SessionStorageService,
@@ -63,7 +63,7 @@ export class AvatarPage implements OnInit {
   }
 
   presentActionSheet() {
-    if (!this.onChatService.user || this.user.id != this.onChatService.user.id) {
+    if (!this.globalDataService.user || this.user.id != this.globalDataService.user.id) {
       return;
     }
 

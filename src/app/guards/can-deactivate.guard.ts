@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { OnChatService } from '../services/onchat.service';
+import { GlobalDataService } from '../services/global-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanDeactivateGuard implements CanDeactivate<boolean> {
-  constructor(private onChatService: OnChatService) { }
+  constructor(
+    private globalDataService: GlobalDataService,
+  ) { }
 
   canDeactivate(
     component: boolean,
@@ -15,7 +17,7 @@ export class CanDeactivateGuard implements CanDeactivate<boolean> {
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot
   ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return this.onChatService.canDeactivate;
+    return this.globalDataService.canDeactivate;
   }
 
 }

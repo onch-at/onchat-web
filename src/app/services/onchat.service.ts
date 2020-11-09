@@ -2,11 +2,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
-import { LocalStorageKey } from '../common/enum';
 import { Login, Register } from '../models/form.model';
 import { ChatItem, Chatroom, FriendRequest, Message, Result, User } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
-import { LocalStorageService } from './local-storage.service';
+import { GlobalDataService } from './global-data.service';
 
 const HTTP_OPTIONS_JSON = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' }),
@@ -27,64 +26,31 @@ const HTTP_OPTIONS_DEFAULT = {
   providedIn: 'root'
 })
 export class OnChatService {
-  /** 当前用户 */
-  user: User = null;
-  /** 记录当前所在的聊天室ID */
-  chatroomId: number = null;
-  /** 未读消息总数 */
-  unreadMsgNum: number = 0;
-  /** 是否可以销毁（返回上一页） */
-  canDeactivate: boolean = true;
-
-  /** 我的收到好友申请列表 */
-  receiveFriendRequests: FriendRequest[] = [];
-  /** 我的发起的好友申请列表 */
-  sendFriendRequests: FriendRequest[] = [];
-
-  /** 缓存聊天列表 */
-  private _chatList: ChatItem[] = [];
-  set chatList(chatList: ChatItem[]) {
-    this._chatList = sortChatList(chatList);
-    this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
-
-    this.unreadMsgNum > 0 && (this.unreadMsgNum = 0);
-
-    for (const chatItem of chatList) {
-      // 计算未读消息总数
-      // 如果有未读消息，且总未读数大于100，则停止遍历，提升性能
-      if (chatItem.unread > 0 && (this.unreadMsgNum += chatItem.unread) >= 100) {
-        break;
-      }
-    }
-  }
-  get chatList(): ChatItem[] {
-    return this._chatList;
-  }
 
   constructor(
     private http: HttpClient,
-    private localStorageService: LocalStorageService,
+    private globalDataService: GlobalDataService,
     private feedbackService: FeedbackService,
   ) { }
 
   init(): void {
     /** 获取聊天列表 */
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
-      this.chatList = result.data;
+      this.globalDataService.chatList = result.data;
       // 看看有没有未读消息，有就放提示音
-      this.chatList.some((v: ChatItem) => v.unread > 0) && this.feedbackService.booAudio.play();
+      this.globalDataService.chatList.some((v: ChatItem) => v.unread > 0) && this.feedbackService.booAudio.play();
     });
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data.length > 0) {
-        this.receiveFriendRequests = result.data;
+        this.globalDataService.receiveFriendRequests = result.data;
         this.feedbackService.dingDengAudio.play();
       }
     });
 
     this.getSendFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data.length > 0) {
-        this.sendFriendRequests = result.data;
+        this.globalDataService.sendFriendRequests = result.data;
       }
     });
   }
@@ -272,15 +238,4 @@ export class OnChatService {
   isFriend(targetId: number): Observable<Result<number>> {
     return this.http.get<Result<number>>(env.friendUrl + targetId + '/isfriend');
   }
-}
-
-/**
- * 按照时间/置顶顺序排序聊天列表
- * @param chatList
- */
-export function sortChatList(chatList: ChatItem[]): ChatItem[] {
-  chatList.sort((a: ChatItem, b: ChatItem) => b.updateTime - a.updateTime);
-  chatList.sort((a: ChatItem, b: ChatItem) => +b.sticky - +a.sticky);
-
-  return chatList;
 }

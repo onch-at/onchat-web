@@ -13,14 +13,14 @@
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="{
-        'msg-item-right': onChatService.user && onChatService.user.id == item.userId,
-        'msg-item-left': onChatService.user && onChatService.user.id != item.userId
+        'msg-item-right': globalDataService.user && globalDataService.user.id == item.userId,
+        'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
       }">
 
         <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user/card', item.userId]"></ion-img>
 
         <div>
-          <div class="username" *ngIf="item.userId != onChatService.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
@@ -30,19 +30,19 @@
             [innerHTML]="item.data.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
           </span>
 
-          <ion-spinner *ngIf="onChatService.user && onChatService.user.id == item.userId && item.loading"
+          <ion-spinner *ngIf="globalDataService.user && globalDataService.user.id == item.userId && item.loading"
             class="send-spinner" name="dots" [duration]="1000"></ion-spinner>
         </div>
       </li>
 
       <li *ngSwitchCase="msgType.RichText" class="msg-item" [ngClass]="{
-        'msg-item-right': onChatService.user && onChatService.user.id == item.userId,
-        'msg-item-left': onChatService.user && onChatService.user.id != item.userId
+        'msg-item-right': globalDataService.user && globalDataService.user.id == item.userId,
+        'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
       }">
         <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user/card', item.userId]"></ion-img>
 
         <div class="ql-container ql-snow">
-          <div class="username" *ngIf="item.userId != onChatService.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 

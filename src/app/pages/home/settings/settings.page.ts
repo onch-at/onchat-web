@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 
 @Component({
@@ -11,7 +10,6 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private overlayService: OverlayService,
-    private onChatService: OnChatService,
   ) { }
 
   ngOnInit() {

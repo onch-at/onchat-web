@@ -89,7 +89,7 @@
     </button>
 
     <!-- TODO 这边以后可以和自己聊天 -->
-    <button *ngIf="!chatroomId && onChatService.user && onChatService.user.id != user.id" appActiveClass
+    <button *ngIf="!chatroomId && globalDataService.user && globalDataService.user.id != user.id" appActiveClass
       [appActiveClassDuration]="200" [routerLink]="['/friend/request', user.id]"
       class="ion-activatable ripple-parent btn-primary btn-block">
       加Ta好友

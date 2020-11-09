@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
-import { OnChatService } from 'src/app/services/onchat.service';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { SysUtil } from 'src/app/utils/sys.util';
@@ -22,7 +22,7 @@ export class BubbleToolbarComponent implements OnInit {
   msgType: typeof MessageType = MessageType;
 
   constructor(
-    public onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
     private overlayService: OverlayService,
     private socketService: SocketService,
   ) { }
@@ -41,7 +41,7 @@ export class BubbleToolbarComponent implements OnInit {
    * 撤回消息
    */
   revokeMsg() {
-    this.socketService.revokeMsg(this.onChatService.chatroomId, this.msgItem.id);
+    this.socketService.revokeMsg(this.globalDataService.chatroomId, this.msgItem.id);
     this.dismiss();
   }
 

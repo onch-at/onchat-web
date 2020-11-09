@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SessionStorageKey, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
-import { OnChatService } from 'src/app/services/onchat.service';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -26,7 +26,7 @@ export class RequestPage implements OnInit {
   subject: Subject<unknown> = new Subject();
 
   constructor(
-    public onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
     private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
     private overlayService: OverlayService,
@@ -56,17 +56,17 @@ export class RequestPage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.FriendRequest).pipe(takeUntil(this.subject)).subscribe((o: Result<FriendRequest | FriendRequest[]>) => {
-      const friendRequest = o.data;
-      if (Array.isArray(friendRequest) || friendRequest.selfId != this.onChatService.user.id || friendRequest.targetId != this.user.id) {
+    this.socketService.on(SocketEvent.FriendRequest).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest | FriendRequest[]>) => {
+      const friendRequest = result.data;
+      if (Array.isArray(friendRequest) || friendRequest.selfId != this.globalDataService.user.id || friendRequest.targetId != this.user.id) {
         return;
       }
 
-      o.code == 0 && (o.msg = '好友申请已发出，等待对方验证');
+      result.code == 0 && (result.msg = '好友申请已发出，等待对方验证');
 
-      this.overlayService.presentToast(o.msg);
+      this.overlayService.presentToast(result.msg);
 
-      o.code == 0 && setTimeout(() => {
+      result.code == 0 && setTimeout(() => {
         this.router.navigate(['/']);
       }, 250);
     });

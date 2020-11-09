@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActionSheetController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { AlertOptions, NotificationOptions } from '../common/interface';
 import { NotificationController } from '../providers/notification.controller';
-import { OnChatService } from './onchat.service';
+import { GlobalDataService } from './global-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class OverlayService {
   bubbleToolbarPopover: HTMLIonPopoverElement;
 
   constructor(
-    public onChatService: OnChatService,
+    private globalDataService: GlobalDataService,
     private toastController: ToastController,
     private alertController: AlertController,
     private actionSheetController: ActionSheetController,
@@ -21,7 +21,7 @@ export class OverlayService {
   ) { }
 
   private setDeactivate(deactivate: boolean) {
-    this.onChatService.canDeactivate = deactivate;
+    this.globalDataService.canDeactivate = deactivate;
   }
 
   /**

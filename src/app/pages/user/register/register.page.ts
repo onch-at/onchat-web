@@ -5,6 +5,7 @@ import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH } from 's
 import { SessionStorageKey } from 'src/app/common/enum';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
@@ -72,6 +73,7 @@ export class RegisterPage implements OnInit {
   };
 
   constructor(
+    public globalDataService: GlobalDataService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
@@ -100,7 +102,7 @@ export class RegisterPage implements OnInit {
 
       const toast = this.overlayService.presentToast(result.msg, result.code === 0 ? 1000 : 2000);
       if (result.code === 0) {
-        this.onChatService.user = result.data;
+        this.globalDataService.user = result.data;
         this.sessionStorageService.setItemToMap(
           SessionStorageKey.UserMap,
           result.data.id,

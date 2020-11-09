@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { SessionStorageKey } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
@@ -33,7 +34,8 @@ export class AvatarCropperComponent implements OnInit {
   subject: Subject<unknown> = new Subject();
 
   constructor(
-    public onChatService: OnChatService,
+    private onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
     private modalController: ModalController,
     private sessionStorageService: SessionStorageService,
     private overlayService: OverlayService,
@@ -61,7 +63,7 @@ export class AvatarCropperComponent implements OnInit {
    */
   dismiss(data: SafeUrl = null) {
     this.modalController.dismiss(data);
-    this.onChatService.canDeactivate = true;
+    this.globalDataService.canDeactivate = true;
   }
 
   /**
@@ -200,18 +202,18 @@ export class AvatarCropperComponent implements OnInit {
       }
     }
 
-    this.onChatService.canDeactivate = false;
+    this.globalDataService.canDeactivate = false;
     this.ionLoading = this.overlayService.presentLoading('正在上传…');
 
     this.onChatService.uploadUserAvatar(imageBlob).subscribe(async (result: Result<{ avatar: string, avatarThumbnail: string }>) => {
       if (result.code === 0) {
-        this.onChatService.user.avatar = result.data.avatar;
-        this.onChatService.user.avatarThumbnail = result.data.avatarThumbnail;
+        this.globalDataService.user.avatar = result.data.avatar;
+        this.globalDataService.user.avatarThumbnail = result.data.avatarThumbnail;
 
         this.sessionStorageService.setItemToMap(
           SessionStorageKey.UserMap,
-          this.onChatService.user.id,
-          this.onChatService.user
+          this.globalDataService.user.id,
+          this.globalDataService.user
         );
 
         this.dismiss(imageSrc);
@@ -221,7 +223,7 @@ export class AvatarCropperComponent implements OnInit {
       }
 
       (await this.ionLoading).dismiss();
-      this.onChatService.canDeactivate = true;
+      this.globalDataService.canDeactivate = true;
     });
   }
 

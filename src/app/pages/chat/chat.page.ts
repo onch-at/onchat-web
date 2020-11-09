@@ -10,6 +10,7 @@ import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
 import { TextMessage } from 'src/app/models/form.model';
 import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -61,7 +62,8 @@ export class ChatPage implements OnInit {
   unlistenFns: Function[] = [];
 
   constructor(
-    public onChatService: OnChatService,
+    private onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
     private platform: Platform,
     private socketService: SocketService,
     private route: ActivatedRoute,
@@ -77,19 +79,19 @@ export class ChatPage implements OnInit {
       // 尝试从URL中提取chatroomId
       const chatroomId = +event.routerEvent.url.replace(/\/chat\//, '');
       // 如果提取到的是一个数字，并且服务中的chatroomId跟这个chatroomId不一样，则更新
-      if (!isNaN(chatroomId) && this.onChatService.chatroomId != chatroomId) {
-        this.onChatService.chatroomId = chatroomId;
+      if (!isNaN(chatroomId) && this.globalDataService.chatroomId != chatroomId) {
+        this.globalDataService.chatroomId = chatroomId;
       }
     });
 
     // 记录当前房间ID，用于处理聊天列表
-    this.onChatService.chatroomId = this.route.snapshot.params.id;
+    this.globalDataService.chatroomId = this.route.snapshot.params.id;
     this.chatroomId = this.route.snapshot.params.id;
 
     this.loadRecords();
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-    const chatItem = this.onChatService.chatList.find((v: ChatItem) => v.chatroomId == this.chatroomId);
+    const chatItem = this.globalDataService.chatList.find((v: ChatItem) => v.chatroomId == this.chatroomId);
     if (chatItem) {
       this.roomName = chatItem.name;
       this.chatroomType = chatItem.type;
@@ -111,9 +113,9 @@ export class ChatPage implements OnInit {
       }
 
       // 如果是自己发的消息
-      if (msg.userId == this.onChatService.user.id) {
+      if (msg.userId == this.globalDataService.user.id) {
         const index = this.sendMsgMap.get(msg.sendTime);
-        msg.avatarThumbnail = this.onChatService.user.avatarThumbnail;
+        msg.avatarThumbnail = this.globalDataService.user.avatarThumbnail;
 
         if (index >= 0) {
           this.msgList[index] = msg;
@@ -131,17 +133,19 @@ export class ChatPage implements OnInit {
     });
 
     this.socketService.on(SocketEvent.RevokeMsg).pipe(
-      takeUntil(this.subject)
-    ).subscribe((o: Result<{ chatroomId: number, msgId: number }>) => {
+      takeUntil(this.subject),
       // 如果请求成功，并且收到的消息是这个房间的
-      if (o.code == 0 && o.data.chatroomId == this.chatroomId) {
-        for (const msgItem of this.msgList) {
-          if (msgItem.id == o.data.msgId) { // 移除被撤回的那条消息
-            msgItem.type = MessageType.Tips;
-            const name = msgItem.userId == this.onChatService.user.id ? '我' : msgItem.nickname;
-            (msgItem.data as any).content = `<a target="_blank" href="/user/card/${msgItem.userId}">${name}</a> 撤回了一条消息`;
-            break;
-          }
+      filter((result: Result<{ chatroomId: number, msgId: number }>) => {
+        return result.code == 0 && result.data.chatroomId == this.chatroomId
+      })
+    ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
+      for (const msgItem of this.msgList) {
+        if (msgItem.id == result.data.msgId) { // 移除被撤回的那条消息
+          msgItem.type = MessageType.Tips;
+          const name = msgItem.userId == this.globalDataService.user.id ? '我' : msgItem.nickname;
+          // TODO AS ANY
+          (msgItem.data as any).content = `<a target="_blank" href="/user/card/${msgItem.userId}">${name}</a> 撤回了一条消息`;
+          break;
         }
       }
     });
@@ -161,7 +165,7 @@ export class ChatPage implements OnInit {
   }
 
   ngOnDestroy() {
-    this.onChatService.chatroomId = null;
+    this.globalDataService.chatroomId = null;
     this.subject.next();
     this.subject.complete();
 
@@ -314,8 +318,8 @@ export class ChatPage implements OnInit {
     this.sendMsgMap.set(msg.sendTime, this.msgList.length);
 
     this.msgList.push(Object.assign(msg, {
-      userId: this.onChatService.user.id,
-      avatarThumbnail: this.onChatService.user.avatarThumbnail,
+      userId: this.globalDataService.user.id,
+      avatarThumbnail: this.globalDataService.user.avatarThumbnail,
       createTime: msg.sendTime,
       loading: true
     }));
@@ -363,29 +367,25 @@ export class ChatPage implements OnInit {
    */
   setFriendAlias() {
     // 只有私聊才可改好友别名
-    if (this.chatroomType != ChatroomType.Private) {
-      return;
-    }
+    if (this.chatroomType != ChatroomType.Private) { return; }
 
     this.overlayService.presentAlert({
       header: '好友别名',
       confirmHandler: (data: KeyValue<string, any>) => {
-        if (data['alias'] == this.roomName) {
-          return;
-        }
+        if (data['alias'] == this.roomName) { return; }
 
         this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
-          if (result.code == 0) {
-            this.roomName = result.data;
-            const index = this.onChatService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.chatroomId);
-            if (index >= 0) {
-              this.onChatService.chatList[index].name = result.data;
-              this.onChatService.chatList = this.onChatService.chatList;
-            }
-            this.overlayService.presentToast('成功修改好友别名', 1000);
-          } else {
-            this.overlayService.presentToast(result.msg);
+          if (result.code != 0) {
+            return this.overlayService.presentToast(result.msg);
           }
+
+          this.roomName = result.data;
+          const index = this.globalDataService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.chatroomId);
+          if (index >= 0) {
+            this.globalDataService.chatList[index].name = result.data;
+            this.globalDataService.chatList = this.globalDataService.chatList;
+          }
+          this.overlayService.presentToast('成功修改好友别名', 1000);
         });
       },
       inputs: [{

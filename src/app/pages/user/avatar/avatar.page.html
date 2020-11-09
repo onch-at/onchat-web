@@ -5,7 +5,7 @@
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
       </ion-buttons>
 
-      <ion-buttons slot="end" *ngIf="onChatService.user && user.id == onChatService.user.id">
+      <ion-buttons slot="end" *ngIf="globalDataService.user && user.id == globalDataService.user.id">
         <ion-button (tap)="presentActionSheet()">
           <ion-icon slot="icon-only" name="ellipsis-vertical" style="font-size: 1.5rem;"></ion-icon>
         </ion-button>

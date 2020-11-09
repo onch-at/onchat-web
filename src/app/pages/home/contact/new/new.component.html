@@ -1,5 +1,5 @@
 <ion-list>
-	<ion-item-sliding mode="md" *ngFor="let item of onChatService.receiveFriendRequests; let i = index;">
+	<ion-item-sliding mode="md" *ngFor="let item of globalDataService.receiveFriendRequests; let i = index;">
 		<ion-item-options side="start">
 			<ion-item-option class="bg-gray color-medium">忽略</ion-item-option>
 		</ion-item-options>
@@ -29,7 +29,7 @@
 		</ion-item-options>
 	</ion-item-sliding>
 
-	<ion-item-sliding mode="md" *ngFor="let item of onChatService.sendFriendRequests; let i = index;">
+	<ion-item-sliding mode="md" *ngFor="let item of globalDataService.sendFriendRequests; let i = index;">
 
 		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/request', item.targetId]">
 			<ion-thumbnail slot="start">

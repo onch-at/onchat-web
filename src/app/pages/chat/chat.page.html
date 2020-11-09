@@ -2,7 +2,7 @@
   <ion-header class="d-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button [text]="(onChatService.unreadMsgNum == 0 ? '' : onChatService.unreadMsgNum) | numLimit"
+        <ion-back-button [text]="(globalDataService.unreadMsgNum == 0 ? '' : globalDataService.unreadMsgNum) | numLimit"
           defaultHref="home">
         </ion-back-button>
       </ion-buttons>
