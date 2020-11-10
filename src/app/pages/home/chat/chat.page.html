@@ -31,14 +31,14 @@
 
 					<ng-container *ngIf="item.latestMsg" [ngSwitch]="item.latestMsg.type">
 						<p *ngSwitchCase="msgType.Text"
-							[innerHTML]="(item.latestMsg.userId == globalDataService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.content">
+							[innerHTML]="(item.latestMsg.userId == globalDataService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data['content']">
 						</p>
 
 						<p *ngSwitchCase="msgType.RichText"
-							[innerHTML]="(item.latestMsg.userId == globalDataService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data.text">
+							[innerHTML]="(item.latestMsg.userId == globalDataService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data['text']">
 						</p>
 
-						<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.latestMsg.data.content"></p>
+						<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.latestMsg.data['content']"></p>
 					</ng-container>
 
 					<p *ngIf="!item.latestMsg">进去打个招呼吧？</p>

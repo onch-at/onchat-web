@@ -9,7 +9,7 @@
 
     <ng-container [ngSwitch]="item.type">
       <li *ngSwitchCase="msgType.Tips" class="tip-item">
-        <span [innerHTML]="item.data.content | html"></span>
+        <span [innerHTML]="item.data['content'] | html"></span>
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="{
@@ -27,7 +27,7 @@
           <span #bubble class="msg-bubble ion-activatable ripple-parent"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-            [innerHTML]="item.data.content + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
+            [innerHTML]="item.data['content'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
           </span>
 
           <ion-spinner *ngIf="globalDataService.user && globalDataService.user.id == item.userId && item.loading"
@@ -49,7 +49,7 @@
           <span #bubble class="msg-bubble ion-activatable ripple-parent ql-editor"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-            [innerHTML]=" item.data.html + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
+            [innerHTML]=" item.data['html'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
         </div>
       </li>
     </ng-container>

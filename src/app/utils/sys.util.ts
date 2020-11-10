@@ -88,6 +88,17 @@ export class SysUtil {
     }
 
     /**
+     * 通过URL下载文件
+     * @param url
+     */
+    static downLoadFile(url: string) {
+        const anchor = document.createElement('a') as HTMLAnchorElement;
+        anchor.href = url;
+        anchor.download = url.split('?')[0].split('/').pop();
+        anchor.click();
+    }
+
+    /**
      * 是否支持WebP格式
      */
     static isSupportWEBP(): boolean {
