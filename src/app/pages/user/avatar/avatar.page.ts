@@ -63,31 +63,31 @@ export class AvatarPage implements OnInit {
   }
 
   presentActionSheet() {
-    if (!this.globalDataService.user || this.user.id != this.globalDataService.user.id) {
-      return;
-    }
-
-    this.overlayService.presentActionSheet(undefined, [
-      {
-        text: '更换头像', handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
-          component: AvatarCropperComponent,
-          componentProps: {
-            imageChangedEvent: event
-          }
-        })).then((modal: HTMLIonModalElement) => {
-          modal.present();
-          modal.onWillDismiss().then((e: { data: SafeUrl }) => {
-            if (e.data) {
-              this.user.avatar = e.data as string;
-            }
-          });
-        })
-      },
+    const buttons = [
       {
         text: '保存图片', handler: () => SysUtil.downLoadFile(this.user.avatar)
       },
       { text: '取消' }
-    ]);
+    ];
+
+    // 如果是自己的头像
+    (this.globalDataService.user && this.user.id == this.globalDataService.user.id) && buttons.unshift({
+      text: '更换头像', handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
+        component: AvatarCropperComponent,
+        componentProps: {
+          imageChangedEvent: event
+        }
+      })).then((modal: HTMLIonModalElement) => {
+        modal.present();
+        modal.onWillDismiss().then((e: { data: SafeUrl }) => {
+          if (e.data) {
+            this.user.avatar = e.data as string;
+          }
+        });
+      })
+    });
+
+    this.overlayService.presentActionSheet(undefined, buttons);
   }
 
 }
