@@ -67,7 +67,7 @@ export class AvatarPage implements OnInit {
       {
         text: '保存图片', handler: () => SysUtil.downLoadFile(this.user.avatar)
       },
-      { text: '取消' }
+      { text: '取消', role: 'cancel' }
     ];
 
     // 如果是自己的头像

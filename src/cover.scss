@@ -106,16 +106,21 @@ ion-loading.ion-loading {
 // action sheet
 ion-action-sheet.ion-action-sheet {
     --color: var(--oc-color-dark);
-    --background: rgba(var(--oc-color-light-rgb), 0.9);
+    --background: rgba(var(--oc-color-light-rgb), 0.85);
     --button-color: var(--oc-color-dark);
     --button-color-hover: var(--oc-color-dark);
     --button-color-activated: var(--oc-color-dark);
     --button-color-focused: var(--oc-color-dark);
     --button-color-selected: var(--oc-color-dark);
+    --button-background: transparent;
+    --button-background-hover: var(--oc-color-medium);
+    --button-background-activated: var(--oc-color-medium);
+    --button-background-focused: var(--oc-color-medium);
+    --button-background-selected: var(--oc-color-medium);
 
     .action-sheet-group {
         border-radius: 1.5rem;
-        backdrop-filter: saturate(125%) blur(5px);
+        backdrop-filter: saturate(250%) blur(10px);
     }
 
     button.action-sheet-button {
@@ -125,6 +130,18 @@ ion-action-sheet.ion-action-sheet {
         padding-inline-end: 1rem;
         padding-top: 1rem;
         padding-bottom: 1rem;
+
+        &::after {
+            transition: background-color ease-in-out 0.25s;
+        }
+    }
+
+    button.action-sheet-cancel {
+        font-weight: normal;
+
+        &::after {
+            opacity: 0;
+        }
     }
 
     .action-sheet-icon {
