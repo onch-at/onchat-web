@@ -37,27 +37,27 @@ main {
     z-index: 1;
     padding: 4rem 0 calc(var(--ion-safe-area-bottom, 0) + 1rem);
     background: linear-gradient(to bottom, transparent, rgba(var(--oc-color-white-rgb), 0.5));
-    backdrop-filter: saturate(100%) blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .avatar {
     width: 7.5rem;
     height: 7.5rem;
     border-radius: 5rem;
-    border: 0.25rem solid rgba(var(--oc-color-white-rgb), 0.85);
+    border: 0.25rem solid rgba(var(--oc-color-white-rgb), 0.5);
     object-fit: cover;
 }
 
 h1 {
     color: var(--oc-color-white);
-    font-weight: bolder;
+    font-weight: bold;
     font-size: 1.5rem;
     text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75);
     margin: 1rem 0 1.25rem;
 }
 
 ion-item {
-    --background: rgba(var(--oc-color-white-rgb), 0.85);
+    --background: rgba(var(--oc-color-white-rgb), 0.75);
     --padding-start: 1rem;
     --inner-padding-end: 1rem;
     margin-bottom: 1rem;

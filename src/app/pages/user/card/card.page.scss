@@ -28,17 +28,13 @@ ion-header {
   position: absolute;
   top: 35.75vh;
   left: 0;
-  background: rgba(var(--oc-color-white-rgb), 0.75);
-  backdrop-filter: saturate(200%) blur(7.5px);
+  background: rgba(var(--oc-color-white-rgb), 0.5);
+  backdrop-filter: blur(10px);
   border-radius: 0 1.5rem 0 0;
   width: 100%;
   min-height: calc(100% - 35.75vh);
   transform: translateX(-100%);
   animation: slide-in-right 0.4s ease 0.025s forwards;
-
-  @media (prefers-color-scheme: dark) {
-    background: rgba(var(--oc-color-white-rgb), 0.5);
-  }
 
   .card-header {
     height: 6rem;
@@ -99,7 +95,7 @@ ion-header {
   }
 
   .card-content {
-    padding: 0 1rem 4.5rem;
+    padding: 0 1rem calc(var(--ion-safe-area-bottom, 0) + 4.5rem);
 
     > *:first-child {
       margin-top: 0.75rem;

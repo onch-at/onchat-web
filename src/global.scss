@@ -170,6 +170,10 @@ body {
 
 input,
 textarea {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
   &::selection {
     color: var(--oc-color-white);
     background: rgba(var(--oc-color-primary-rgb), 0.75);
@@ -195,9 +199,6 @@ textarea {
 // 主要输入框
 .ipt-primary {
   color: var(--oc-color-dark);
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
 
   &:focus {
     box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);

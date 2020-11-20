@@ -12,8 +12,7 @@ export class SettingsPage implements OnInit {
     private overlayService: OverlayService,
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   showOverlayGlobalPanelCenter() {
     this.overlayService.presentNotification({

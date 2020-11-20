@@ -75,7 +75,10 @@ export class ChatPage implements OnInit {
   ngOnInit() {
     // 监听路由 滚动事件
     // 场景：从1号房间跳到2号房间，全局房间号变成2，再返回到1号房间，全局房间号变回1
-    this.router.events.pipe(filter(event => event instanceof Scroll), takeUntil(this.subject)).subscribe((event: Scroll) => {
+    this.router.events.pipe(
+      filter(event => event instanceof Scroll),
+      takeUntil(this.subject)
+    ).subscribe((event: Scroll) => {
       // 尝试从URL中提取chatroomId
       const chatroomId = +event.routerEvent.url.replace(/\/chat\//, '');
       // 如果提取到的是一个数字，并且服务中的chatroomId跟这个chatroomId不一样，则更新

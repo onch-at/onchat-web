@@ -132,7 +132,7 @@ ion-action-sheet.ion-action-sheet {
         padding-bottom: 1rem;
 
         &::after {
-            transition: background-color ease-in-out 0.25s;
+            transition: background-color ease-in-out 0.125s;
         }
     }
 
@@ -154,7 +154,7 @@ ion-alert {
     backdrop-filter: saturate(125%) blur(2.5px);
 
     @media (prefers-color-scheme: dark) {
-        backdrop-filter: saturate(100%) blur(2.5px);
+        backdrop-filter: blur(2.5px);
     }
 
     .sc-ion-alert-ios {

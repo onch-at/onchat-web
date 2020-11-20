@@ -24,7 +24,7 @@
 
   .button-group {
     flex-direction: column;
-    margin: 0.5rem 0 0;
+    margin: 0.5rem 0 var(--ion-safe-area-bottom, 0);
     height: calc(100% - 3.5rem);
   }
 
