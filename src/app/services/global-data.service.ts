@@ -21,6 +21,8 @@ export class GlobalDataService {
   private _sendFriendRequests: FriendRequest[] = [];
   /** 缓存聊天列表 */
   private _chatList: ChatItem[] = [];
+  /** 缓存聊天列表的分页页码 */
+  private _chatListPage: number = 1;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -82,7 +84,8 @@ export class GlobalDataService {
 
     for (const chatItem of chatList) {
       // 计算未读消息总数
-      // 如果有未读消息，且总未读数大于100，则停止遍历，提升性能
+      // 如果有未读消息，
+      // 且总未读数大于100，则停止遍历
       if (chatItem.unread > 0 && (this.unreadMsgNum += chatItem.unread) >= 100) {
         break;
       }
@@ -91,6 +94,14 @@ export class GlobalDataService {
 
   get chatList(): ChatItem[] {
     return this._chatList;
+  }
+
+  set chatListPage(page: number) {
+    this._chatListPage = page;
+  }
+
+  get chatListPage() {
+    return this._chatListPage;
   }
 }
 

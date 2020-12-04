@@ -85,7 +85,7 @@ ion-loading.ion-loading {
         padding: 1rem;
         border-radius: 1.5rem;
         box-shadow: 0 0 0.5rem 0.05rem rgba(#000, 0.125);
-        backdrop-filter: saturate(125%) blur(5px);
+        backdrop-filter: blur(5px);
     }
 
     ion-spinner {
@@ -151,7 +151,7 @@ ion-action-sheet.ion-action-sheet {
 
 // 警告框
 ion-alert {
-    backdrop-filter: saturate(125%) blur(2.5px);
+    backdrop-filter: blur(2.5px);
 
     @media (prefers-color-scheme: dark) {
         backdrop-filter: blur(2.5px);

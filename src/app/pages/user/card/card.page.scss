@@ -47,8 +47,7 @@ ion-header {
     width: 6rem;
     height: 6rem;
     border-radius: 50%;
-    background: rgba(var(--oc-color-white-rgb), 0.5);
-    padding: 0.25rem;
+    border: 0.25rem solid rgba(var(--oc-color-white-rgb), 0.25);
     flex-shrink: 0;
 
     @media (prefers-color-scheme: dark) {

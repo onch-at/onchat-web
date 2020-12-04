@@ -124,6 +124,7 @@ export class AppComponent implements OnInit {
         }
 
         // 更新一下聊天列表
+        this.globalDataService.chatListPage = 1;
         this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
           this.globalDataService.chatList = result.data;
         });
@@ -214,6 +215,7 @@ export class AppComponent implements OnInit {
         this.globalDataService.chatList[index].updateTime = Date.now();
         this.globalDataService.chatList = this.globalDataService.chatList;
       } else { // 如果不存在于列表当中，就刷新数据
+        this.globalDataService.chatListPage = 1;
         this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
           this.globalDataService.chatList = result.data;
         });

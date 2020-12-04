@@ -1,5 +1,5 @@
 <ion-content appScrollbar>
-	<ion-refresher slot="fixed" [pullFactor]="0.5" (ionRefresh)="doRefresh($event)">
+	<ion-refresher slot="fixed" [pullFactor]="0.5" (ionRefresh)="refresh($event)">
 		<ion-refresher-content pullingIcon="arrow-down" pullingText="下拉刷新" refreshingSpinner="dots"
 			refreshingText=" 正在刷新…">
 		</ion-refresher-content>
@@ -62,6 +62,10 @@
 				<ion-item-option class="bg-danger" (tap)="removeChatItem(i)">移除</ion-item-option>
 			</ion-item-options>
 		</ion-item-sliding>
-
 	</ion-list>
+
+	<ion-infinite-scroll (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
 </ion-content>

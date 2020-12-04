@@ -42,15 +42,33 @@ export class ChatPage implements OnInit {
     return item.id;
   }
 
-  refresh(complete?: CallableFunction) {
+  /**
+   * 刷新
+   * @param event
+   */
+  refresh(event: any) {
+    this.globalDataService.chatListPage = 1;
     this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.globalDataService.chatList = result.data;
-      complete && complete();
+      event.target.complete();
     });
   }
 
-  doRefresh(event: any) {
-    this.refresh(() => {
+  /**
+   * 加载更多
+   * @param event
+   */
+  loadData(event: any) {
+    if (!this.globalDataService.chatListPage) {
+      return event.target.complete();
+    }
+
+    this.onChatService.getChatList(++this.globalDataService.chatListPage).subscribe((result: Result<ChatItem[]>) => {
+      if (result.data.length) {
+        this.globalDataService.chatList = [...this.globalDataService.chatList, ...result.data];
+      } else {
+        this.globalDataService.chatListPage = null;
+      }
       event.target.complete();
     });
   }

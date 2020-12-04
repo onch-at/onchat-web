@@ -19,7 +19,7 @@ export class NotAuthGuard implements CanActivate, CanLoad {
   ) { }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
-    if (this.globalDataService.user !== null) { return false; }
+    if (this.globalDataService.user) { return false; }
 
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
@@ -47,7 +47,7 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.globalDataService.user !== null) { return false; }
+    if (this.globalDataService.user) { return false; }
 
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
