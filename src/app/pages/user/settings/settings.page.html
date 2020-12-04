@@ -1,0 +1,37 @@
+<ion-content appScrollbar [fullscreen]="true">
+  <ion-header class="d-flex align-items-center" slot="fixed">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
+      </ion-buttons>
+
+      <ion-title>个人信息</ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button>
+          <ion-icon slot="icon-only" name="ellipsis-vertical" style="font-size: 1.5rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <main class="flex-col-container align-items-center">
+    <img class="avatar" [src]="'https://blog.hypergo.net/images/cartoon/2_angry_birds_red.jpg'">
+
+    <form [formGroup]="userForm">
+      <div class="form-group">
+        <label class="d-block">昵称</label>
+        <!-- <input type="text" class="ipt-primary text-center" id="username" formControlName="username"
+          (keyup)="trimAll('username')" placeholder="请输入昵称" [maxlength]="usernameMaxLength" required> -->
+        <ion-input class="ipt-primary text-center" id="username" clearInput formControlName="username"
+          (ionChange)="trimAll('username')" placeholder="请输入昵称" [maxlength]="usernameMaxLength" required></ion-input>
+      </div>
+
+      <div class="form-group">
+        <label class="d-block">个性签名</label>
+        <ion-textarea class="ipt-primary text-center" id="username" formControlName="signature" placeholder="请输入个性签名"
+          autoGrow clearOnEdit required></ion-textarea>
+      </div>
+    </form>
+  </main>
+</ion-content>

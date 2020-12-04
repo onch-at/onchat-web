@@ -34,6 +34,7 @@
   padding-top: 0.85rem;
 
   .avatar {
+    flex-shrink: 0;
     width: 2.5rem;
     height: 2.5rem;
     background: var(--oc-color-secondary);

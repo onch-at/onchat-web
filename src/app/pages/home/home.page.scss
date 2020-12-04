@@ -80,6 +80,7 @@ ion-header {
   background: var(--oc-color-light);
   border-radius: 0 0 1.5rem 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
+  transition: border-radius ease-in-out 0.25s;
 
   ion-toolbar {
     --border-width: 0;

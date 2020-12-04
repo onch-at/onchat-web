@@ -82,7 +82,7 @@ export class ChatPage implements OnInit {
       // 尝试从URL中提取chatroomId
       const chatroomId = +event.routerEvent.url.replace(/\/chat\//, '');
       // 如果提取到的是一个数字，并且服务中的chatroomId跟这个chatroomId不一样，则更新
-      if (!isNaN(chatroomId) && this.globalDataService.chatroomId != chatroomId) {
+      if (Number.isInteger(chatroomId) && this.globalDataService.chatroomId != chatroomId) {
         this.globalDataService.chatroomId = chatroomId;
       }
     });

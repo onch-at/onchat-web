@@ -1,11 +1,11 @@
 <ion-content *ngIf="globalDataService.user" appScrollbar>
-  <div class="profile-card ion-activatable ripple-parent">
+  <div class="profile-card ion-activatable ripple-parent" routerLink="/user/settings">
     <img class="profile-card-bg-img" [src]="'https://blog.hypergo.net/api/bing/image.php'">
 
     <div class="profile-card-content">
       <div class="d-flex">
         <img class="profile-card-avatar" [src]="globalDataService.user.avatarThumbnail"
-          [routerLink]="['/user/avatar', globalDataService.user.id]">
+          (click)="navigateToAvatarPage($event)">
 
         <div class="profile-card-info">
           <h1 class="font-weight-bold">{{ globalDataService.user.username }}</h1>

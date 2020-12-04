@@ -2,6 +2,38 @@
  * 覆盖Ionic的样式
  */
 
+ion-input {
+    .sc-ion-input-ios {
+        &.native-input {
+            height: 100%;
+            padding: 0 2.5rem;
+
+            &::placeholder {
+                color: var(--oc-color-muted);
+                opacity: 0.5;
+            }
+        }
+
+        &.input-clear-icon {
+            position: absolute;
+            right: 0.75rem;
+            opacity: 0.75;
+            width: 1.25rem;
+            height: 1.25rem;
+            background-size: auto;
+        }
+    }
+}
+
+ion-textarea {
+    padding: 0;
+    .sc-ion-textarea-ios {
+        &.native-textarea {
+            padding: 0;
+        }
+    }
+}
+
 // 下拉刷新
 ion-refresher {
     height: 4rem;
@@ -72,7 +104,7 @@ ion-progress-bar {
 }
 
 // loading
-ion-loading.ion-loading {
+.ion-loading {
     --background: rgba(var(--oc-color-light-rgb), 0.9);
 
     .loading-wrapper {
@@ -104,7 +136,7 @@ ion-loading.ion-loading {
 }
 
 // action sheet
-ion-action-sheet.ion-action-sheet {
+.ion-action-sheet {
     --color: var(--oc-color-dark);
     --background: rgba(var(--oc-color-light-rgb), 0.85);
     --button-color: var(--oc-color-dark);

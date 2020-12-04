@@ -267,7 +267,7 @@ export class AppComponent implements OnInit {
       this.overlayService.presentAlert({
         header: '发现新版本',
         message: '是否立即重启以更新到新版本？',
-        confirmHandler: () => document.location.reload()
+        confirmHandler: document.location.reload
       });
     }));
   }

@@ -17,7 +17,7 @@
 
   <img class="bg-img" [src]="user.avatarThumbnail">
 
-  <main>
+  <main class="flex-col-container align-items-center">
     <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/card', user.id]">
     <h1>{{ user.username }}</h1>
 

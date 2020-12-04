@@ -6,6 +6,7 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
   },
+
   {
     path: 'user/login',
     loadChildren: () => import('./pages/user/login/login.module').then(m => m.LoginPageModule)
@@ -23,9 +24,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/user/avatar/avatar.module').then(m => m.AvatarPageModule)
   },
   {
+    path: 'user/settings',
+    loadChildren: () => import('./pages/user/settings/settings.module').then(m => m.SettingsPageModule)
+  },
+
+  {
     path: 'chat',
     loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatPageModule)
   },
+
   {
     path: 'friend/request',
     loadChildren: () => import('./pages/friend/request/request.module').then(m => m.RequestPageModule)
@@ -34,6 +41,7 @@ const routes: Routes = [
     path: 'friend/handle',
     loadChildren: () => import('./pages/friend/handle/handle.module').then(m => m.HandlePageModule)
   },
+
   {
     path: '**',
     redirectTo: 'home',

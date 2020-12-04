@@ -150,6 +150,11 @@
   outline: 0;
   scrollbar-width: thin;
   scrollbar-color: rgba(var(--oc-color-dark-rgb), 0.125) transparent;
+
+  &::selection {
+    color: var(--oc-color-white);
+    background: rgba(var(--oc-color-primary-rgb), 0.75);
+  }
 }
 
 body {
@@ -173,11 +178,6 @@ textarea {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-
-  &::selection {
-    color: var(--oc-color-white);
-    background: rgba(var(--oc-color-primary-rgb), 0.75);
-  }
 }
 
 // LOGO文字标徽定义
@@ -200,8 +200,14 @@ textarea {
 .ipt-primary {
   color: var(--oc-color-dark);
 
-  &:focus {
+  &:focus,
+  &:focus-within {
     box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
+  }
+
+  &::placeholder {
+    color: var(--oc-color-muted);
+    opacity: 0.5;
   }
 
   &.ng-invalid:not(.ng-pristine),
