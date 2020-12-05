@@ -9,7 +9,7 @@
 
       <ion-buttons slot="end">
         <ion-button>
-          <ion-icon slot="icon-only" name="ellipsis-vertical" style="font-size: 1.5rem;"></ion-icon>
+          <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -21,16 +21,27 @@
     <form [formGroup]="userForm">
       <div class="form-group">
         <label class="d-block">昵称</label>
-        <!-- <input type="text" class="ipt-primary text-center" id="username" formControlName="username"
-          (keyup)="trimAll('username')" placeholder="请输入昵称" [maxlength]="usernameMaxLength" required> -->
-        <ion-input class="ipt-primary text-center" id="username" clearInput formControlName="username"
+        <ion-input class="ipt-primary text-center" clearInput formControlName="username"
           (ionChange)="trimAll('username')" placeholder="请输入昵称" [maxlength]="usernameMaxLength" required></ion-input>
       </div>
 
       <div class="form-group">
         <label class="d-block">个性签名</label>
-        <ion-textarea class="ipt-primary text-center" id="username" formControlName="signature" placeholder="请输入个性签名"
+        <ion-textarea class="ipt-primary text-center" rows="1" formControlName="signature" placeholder="请输入个性签名"
           autoGrow clearOnEdit required></ion-textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="d-block">生日</label>
+        <ion-datetime class="ipt-primary text-center" displayFormat="YYYY-MM-DD" value="2012-12-15T13:47:20.789"
+          [monthNames]="monthNames" cancelText="取消" doneText="确认" (ionChange)="v()">
+        </ion-datetime>
+      </div>
+
+      <div class="form-group">
+        <label class="d-block">电子邮箱</label>
+        <ion-input class="ipt-primary text-center" clearInput formControlName="email" (ionChange)="trimAll('email')"
+          placeholder="请输入电子邮箱" [maxlength]="usernameMaxLength" required></ion-input>
       </div>
     </form>
   </main>

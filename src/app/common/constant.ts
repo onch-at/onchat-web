@@ -1,18 +1,12 @@
 /** 用户名最小长度 */
-const USERNAME_MIN_LENGTH: number = 5;
+export const USERNAME_MIN_LENGTH: number = 5;
 /** 用户名最大长度 */
-const USERNAME_MAX_LENGTH: number = 15;
+export const USERNAME_MAX_LENGTH: number = 15;
 /** 用户密码最小长度 */
-const PASSWORD_MIN_LENGTH: number = 8;
+export const PASSWORD_MIN_LENGTH: number = 8;
 /** 用户密码最大长度 */
-const PASSWORD_MAX_LENGTH: number = 50;
+export const PASSWORD_MAX_LENGTH: number = 50;
 /** 文本消息最长长度 */
-const TEXT_MSG_MAX_LENGTH: number = 3000;
-
-export {
-    USERNAME_MIN_LENGTH,
-    USERNAME_MAX_LENGTH,
-    PASSWORD_MIN_LENGTH,
-    PASSWORD_MAX_LENGTH,
-    TEXT_MSG_MAX_LENGTH
-};
+export const TEXT_MSG_MAX_LENGTH: number = 3000;
+/** 会话列表分页行数 */
+export const CHAT_LIST_ROWS: number = 15;

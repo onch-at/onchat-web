@@ -122,8 +122,8 @@ export class OnChatService {
   /**
    * 获取用户的聊天列表
    */
-  getChatList(page: number = 1): Observable<Result<ChatItem[]>> {
-    return this.http.get<Result<ChatItem[]>>(env.userChatListUrl + '/' + page);
+  getChatList(): Observable<Result<ChatItem[]>> {
+    return this.http.get<Result<ChatItem[]>>(env.userChatListUrl);
   }
 
   /**

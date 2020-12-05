@@ -2,11 +2,75 @@
  * 覆盖Ionic的样式
  */
 
+ion-picker {
+    .sc-ion-picker-ios {
+        --background: var(--oc-color-light);
+        --height: 275px;
+
+        &.picker-wrapper {
+            border-radius: 1.5rem 1.5rem 0 0;
+        }
+
+        &.picker-toolbar {
+            height: 2.75rem;
+        }
+
+        &.picker-toolbar,
+        &.picker-above-highlight,
+        &.picker-below-highlight {
+            border: 0;
+        }
+
+        &.picker-above-highlight {
+            background: linear-gradient(to bottom, var(--background) 20%, rgba(var(--oc-color-light-rgb), 0.8) 100%);
+        }
+
+        &.picker-below-highlight {
+            background: linear-gradient(to top, var(--background) 20%, rgba(var(--oc-color-light-rgb), 0.8) 100%);
+        }
+
+        &.picker-button {
+            font-size: 1rem !important;
+            padding: 0 1em;
+        }
+
+        &.picker-toolbar-cancel > .picker-button {
+            color: var(--oc-color-dark);
+        }
+
+        &:not(.picker-toolbar-cancel) > .picker-button {
+            color: var(--oc-color-primary);
+
+            &.ion-activated {
+                color: var(--oc-color-primary);
+            }
+        }
+    }
+
+    .picker-prefix,
+    .picker-suffix,
+    .picker-opts,
+    .picker-opt {
+        font-size: 1rem;
+    }
+    .picker-opt {
+        transition: font-size ease-in-out 0.125s;
+    }
+
+    .picker-opt-selected {
+        font-size: 1.125rem;
+    }
+
+    .picker-col {
+        padding: 0 0.5rem;
+    }
+}
+
 ion-input {
     .sc-ion-input-ios {
         &.native-input {
             height: 100%;
-            padding: 0 2.5rem;
+            padding: 0;
 
             &::placeholder {
                 color: var(--oc-color-muted);
@@ -29,7 +93,10 @@ ion-textarea {
     padding: 0;
     .sc-ion-textarea-ios {
         &.native-textarea {
-            padding: 0;
+            &::placeholder {
+                color: var(--oc-color-muted);
+                opacity: 0.5;
+            }
         }
     }
 }

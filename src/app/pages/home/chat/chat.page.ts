@@ -1,6 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { Subject } from 'rxjs';
+import { CHAT_LIST_ROWS } from 'src/app/common/constant';
 import { MessageType } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
@@ -54,6 +55,11 @@ export class ChatPage implements OnInit {
     });
   }
 
+  chatList() {
+    const { chatListPage, chatList } = this.globalDataService;
+    return chatListPage ? chatList.slice(0, chatListPage * 15) : chatList;
+  }
+
   /**
    * 加载更多
    * @param event
@@ -63,14 +69,11 @@ export class ChatPage implements OnInit {
       return event.target.complete();
     }
 
-    this.onChatService.getChatList(++this.globalDataService.chatListPage).subscribe((result: Result<ChatItem[]>) => {
-      if (result.data.length) {
-        this.globalDataService.chatList = [...this.globalDataService.chatList, ...result.data];
-      } else {
-        this.globalDataService.chatListPage = null;
-      }
-      event.target.complete();
-    });
+    if (++this.globalDataService.chatListPage * CHAT_LIST_ROWS >= this.globalDataService.chatList.length) {
+      this.globalDataService.chatListPage = null;
+    }
+
+    event.target.complete();
   }
 
   /**

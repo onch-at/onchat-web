@@ -1,10 +1,6 @@
 ion-header {
     height: 3rem;
-    background: var(--oc-color-light);
-    border-radius: 0 0 1.5rem 1.5rem;
-    box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
-    transform: translateY(-100%);
-    animation: slide-in-down 0.25s ease-out 0.25s forwards;
+    background: var(--oc-color-white);
 
     ion-buttons > *,
     ion-title {
@@ -17,19 +13,19 @@ ion-header {
 }
 
 main {
-    padding: 4.5rem 1.5rem 0;
+    padding: 4rem 1rem 1rem;
 }
 
 .avatar {
-    width: 7rem;
-    height: 7rem;
+    width: 5.5rem;
+    height: 5.5rem;
     border-radius: 5rem;
     object-fit: cover;
 }
 
 form {
-    margin: 1.5rem 0;
-    width: calc(100vw - 3rem);
+    margin: 0.5rem 0 1.5rem;
+    width: calc(100vw - 2rem);
 }
 
 .form-group {
@@ -46,12 +42,33 @@ form {
 }
 
 ion-input {
-    height: 3rem;
+    height: 2.75rem;
     padding: 0 1rem;
+
+    ::ng-deep .sc-ion-input-ios {
+        &.native-input {
+            padding: 0 2.5rem;
+        }
+    }
 }
 
 ion-textarea {
-    padding: 0.75rem 1rem;
+    ::ng-deep .sc-ion-textarea-ios {
+        &.textarea-wrapper {
+            min-height: 2.75rem;
+        }
+
+        &.native-textarea {
+            min-height: 2.75rem;
+            padding: 0.75rem 1rem;
+        }
+    }
+}
+
+ion-datetime {
+    height: 2.75rem;
+    line-height: 2.75rem;
+    padding: 0 1rem;
 }
 
 .ipt-primary {
