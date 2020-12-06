@@ -7,7 +7,7 @@
 
       <ion-title>个人信息</ion-title>
 
-      <ion-buttons slot="end">
+      <ion-buttons slot="end" *ngIf="!userInfoForm.invalid">
         <ion-button>
           <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>
@@ -16,33 +16,62 @@
   </ion-header>
 
   <main class="flex-col-container align-items-center">
-    <img class="avatar" [src]="'https://blog.hypergo.net/images/cartoon/2_angry_birds_red.jpg'">
+    <img *ngIf="globalDataService.user" class="avatar" [src]="globalDataService.user.avatarThumbnail"
+      (tap)="presentActionSheet()">
 
-    <form [formGroup]="userForm">
+    <form [formGroup]="userInfoForm">
       <div class="form-group">
         <label class="d-block">昵称</label>
-        <ion-input class="ipt-primary text-center" clearInput formControlName="username"
-          (ionChange)="trimAll('username')" placeholder="请输入昵称" [maxlength]="usernameMaxLength" required></ion-input>
+        <ion-input class="ipt-primary text-center" formControlName="nickname" (ionChange)="trimAll('nickname')"
+          placeholder="请输入昵称" [maxlength]="nicknameMaxLength" clearInput required></ion-input>
+
+        <div class="feedback-control-invalid">
+          <ion-icon name="warning"></ion-icon>
+          <span *ngIf="userInfoForm.controls.nickname.errors">
+            {{ nicknameFeedback(userInfoForm.controls.nickname.errors) }}
+          </span>
+        </div>
       </div>
 
       <div class="form-group">
         <label class="d-block">个性签名</label>
-        <ion-textarea class="ipt-primary text-center" rows="1" formControlName="signature" placeholder="请输入个性签名"
-          autoGrow clearOnEdit required></ion-textarea>
+        <ion-textarea class="ipt-primary text-center" formControlName="signature" rows="1"
+          [maxlength]="signatureMaxLength" placeholder="请输入个性签名" autoGrow clearInput></ion-textarea>
+
+        <div class="feedback-control-invalid">
+          <ion-icon name="warning"></ion-icon>
+          <span *ngIf="userInfoForm.controls.signature.errors">
+            {{ signatureFeedback(userInfoForm.controls.signature.errors) }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="d-block">心情</label>
+        <app-mood-radio formControlName="mood"></app-mood-radio>
       </div>
 
       <div class="form-group">
         <label class="d-block">生日</label>
-        <ion-datetime class="ipt-primary text-center" displayFormat="YYYY-MM-DD" value="2012-12-15T13:47:20.789"
-          [monthNames]="monthNames" cancelText="取消" doneText="确认" (ionChange)="v()">
+        <ion-datetime class="ipt-primary text-center" formControlName="birthday" displayFormat="YYYY-MM-DD"
+          [max]="today" [monthNames]="monthNames" cancelText="取消" doneText="确认">
         </ion-datetime>
       </div>
 
       <div class="form-group">
+        <label class="d-block">性别</label>
+        <ion-segment formControlName="gender">
+          <ion-segment-button [value]="gender.Male">男</ion-segment-button>
+          <ion-segment-button [value]="gender.Female">女</ion-segment-button>
+          <ion-segment-button [value]="gender.Secret">保密</ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <!-- <div class="form-group">
         <label class="d-block">电子邮箱</label>
         <ion-input class="ipt-primary text-center" clearInput formControlName="email" (ionChange)="trimAll('email')"
           placeholder="请输入电子邮箱" [maxlength]="usernameMaxLength" required></ion-input>
-      </div>
+      </div> -->
     </form>
   </main>
 </ion-content>

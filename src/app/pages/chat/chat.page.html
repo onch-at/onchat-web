@@ -29,7 +29,7 @@
   </main>
 
   <div #bottomBar class="bottom-bar" slot="fixed">
-    <button appActiveClass [appActiveClassDuration]="200" class="tips-btn btn-primary" [ngClass]="{'show': hasUnread}"
+    <button appActiveClass [appActiveClassDuration]="250" class="tips-btn btn-primary" [ngClass]="{'show': hasUnread}"
       (tap)="scrollToBottom()">
       收到新消息
       <ion-icon name="arrow-down-outline"></ion-icon>
@@ -42,7 +42,7 @@
         placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
 
       <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
-      <button [hidden]="!showSendBtn()" appActiveClass [appActiveClassDuration]="200"
+      <button [hidden]="!showSendBtn()" appActiveClass [appActiveClassDuration]="250"
         class="ion-activatable ripple-parent btn-primary send-btn" (click)="send(textarea)"
         [disabled]="disableSendBtn()">
         <label [for]="'message-' + chatroomId" class="d-flex align-items-center justify-content-center">
@@ -51,7 +51,7 @@
         </label>
       </button>
 
-      <button [hidden]="showSendBtn()" appActiveClass [appActiveClassDuration]="200"
+      <button [hidden]="showSendBtn()" appActiveClass [appActiveClassDuration]="250"
         class="ion-activatable ripple-parent btn-secondary more-btn" (click)="toggleDrawer()">
         <ion-icon name="add-circle-outline"></ion-icon>
         <ion-ripple-effect></ion-ripple-effect>

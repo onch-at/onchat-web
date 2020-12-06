@@ -4,15 +4,14 @@
       [routerLink]="['/user/card', globalDataService.user.id]">
 
     <div class="button-group d-flex">
-      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/chat']"
-        routerLinkActive="active">
+      <ion-button expand="block" fill="clear" routerDirection="root" routerLink="/home/chat" routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
         <ion-badge [ngClass]="{'visibility-hidden': globalDataService.unreadMsgNum <= 0}" class="bg-danger">
           {{ globalDataService.unreadMsgNum | numLimit }}
         </ion-badge>
       </ion-button>
 
-      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/contact']"
+      <ion-button expand="block" fill="clear" routerDirection="root" routerLink="/home/contact"
         routerLinkActive="active">
         <ion-icon slot="icon-only" name="people"></ion-icon>
         <ion-badge [ngClass]="{'visibility-hidden': globalDataService.receiveFriendRequests.length <= 0}"
@@ -21,14 +20,14 @@
         </ion-badge>
       </ion-button>
 
-      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/profile']"
+      <ion-button expand="block" fill="clear" routerDirection="root" routerLink="/home/profile"
         routerLinkActive="active">
         <ion-icon slot="icon-only" name="person"></ion-icon>
       </ion-button>
 
       <div style="flex: auto;"></div>
 
-      <ion-button expand="block" fill="clear" routerDirection="root" [routerLink]="['/home/settings']"
+      <ion-button expand="block" fill="clear" routerDirection="root" routerLink="/home/settings"
         routerLinkActive="active">
         <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
       </ion-button>

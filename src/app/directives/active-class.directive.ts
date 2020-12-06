@@ -16,10 +16,11 @@ export class ActiveClassDirective {
 
   @HostListener('tap')
   onTap() {
-    this.renderer2.addClass(this.elementRef.nativeElement, this.appActiveClass || 'active');
+    const className = this.appActiveClass || 'active';
+    this.renderer2.addClass(this.elementRef.nativeElement, className);
 
     this.appActiveClassDuration && setTimeout(() => {
-      this.renderer2.removeClass(this.elementRef.nativeElement, this.appActiveClass || 'active');
+      this.renderer2.removeClass(this.elementRef.nativeElement, className);
     }, this.appActiveClassDuration);
   }
 

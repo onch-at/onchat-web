@@ -1,6 +1,23 @@
 /*
  * 覆盖Ionic的样式
  */
+ion-segment {
+    --background: var(--oc-color-secondary);
+    height: 2.75rem;
+    border-radius: 1.5rem;
+}
+
+ion-segment-button {
+    --color: var(--oc-color-dark);
+    --color-checked: var(--oc-color-dark);
+    --color-focused: var(--oc-color-black);
+    --color-hover: var(--oc-color-muted);
+    --border-radius: 1.5rem;
+    --border-width: 0;
+    --indicator-color: var(--oc-color-white);
+    margin: 0.25rem 0.125rem;
+    font-size: 1rem;
+}
 
 ion-picker {
     .sc-ion-picker-ios {
@@ -30,7 +47,7 @@ ion-picker {
         }
 
         &.picker-button {
-            font-size: 1rem !important;
+            font-size: 0.95rem !important;
             padding: 0 1em;
         }
 
@@ -74,7 +91,7 @@ ion-input {
 
             &::placeholder {
                 color: var(--oc-color-muted);
-                opacity: 0.5;
+                opacity: 0.75;
             }
         }
 
@@ -95,7 +112,7 @@ ion-textarea {
         &.native-textarea {
             &::placeholder {
                 color: var(--oc-color-muted);
-                opacity: 0.5;
+                opacity: 0.75;
             }
         }
     }
@@ -251,10 +268,6 @@ ion-progress-bar {
 // 警告框
 ion-alert {
     backdrop-filter: blur(2.5px);
-
-    @media (prefers-color-scheme: dark) {
-        backdrop-filter: blur(2.5px);
-    }
 
     .sc-ion-alert-ios {
         &.alert-wrapper {

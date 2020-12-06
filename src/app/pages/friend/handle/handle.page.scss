@@ -34,7 +34,7 @@ main {
     z-index: 1;
     padding: 4rem 0 calc(var(--ion-safe-area-bottom, 0) + 1rem);
     background: linear-gradient(to bottom, transparent, rgba(var(--oc-color-white-rgb), 0.5));
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .avatar {

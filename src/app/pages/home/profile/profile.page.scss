@@ -12,6 +12,7 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
+    background: var(--oc-color-secondary);
 
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);

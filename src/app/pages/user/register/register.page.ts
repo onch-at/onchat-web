@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { SessionStorageKey } from 'src/app/common/enum';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
@@ -11,7 +11,6 @@ import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
-import { SysUtil } from 'src/app/utils/sys.util';
 import { environment as env } from '../../../../environments/environment';
 import { passwordFeedback, usernameFeedback } from '../login/login.page';
 
@@ -33,7 +32,7 @@ export class RegisterPage implements OnInit {
   registerForm: FormGroup = this.fb.group({
     username: [
       null, [
-        Validators.pattern(SysUtil.usernamePattern),
+        Validators.pattern(USERNAME_PATTERN),
         Validators.required,
         Validators.minLength(5),
         Validators.maxLength(USERNAME_MAX_LENGTH)
@@ -85,9 +84,7 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     const username = this.route.snapshot.queryParams.username;
-    if (username) {
-      this.registerForm.controls.username.setValue(username);
-    }
+    username && this.registerForm.controls.username.setValue(username);
   }
 
   register() {

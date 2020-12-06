@@ -5,9 +5,10 @@
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
       </ion-buttons>
 
-      <ion-buttons slot="end">
+      <ion-buttons slot="end" *ngIf="globalDataService.user && user.id == globalDataService.user.id"
+        routerLink="/user/settings">
         <ion-button>
-          <ion-icon slot="icon-only" name="ellipsis-vertical" style="font-size: 1.5rem;"></ion-icon>
+          <ion-icon slot="icon-only" name="brush-outline" style="font-size: 1.5rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -82,7 +83,7 @@
   </div>
 
   <aside class="bottom-bar">
-    <button *ngIf="chatroomId" appActiveClass [appActiveClassDuration]="200" [routerLink]="['/chat', chatroomId]"
+    <button *ngIf="chatroomId" appActiveClass [appActiveClassDuration]="250" [routerLink]="['/chat', chatroomId]"
       class="ion-activatable ripple-parent btn-primary btn-block">
       跟Ta聊天
       <ion-ripple-effect></ion-ripple-effect>
@@ -90,7 +91,7 @@
 
     <!-- TODO 这边以后可以和自己聊天 -->
     <button *ngIf="!chatroomId && globalDataService.user && globalDataService.user.id != user.id" appActiveClass
-      [appActiveClassDuration]="200" [routerLink]="['/friend/request', user.id]"
+      [appActiveClassDuration]="250" [routerLink]="['/friend/request', user.id]"
       class="ion-activatable ripple-parent btn-primary btn-block">
       加Ta好友
       <ion-ripple-effect></ion-ripple-effect>

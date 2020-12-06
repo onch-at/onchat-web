@@ -13,6 +13,7 @@
             <div class="form-group">
               <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username"
                 (keyup)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
+
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.username.errors">
@@ -27,6 +28,7 @@
                 [maxlength]="passwordMaxLength" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
                 (tap)="togglePwdInputType()"></ion-icon>
+
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.password.errors">
@@ -41,12 +43,14 @@
                 placeholder="确认密码" [maxlength]="passwordMaxLength" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
                 (tap)="togglePwdInputType()"></ion-icon>
+
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.confirmPassword.errors">
                   {{ passwordFeedback(registerForm.controls.confirmPassword.errors) }}
                 </span>
               </div>
+
               <div class="feedback-form-invalid" [hidden]="!registerForm.errors || !registerForm.errors.equal">
                 <ion-icon name="warning"></ion-icon>
                 <span> 确认密码与密码不一致！</span>
@@ -56,8 +60,9 @@
             <div class="form-group form-group-row">
               <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha"
                 (keyup)="trimAll('captcha')" placeholder="验证码" maxlength="4" required>
-              <img appActiveClass [appActiveClassDuration]="200" class="captcha" [src]="captchaUrl"
+              <img appActiveClass [appActiveClassDuration]="250" class="captcha" [src]="captchaUrl"
                 (tap)="updateCaptcha()">
+
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.captcha.errors">
@@ -69,13 +74,12 @@
         </ion-col>
 
         <ion-col class="text-center" size="12">
-          <button appActiveClass [appActiveClassDuration]="200" [disabled]="registerForm.invalid"
+          <button appActiveClass [appActiveClassDuration]="250" [disabled]="registerForm.invalid"
             class="ion-activatable ripple-parent btn-primary" style="margin-bottom: .75rem;" (tap)="register()">
             注册
             <ion-ripple-effect></ion-ripple-effect>
           </button>
-          <span class="color-dark outline-none" style="font-size: .9rem;"
-            [routerLink]="['/user/login']">已有账号？立即登录！</span>
+          <span class="color-dark outline-none" style="font-size: .9rem;" routerLink="/user/login">已有账号？立即登录！</span>
         </ion-col>
       </ion-row>
     </ion-grid>

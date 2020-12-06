@@ -29,7 +29,7 @@
   </div>
 
   <div class="buttom-bar">
-    <button (tap)="submit()" appActiveClass [appActiveClassDuration]="200" [disabled]="error"
+    <button (tap)="submit()" appActiveClass [appActiveClassDuration]="250" [disabled]="error"
       class="ion-activatable ripple-parent btn-primary submit-btn">
       <ion-icon *ngIf="!error" name="checkmark-outline"></ion-icon>
       <ion-icon *ngIf="error" name="alert-outline"></ion-icon>

@@ -13,6 +13,7 @@
             <div class="form-group">
               <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username"
                 (keyup)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
+
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="loginForm.controls.username.errors">
@@ -27,6 +28,7 @@
                 [maxlength]="passwordMaxLength" required>
               <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
                 (tap)="togglePwdInputType()"></ion-icon>
+
               <div class="feedback-control-invalid">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="loginForm.controls.password.errors">
@@ -38,13 +40,13 @@
         </ion-col>
 
         <ion-col style="padding-right: .55rem;">
-          <button appActiveClass [appActiveClassDuration]="200" class="ion-activatable ripple-parent btn-primary"
-            [routerLink]="['/user/register']" [queryParams]="{username: loginForm.value.username}">注册<ion-ripple-effect>
+          <button appActiveClass [appActiveClassDuration]="250" class="ion-activatable ripple-parent btn-primary"
+            routerLink="/user/register" [queryParams]="{username: loginForm.value.username}">注册<ion-ripple-effect>
             </ion-ripple-effect></button>
         </ion-col>
 
         <ion-col style="padding-left: .55rem;">
-          <button appActiveClass [appActiveClassDuration]="200" [disabled]="loginForm.invalid" (tap)="login()"
+          <button appActiveClass [appActiveClassDuration]="250" [disabled]="loginForm.invalid" (tap)="login()"
             class="ion-activatable ripple-parent btn-primary">登录<ion-ripple-effect></ion-ripple-effect></button>
         </ion-col>
       </ion-row>

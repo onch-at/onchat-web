@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from 'src/app/common/constant';
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { SessionStorageKey } from 'src/app/common/enum';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
@@ -10,7 +10,6 @@ import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
-import { SysUtil } from 'src/app/utils/sys.util';
 import { OnChatService } from '../../../services/onchat.service';
 
 @Component({
@@ -29,7 +28,7 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup = this.fb.group({
     username: [
       null, [
-        Validators.pattern(SysUtil.usernamePattern),
+        Validators.pattern(USERNAME_PATTERN),
         Validators.required,
         Validators.minLength(USERNAME_MIN_LENGTH),
         Validators.maxLength(USERNAME_MAX_LENGTH)
@@ -92,11 +91,7 @@ export class LoginPage implements OnInit {
    * 切换密码输入框的TYPE值
    */
   togglePwdInputType() {
-    if (this.pwdInputType == 'password') {
-      this.pwdInputType = 'text';
-    } else {
-      this.pwdInputType = 'password';
-    }
+    this.pwdInputType = this.pwdInputType == 'text' ? 'password' : 'text';
   }
 
   /**
@@ -109,7 +104,7 @@ export class LoginPage implements OnInit {
 
 }
 
-export const usernameFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
+export function usernameFeedback(errors: ValidationErrors): string {
   if (errors.required) {
     return '用户名不能为空！';
   } else if (errors.pattern) {
@@ -119,7 +114,7 @@ export const usernameFeedback: (errors: ValidationErrors) => string = (errors: V
   }
 };
 
-export const passwordFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
+export function passwordFeedback(errors: ValidationErrors): string {
   if (errors.required) {
     return '密码不能为空！';
   } else if (errors.minlength || errors.maxlength) {

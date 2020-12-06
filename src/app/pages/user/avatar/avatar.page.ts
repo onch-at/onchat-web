@@ -64,15 +64,14 @@ export class AvatarPage implements OnInit {
 
   presentActionSheet() {
     const buttons = [
-      {
-        text: '保存图片', handler: () => SysUtil.downLoadFile(this.user.avatar)
-      },
+      { text: '保存图片', handler: () => SysUtil.downLoadFile(this.user.avatar) },
       { text: '取消', role: 'cancel' }
     ];
 
     // 如果是自己的头像
     (this.globalDataService.user && this.user.id == this.globalDataService.user.id) && buttons.unshift({
-      text: '更换头像', handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
+      text: '更换头像',
+      handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event

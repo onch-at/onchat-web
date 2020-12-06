@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from 'src/app/common/constant';
-import { FeedbackService } from 'src/app/services/feedback.service';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
+import { Gender, Mood } from 'src/app/common/enum';
+import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { GlobalDataService } from 'src/app/services/global-data.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 
@@ -12,31 +15,40 @@ import { SysUtil } from 'src/app/utils/sys.util';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
-  usernameMaxLength: number = USERNAME_MAX_LENGTH;
+  nicknameMaxLength: number = USERNAME_MAX_LENGTH;
+  signatureMaxLength: number = SIGNATURE_MAX_LENGTH;
+  gender: typeof Gender = Gender;
 
   monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+  today: string = new Date().toISOString();
 
-  userForm: FormGroup = this.fb.group({
-    username: [
+  userInfoForm: FormGroup = this.fb.group({
+    nickname: [
       null, [
-        Validators.pattern(SysUtil.usernamePattern),
         Validators.required,
-        Validators.minLength(USERNAME_MIN_LENGTH),
-        Validators.maxLength(USERNAME_MAX_LENGTH)
+        Validators.minLength(NICKNAME_MIN_LENGTH),
+        Validators.maxLength(NICKNAME_MAX_LENGTH)
       ]
     ],
     signature: [
       null, [
-        Validators.required,
-        Validators.minLength(PASSWORD_MIN_LENGTH),
-        Validators.maxLength(PASSWORD_MAX_LENGTH)
+        Validators.minLength(SIGNATURE_MIN_LENGTH),
+        Validators.maxLength(SIGNATURE_MAX_LENGTH)
       ]
     ],
-    email: [
+    mood: [
       null, [
-        Validators.required,
-        Validators.minLength(PASSWORD_MIN_LENGTH),
-        Validators.maxLength(PASSWORD_MAX_LENGTH)
+        Validators.required
+      ]
+    ],
+    birthday: [
+      null, [
+        Validators.required
+      ]
+    ],
+    gender: [
+      null, [
+        Validators.required
       ]
     ],
   });
@@ -44,11 +56,19 @@ export class SettingsPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     public globalDataService: GlobalDataService,
-    private feedbackService: FeedbackService,
-
+    private overlayService: OverlayService,
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
+    const { user } = this.globalDataService;
+    const { controls } = this.userInfoForm;
+
+    controls.nickname.setValue(user.nickname);
+    controls.signature.setValue(user.signature);
+    controls.mood.setValue(user.mood || Mood.Joy);
+    controls.birthday.setValue(user.birthday || this.today);
+    controls.gender.setValue(user.gender || Gender.Secret);
   }
 
   /**
@@ -56,13 +76,43 @@ export class SettingsPage implements OnInit {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    this.userForm.controls[controlName].setValue(StrUtil.trimAll(this.userForm.value[controlName]));
+    this.userInfoForm.controls[controlName].setValue(StrUtil.trimAll(this.userInfoForm.value[controlName]));
   }
 
-  v() {
-    window.navigator.vibrate(25)
-    console.log(6666);
+  nicknameFeedback(errors: ValidationErrors): string {
+    if (errors.required) {
+      return '昵称不能为空！';
+    } else if (errors.minlength || errors.maxlength) {
+      return `昵称长度必须在${NICKNAME_MIN_LENGTH}~${NICKNAME_MAX_LENGTH}位字符之间！`;
+    }
+  }
 
+  signatureFeedback(errors: ValidationErrors): string {
+    if (errors.minlength || errors.maxlength) {
+      return `个性签名长度必须在${SIGNATURE_MIN_LENGTH}~${SIGNATURE_MAX_LENGTH}位字符之间！`;
+    }
+  }
+
+  presentActionSheet() {
+    const buttons = [
+      {
+        text: '更换头像',
+        handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
+          component: AvatarCropperComponent,
+          componentProps: {
+            imageChangedEvent: event
+          }
+        })).then((modal: HTMLIonModalElement) => {
+          modal.present();
+        })
+      },
+      {
+        text: '更换背景图'
+      },
+      { text: '取消', role: 'cancel' }
+    ];
+
+    this.overlayService.presentActionSheet(undefined, buttons);
   }
 
 }

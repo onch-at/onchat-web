@@ -102,3 +102,29 @@ export enum SessionStorageKey {
     /** 用户Map缓存 */
     UserMap = 'user_map'
 }
+
+/**
+ * 枚举心情
+ */
+export enum Mood {
+    /** 喜 */
+    Joy = 0,
+    /** 怒 */
+    Angry = 1,
+    /** 哀 */
+    Sorrow = 2,
+    /** 乐 */
+    Fun = 3,
+}
+
+/**
+ * 枚举心情
+ */
+export enum Gender {
+    /** 男性 */
+    Male = 0,
+    /** 女性 */
+    Female = 1,
+    /** 保密 */
+    Secret = 2
+}

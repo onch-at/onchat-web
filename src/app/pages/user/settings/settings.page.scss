@@ -1,6 +1,7 @@
 ion-header {
     height: 3rem;
-    background: var(--oc-color-white);
+    background: rgba(var(--oc-color-white-rgb), 0.75);
+    backdrop-filter: blur(15px);
 
     ion-buttons > *,
     ion-title {
@@ -17,10 +18,15 @@ main {
 }
 
 .avatar {
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: 5rem;
+    width: 5.75rem;
+    height: 5.75rem;
+    border-radius: 50%;
     object-fit: cover;
+    background: var(--oc-color-secondary);
+
+    @media (prefers-color-scheme: dark) {
+        filter: brightness(0.75);
+    }
 }
 
 form {
@@ -38,6 +44,19 @@ form {
 
     > label {
         margin: 0 0.5rem 0.5rem;
+    }
+}
+
+.feedback-control-invalid {
+    display: flex;
+    align-items: flex-end;
+    font-size: 0.85rem;
+    height: 1.75rem;
+    padding-left: 0.25rem;
+
+    ion-icon {
+        font-size: 1.125rem;
+        margin-right: 0.125rem;
     }
 }
 

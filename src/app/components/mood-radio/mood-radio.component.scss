@@ -1,0 +1,65 @@
+.mood-radio-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 2.75rem;
+    padding: 0 1.5rem;
+}
+
+input {
+    display: none;
+
+    &:checked + label {
+        transform: scale(1.125);
+        opacity: 1;
+    }
+}
+
+label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    line-height: 0;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: color ease-in-out 0.125s, opacity ease-in-out 0.125s, transform ease-out 0.1s;
+
+    &::before {
+        content: "";
+        position: absolute;
+        height: 3.5rem;
+        width: 3.5rem;
+        background: currentColor;
+        border-radius: 50%;
+        transform: scale(0);
+    }
+
+    &.active {
+        animation: active 0.4s ease-out forwards;
+    }
+
+    &.active::before {
+        animation: ripple 0.4s ease-out forwards;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &[for="joy"] {
+        color: var(--oc-color-primary);
+    }
+
+    &[for="angry"] {
+        color: var(--oc-color-danger);
+    }
+
+    &[for="sorrow"] {
+        color: var(--oc-color-info);
+    }
+
+    &[for="fun"] {
+        color: #fa541c;
+    }
+}
