@@ -89,7 +89,9 @@ export class RegisterPage implements OnInit {
 
   register() {
     if (this.registerForm.invalid || this.loading) { return; }
+
     this.loading = true;
+
     this.onChatService.register(
       new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)
     ).subscribe(async (result: Result<User>) => {

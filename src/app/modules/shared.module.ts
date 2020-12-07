@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { ActiveClassDirective } from 'src/app/directives/active-class.directive';
 import { DetailDatePipe } from 'src/app/pipes/detail-date.pipe';
 import { ScrollbarDirective } from '../directives/scrollbar.directive';
+import { GenderPipe } from '../pipes/gender.pipe';
 import { HtmlPipe } from '../pipes/html.pipe';
 import { HyperlinkPipe } from '../pipes/hyperlink.pipe';
 import { NumLimitPipe } from '../pipes/num-limit.pipe';
@@ -13,7 +14,8 @@ import { NumLimitPipe } from '../pipes/num-limit.pipe';
     DetailDatePipe,
     NumLimitPipe,
     HtmlPipe,
-    HyperlinkPipe
+    HyperlinkPipe,
+    GenderPipe
   ],
   imports: [],
   exports: [
@@ -22,7 +24,8 @@ import { NumLimitPipe } from '../pipes/num-limit.pipe';
     DetailDatePipe,
     NumLimitPipe,
     HtmlPipe,
-    HyperlinkPipe
+    HyperlinkPipe,
+    GenderPipe
   ]
 })
 export class SharedModule { }

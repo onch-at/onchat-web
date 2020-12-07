@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
-import { Login, Register } from '../models/form.model';
+import { Login, Register, UserInfo } from '../models/form.model';
 import { ChatItem, Chatroom, FriendRequest, Message, Result, User } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
 import { GlobalDataService } from './global-data.service';
@@ -94,6 +94,14 @@ export class OnChatService {
     formData.append('image', avatar);
 
     return this.http.post<Result<{ avatar: string, avatarThumbnail: string }>>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
+  }
+
+  /**
+   * 保存用户信息
+   * @param userInfo
+   */
+  saveUserInfo(userInfo: UserInfo): Observable<Result<UserInfo>> {
+    return this.http.put<Result<UserInfo>>(env.userUrl + 'info', userInfo, HTTP_OPTIONS_JSON);
   }
 
   /**

@@ -6,13 +6,11 @@ import { Mood } from 'src/app/common/enum';
   selector: 'app-mood-radio',
   templateUrl: './mood-radio.component.html',
   styleUrls: ['./mood-radio.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => MoodRadioComponent),
-      multi: true
-    }
-  ]
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => MoodRadioComponent),
+    multi: true
+  }]
 })
 export class MoodRadioComponent implements OnInit, ControlValueAccessor {
   private _value: Mood;

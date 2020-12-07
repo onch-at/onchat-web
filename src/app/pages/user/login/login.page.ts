@@ -60,7 +60,9 @@ export class LoginPage implements OnInit {
 
   login() {
     if (this.loginForm.invalid || this.loading) { return; }
+
     this.loading = true;
+
     this.onChatService.login(
       new Login(this.loginForm.value.username, this.loginForm.value.password)
     ).subscribe(async (result: Result<User>) => {

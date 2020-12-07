@@ -11,6 +11,11 @@ ion-header {
     ion-title {
         font-size: 0.9rem;
     }
+
+    ion-spinner {
+        --color: var(--oc-color-black);
+        margin-right: 0.25rem;
+    }
 }
 
 main {

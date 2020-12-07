@@ -1,3 +1,5 @@
+import { Gender, Mood } from "../common/enum";
+
 /**
  * 登录表单数据模型
  */
@@ -51,4 +53,20 @@ export class RichTextMessage {
         this.html = html;
         this.text = text;
     }
+}
+
+/**
+ * 用户信息
+ */
+export class UserInfo {
+    /** 昵称 */
+    nickname: string;
+    /** 个性签名 */
+    signature: string;
+    /** 心情 */
+    mood: Mood;
+    /** 生日 */
+    birthday: number;
+    /** 性别 */
+    gender: Gender;
 }

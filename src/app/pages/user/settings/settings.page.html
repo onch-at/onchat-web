@@ -7,11 +7,12 @@
 
       <ion-title>个人信息</ion-title>
 
-      <ion-buttons slot="end" *ngIf="!userInfoForm.invalid">
+      <ion-buttons slot="end" *ngIf="!userInfoForm.invalid && dirty && !loading" (tap)="submit()">
         <ion-button>
           <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
+      <ion-spinner slot="end" *ngIf="loading" name="crescent"></ion-spinner>
     </ion-toolbar>
   </ion-header>
 

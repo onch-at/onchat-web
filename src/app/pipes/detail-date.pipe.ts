@@ -18,8 +18,8 @@ export class DetailDatePipe implements PipeTransform {
 
   transform(value: any): string | WeekDay {
     const nowDate = new Date();
-    const time = Date.parse(value);
-    const date = new Date(Number.isInteger(time) ? time : value);
+    const date = new Date(value);
+
     if (date.toLocaleDateString() == nowDate.toLocaleDateString()) { // 如果是今天
       return Day.Today;
     }

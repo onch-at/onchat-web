@@ -46,31 +46,31 @@
           <label>心 情</label>
           <span class="d-flex align-items-center justify-content-end">
             <ion-icon style="color: var(--oc-color-primary); font-size: 1.25rem; margin-right: .25rem;"
-              src="assets/svg/mood/grin-alt.svg"></ion-icon>
+              src="assets/svg/mood/joy.svg"></ion-icon>
             <small>喜</small>
           </span>
         </li>
 
-        <li class="details-item">
+        <li class="details-item" *ngIf="user.birthday">
           <label>生 日</label>
-          <span>2000-11-19</span>
+          <span>{{ user.birthday | date:'yyyy年M月d日' }}</span>
         </li>
 
         <li class="details-item">
           <label>性 别</label>
-          <span>男</span>
+          <span>{{ user.gender | gender }}</span>
         </li>
 
-        <li class="details-item">
+        <li class="details-item" *ngIf="user.age != null">
           <label>年 龄</label>
-          <span>19岁</span>
+          <span>{{ user.age }}岁</span>
         </li>
 
-        <li class="details-item">
+        <li class="details-item" *ngIf="user.constellation != null">
           <label>十二星座</label>
           <span>
             <i class="icon-constellation-scorpio" style="color: #616161; font-size: 1.25rem;"></i>
-            天蝎座
+            {{ user.constellation | constellation }}
           </span>
         </li>
 

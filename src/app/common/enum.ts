@@ -118,7 +118,7 @@ export enum Mood {
 }
 
 /**
- * 枚举心情
+ * 枚举性别
  */
 export enum Gender {
     /** 男性 */
