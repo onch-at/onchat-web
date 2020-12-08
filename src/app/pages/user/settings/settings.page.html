@@ -37,7 +37,8 @@
       <div class="form-group">
         <label class="d-block">个性签名</label>
         <ion-textarea class="ipt-primary text-center" formControlName="signature" rows="1"
-          [maxlength]="signatureMaxLength" placeholder="请输入个性签名" autoGrow clearInput></ion-textarea>
+          [maxlength]="signatureMaxLength" placeholder="请输入个性签名" (ionChange)="trim('signature')" autoGrow clearInput>
+        </ion-textarea>
 
         <div class="feedback-control-invalid">
           <ion-icon name="warning"></ion-icon>

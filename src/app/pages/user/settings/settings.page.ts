@@ -81,9 +81,9 @@ export class SettingsPage implements OnInit {
 
     controls.nickname.setValue(user.nickname);
     controls.signature.setValue(user.signature);
-    controls.mood.setValue(user.mood || Mood.Joy);
+    controls.mood.setValue(user.mood ?? Mood.Joy);
     controls.birthday.setValue(user.birthday ? new Date(user.birthday).toISOString() : this.today);
-    controls.gender.setValue(user.gender || Gender.Secret);
+    controls.gender.setValue(user.gender ?? Gender.Secret);
 
     const subscription = this.userInfoForm.valueChanges.pipe(takeUntil(this.subject)).subscribe(() => {
       this.dirty = true;
@@ -97,6 +97,10 @@ export class SettingsPage implements OnInit {
    */
   trimAll(controlName: string) {
     this.userInfoForm.controls[controlName].setValue(StrUtil.trimAll(this.userInfoForm.value[controlName]));
+  }
+
+  trim(controlName: string) {
+    this.userInfoForm.controls[controlName].setValue(this.userInfoForm.value[controlName].trim());
   }
 
   submit() {
@@ -118,16 +122,16 @@ export class SettingsPage implements OnInit {
         return this.overlayService.presentToast('用户信息修改失败！', 2000);
       }
 
-      this.overlayService.presentToast('用户信息修改成功！', 1000)
-        .then(toast => toast.onWillDismiss())
-        .then(() => this.router.navigate(['/']));
+      const { user } = this.globalDataService;
 
-      this.globalDataService.user = { ...this.globalDataService.user, ...result.data };
+      this.overlayService.presentToast('用户信息修改成功！', 1000).then(() => {
+        this.router.navigate(['/user/card', user.id]);
+      });
+
+      this.globalDataService.user = { ...user, ...result.data };
 
       this.sessionStorageService.setItemToMap(
-        SessionStorageKey.UserMap,
-        this.globalDataService.user.id,
-        this.globalDataService.user
+        SessionStorageKey.UserMap, user.id, user
       );
     });
   }

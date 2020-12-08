@@ -45,32 +45,31 @@
         <li class="details-item">
           <label>心 情</label>
           <span class="d-flex align-items-center justify-content-end">
-            <ion-icon style="color: var(--oc-color-primary); font-size: 1.25rem; margin-right: .25rem;"
-              src="assets/svg/mood/joy.svg"></ion-icon>
-            <small>喜</small>
+            <app-mood-icon [value]="user.mood || 0"></app-mood-icon>
+            <span>{{ user.mood || 0 | mood }}</span>
           </span>
         </li>
 
-        <li class="details-item" *ngIf="user.birthday">
+        <li class="details-item">
           <label>生 日</label>
-          <span>{{ user.birthday | date:'yyyy年M月d日' }}</span>
+          <span>{{ user.birthday ? (user.birthday | date:'yyyy-M-d') : '未设置' }}</span>
         </li>
 
         <li class="details-item">
           <label>性 别</label>
-          <span>{{ user.gender | gender }}</span>
+          <span>{{ user.gender || 2 | gender }}</span>
         </li>
 
-        <li class="details-item" *ngIf="user.age != null">
+        <li class="details-item">
           <label>年 龄</label>
-          <span>{{ user.age }}岁</span>
+          <span>{{ user.age || 0 }}岁</span>
         </li>
 
-        <li class="details-item" *ngIf="user.constellation != null">
+        <li class="details-item">
           <label>十二星座</label>
           <span>
-            <i class="icon-constellation-scorpio" style="color: #616161; font-size: 1.25rem;"></i>
-            {{ user.constellation | constellation }}
+            <app-constellation-icon *ngIf="user.constellation" [value]="user.constellation"></app-constellation-icon>
+            {{ user.constellation ? (user.constellation | constellation) : '未设置' }}
           </span>
         </li>
 

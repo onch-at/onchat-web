@@ -7,15 +7,11 @@ import { Gender } from '../common/enum';
 export class GenderPipe implements PipeTransform {
 
   transform(value: Gender): string {
-    if (value == Gender.Male) {
-      return '男';
-    }
-
-    if (value == Gender.Female) {
-      return '女';
-    }
-
-    return '保密';
+    return {
+      [Gender.Male]: '男',
+      [Gender.Female]: '女',
+      [Gender.Secret]: '保密'
+    }[value];
   }
 
 }

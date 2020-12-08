@@ -1,5 +1,3 @@
-@import "../../../../assets/css/constellation.css";
-
 ion-header {
   height: 3rem;
   background: transparent;
@@ -159,6 +157,17 @@ ion-header {
       }
     }
   }
+}
+
+app-mood-icon {
+  line-height: 0;
+  font-size: 1.25rem;
+  margin-right: 0.25rem;
+}
+
+app-constellation-icon {
+  line-height: 0;
+  font-size: 1.25rem;
 }
 
 .bottom-bar {
