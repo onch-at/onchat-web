@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SessionStorageKey } from 'src/app/common/enum';
+import { Gender, Mood, SessionStorageKey } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -18,10 +18,13 @@ export class CardPage implements OnInit {
   /** 私聊房间号 */
   chatroomId: number;
 
+  gender: typeof Gender = Gender;
+  mood: typeof Mood = Mood;
+
   constructor(
     private onChatService: OnChatService,
     public globalDataService: GlobalDataService,
-    public overlayService: OverlayService,
+    private overlayService: OverlayService,
     private sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private router: Router

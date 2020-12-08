@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,7 +30,7 @@ export class SettingsPage implements OnInit {
   monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
   today: string = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
   userInfo: UserInfo = new UserInfo;
-
+  /** 数据是否肮脏？ */
   dirty: boolean = false;
   loading: boolean = false;
   subject: Subject<unknown> = new Subject();
@@ -68,11 +69,12 @@ export class SettingsPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private location: Location,
     public globalDataService: GlobalDataService,
     private onChatService: OnChatService,
     private overlayService: OverlayService,
     private modalController: ModalController,
-    private sessionStorageService: SessionStorageService,
+    private sessionStorageService: SessionStorageService
   ) { }
 
   ngOnInit() {
@@ -124,15 +126,19 @@ export class SettingsPage implements OnInit {
 
       const { user } = this.globalDataService;
 
-      this.overlayService.presentToast('用户信息修改成功！', 1000).then(() => {
-        this.router.navigate(['/user/card', user.id]);
-      });
-
       this.globalDataService.user = { ...user, ...result.data };
 
       this.sessionStorageService.setItemToMap(
-        SessionStorageKey.UserMap, user.id, user
+        SessionStorageKey.UserMap,
+        user.id,
+        this.globalDataService.user
       );
+
+      // TODO
+      this.location.back();
+      this.overlayService.presentToast('用户信息修改成功！', 1000).then(() => {
+        this.router.navigate(['/user/card', user.id]);
+      });
     });
   }
 
