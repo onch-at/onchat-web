@@ -17,7 +17,8 @@ export class FeedbackService {
   /**
    * 轻微震动：50ms
    */
-  vibrate() {
+  slightVibrate() {
     'vibrate' in window.navigator && window.navigator.vibrate(25);
   }
+
 }

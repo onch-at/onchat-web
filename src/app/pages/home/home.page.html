@@ -6,8 +6,8 @@
     <div class="button-group d-flex">
       <ion-button expand="block" fill="clear" routerDirection="root" routerLink="/home/chat" routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
-        <ion-badge [ngClass]="{'visibility-hidden': globalDataService.unreadMsgNum <= 0}" class="bg-danger">
-          {{ globalDataService.unreadMsgNum | numLimit }}
+        <ion-badge [ngClass]="{'visibility-hidden': globalDataService.unreadMsgCount <= 0}" class="bg-danger">
+          {{ globalDataService.unreadMsgCount | numLimit }}
         </ion-badge>
       </ion-button>
 

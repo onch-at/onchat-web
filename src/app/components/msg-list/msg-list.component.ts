@@ -70,7 +70,7 @@ export class MsgListComponent implements OnInit {
     });
 
     return this.overlayService.bubbleToolbarPopover.present().then(() => {
-      this.feedbackService.vibrate();
+      this.feedbackService.slightVibrate();
       // 延迟300ms后才打开点击背景关闭popover
       setTimeout(() => {
         this.overlayService.bubbleToolbarPopover.backdropDismiss = true;

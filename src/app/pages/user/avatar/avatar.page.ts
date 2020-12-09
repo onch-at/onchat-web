@@ -58,7 +58,7 @@ export class AvatarPage implements OnInit {
   }
 
   onPress() {
-    this.feedbackService.vibrate();
+    this.feedbackService.slightVibrate();
     this.presentActionSheet();
   }
 

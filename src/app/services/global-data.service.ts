@@ -12,7 +12,7 @@ export class GlobalDataService {
   /** 记录当前所在的聊天室ID */
   private _chatroomId: number = null;
   /** 未读消息总数 */
-  private _unreadMsgNum: number = 0;
+  private _unreadMsgCount: number = 0;
   /** 是否可以销毁（返回上一页） */
   private _canDeactivate: boolean = true;
   /** 我的收到好友申请列表 */
@@ -68,27 +68,33 @@ export class GlobalDataService {
     return this._sendFriendRequests;
   }
 
-  set unreadMsgNum(num: number) {
-    this._unreadMsgNum = num;
+  set unreadMsgCount(num: number) {
+    this._unreadMsgCount = num;
   }
 
-  get unreadMsgNum() {
-    return this._unreadMsgNum;
+  get unreadMsgCount() {
+    return this._unreadMsgCount;
   }
 
   set chatList(chatList: ChatItem[]) {
     this._chatList = sortChatList(chatList);
     this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
 
-    this.unreadMsgNum > 0 && (this.unreadMsgNum = 0);
+    if (this.unreadMsgCount > 0) {
+      this.unreadMsgCount = 0;
+    }
 
     for (const chatItem of chatList) {
       // 计算未读消息总数
       // 如果有未读消息，
       // 且总未读数大于100，则停止遍历
-      if (chatItem.unread > 0 && (this.unreadMsgNum += chatItem.unread) >= 100) {
+      if (chatItem.unread > 0 && (this.unreadMsgCount += chatItem.unread) >= 100) {
         break;
       }
+    }
+
+    if ('setAppBadge' in navigator) {
+      (navigator as any).setAppBadge(this.unreadMsgCount);
     }
   }
 
