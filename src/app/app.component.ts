@@ -74,24 +74,14 @@ export class AppComponent implements OnInit {
           this.feedbackService.dingDengAudio.play();
         }
 
-        if (document.hidden) {
-          const notification = new Notification('收到好友申请', {
-            body: '用户 ' + friendRequest.selfUsername + ' 申请添加你为好友',
-            badge: '/assets/icon/favicon.ico',
-            icon: friendRequest.selfAvatarThumbnail,
-            requireInteraction: true,
-            vibrate: [200, 75, 200]
-          });
+        const opts = {
+          iconUrl: friendRequest.selfAvatarThumbnail,
+          title: '收到好友申请',
+          description: '用户 ' + friendRequest.selfUsername + ' 申请添加你为好友',
+          tapHandler: () => this.router.navigate(['/friend/handle', friendRequest.selfId])
+        };
 
-          notification.onclick = () => this.router.navigate(['/friend/handle', friendRequest.selfId]);
-        } else {
-          this.overlayService.presentNotification({
-            iconUrl: friendRequest.selfAvatarThumbnail,
-            title: '收到好友申请',
-            description: '用户 ' + friendRequest.selfUsername + ' 申请添加你为好友',
-            tapHandler: () => this.router.navigate(['/friend/handle', friendRequest.selfId])
-          });
-        }
+        document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
       } else if (friendRequest.selfId == this.globalDataService.user.id) {
         const index = this.globalDataService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
         // 如果这条好友申请已经在列表里
@@ -118,26 +108,14 @@ export class AppComponent implements OnInit {
 
           this.feedbackService.booAudio.play();
 
-          if (document.hidden) {
-            const notification = new Notification('好友申请已同意', {
-              body: '已和 ' + result.data.targetUsername + ' 成为好友',
-              badge: '/assets/icon/favicon.ico',
-              icon: result.data.targetAvatarThumbnail,
-              requireInteraction: true,
-              vibrate: [200, 75, 200]
-            });
+          const opts = {
+            iconUrl: result.data.targetAvatarThumbnail,
+            title: '好友申请已同意',
+            description: '已和 ' + result.data.targetUsername + ' 成为好友',
+            tapHandler: () => this.router.navigate(['/chat', result.data.chatroomId])
+          };
 
-            notification.onclick = () => this.router.navigate(['/chat', result.data.chatroomId]);
-          } else {
-            this.overlayService.presentNotification({
-              iconUrl: result.data.targetAvatarThumbnail,
-              title: '好友申请已同意',
-              description: '已和 ' + result.data.targetUsername + ' 成为好友',
-              tapHandler: () => {
-                this.router.navigate(['/chat', result.data.chatroomId]);
-              }
-            });
-          }
+          document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
         } else if (result.data.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
           const index = this.globalDataService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
           index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
@@ -169,25 +147,14 @@ export class AppComponent implements OnInit {
 
           this.feedbackService.dingDengAudio.play();
 
-          if (document.hidden) {
-            const notification = new Notification('好友申请被拒绝', {
-              body: '用户 ' + friendRequest.targetUsername + ' 拒绝了你的好友申请',
-              badge: '/assets/icon/favicon.ico',
-              icon: friendRequest.targetAvatarThumbnail,
-              requireInteraction: true,
-              vibrate: [200, 75, 200]
-            });
+          const opts = {
+            iconUrl: friendRequest.targetAvatarThumbnail,
+            title: '好友申请被拒绝',
+            description: '用户 ' + friendRequest.targetUsername + ' 拒绝了你的好友申请',
+            tapHandler: () => this.router.navigate(['/friend/request', friendRequest.targetId])
+          };
 
-            notification.onclick = () => this.router.navigate(['/friend/request', friendRequest.targetId]);
-          } else {
-            this.overlayService.presentNotification({
-              iconUrl: friendRequest.targetAvatarThumbnail,
-              title: '好友申请被拒绝',
-              description: '用户 ' + friendRequest.targetUsername + ' 拒绝了你的好友申请',
-              tapHandler: () => this.router.navigate(['/friend/request', friendRequest.targetId])
-            });
-          }
-
+          document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
         } else if (friendRequest.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
           const index = this.globalDataService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
           index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
@@ -225,24 +192,14 @@ export class AppComponent implements OnInit {
               break;
           }
 
-          if (document.hidden) {
-            const notification = new Notification(roomName, {
-              body: (roomName !== msg.nickname ? msg.nickname + '：' : '') + content,
-              badge: '/assets/icon/favicon.ico',
-              icon: msg.avatarThumbnail,
-              requireInteraction: true,
-              vibrate: [200, 75, 200]
-            });
+          const opts = {
+            iconUrl: msg.avatarThumbnail || null, // TODO 群聊的头像
+            title: roomName,
+            description: (roomName !== msg.nickname ? msg.nickname + '：' : '') + content,
+            tapHandler: () => this.router.navigate(['/chat', msg.chatroomId])
+          };
 
-            notification.onclick = () => this.router.navigate(['/chat', msg.chatroomId]);
-          } else {
-            this.overlayService.presentNotification({
-              iconUrl: msg.avatarThumbnail || null, // TODO 群聊的头像
-              title: roomName,
-              description: (roomName !== msg.nickname ? msg.nickname + '：' : '') + content,
-              tapHandler: () => this.router.navigate(['/chat', msg.chatroomId])
-            });
-          }
+          document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
         }
 
         this.feedbackService.booAudio.play();

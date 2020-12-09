@@ -33,6 +33,24 @@ export class OverlayService {
   }
 
   /**
+   * 弹出原生通知
+   * @param opts
+   */
+  presentNativeNotification(opts: NotificationOptions) {
+    const notification = new Notification(opts.title, {
+      body: opts.description,
+      badge: '/assets/icon/favicon.ico',
+      icon: opts.iconUrl,
+      requireInteraction: true,
+      vibrate: [200, 75, 200]
+    });
+
+    notification.onclick = opts.tapHandler;
+
+    return notification;
+  }
+
+  /**
    * 弹出文字Toast
    * @param message 文字
    */
