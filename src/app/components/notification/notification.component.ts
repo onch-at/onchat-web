@@ -14,13 +14,15 @@ export class NotificationComponent implements OnInit {
   /** 描述 */
   @Input() description: string;
   /** 图标URL */
-  @Input() iconUrl: string;
+  @Input() icon: string;
   /** 浮层 */
   @Input() overlayRef: OverlayRef;
   /** 浮层持续时间 */
   @Input() overlayDuration: number;
+  /** 点击跳转URL */
+  @Input() url: string;
   /** 点击事件处理函数 */
-  @Input() tapHandler: (e: Event) => void;
+  @Input() handler: (e: Event) => void;
   /** 当前Notification的元素 */
   element: HTMLElement;
   /** 取消监听事件函数 */
@@ -120,12 +122,13 @@ export class NotificationComponent implements OnInit {
     return this.dismiss$.asObservable();
   }
 
-  @HostListener('tap', ['$event'])
-  onTap(event: Event) {
+  @HostListener('click', ['$event'])
+  onClick(event: Event) {
+
     this.unlistener && this.unlistener();
     this.unlistener = this.renderer2.listen(this.element, 'transitionend', () => {
       this.dismiss();
-      this.tapHandler(event);
+      this.handler && this.handler(event);
     });
   }
 

@@ -1,5 +1,5 @@
-<aside class="notification" appActiveClass [appActiveClassDuration]="250">
-  <img class="notification-icon" [src]="iconUrl">
+<aside class="notification" appActiveClass [appActiveClassDuration]="250" [routerLink]="url">
+  <img class="notification-icon" [src]="icon">
   <div class="notification-body">
     <h1 class="notification-title">{{ title }}</h1>
     <p class="notification-description">{{ description }}</p>

@@ -149,11 +149,6 @@ export class ChatPage implements OnInit {
     });
   }
 
-  onTapIonItem(chatItem: ChatItem) {
-    chatItem.unread = 0;
-    this.globalDataService.chatList = this.globalDataService.chatList;
-  }
-
   /**
    * 合上IonItemSliding
    * @param i

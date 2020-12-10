@@ -1,10 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, Router } from '@angular/router';
-import { SwUpdate } from '@angular/service-worker';
-import { race } from 'rxjs';
+import { SwPush, SwUpdate } from '@angular/service-worker';
 import { filter, mergeMap } from 'rxjs/operators';
 import { LocalStorageKey, MessageType, SessionStorageKey, SocketEvent } from './common/enum';
+import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
 import { ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private swUpdate: SwUpdate,
+    private swPush: SwPush,
     private socketService: SocketService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
@@ -71,17 +72,17 @@ export class AppComponent implements OnInit {
           this.globalDataService.receiveFriendRequests[index] = friendRequest; // 静默更改
         } else {
           this.globalDataService.receiveFriendRequests.unshift(friendRequest);
-          this.feedbackService.dingDengAudio.play();
         }
 
-        const opts = {
-          iconUrl: friendRequest.selfAvatarThumbnail,
+        const opts: NotificationOptions = {
+          icon: friendRequest.selfAvatarThumbnail,
           title: '收到好友申请',
           description: '用户 ' + friendRequest.selfUsername + ' 申请添加你为好友',
-          tapHandler: () => this.router.navigate(['/friend/handle', friendRequest.selfId])
+          url: '/friend/handle/' + friendRequest.selfId
         };
 
         document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
+        this.feedbackService.dingDengAudio.play();
       } else if (friendRequest.selfId == this.globalDataService.user.id) {
         const index = this.globalDataService.sendFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
         // 如果这条好友申请已经在列表里
@@ -106,16 +107,15 @@ export class AppComponent implements OnInit {
           index = this.globalDataService.receiveFriendRequests.findIndex((v: FriendRequest) => v.selfId == result.data.targetId);
           index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
 
-          this.feedbackService.booAudio.play();
-
-          const opts = {
-            iconUrl: result.data.targetAvatarThumbnail,
+          const opts: NotificationOptions = {
+            icon: result.data.targetAvatarThumbnail,
             title: '好友申请已同意',
             description: '已和 ' + result.data.targetUsername + ' 成为好友',
-            tapHandler: () => this.router.navigate(['/chat', result.data.chatroomId])
+            url: '/chat/' + result.data.chatroomId
           };
 
           document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
+          this.feedbackService.booAudio.play();
         } else if (result.data.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
           const index = this.globalDataService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == result.data.friendRequestId);
           index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
@@ -145,16 +145,15 @@ export class AppComponent implements OnInit {
             this.globalDataService.sendFriendRequests.unshift(friendRequest);
           }
 
-          this.feedbackService.dingDengAudio.play();
-
-          const opts = {
-            iconUrl: friendRequest.targetAvatarThumbnail,
+          const opts: NotificationOptions = {
+            icon: friendRequest.targetAvatarThumbnail,
             title: '好友申请被拒绝',
             description: '用户 ' + friendRequest.targetUsername + ' 拒绝了你的好友申请',
-            tapHandler: () => this.router.navigate(['/friend/request', friendRequest.targetId])
+            url: '/friend/request/' + friendRequest.targetId
           };
 
           document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
+          this.feedbackService.dingDengAudio.play();
         } else if (friendRequest.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
           const index = this.globalDataService.receiveFriendRequests.findIndex((v: FriendRequest) => v.id == friendRequest.id);
           index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
@@ -166,9 +165,7 @@ export class AppComponent implements OnInit {
 
     // 收到消息时
     this.socketService.on(SocketEvent.Message).subscribe((result: Result<Message>) => {
-      if (result.code != 0) {
-        return;
-      }
+      if (result.code != 0) { return; }
 
       const msg = result.data;
       console.log(result)
@@ -177,29 +174,31 @@ export class AppComponent implements OnInit {
 
       // 如果消息不是自己的话，就播放提示音
       if (msg.userId != this.globalDataService.user.id) {
+        const roomName = index >= 0 ? this.globalDataService.chatList[index].name : '收到新消息';
+
+        let content = '[收到新消息]';
+        switch (msg.type) {
+          case MessageType.Text:
+            content = (msg.data as TextMessage).content;
+            break;
+
+          case MessageType.RichText:
+            content = (msg.data as RichTextMessage).text;
+            break;
+        }
+
+        const opts: NotificationOptions = {
+          icon: msg.avatarThumbnail || null, // TODO 群聊的头像
+          title: roomName,
+          description: (roomName !== msg.nickname ? msg.nickname + '：' : '') + content,
+          url: '/chat/' + msg.chatroomId
+        };
+
         // 并且不在同一个房间，就弹出通知
         if (msg.chatroomId != this.globalDataService.chatroomId) {
-          const roomName = index >= 0 ? this.globalDataService.chatList[index].name : '收到新消息';
-
-          let content = '[收到新消息]';
-          switch (msg.type) {
-            case MessageType.Text:
-              content = (msg.data as TextMessage).content;
-              break;
-
-            case MessageType.RichText:
-              content = (msg.data as RichTextMessage).text;
-              break;
-          }
-
-          const opts = {
-            iconUrl: msg.avatarThumbnail || null, // TODO 群聊的头像
-            title: roomName,
-            description: (roomName !== msg.nickname ? msg.nickname + '：' : '') + content,
-            tapHandler: () => this.router.navigate(['/chat', msg.chatroomId])
-          };
-
           document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
+        } else if (document.hidden) {
+          this.overlayService.presentNativeNotification(opts);
         }
 
         this.feedbackService.booAudio.play();
@@ -233,29 +232,11 @@ export class AppComponent implements OnInit {
         chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
         chatItem.latestMsg.type = MessageType.Tips;
         const name = chatItem.latestMsg.userId == this.globalDataService.user.id ? '我' : chatItem.latestMsg.nickname;
-        (chatItem.latestMsg.data as any).content = name + ' 撤回了一条消息';
+        (chatItem.latestMsg.data as any).content = name + '：撤回了一条消息';
         chatItem.updateTime = Date.now();
         this.globalDataService.chatList[index] = chatItem;
         this.globalDataService.chatList = this.globalDataService.chatList;
       }
-    });
-
-    // 连接断开时
-    this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
-      this.overlayService.presentToast('与服务器断开连接！');
-    });
-
-    // 连接失败时
-    race(
-      this.socketService.on(SocketEvent.ConnectError),
-      this.socketService.on(SocketEvent.ReconnectError)
-    ).subscribe(() => {
-      this.overlayService.presentToast('服务器连接失败！');
-    });
-
-    // 重连成功时
-    this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
-      this.overlayService.presentToast('与服务器重连成功！');
     });
 
     // 如果路由返回被取消，就震动一下，表示阻止
@@ -263,8 +244,31 @@ export class AppComponent implements OnInit {
       filter(event => event instanceof NavigationCancel)
     ).subscribe(() => this.feedbackService.slightVibrate());
 
+    this.checkSocketConnectState();
+
     this.checkUpdate();
-    this.requestNotificationPermission();
+
+    this.initNativeNotification();
+  }
+
+  /**
+   * 检测套接字连接状态
+   */
+  checkSocketConnectState() {
+    // 连接断开时
+    this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
+      this.overlayService.presentToast('与服务器断开连接！');
+    });
+
+    // 连接失败时
+    this.socketService.on(SocketEvent.ReconnectError).subscribe(() => {
+      this.overlayService.presentToast('服务器连接失败！');
+    });
+
+    // 重连成功时
+    this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
+      this.overlayService.presentToast('与服务器重连成功！');
+    });
   }
 
   /**
@@ -281,13 +285,21 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * 请求通知权限
+   * 初始化原生通知
    */
-  requestNotificationPermission() {
-    const granted = 'granted';
-    Notification.permission !== granted && Notification.requestPermission().then((permission: string) => {
-      permission === granted && this.overlayService.presentToast('通知权限授权成功！');
-    });
+  initNativeNotification() {
+    if ('Notification' in window) {
+      const granted = 'granted';
+      Notification.permission !== granted && Notification.requestPermission().then((permission: string) => {
+        permission === granted && this.overlayService.presentToast('通知权限授权成功！');
+      });
+
+      this.swPush.notificationClicks.subscribe(event => {
+        const { url } = event.notification.data;
+        this.router.navigateByUrl(url)
+        window.focus();
+      });
+    }
   }
 
 }

@@ -37,17 +37,19 @@ export class OverlayService {
    * @param opts
    */
   presentNativeNotification(opts: NotificationOptions) {
-    const notification = new Notification(opts.title, {
-      body: opts.description,
-      badge: '/assets/icon/favicon.ico',
-      icon: opts.iconUrl,
-      requireInteraction: true,
-      vibrate: [200, 75, 200]
-    });
-
-    notification.onclick = opts.tapHandler;
-
-    return notification;
+    if ('Notification' in window && Notification.permission === 'granted') {
+      const { title, description, icon, url } = opts;
+      navigator.serviceWorker.ready.then((registration: ServiceWorkerRegistration) => registration.showNotification(title, {
+        body: description,
+        badge: '/assets/icon/favicon.ico',
+        icon: icon,
+        requireInteraction: true,
+        vibrate: [200, 75, 200],
+        data: {
+          url
+        }
+      }));
+    }
   }
 
   /**

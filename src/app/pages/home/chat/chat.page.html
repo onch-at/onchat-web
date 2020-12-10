@@ -16,7 +16,7 @@
 			</ion-item-options>
 
 			<ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
-				[routerLink]="['/chat', item.chatroomId]" (tap)="onTapIonItem(item)">
+				[routerLink]="['/chat', item.chatroomId]">
 				<ion-thumbnail slot="start">
 					<ion-img *ngIf="i > 9"
 						[src]="item.avatarThumbnail || 'https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg'">

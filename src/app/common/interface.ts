@@ -5,11 +5,13 @@ export interface NotificationOptions {
     /** 描述 */
     description?: string;
     /** 图标URL */
-    iconUrl?: string;
+    icon?: string;
     /** 持续时间 */
     duration?: number;
+    /** 点击通知跳转页面 */
+    url?: string;
     /** 点击事件处理 */
-    tapHandler?: (event: Event) => void;
+    handler?: (event: Event) => void;
 }
 
 /** 警告框组件参数 */

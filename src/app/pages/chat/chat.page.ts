@@ -96,6 +96,7 @@ export class ChatPage implements OnInit {
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
     const chatItem = this.globalDataService.chatList.find((v: ChatItem) => v.chatroomId == this.chatroomId);
     if (chatItem) {
+      chatItem.unread = 0;
       this.roomName = chatItem.name;
       this.chatroomType = chatItem.type;
     } else { // TODO 把数据缓存下来

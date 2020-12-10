@@ -30,7 +30,6 @@ export enum SocketEvent {
     /** 重新连接时 */
     Reconnect = 'reconnect',
     /** 连接失败时 */
-    ConnectError = 'connect_error',
     ReconnectError = 'reconnect_error',
     /** 初始化 */
     Init = 'init',

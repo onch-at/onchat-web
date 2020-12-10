@@ -13,16 +13,7 @@ export class NotificationController {
   private overlayRef: OverlayRef;
   private componentRef: ComponentRef<NotificationComponent>;
 
-  /** 标题 */
-  title: string;
-  /** 描述 */
-  description: string;
-  /** 图标URL */
-  iconUrl: string;
-  /** 持续时间 */
-  duration: number;
-  /** 点击事件处理函数 */
-  tapHandler: (event: Event) => void;
+  option: NotificationOptions;
   /** 通知关闭计时器 */
   private dismissTimeout: number;
   /** 一个订阅器 */
@@ -38,11 +29,7 @@ export class NotificationController {
    * @param opts
    */
   create(opts: NotificationOptions): NotificationController {
-    this.title = opts.title;
-    this.description = opts.description || '';
-    this.iconUrl = opts.iconUrl || '';
-    this.duration = opts.duration || 3000;
-    this.tapHandler = opts.tapHandler || (() => { });
+    this.option = opts;
 
     if (!this.overlayRef) {
       this.overlayRef = this.overlay.create(this.overlayConfig);
@@ -64,11 +51,14 @@ export class NotificationController {
       this.componentRef.instance.overlayRef = this.overlayRef;
     }
 
-    this.componentRef.instance.title = this.title;
-    this.componentRef.instance.description = this.description;
-    this.componentRef.instance.iconUrl = this.iconUrl;
-    this.componentRef.instance.overlayDuration = this.duration;
-    this.componentRef.instance.tapHandler = this.tapHandler;
+    const { title, description, icon, duration, url, handler } = this.option;
+
+    this.componentRef.instance.title = title;
+    this.componentRef.instance.description = description;
+    this.componentRef.instance.icon = icon;
+    this.componentRef.instance.overlayDuration = duration || 3000;
+    this.componentRef.instance.url = url;
+    this.componentRef.instance.handler = handler;
 
     // 监听通知关闭事件
     this.subscription = this.componentRef.instance.onDismiss().subscribe(() => {
@@ -79,9 +69,7 @@ export class NotificationController {
     });
 
     // 开始计时
-    this.dismissTimeout = window.setTimeout(() => {
-      this.dismiss();
-    }, this.duration);
+    this.dismissTimeout = window.setTimeout(() => this.dismiss(), duration || 3000);
 
     return this;
   }
