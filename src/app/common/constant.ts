@@ -20,6 +20,11 @@ export const PASSWORD_MIN_LENGTH: number = 8;
 /** 用户密码最大长度 */
 export const PASSWORD_MAX_LENGTH: number = 50;
 
+/** 聊天室名称最小长度 */
+export const CHATROOM_NAME_MIN_LENGTH: number = 1;
+/** 聊天室名称最大长度 */
+export const CHATROOM_NAME_MAX_LENGTH: number = 15;
+
 /** 个性签名最小长度 */
 export const SIGNATURE_MIN_LENGTH: number = 1;
 /** 个性签名最大长度 */

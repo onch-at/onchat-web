@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
@@ -9,11 +10,16 @@ import { PopoverController } from '@ionic/angular';
 export class HomeMenuComponent implements OnInit {
 
   constructor(
+    private router: Router,
     private popoverController: PopoverController,
   ) { }
 
   ngOnInit() {
 
+  }
+
+  navigate(commands: any[]) {
+    this.router.navigate(commands);
   }
 
   dismiss() {

@@ -111,11 +111,3 @@ ion-router-outlet {
     animation: zoom-out 0.25s ease-out forwards;
   }
 }
-
-::ng-deep .home-menu-popover {
-  --background: var(--oc-color-light);
-
-  .popover-content {
-    --max-width: 8rem;
-  }
-}

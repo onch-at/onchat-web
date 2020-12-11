@@ -11,10 +11,6 @@
     width: 100%;
     object-fit: cover;
     background: var(--oc-color-secondary);
-
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0.75);
-    }
   }
 
   .profile-card-content {
@@ -25,6 +21,7 @@
     height: 100%;
     padding: 0.75rem;
     border-radius: 0 0 1.5rem 0;
+    background: rgba(var(--oc-color-black-rgb), 0.125);
   }
 
   .profile-card-avatar {

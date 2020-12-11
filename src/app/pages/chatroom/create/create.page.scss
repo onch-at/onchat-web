@@ -17,3 +17,61 @@ ion-header {
         margin-right: 0.25rem;
     }
 }
+
+main {
+    padding: 4rem 1rem 1rem;
+    color: var(--oc-color-dark);
+}
+
+.avatar {
+    width: 5.75rem;
+    height: 5.75rem;
+}
+
+form {
+    margin: 0.5rem 0;
+    width: calc(100vw - 2rem);
+}
+
+.form-group {
+    font-size: 1rem;
+
+    &:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    > label {
+        margin: 0 0.5rem 0.5rem;
+    }
+}
+
+.feedback-control-invalid {
+    display: flex;
+    align-items: flex-end;
+    font-size: 0.85rem;
+    height: 1.75rem;
+    padding-left: 0.25rem;
+
+    ion-icon {
+        font-size: 1.125rem;
+        margin-right: 0.125rem;
+    }
+}
+
+ion-input {
+    height: 2.75rem;
+    padding: 0 1rem;
+
+    ::ng-deep .sc-ion-input-ios {
+        &.native-input {
+            padding: 0 2.5rem;
+        }
+    }
+}
+
+.ipt-primary {
+    border: 0;
+    background: var(--oc-color-secondary);
+    width: 100%;
+    border-radius: 1.5rem;
+}

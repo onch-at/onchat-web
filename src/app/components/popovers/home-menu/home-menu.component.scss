@@ -1,18 +1,26 @@
 .home-menu {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0.15rem 0;
     color: var(--oc-color-dark);
 }
 
 .home-menu-item {
     display: flex;
     align-items: center;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.95rem;
 
     > ion-icon {
         margin-right: 0.5rem;
-        font-size: 1.125rem;
+        font-size: 1.25rem;
+    }
+}
+
+::ng-deep .home-menu-popover {
+    --background: var(--oc-color-light);
+
+    .popover-content {
+        --max-width: 8.5rem;
     }
 }
