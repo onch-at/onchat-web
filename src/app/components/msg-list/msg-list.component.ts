@@ -5,7 +5,7 @@ import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
-import { BubbleToolbarComponent } from '../bubble-toolbar/bubble-toolbar.component';
+import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
 @Component({
   selector: 'app-msg-list',

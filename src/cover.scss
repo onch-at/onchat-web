@@ -1,6 +1,5 @@
-/*
- * 覆盖Ionic的样式
- */
+/* 覆盖Ionic的样式 */
+
 ion-segment {
     --background: var(--oc-color-secondary);
     height: 2.75rem;
@@ -441,5 +440,11 @@ ion-toast {
 
     @media (prefers-color-scheme: dark) {
         --background: var(--oc-color-dark);
+    }
+}
+
+ion-modal .sc-ion-modal-ios {
+    @media only screen and (min-height: 600px) and (min-width: 768px) {
+        --border-radius: 1.5rem;
     }
 }

@@ -232,7 +232,7 @@ export class AppComponent implements OnInit {
         chatItem.latestMsg = JSON.parse(JSON.stringify(chatItem.latestMsg));
         chatItem.latestMsg.type = MessageType.Tips;
         const name = chatItem.latestMsg.userId == this.globalDataService.user.id ? '我' : chatItem.latestMsg.nickname;
-        (chatItem.latestMsg.data as any).content = name + '：撤回了一条消息';
+        (chatItem.latestMsg.data as any).content = name + ' 撤回了一条消息';
         chatItem.updateTime = Date.now();
         this.globalDataService.chatList[index] = chatItem;
         this.globalDataService.chatList = this.globalDataService.chatList;

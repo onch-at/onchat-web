@@ -15,7 +15,6 @@ import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
-import { PopoverComponent } from './components/popover/popover.component';
 import { SharedModule } from './modules/shared.module';
 
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
@@ -23,11 +22,9 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
 @NgModule({
   declarations: [
     AppComponent,
-    PopoverComponent,
     NotificationComponent
   ],
   entryComponents: [
-    PopoverComponent,
     NotificationComponent
   ],
   imports: [

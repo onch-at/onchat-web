@@ -1,11 +1,9 @@
 aside {
-  position: fixed;
   top: 0;
   right: 0;
   width: 100%;
   display: flex;
   padding: 0.5rem 0;
-  z-index: 1;
   background: var(--oc-color-white);
 
   &::after {
@@ -15,7 +13,7 @@ aside {
     left: 0;
     width: 100%;
     height: 0.5rem;
-    background: linear-gradient(var(--oc-color-white), rgba(0, 0, 0, 0));
+    background: linear-gradient(var(--oc-color-white), rgba(#fff, 0.001));
   }
 
   button {

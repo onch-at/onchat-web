@@ -112,10 +112,9 @@ ion-router-outlet {
   }
 }
 
-::ng-deep {
-  ion-popover {
-    --background: var(--oc-color-light) !important;
-  }
+::ng-deep .home-menu-popover {
+  --background: var(--oc-color-light);
+
   .popover-content {
     --max-width: 8rem;
   }

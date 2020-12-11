@@ -3,8 +3,8 @@ import { Router, Scroll } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { HomeMenuComponent } from 'src/app/components/popovers/home-menu/home-menu.component';
 import { GlobalDataService } from 'src/app/services/global-data.service';
-import { PopoverComponent } from '../../components/popover/popover.component';
 
 @Component({
   selector: 'app-home',
@@ -39,8 +39,9 @@ export class HomePage implements OnInit {
 
   async presentPopover(event: any) {
     const popover = await this.popoverController.create({
-      component: PopoverComponent,
+      component: HomeMenuComponent,
       event: event,
+      cssClass: 'home-menu-popover'
     });
     return await popover.present();
   }
