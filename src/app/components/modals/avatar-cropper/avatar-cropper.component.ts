@@ -3,17 +3,15 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from 'ngx-image-cropper';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { SessionStorageKey } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
-import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 
 type ImageCropData = { imageBlob: Blob, imageSrc: SafeUrl };
+export type AvatarData = { avatar: string; avatarThumbnail: string };
 
 @Component({
   selector: 'app-avatar-cropper',
@@ -23,6 +21,10 @@ type ImageCropData = { imageBlob: Blob, imageSrc: SafeUrl };
 export class AvatarCropperComponent implements OnInit {
   /** 文件变更事件 */
   @Input() imageChangedEvent: Event;
+  /** 上传器 */
+  @Input() uploader: (avatar: Blob) => Observable<Result<AvatarData>>;
+  /** 处理程序 */
+  @Input() handler: (result: Result<AvatarData>) => void;
   /** 图片裁剪组件 */
   @ViewChild(ImageCropperComponent, { static: true }) imageCropper: ImageCropperComponent;
   /** 图片格式，优先级：webp -> jpeg -> png */
@@ -34,10 +36,8 @@ export class AvatarCropperComponent implements OnInit {
   subject: Subject<unknown> = new Subject();
 
   constructor(
-    private onChatService: OnChatService,
     public globalDataService: GlobalDataService,
     private modalController: ModalController,
-    private sessionStorageService: SessionStorageService,
     private overlayService: OverlayService,
     private sanitizer: DomSanitizer,
     private router: Router
@@ -205,16 +205,9 @@ export class AvatarCropperComponent implements OnInit {
     this.globalDataService.canDeactivate = false;
     this.ionLoading = this.overlayService.presentLoading('正在上传…');
 
-    this.onChatService.uploadUserAvatar(imageBlob).subscribe(async (result: Result<{ avatar: string, avatarThumbnail: string }>) => {
+    this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
       if (result.code === 0) {
-        this.globalDataService.user.avatar = result.data.avatar;
-        this.globalDataService.user.avatarThumbnail = result.data.avatarThumbnail;
-
-        this.sessionStorageService.setItemToMap(
-          SessionStorageKey.UserMap,
-          this.globalDataService.user.id,
-          this.globalDataService.user
-        );
+        this.handler(result);
 
         this.dismiss(imageSrc);
         this.overlayService.presentToast('头像上传成功！');

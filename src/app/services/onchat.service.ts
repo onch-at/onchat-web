@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
+import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
 import { Login, Register, UserInfo } from '../models/form.model';
 import { ChatItem, Chatroom, FriendRequest, Message, Result, User } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
@@ -89,7 +90,7 @@ export class OnChatService {
   /**
    * 上传用户头像
    */
-  uploadUserAvatar(avatar: Blob): Observable<Result<{ avatar: string, avatarThumbnail: string }>> {
+  uploadUserAvatar(avatar: Blob): Observable<Result<AvatarData>> {
     const formData: FormData = new FormData();
     formData.append('image', avatar);
 

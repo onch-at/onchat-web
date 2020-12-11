@@ -3,10 +3,11 @@ import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { SessionStorageKey } from 'src/app/common/enum';
-import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
+import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalDataService } from 'src/app/services/global-data.service';
+import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SysUtil } from 'src/app/utils/sys.util';
@@ -32,6 +33,7 @@ export class AvatarPage implements OnInit {
   constructor(
     public globalDataService: GlobalDataService,
     private overlayService: OverlayService,
+    private onChatService: OnChatService,
     private feedbackService: FeedbackService,
     private sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
@@ -74,7 +76,18 @@ export class AvatarPage implements OnInit {
       handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
         component: AvatarCropperComponent,
         componentProps: {
-          imageChangedEvent: event
+          imageChangedEvent: event,
+          uploader: (avatar: Blob) => this.onChatService.uploadUserAvatar(avatar),
+          handler: (result: Result<AvatarData>) => {
+            this.globalDataService.user.avatar = result.data.avatar;
+            this.globalDataService.user.avatarThumbnail = result.data.avatarThumbnail;
+
+            this.sessionStorageService.setItemToMap(
+              SessionStorageKey.UserMap,
+              this.globalDataService.user.id,
+              this.globalDataService.user
+            );
+          }
         }
       })).then((modal: HTMLIonModalElement) => {
         modal.present();
