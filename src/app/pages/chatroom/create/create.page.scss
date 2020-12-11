@@ -1,0 +1,19 @@
+ion-header {
+    height: 3rem;
+    background: rgba(var(--oc-color-white-rgb), 0.75);
+    backdrop-filter: blur(15px);
+
+    ion-buttons > *,
+    ion-title {
+        --color: var(--oc-color-black);
+    }
+
+    ion-title {
+        font-size: 0.9rem;
+    }
+
+    ion-spinner {
+        --color: var(--oc-color-black);
+        margin-right: 0.25rem;
+    }
+}

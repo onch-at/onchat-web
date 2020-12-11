@@ -33,10 +33,6 @@ export class MsgListComponent implements OnInit {
 
   ngOnInit() { }
 
-  ngOnDestroy() {
-    this.overlayService.bubbleToolbarPopover = null;
-  }
-
   /**
    * 用于提升性能
    * 一般情况下，当数组内有变更时，
@@ -56,7 +52,8 @@ export class MsgListComponent implements OnInit {
    */
   async presentBubbleToolbarPopover(msgItem: Message, element: Element, event: any) {
     event.preventDefault();
-    this.overlayService.bubbleToolbarPopover = await this.popoverController.create({
+
+    const popover = await this.popoverController.create({
       component: BubbleToolbarComponent,
       componentProps: {
         element,
@@ -69,13 +66,15 @@ export class MsgListComponent implements OnInit {
       backdropDismiss: false
     });
 
-    return this.overlayService.bubbleToolbarPopover.present().then(() => {
-      this.feedbackService.slightVibrate();
-      // 延迟300ms后才打开点击背景关闭popover
-      setTimeout(() => {
-        this.overlayService.bubbleToolbarPopover.backdropDismiss = true;
-      }, 300);
-    });
+    await popover.present();
+
+    this.feedbackService.slightVibrate();
+    // 延迟300ms后才打开点击背景关闭popover
+    setTimeout(() => {
+      popover.backdropDismiss = true;
+    }, 300);
+
+    return popover;
   }
 
   /**

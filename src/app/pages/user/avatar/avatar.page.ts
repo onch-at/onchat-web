@@ -79,8 +79,9 @@ export class AvatarPage implements OnInit {
           imageChangedEvent: event,
           uploader: (avatar: Blob) => this.onChatService.uploadUserAvatar(avatar),
           handler: (result: Result<AvatarData>) => {
-            this.globalDataService.user.avatar = result.data.avatar;
-            this.globalDataService.user.avatarThumbnail = result.data.avatarThumbnail;
+            const { avatar, avatarThumbnail } = result.data;
+            this.globalDataService.user.avatar = avatar;
+            this.globalDataService.user.avatarThumbnail = avatarThumbnail;
 
             this.sessionStorageService.setItemToMap(
               SessionStorageKey.UserMap,

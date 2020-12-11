@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 import { MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 
@@ -23,8 +23,8 @@ export class BubbleToolbarComponent implements OnInit {
 
   constructor(
     public globalDataService: GlobalDataService,
-    private overlayService: OverlayService,
     private socketService: SocketService,
+    private popoverController: PopoverController,
   ) { }
 
   ngOnInit() { }
@@ -49,9 +49,7 @@ export class BubbleToolbarComponent implements OnInit {
    * 关闭气泡消息工具条
    */
   dismiss() {
-    this.overlayService.bubbleToolbarPopover && this.overlayService.bubbleToolbarPopover.dismiss().then(() => {
-      this.overlayService.bubbleToolbarPopover = null;
-    });
+    this.popoverController.dismiss();
   }
 
 }
