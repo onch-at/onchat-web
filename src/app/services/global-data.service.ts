@@ -23,6 +23,10 @@ export class GlobalDataService {
   private _chatList: ChatItem[] = [];
   /** 缓存聊天列表的分页页码 */
   private _chatListPage: number = 1;
+  /** 私聊聊天室列表 */
+  private _privateChatrooms: ChatItem[] = [];
+  /** 私聊聊天室列表的分页页码 */
+  private _privateChatroomsPage: number = 1;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -108,6 +112,22 @@ export class GlobalDataService {
 
   get chatListPage() {
     return this._chatListPage;
+  }
+
+  set privateChatrooms(privateChatrooms: ChatItem[]) {
+    this._privateChatrooms = privateChatrooms;
+  }
+
+  get privateChatrooms(): ChatItem[] {
+    return this._privateChatrooms;
+  }
+
+  set privateChatroomsPage(page: number) {
+    this._privateChatroomsPage = page;
+  }
+
+  get privateChatroomsPage() {
+    return this._privateChatroomsPage;
   }
 }
 

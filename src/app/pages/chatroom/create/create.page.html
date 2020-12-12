@@ -22,16 +22,89 @@
     <form [formGroup]="chatroomForm">
       <div class="form-group">
         <label class="d-block">聊天室名称</label>
-        <ion-input class="ipt-primary text-center" formControlName="chatroomName" (ionChange)="trim('chatroomName')"
-          placeholder="请输入聊天室名称" [maxlength]="chatroomNameMaxLength" clearInput required></ion-input>
+        <ion-input class="ipt-primary text-center" formControlName="name" (ionChange)="trim('name')"
+          placeholder="请输入聊天室名称" [maxlength]="nameMaxLength" clearInput required></ion-input>
 
         <div class="feedback-control-invalid">
           <ion-icon name="warning"></ion-icon>
-          <span *ngIf="chatroomForm.controls.chatroomName.errors">
-            {{ chatroomNameFeedback(chatroomForm.controls.chatroomName.errors) }}
+          <span *ngIf="chatroomForm.controls.name.errors">
+            {{ nameFeedback(chatroomForm.controls.name.errors) }}
           </span>
         </div>
       </div>
+
+      <div class="form-group">
+        <label class="d-block">聊天室简介</label>
+        <ion-textarea class="ipt-primary text-center" formControlName="description" rows="3"
+          [maxlength]="descriptionMaxLength" placeholder="请输入聊天室简介" (ionChange)="trim('description')" autoGrow
+          clearInput>
+        </ion-textarea>
+
+        <div class="feedback-control-invalid">
+          <ion-icon name="warning"></ion-icon>
+          <span *ngIf="chatroomForm.controls.description.errors">
+            {{ descriptionFeedback(chatroomForm.controls.description.errors) }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="d-flex justify-content-space-between">
+          <span>群成员</span>
+          <span>1人</span>
+        </label>
+
+        <div class="avatar-list">
+          <div class="avatar-list-track">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img src="https://blog.hypergo.net/api/bing/image.php">
+          </div>
+        </div>
+      </div>
     </form>
+
+    <div style="margin-bottom: 0.5rem">邀请好友</div>
+    <ion-list class="buddy-list">
+      <ion-item mode="md" lines="none" [detail]="false">
+
+        <ion-thumbnail slot="start">
+          <ion-img [src]="'https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg'">
+          </ion-img>
+        </ion-thumbnail>
+
+        <ion-label>AAA</ion-label>
+
+        <ion-checkbox slot="end" mode="ios"></ion-checkbox>
+      </ion-item>
+      <ion-item mode="md" lines="none" [detail]="false">
+
+        <ion-thumbnail slot="start">
+          <ion-img [src]="'https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg'">
+          </ion-img>
+        </ion-thumbnail>
+
+        <ion-label>AAA</ion-label>
+
+        <ion-checkbox slot="end" mode="ios"></ion-checkbox>
+      </ion-item>
+      <ion-item mode="md" lines="none" [detail]="false">
+
+        <ion-thumbnail slot="start">
+          <ion-img [src]="'https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg'">
+          </ion-img>
+        </ion-thumbnail>
+
+        <ion-label>AAA</ion-label>
+
+        <ion-checkbox slot="end" mode="ios"></ion-checkbox>
+      </ion-item>
+    </ion-list>
   </main>
 </ion-content>

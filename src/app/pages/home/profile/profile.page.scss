@@ -2,7 +2,8 @@
   position: relative;
   height: 6.5rem;
   margin-bottom: 1rem;
-  color: var(--oc-color-white);
+  color: #fff;
+  text-shadow: 0 0 0.5rem rgba(#000, 0.75);
   overflow: hidden;
   border-radius: 0 0 1.5rem 0;
 
@@ -21,7 +22,7 @@
     height: 100%;
     padding: 0.75rem;
     border-radius: 0 0 1.5rem 0;
-    background: rgba(var(--oc-color-black-rgb), 0.125);
+    background: rgba(#000, 0.25);
   }
 
   .profile-card-avatar {
@@ -29,7 +30,7 @@
     width: 5rem;
     padding: 0.15rem;
     border-radius: 50%;
-    background: rgba(var(--oc-color-white-rgb), 0.5);
+    background: rgba(#fff, 0.5);
 
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
@@ -43,11 +44,6 @@
     flex-direction: column;
     padding: 0.5rem 0.75rem;
     white-space: nowrap;
-
-    > h1,
-    > div {
-      text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75);
-    }
 
     > h1 {
       font-size: 1.125rem;

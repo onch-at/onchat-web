@@ -84,16 +84,16 @@ export interface ChatItem extends IEntity {
     chatroomId: number;
     /** 聊天室名称 */
     name: string;
-    /** 未读消息数 */
-    unread: number;
-    /** 是否置顶 */
-    sticky: boolean;
     /** 聊天室头像缩略图 */
     avatarThumbnail: string;
     /** 聊天室类型 */
     type: ChatroomType;
     /** 最新消息 */
-    latestMsg: Message
+    content: Message
+    /** 未读消息数 */
+    unread?: number;
+    /** 是否置顶 */
+    sticky?: boolean;
 }
 
 /**
@@ -156,6 +156,21 @@ export class FriendRequest extends Entity {
     targetAvatarThumbnail?: string;
 }
 
+/** 同意好友申请的数据 */
+export interface AgreeFriendRequest {
+    /** 好友申请的ID */
+    friendRequestId: number;
+    /** 聊天室ID */
+    chatroomId: number;
+    /** 申请人的ID */
+    selfId: number;
+    /** 被申请人的ID */
+    targetId: number;
+    /** 被申请人的用户名 */
+    targetUsername: string;
+    /** 被申请人的头像缩略图 */
+    targetAvatarThumbnail: string;
+}
 
 
 export interface Cache {

@@ -101,6 +101,9 @@
 .justify-content-center {
   justify-content: center !important;
 }
+.justify-content-space-between {
+  justify-content: space-between !important;
+}
 .justify-content-end {
   justify-content: flex-end !important;
 }
@@ -132,7 +135,7 @@
   outline: 0 !important;
 }
 .visibility-hidden {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 
 // 标徽字体

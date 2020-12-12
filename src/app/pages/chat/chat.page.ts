@@ -94,7 +94,7 @@ export class ChatPage implements OnInit {
     this.loadRecords();
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-    const chatItem = this.globalDataService.chatList.find((v: ChatItem) => v.chatroomId == this.chatroomId);
+    const chatItem = this.globalDataService.chatList.find((o: ChatItem) => o.chatroomId == this.chatroomId);
     if (chatItem) {
       chatItem.unread = 0;
       this.roomName = chatItem.name;
@@ -384,12 +384,24 @@ export class ChatPage implements OnInit {
           }
 
           this.roomName = result.data;
-          const index = this.globalDataService.chatList.findIndex((v: ChatItem) => v.chatroomId == this.chatroomId);
-          if (index >= 0) {
-            this.globalDataService.chatList[index].name = result.data;
-            this.globalDataService.chatList = this.globalDataService.chatList;
-          }
+
           this.overlayService.presentToast('成功修改好友别名', 1000);
+
+          let chatItem = this.globalDataService.chatList.find((o: ChatItem) => o.chatroomId == this.chatroomId);
+          if (chatItem) {
+            chatItem.name = result.data;
+          }
+
+          switch (this.chatroomType) {
+            case ChatroomType.Private:
+              chatItem = this.globalDataService.privateChatrooms.find((o: ChatItem) => o.chatroomId == this.chatroomId);
+              if (chatItem) {
+                chatItem.name = result.data;
+              }
+              break;
+
+            // TODO 其他群聊
+          }
         });
       },
       inputs: [{

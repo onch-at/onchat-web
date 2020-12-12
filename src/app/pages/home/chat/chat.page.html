@@ -29,19 +29,19 @@
 				<ion-label class="item-content">
 					<h2 class="font-weight-bold">{{ item.name }}</h2>
 
-					<ng-container *ngIf="item.latestMsg" [ngSwitch]="item.latestMsg.type">
+					<ng-container *ngIf="item.content" [ngSwitch]="item.content.type">
 						<p *ngSwitchCase="msgType.Text"
-							[innerHTML]="(item.latestMsg.userId == globalDataService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data['content']">
+							[innerHTML]="(item.content.userId == globalDataService.user.id ? '我' : item.content.nickname) + '：' + item.content.data['content']">
 						</p>
 
 						<p *ngSwitchCase="msgType.RichText"
-							[innerHTML]="(item.latestMsg.userId == globalDataService.user.id ? '我' : item.latestMsg.nickname) + '：' + item.latestMsg.data['text']">
+							[innerHTML]="(item.content.userId == globalDataService.user.id ? '我' : item.content.nickname) + '：' + item.content.data['text']">
 						</p>
 
-						<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.latestMsg.data['content']"></p>
+						<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.content.data['content']"></p>
 					</ng-container>
 
-					<p *ngIf="!item.latestMsg">进去打个招呼吧？</p>
+					<p *ngIf="!item.content">进去打个招呼吧？</p>
 				</ion-label>
 
 				<div class="info">

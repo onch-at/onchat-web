@@ -155,7 +155,7 @@ ion-popover {
 ion-infinite-scroll {
     ion-infinite-scroll-content {
         min-height: 5rem;
-        margin: 0 0 -1.75rem;
+        background: var(--oc-color-white);
     }
 
     .infinite-loading {

@@ -19,7 +19,7 @@ ion-header {
 }
 
 main {
-    padding: 4rem 1rem 1rem;
+    padding: 4rem 0 1rem;
     color: var(--oc-color-dark);
 }
 
@@ -29,7 +29,7 @@ main {
 }
 
 form {
-    margin: 0.5rem 0;
+    margin: 0.5rem 1rem 0.75rem;
     width: calc(100vw - 2rem);
 }
 
@@ -69,9 +69,109 @@ ion-input {
     }
 }
 
+ion-textarea {
+    ::ng-deep .sc-ion-textarea-ios {
+        &.textarea-wrapper {
+            min-height: 2.75rem;
+        }
+
+        &.native-textarea {
+            min-height: 2.75rem;
+            padding: 0.75rem 1rem;
+        }
+    }
+}
+
 .ipt-primary {
     border: 0;
     background: var(--oc-color-secondary);
     width: 100%;
     border-radius: 1.5rem;
+}
+
+.avatar-list {
+    position: relative;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 0.5rem;
+        z-index: 1;
+    }
+
+    &::before {
+        left: 0;
+        background: linear-gradient(to right, var(--oc-color-white), rgba(var(--oc-color-white-rgb), 0.001));
+    }
+
+    &::after {
+        right: 0;
+        background: linear-gradient(to left, var(--oc-color-white), rgba(var(--oc-color-white-rgb), 0.001));
+    }
+
+    .avatar-list-track {
+        display: flex;
+        flex-wrap: nowrap;
+        padding: 0 0.5rem;
+        overflow-x: auto;
+
+        > img {
+            height: 2.75rem;
+            width: 2.75rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            object-fit: cover;
+        }
+    }
+
+    > aside {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .add-btn {
+        padding: 0;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--oc-color-muted);
+
+        > ion-icon {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+.buddy-list {
+    width: 100vw;
+
+    ion-thumbnail {
+        height: 2.75rem;
+        width: 2.75rem;
+        margin: 0 0.75rem 0 0;
+    }
+
+    ion-label {
+        margin: 1.125rem 0;
+        font-size: 1rem;
+    }
+
+    ion-checkbox {
+        --background: var(--oc-color-white);
+        --border-width: 0.075rem;
+        --border-color: var(--oc-color-muted);
+        --size: 1.5rem;
+        --checkmark-width: 0.15rem;
+        --background-checked: var(--oc-color-primary);
+        --border-color-checked: var(--oc-color-primary);
+        --transition: background-color ease-in-out 0.125s;
+
+        margin: 0 0 0 0.75rem;
+    }
 }

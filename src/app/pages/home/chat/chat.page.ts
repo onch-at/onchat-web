@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { CHAT_LIST_ROWS } from 'src/app/common/constant';
+import { CHAT_ITEM_ROWS } from 'src/app/common/constant';
 import { MessageType } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
@@ -57,7 +57,7 @@ export class ChatPage implements OnInit {
 
   chatList() {
     const { chatListPage, chatList } = this.globalDataService;
-    return chatListPage ? chatList.slice(0, chatListPage * 15) : chatList;
+    return chatListPage ? chatList.slice(0, chatListPage * CHAT_ITEM_ROWS) : chatList;
   }
 
   /**
@@ -69,7 +69,7 @@ export class ChatPage implements OnInit {
       return event.target.complete();
     }
 
-    if (++this.globalDataService.chatListPage * CHAT_LIST_ROWS >= this.globalDataService.chatList.length) {
+    if (++this.globalDataService.chatListPage * CHAT_ITEM_ROWS >= this.globalDataService.chatList.length) {
       this.globalDataService.chatListPage = null;
     }
 
