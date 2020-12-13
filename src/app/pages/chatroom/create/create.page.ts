@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH } from 'src/app/common/constant';
+import { ChatItem, Result } from 'src/app/models/onchat.model';
+import { GlobalDataService } from 'src/app/services/global-data.service';
+import { OnChatService } from 'src/app/services/onchat.service';
 
 @Component({
   selector: 'app-create',
@@ -11,6 +14,9 @@ export class CreatePage implements OnInit {
   nameMaxLength: number = CHATROOM_NAME_MAX_LENGTH;
   descriptionMaxLength: number = CHATROOM_DESCRIPTION_MAX_LENGTH;
   loading: boolean = false;
+
+  originPrivateChatrooms: (ChatItem & { checked: boolean })[] = []
+  privateChatroomsPage: number = 1;
 
   chatroomForm: FormGroup = this.fb.group({
     name: [
@@ -30,9 +36,27 @@ export class CreatePage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private onChatService: OnChatService,
+    public globalDataService: GlobalDataService,
   ) { }
 
   ngOnInit() {
+    const push = (privateChatrooms: ChatItem[]) => {
+      for (const item of privateChatrooms) {
+        this.originPrivateChatrooms.push({ ...item, checked: false });
+      }
+    }
+
+    if (this.globalDataService.privateChatrooms.length) {
+      push(this.originPrivateChatrooms);
+    } else {
+      this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatItem[]>) => {
+        if (result.code !== 0) { return; }
+
+        this.globalDataService.privateChatrooms = result.data;
+        push(result.data);
+      });
+    }
   }
 
   trim(controlName: string) {
@@ -41,6 +65,30 @@ export class CreatePage implements OnInit {
 
   submit() {
 
+  }
+
+  delete(item: ChatItem & { checked: boolean }) {
+    item.checked = false;
+  }
+
+  privateChatrooms() {
+    return this.privateChatroomsPage ? this.originPrivateChatrooms.slice(0, this.privateChatroomsPage * 10) : this.originPrivateChatrooms;
+  }
+
+  /**
+   * 加载更多
+   * @param event
+   */
+  loadData(event: any) {
+    if (!this.privateChatroomsPage) {
+      return event.target.complete();
+    }
+
+    if (++this.privateChatroomsPage * 10 >= this.globalDataService.privateChatrooms.length) {
+      this.privateChatroomsPage = null;
+    }
+
+    event.target.complete();
   }
 
   nameFeedback(errors: ValidationErrors) {

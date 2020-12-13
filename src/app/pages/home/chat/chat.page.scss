@@ -21,10 +21,18 @@ ion-item {
     transform: rotate(45deg);
   }
 
-  ion-thumbnail {
+  ion-img,
+  img {
     margin: 0 0.75rem 0 0;
     width: 3.25rem;
     height: 3.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--oc-color-secondary);
+
+    @media (prefers-color-scheme: dark) {
+      filter: brightness(0.75);
+    }
   }
 
   h2 {

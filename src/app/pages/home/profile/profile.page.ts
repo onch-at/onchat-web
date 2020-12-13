@@ -13,9 +13,9 @@ import { SocketService } from 'src/app/services/socket.service';
 export class ProfilePage implements OnInit {
 
   constructor(
-    private onChatService: OnChatService,
-    public globalDataService: GlobalDataService,
     private router: Router,
+    public globalDataService: GlobalDataService,
+    private onChatService: OnChatService,
     private overlayService: OverlayService,
     private socketService: SocketService,
   ) { }
@@ -34,8 +34,12 @@ export class ProfilePage implements OnInit {
       confirmHandler: () => this.onChatService.logout().subscribe(() => {
         this.globalDataService.user = null;
         this.globalDataService.chatList = [];
+        this.globalDataService.chatListPage = 1;
         this.globalDataService.receiveFriendRequests = [];
         this.globalDataService.sendFriendRequests = [];
+        this.globalDataService.privateChatrooms = [];
+        this.globalDataService.privateChatroomsPage = 1;
+
         this.socketService.unload();
 
         this.router.navigate(['/user/login']);

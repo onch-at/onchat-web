@@ -115,7 +115,9 @@ export class GlobalDataService {
   }
 
   set privateChatrooms(privateChatrooms: ChatItem[]) {
-    this._privateChatrooms = privateChatrooms;
+    this._privateChatrooms = privateChatrooms.sort((a: ChatItem, b: ChatItem) => {
+      return a.name.localeCompare(b.name);
+    });
   }
 
   get privateChatrooms(): ChatItem[] {

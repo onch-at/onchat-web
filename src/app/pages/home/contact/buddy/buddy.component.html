@@ -1,12 +1,9 @@
 <ion-list>
 	<ion-item-sliding mode="md" *ngFor="let item of privateChatrooms(); let i = index;">
 		<ion-item lines="none" [detail]="false" [routerLink]="['/chat', item.chatroomId]">
-			<ion-thumbnail slot="start">
-				<ion-img *ngIf="i > 9" [src]="item.avatarThumbnail">
-				</ion-img>
+			<ion-img slot="start" *ngIf="i > 9" [src]="item.avatarThumbnail"></ion-img>
+			<img slot="start" *ngIf="i <= 9" [src]="item.avatarThumbnail">
 
-				<img *ngIf="i <= 9" [src]="item.avatarThumbnail">
-			</ion-thumbnail>
 			<ion-label class="item-content">
 				<h2 class="font-weight-bold">{{ item.name }}</h2>
 				<p>[个性签名] {{ item.content || '这个人很懒，什么都没写~' }}</p>

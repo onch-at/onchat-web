@@ -5,12 +5,8 @@
 		</ion-item-options>
 
 		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/handle', item.selfId]">
-			<ion-thumbnail slot="start">
-				<ion-img *ngIf="i > 9" [src]="item.selfAvatarThumbnail">
-				</ion-img>
-
-				<img *ngIf="i <= 9" [src]="item.selfAvatarThumbnail">
-			</ion-thumbnail>
+			<ion-img slot="start" *ngIf="i > 9" [src]="item.selfAvatarThumbnail"></ion-img>
+			<img slot="start" *ngIf="i <= 9" [src]="item.selfAvatarThumbnail">
 
 			<ion-label class="item-content">
 				<h2 class="font-weight-bold">{{ item.selfUsername }}</h2>
@@ -44,10 +40,10 @@
 
 				<ng-container [ngSwitch]="item.selfStatus || friendRequestStatus.Wait">
 					<p *ngSwitchCase="friendRequestStatus.Wait">
-						{{ item.requestReason ? '申请原因：' +  item.requestReason : '申请添加对方为好友' }}
+						{{ item.requestReason ? '申请原因：' + item.requestReason : '申请添加对方为好友' }}
 					</p>
 					<p *ngSwitchCase="friendRequestStatus.Reject">
-						{{ item.rejectReason ? '拒绝原因：' +  item.rejectReason : '对方拒绝了你的好友申请' }}
+						{{ item.rejectReason ? '拒绝原因：' + item.rejectReason : '对方拒绝了你的好友申请' }}
 					</p>
 					<p *ngSwitchDefault>申请添加对方为好友</p>
 				</ng-container>

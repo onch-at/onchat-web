@@ -50,61 +50,35 @@
 
       <div class="form-group">
         <label class="d-flex justify-content-space-between">
-          <span>群成员</span>
+          <span>聊天室成员</span>
           <span>1人</span>
         </label>
 
         <div class="avatar-list">
           <div class="avatar-list-track">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
-            <img src="https://blog.hypergo.net/api/bing/image.php">
+            <img [src]="globalDataService.user.avatarThumbnail">
+            <ng-container *ngFor="let item of privateChatrooms()">
+              <img *ngIf="item.checked" [src]="item.avatarThumbnail" (click)="delete(item)">
+            </ng-container>
           </div>
         </div>
       </div>
     </form>
 
-    <div style="margin-bottom: 0.5rem">邀请好友</div>
+    <div class="title">邀请好友</div>
     <ion-list class="buddy-list">
-      <ion-item mode="md" lines="none" [detail]="false">
+      <ion-item mode="md" lines="none" [detail]="false" *ngFor="let item of privateChatrooms(); let i = index;">
 
-        <ion-thumbnail slot="start">
-          <ion-img [src]="'https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg'">
-          </ion-img>
-        </ion-thumbnail>
+        <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
 
-        <ion-label>AAA</ion-label>
+        <ion-label>{{ item.name }}</ion-label>
 
-        <ion-checkbox slot="end" mode="ios"></ion-checkbox>
-      </ion-item>
-      <ion-item mode="md" lines="none" [detail]="false">
-
-        <ion-thumbnail slot="start">
-          <ion-img [src]="'https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg'">
-          </ion-img>
-        </ion-thumbnail>
-
-        <ion-label>AAA</ion-label>
-
-        <ion-checkbox slot="end" mode="ios"></ion-checkbox>
-      </ion-item>
-      <ion-item mode="md" lines="none" [detail]="false">
-
-        <ion-thumbnail slot="start">
-          <ion-img [src]="'https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg'">
-          </ion-img>
-        </ion-thumbnail>
-
-        <ion-label>AAA</ion-label>
-
-        <ion-checkbox slot="end" mode="ios"></ion-checkbox>
+        <ion-checkbox slot="end" mode="ios" [(ngModel)]="item.checked"></ion-checkbox>
       </ion-item>
     </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </main>
 </ion-content>
