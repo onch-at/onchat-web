@@ -1,5 +1,43 @@
 /* 覆盖Ionic的样式 */
 
+ion-searchbar.sc-ion-searchbar-ios-h {
+    --color: var(--oc-color-dark);
+    --background: var(--oc-color-secondary);
+    height: auto;
+    contain: content;
+
+    .searchbar-input-container {
+        height: 2.125rem;
+        line-height: 2.125rem;
+    }
+
+    .searchbar-input {
+        font-size: 0.95rem;
+        border-radius: 1.5rem;
+    }
+
+    .searchbar-search-icon {
+        width: 1.25rem;
+    }
+
+    .searchbar-clear-button.sc-ion-searchbar-ios {
+        width: 2rem;
+        padding-right: 0.25rem;
+    }
+
+    &.searchbar-has-value,
+    &.searchbar-has-focus {
+        .searchbar-input.sc-ion-searchbar-ios {
+            padding-inline-start: 2.125rem;
+            padding-inline-end: 2rem;
+        }
+
+        .searchbar-search-icon {
+            padding-left: 0.25rem;
+        }
+    }
+}
+
 ion-segment {
     --background: var(--oc-color-secondary);
     height: 2.75rem;

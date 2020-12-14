@@ -28,12 +28,8 @@
 	<ion-item-sliding mode="md" *ngFor="let item of globalDataService.sendFriendRequests; let i = index;">
 
 		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/request', item.targetId]">
-			<ion-thumbnail slot="start">
-				<ion-img *ngIf="i > 9" [src]="item.targetAvatarThumbnail">
-				</ion-img>
-
-				<img *ngIf="i <= 9" [src]="item.targetAvatarThumbnail">
-			</ion-thumbnail>
+			<ion-img slot="start" *ngIf="i > 9" [src]="item.targetAvatarThumbnail"></ion-img>
+			<img slot="start" *ngIf="i <= 9" [src]="item.targetAvatarThumbnail">
 
 			<ion-label>
 				<h2 class="font-weight-bold">{{ item.targetUsername }}</h2>

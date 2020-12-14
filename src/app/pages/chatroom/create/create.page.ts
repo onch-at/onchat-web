@@ -5,18 +5,26 @@ import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 
+const CHAT_ITEM_ROWS: number = 10;
+
 @Component({
   selector: 'app-create',
   templateUrl: './create.page.html',
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
+  /** 群名最大长度 */
   nameMaxLength: number = CHATROOM_NAME_MAX_LENGTH;
+  /** 群简介最大长度 */
   descriptionMaxLength: number = CHATROOM_DESCRIPTION_MAX_LENGTH;
+  /** 加载中 */
   loading: boolean = false;
-
-  originPrivateChatrooms: (ChatItem & { checked: boolean })[] = []
+  /** 原始私聊聊天室列表 */
+  originPrivateChatrooms: (ChatItem & { checked: boolean })[] = [];
+  /** 分页页码 */
   privateChatroomsPage: number = 1;
+  /** 搜索关键字 */
+  keyword: string = '';
 
   chatroomForm: FormGroup = this.fb.group({
     name: [
@@ -48,7 +56,7 @@ export class CreatePage implements OnInit {
     }
 
     if (this.globalDataService.privateChatrooms.length) {
-      push(this.originPrivateChatrooms);
+      push(this.globalDataService.privateChatrooms);
     } else {
       this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatItem[]>) => {
         if (result.code !== 0) { return; }
@@ -64,15 +72,48 @@ export class CreatePage implements OnInit {
   }
 
   submit() {
-
+    const chatroomIdList: number[] = [];
+    for (const item of this.originPrivateChatrooms.filter(o => o.checked)) {
+      chatroomIdList.push(item.chatroomId);
+    }
+    console.log(chatroomIdList);
   }
 
-  delete(item: ChatItem & { checked: boolean }) {
+  /**
+   * 已选群成员人数
+   */
+  peopleNum() {
+    let num = 1;
+    for (const item of this.originPrivateChatrooms) {
+      item.checked && num++;
+    }
+    return num;
+  }
+
+  /**
+   * 搜索框变化时
+   */
+  search() {
+    this.privateChatroomsPage = 1;
+  }
+
+  /**
+   * 删除已选群成员
+   * @param item
+   */
+  deleteMember(item: ChatItem & { checked: boolean }) {
     item.checked = false;
   }
 
+  /**
+   * 私聊聊天室列表
+   */
   privateChatrooms() {
-    return this.privateChatroomsPage ? this.originPrivateChatrooms.slice(0, this.privateChatroomsPage * 10) : this.originPrivateChatrooms;
+    let { originPrivateChatrooms, keyword } = this;
+    if (keyword.length) {
+      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.name.indexOf(keyword) >= 0);
+    }
+    return this.privateChatroomsPage ? originPrivateChatrooms.slice(0, this.privateChatroomsPage * CHAT_ITEM_ROWS) : originPrivateChatrooms;
   }
 
   /**
@@ -84,7 +125,7 @@ export class CreatePage implements OnInit {
       return event.target.complete();
     }
 
-    if (++this.privateChatroomsPage * 10 >= this.globalDataService.privateChatrooms.length) {
+    if (++this.privateChatroomsPage * CHAT_ITEM_ROWS >= this.globalDataService.privateChatrooms.length) {
       this.privateChatroomsPage = null;
     }
 

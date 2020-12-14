@@ -29,6 +29,7 @@ ion-item {
     border-radius: 50%;
     object-fit: cover;
     background: var(--oc-color-secondary);
+    overflow: hidden;
 
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
@@ -64,42 +65,5 @@ ion-item-option {
 }
 
 // ion-searchbar {
-//   --color: var(--oc-color-dark);
-//   --background: var(--oc-color-secondary);
 //   padding: 0.75rem 1rem 0.25rem;
-//   height: auto;
-//   contain: content;
-
-//   &::ng-deep {
-//     .searchbar-input-container {
-//       height: 2.125rem;
-//       line-height: 2.125rem;
-//     }
-
-//     .searchbar-input {
-//       font-size: 0.95rem;
-//       border-radius: 1.5rem;
-//     }
-
-//     .searchbar-search-icon {
-//       width: 1.25rem;
-//     }
-
-//     .searchbar-clear-button.sc-ion-searchbar-ios {
-//       width: 2rem;
-//       padding-right: 0.25rem;
-//     }
-//   }
-
-//   &.searchbar-has-value::ng-deep,
-//   &.searchbar-has-focus::ng-deep {
-//     .searchbar-input.sc-ion-searchbar-ios {
-//       padding-inline-start: 2.125rem;
-//       padding-inline-end: 2rem;
-//     }
-
-//     .searchbar-search-icon {
-//       padding-left: 0.25rem;
-//     }
-//   }
 // }

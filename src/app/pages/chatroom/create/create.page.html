@@ -51,25 +51,29 @@
       <div class="form-group">
         <label class="d-flex justify-content-space-between">
           <span>聊天室成员</span>
-          <span>1人</span>
+          <span>{{ peopleNum() }}人</span>
         </label>
 
         <div class="avatar-list">
           <div class="avatar-list-track">
             <img [src]="globalDataService.user.avatarThumbnail">
-            <ng-container *ngFor="let item of privateChatrooms()">
-              <img *ngIf="item.checked" [src]="item.avatarThumbnail" (click)="delete(item)">
+            <ng-container *ngFor="let item of originPrivateChatrooms">
+              <img *ngIf="item.checked" [src]="item.avatarThumbnail" (click)="deleteMember(item)">
             </ng-container>
           </div>
         </div>
       </div>
     </form>
 
-    <div class="title">邀请好友</div>
+    <div class="page-label">邀请好友</div>
+
+    <ion-searchbar animated placeholder="搜索" (ionChange)="search()" [(ngModel)]="keyword"></ion-searchbar>
+
     <ion-list class="buddy-list">
       <ion-item mode="md" lines="none" [detail]="false" *ngFor="let item of privateChatrooms(); let i = index;">
 
-        <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
+        <ion-img slot="start" *ngIf="i > 9" [src]="item.avatarThumbnail"></ion-img>
+        <img slot="start" *ngIf="i <= 9" [src]="item.avatarThumbnail">
 
         <ion-label>{{ item.name }}</ion-label>
 

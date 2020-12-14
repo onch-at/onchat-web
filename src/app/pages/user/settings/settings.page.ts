@@ -23,15 +23,21 @@ import { SysUtil } from 'src/app/utils/sys.util';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
+  /** 昵称最大长度 */
   nicknameMaxLength: number = USERNAME_MAX_LENGTH;
+  /** 个性签名最大长度 */
   signatureMaxLength: number = SIGNATURE_MAX_LENGTH;
+  /** 性别枚举 */
   gender: typeof Gender = Gender;
-
+  /** 月份别名 */
   monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+  /** 今天的ISO时间 */
   today: string = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+  /** 用户信息表单提交数据体 */
   userInfo: UserInfo = new UserInfo;
   /** 数据是否肮脏？ */
   dirty: boolean = false;
+  /** 加载中 */
   loading: boolean = false;
   subject: Subject<unknown> = new Subject();
 
@@ -101,10 +107,17 @@ export class SettingsPage implements OnInit {
     this.userInfoForm.controls[controlName].setValue(StrUtil.trimAll(this.userInfoForm.value[controlName]));
   }
 
+  /**
+   * 消除表单控件的值两端的空格
+   * @param controlName 控件名
+   */
   trim(controlName: string) {
     this.userInfoForm.controls[controlName].setValue(this.userInfoForm.value[controlName].trim());
   }
 
+  /**
+   * 提交
+   */
   submit() {
     if (this.loading) { return; }
     this.loading = true;

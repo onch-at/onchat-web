@@ -89,6 +89,15 @@ ion-textarea {
     border-radius: 1.5rem;
 }
 
+ion-searchbar {
+    position: sticky;
+    top: 3rem;
+    padding: 0.25rem 1rem 0.5rem;
+    background: rgba(var(--oc-color-white-rgb), 0.75);
+    backdrop-filter: blur(15px);
+    z-index: 1;
+}
+
 .avatar-list {
     position: relative;
 
@@ -122,19 +131,25 @@ ion-textarea {
             height: 2.75rem;
             width: 2.75rem;
             border-radius: 50%;
-            margin-right: 0.5rem;
+            margin-right: 0.75rem;
             object-fit: cover;
         }
     }
 }
 
-.title {
+.page-label {
     width: 100%;
     padding: 0.25rem 1.5rem 0.5rem;
 }
 
 .buddy-list {
     width: 100vw;
+
+    ion-item {
+        --padding-start: 1.125rem;
+        --padding-end: 1.125rem;
+        --inner-padding-end: 0;
+    }
 
     ion-img,
     img {
@@ -143,6 +158,8 @@ ion-textarea {
         margin: 0 0.75rem 0 0;
         border-radius: 50%;
         object-fit: cover;
+        background: var(--oc-color-secondary);
+        overflow: hidden;
     }
 
     ion-label {
@@ -153,7 +170,7 @@ ion-textarea {
     ion-checkbox {
         --background: var(--oc-color-white);
         --border-width: 0.075rem;
-        --border-color: var(--oc-color-muted);
+        --border-color: rgba(var(--oc-color-dark-rgb), 0.5);
         --size: 1.5rem;
         --checkmark-width: 0.15rem;
         --background-checked: var(--oc-color-primary);

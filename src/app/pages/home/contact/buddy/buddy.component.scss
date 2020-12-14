@@ -15,6 +15,7 @@ ion-item {
     border-radius: 50%;
     object-fit: cover;
     background: var(--oc-color-secondary);
+    overflow: hidden;
 
     @media (prefers-color-scheme: dark) {
       filter: brightness(0.75);
