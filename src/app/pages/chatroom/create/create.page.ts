@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH } from 'src/app/common/constant';
-import { Chatroom } from 'src/app/models/form.model';
+import { SocketEvent } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
+import { SocketService } from 'src/app/services/socket.service';
 
 const CHAT_ITEM_ROWS: number = 10;
 
@@ -49,6 +50,7 @@ export class CreatePage implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private onChatService: OnChatService,
+    private socketService: SocketService,
     private overlayService: OverlayService,
     public globalDataService: GlobalDataService,
   ) { }
@@ -70,20 +72,8 @@ export class CreatePage implements OnInit {
         push(result.data);
       });
     }
-  }
 
-  submit() {
-    if (this.loading) { return; }
-    this.loading = true;
-
-    // 得到邀请的好友的聊天室ID
-    const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.chatroomId);
-
-    console.log(chatroomIdList);
-
-    const { name, description } = this.chatroomForm.value;
-
-    this.onChatService.createChatroom(new Chatroom(name.trim(), description.trim())).subscribe((result: Result<ChatItem>) => {
+    this.socketService.on(SocketEvent.CreateChatroom).subscribe((result: Result<ChatItem>) => {
       this.loading = false;
 
       if (result.code !== 0) {
@@ -97,6 +87,20 @@ export class CreatePage implements OnInit {
       // TODO 跳到群简介页面
       this.router.navigateByUrl('/');
     });
+  }
+
+  submit() {
+    if (this.loading) { return; }
+    this.loading = true;
+
+    // 得到邀请的好友的聊天室ID
+    const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.chatroomId);
+
+    console.log(chatroomIdList);
+
+    const { name, description } = this.chatroomForm.value;
+
+    this.socketService.createChatroom(name.trim(), description.trim());
   }
 
   /**

@@ -101,6 +101,18 @@ export class SocketService {
   }
 
   /**
+   * 创建聊天室
+   * @param name 聊天室名称
+   * @param description 聊天室介绍
+   */
+  createChatroom(name: string, description?: string) {
+    this.emit(SocketEvent.CreateChatroom, {
+      name,
+      description
+    });
+  }
+
+  /**
    * 发送事件
    * @param eventName 事件名
    * @param data 数据

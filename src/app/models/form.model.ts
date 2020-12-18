@@ -70,18 +70,3 @@ export class UserInfo {
     /** 性别 */
     gender: Gender;
 }
-
-/**
- * 聊天室表单数据模型
- */
-export class Chatroom {
-    /** 聊天室名称 */
-    name: string;
-    /** 聊天室介绍 */
-    description?: string;
-
-    constructor(name: string, description?: string) {
-        this.name = name;
-        this.description = description;
-    }
-}

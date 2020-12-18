@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
-import { Chatroom as ChatroomFormData, Login, Register, UserInfo } from '../models/form.model';
+import { Login, Register, UserInfo } from '../models/form.model';
 import { ChatItem, Chatroom, FriendRequest, Message, Result, User } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
 import { GlobalDataService } from './global-data.service';
@@ -165,14 +165,6 @@ export class OnChatService {
    */
   getChatRecords(id: number, msgId?: number): Observable<Result<Message[]>> {
     return this.http.get<Result<Message[]>>(env.chatroomUrl + id + '/records/' + msgId);
-  }
-
-  /**
-   * 创建聊天室
-   * @param o
-   */
-  createChatroom(o: ChatroomFormData): Observable<Result<ChatItem>> {
-    return this.http.post<Result<ChatItem>>(env.chatroomUrl + 'create', o, HTTP_OPTIONS_JSON);
   }
 
   /**
