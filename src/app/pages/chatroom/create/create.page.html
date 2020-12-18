@@ -22,8 +22,8 @@
     <form [formGroup]="chatroomForm">
       <div class="form-group">
         <label class="d-block">聊天室名称</label>
-        <ion-input class="ipt-primary text-center" formControlName="name" (ionChange)="trim('name')"
-          placeholder="请输入聊天室名称" [maxlength]="nameMaxLength" clearInput required></ion-input>
+        <ion-input class="ipt-primary text-center" formControlName="name" placeholder="请输入聊天室名称"
+          [maxlength]="nameMaxLength" clearInput required></ion-input>
 
         <div class="feedback-control-invalid">
           <ion-icon name="warning"></ion-icon>
@@ -36,8 +36,7 @@
       <div class="form-group">
         <label class="d-block">聊天室简介</label>
         <ion-textarea class="ipt-primary text-center" formControlName="description" rows="3"
-          [maxlength]="descriptionMaxLength" placeholder="请输入聊天室简介" (ionChange)="trim('description')" autoGrow
-          clearInput>
+          [maxlength]="descriptionMaxLength" placeholder="请输入聊天室简介" autoGrow clearInput>
         </ion-textarea>
 
         <div class="feedback-control-invalid">
@@ -72,8 +71,8 @@
     <ion-list class="buddy-list">
       <ion-item mode="md" lines="none" [detail]="false" *ngFor="let item of privateChatrooms(); let i = index;">
 
-        <ion-img slot="start" *ngIf="i > 9" [src]="item.avatarThumbnail"></ion-img>
-        <img slot="start" *ngIf="i <= 9" [src]="item.avatarThumbnail">
+        <ion-img slot="start" *ngIf="i > 5" [src]="item.avatarThumbnail"></ion-img>
+        <img slot="start" *ngIf="i <= 5" [src]="item.avatarThumbnail">
 
         <ion-label>{{ item.name }}</ion-label>
 

@@ -92,9 +92,8 @@ export class RegisterPage implements OnInit {
 
     this.loading = true;
 
-    this.onChatService.register(
-      new Register(this.registerForm.value.username, this.registerForm.value.password, this.registerForm.value.captcha)
-    ).subscribe(async (result: Result<User>) => {
+    const { username, password, captcha } = this.registerForm.value;
+    this.onChatService.register(new Register(username, password, captcha)).subscribe(async (result: Result<User>) => {
       if (result.code !== 0) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }

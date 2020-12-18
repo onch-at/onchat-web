@@ -63,9 +63,9 @@ export class LoginPage implements OnInit {
 
     this.loading = true;
 
-    this.onChatService.login(
-      new Login(this.loginForm.value.username, this.loginForm.value.password)
-    ).subscribe(async (result: Result<User>) => {
+    const { username, password } = this.loginForm.value;
+
+    this.onChatService.login(new Login(username, password)).subscribe(async (result: Result<User>) => {
       const toast = this.overlayService.presentToast(result.msg, result.code === 0 ? 1000 : 2000);
 
       if (result.code === 0) {

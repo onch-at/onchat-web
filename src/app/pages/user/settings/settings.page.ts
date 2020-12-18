@@ -108,27 +108,19 @@ export class SettingsPage implements OnInit {
   }
 
   /**
-   * 消除表单控件的值两端的空格
-   * @param controlName 控件名
-   */
-  trim(controlName: string) {
-    this.userInfoForm.controls[controlName].setValue(this.userInfoForm.value[controlName].trim());
-  }
-
-  /**
    * 提交
    */
   submit() {
     if (this.loading) { return; }
     this.loading = true;
 
-    const { value } = this.userInfoForm;
+    const { nickname, signature, mood, birthday, gender } = this.userInfoForm.value;
 
-    this.userInfo.nickname = value.nickname;
-    this.userInfo.signature = value.signature;
-    this.userInfo.mood = value.mood;
-    this.userInfo.birthday = Date.parse(value.birthday);
-    this.userInfo.gender = +value.gender;
+    this.userInfo.nickname = nickname;
+    this.userInfo.signature = signature.trim();
+    this.userInfo.mood = mood;
+    this.userInfo.birthday = Date.parse(birthday);
+    this.userInfo.gender = +gender;
 
     this.onChatService.saveUserInfo(this.userInfo).subscribe((result: Result<UserInfo>) => {
       this.loading = false;

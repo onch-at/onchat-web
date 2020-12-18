@@ -89,7 +89,7 @@ export interface ChatItem extends IEntity {
     /** 聊天室类型 */
     type: ChatroomType;
     /** 最新消息 */
-    content: Message
+    content?: Message
     /** 未读消息数 */
     unread?: number;
     /** 是否置顶 */

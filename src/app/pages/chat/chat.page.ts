@@ -96,16 +96,17 @@ export class ChatPage implements OnInit {
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
     const chatItem = this.globalDataService.chatList.find((o: ChatItem) => o.chatroomId == this.chatroomId);
     if (chatItem) {
-      chatItem.unread = 0;
+      this.globalDataService.unreadMsgCount -= chatItem.unread;
       this.roomName = chatItem.name;
       this.chatroomType = chatItem.type;
+      chatItem.unread = 0;
     } else { // TODO 把数据缓存下来
       this.onChatService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
-        if (result.code === 0) {
-          const chatroom = result.data
-          this.roomName = chatroom.name;
-          this.chatroomType = chatroom.type;
-        }
+        if (result.code !== 0) { return; }
+
+        const { name, type } = result.data
+        this.roomName = name;
+        this.chatroomType = type;
       });
     }
 

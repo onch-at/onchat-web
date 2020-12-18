@@ -91,11 +91,20 @@ ion-textarea {
 
 ion-searchbar {
     position: sticky;
-    top: 3rem;
-    padding: 0.25rem 1rem 0.5rem;
+    top: calc(3rem - 1px);
+    padding: 0.5rem 1rem;
     background: rgba(var(--oc-color-white-rgb), 0.75);
     backdrop-filter: blur(15px);
     z-index: 1;
+
+    &.sc-ion-searchbar-ios-h {
+        ::ng-deep {
+            .searchbar-input-container {
+                height: 2.5rem;
+                line-height: 2.5rem;
+            }
+        }
+    }
 }
 
 .avatar-list {
@@ -139,7 +148,7 @@ ion-searchbar {
 
 .page-label {
     width: 100%;
-    padding: 0.25rem 1.5rem 0.5rem;
+    padding: 0.25rem 1.5rem;
 }
 
 .buddy-list {

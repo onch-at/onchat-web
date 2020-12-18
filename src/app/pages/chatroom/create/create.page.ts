@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH } from 'src/app/common/constant';
+import { Chatroom } from 'src/app/models/form.model';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 
 const CHAT_ITEM_ROWS: number = 10;
 
@@ -44,7 +47,9 @@ export class CreatePage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private onChatService: OnChatService,
+    private overlayService: OverlayService,
     public globalDataService: GlobalDataService,
   ) { }
 
@@ -67,16 +72,31 @@ export class CreatePage implements OnInit {
     }
   }
 
-  trim(controlName: string) {
-    this.chatroomForm.controls[controlName].setValue(this.chatroomForm.value[controlName].trim());
-  }
-
   submit() {
-    const chatroomIdList: number[] = [];
-    for (const item of this.originPrivateChatrooms.filter(o => o.checked)) {
-      chatroomIdList.push(item.chatroomId);
-    }
+    if (this.loading) { return; }
+    this.loading = true;
+
+    // 得到邀请的好友的聊天室ID
+    const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.chatroomId);
+
     console.log(chatroomIdList);
+
+    const { name, description } = this.chatroomForm.value;
+
+    this.onChatService.createChatroom(new Chatroom(name.trim(), description.trim())).subscribe((result: Result<ChatItem>) => {
+      this.loading = false;
+
+      if (result.code !== 0) {
+        return this.overlayService.presentToast('聊天室创建失败！');
+      }
+
+      this.globalDataService.chatList.push(result.data);
+      this.globalDataService.chatList = this.globalDataService.chatList;
+
+      this.overlayService.presentToast('聊天室创建成功！');
+      // TODO 跳到群简介页面
+      this.router.navigateByUrl('/');
+    });
   }
 
   /**

@@ -44,7 +44,9 @@ export enum SocketEvent {
     /** 同意好友申请 */
     FriendRequestAgree = 'friend_request_agree',
     /** 拒绝好友申请 */
-    FriendRequestReject = 'friend_request_reject'
+    FriendRequestReject = 'friend_request_reject',
+    /** 邀请好友入群 */
+    InviteJoinChatroom = 'invite_join_chatroom'
 }
 
 /**
