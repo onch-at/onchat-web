@@ -100,7 +100,7 @@ export class CreatePage implements OnInit {
 
     const { name, description } = this.chatroomForm.value;
 
-    this.socketService.createChatroom(name.trim(), description.trim());
+    this.socketService.createChatroom(name.trim(), description ? description.trim() : void 0);
   }
 
   /**
