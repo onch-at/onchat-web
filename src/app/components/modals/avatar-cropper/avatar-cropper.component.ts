@@ -136,7 +136,7 @@ export class AvatarCropperComponent implements OnInit {
       return await new Promise<ImageCropData>((resolve, reject) => {
         worker.onmessage = ({ data }) => {
           imageBlob = data.blob;
-          imageSrc = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageBlob));
+          imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(imageBlob));
           this.imageCropper.imageCropped.emit(data);
           worker.terminate();
           resolve({ imageBlob, imageSrc });
@@ -169,7 +169,7 @@ export class AvatarCropperComponent implements OnInit {
 
     const event = this.imageCropper.crop();
     imageBlob = SysUtil.dataURItoBlob(event.base64);
-    imageSrc = imageSrc = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(imageBlob));
+    imageSrc = imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(imageBlob));
 
     return { imageBlob, imageSrc };
   }

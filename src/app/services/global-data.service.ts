@@ -97,9 +97,7 @@ export class GlobalDataService {
       }
     }
 
-    if ('setAppBadge' in navigator) {
-      (navigator as any).setAppBadge(this.unreadMsgCount);
-    }
+    'setAppBadge' in navigator && (navigator as any).setAppBadge(this.unreadMsgCount);
   }
 
   get chatList(): ChatItem[] {

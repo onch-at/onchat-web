@@ -20,6 +20,8 @@ export interface AlertOptions {
     header: string;
     /** 文字 */
     message?: string;
+    /** 点击背景关闭 */
+    backdropDismiss?: boolean;
     /** 确认时的回调函数 */
     confirmHandler: CallableFunction;
     /** 取消时的回调函数 */

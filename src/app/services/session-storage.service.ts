@@ -21,8 +21,7 @@ export class SessionStorageService {
    */
   get(key: SessionStorageKey): any {
     const data = sessionStorage.getItem(key);
-    if (!data) { return false; }
-    return JSON.parse(data);
+    return data ? JSON.parse(data) : false;
   }
 
   /**

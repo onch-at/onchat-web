@@ -77,15 +77,11 @@ export class OverlayService {
       buttons: [
         {
           text: '取消',
-          handler: (data) => {
-            cancelHandler && cancelHandler(data);
-          }
+          handler: data => cancelHandler && cancelHandler(data)
         },
         {
           text: '确认',
-          handler: (data) => {
-            confirmHandler(data);
-          }
+          handler: data => confirmHandler(data)
         }
       ]
     });
