@@ -1,6 +1,5 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
-import { Subject } from 'rxjs';
 import { CHAT_ITEM_ROWS } from 'src/app/common/constant';
 import { MessageType } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
@@ -14,7 +13,6 @@ import { DateUtil } from 'src/app/utils/date.util';
   styleUrls: ['./chat.page.scss']
 })
 export class ChatPage implements OnInit {
-  subject: Subject<unknown> = new Subject();
   /** 消息类型枚举 */
   msgType = MessageType;
 
@@ -26,11 +24,6 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() { }
-
-  ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
-  }
 
   /**
    * 用于提升性能

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH } from 'src/app/common/constant';
 import { SocketEvent } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
@@ -29,6 +31,7 @@ export class CreatePage implements OnInit {
   privateChatroomsPage: number = 1;
   /** 搜索关键字 */
   keyword: string = '';
+  subject: Subject<unknown> = new Subject();
 
   chatroomForm: FormGroup = this.fb.group({
     name: [
@@ -56,28 +59,26 @@ export class CreatePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    const push = (privateChatrooms: ChatItem[]) => {
-      for (const item of privateChatrooms) {
-        this.originPrivateChatrooms.push({ ...item, checked: false });
-      }
+    const setOriginPrivateChatrooms = (privateChatrooms: ChatItem[]) => {
+      this.originPrivateChatrooms = privateChatrooms.map(o => ({ ...o, checked: false }));
     }
 
     if (this.globalDataService.privateChatrooms.length) {
-      push(this.globalDataService.privateChatrooms);
+      setOriginPrivateChatrooms(this.globalDataService.privateChatrooms);
     } else {
       this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatItem[]>) => {
         if (result.code !== 0) { return; }
 
         this.globalDataService.privateChatrooms = result.data;
-        push(result.data);
+        setOriginPrivateChatrooms(result.data);
       });
     }
 
-    this.socketService.on(SocketEvent.CreateChatroom).subscribe((result: Result<ChatItem>) => {
+    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.subject)).subscribe((result: Result<ChatItem>) => {
       this.loading = false;
 
       if (result.code !== 0) {
-        return this.overlayService.presentToast('聊天室创建失败！');
+        return this.overlayService.presentToast('聊天室创建失败，原因：' + result.msg);
       }
 
       this.globalDataService.chatList.push(result.data);
@@ -87,6 +88,11 @@ export class CreatePage implements OnInit {
       // TODO 跳到群简介页面
       this.router.navigateByUrl('/');
     });
+  }
+
+  ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
   submit() {
@@ -107,11 +113,7 @@ export class CreatePage implements OnInit {
    * 已选群成员人数
    */
   peopleNum() {
-    let num = 1;
-    for (const item of this.originPrivateChatrooms) {
-      item.checked && num++;
-    }
-    return num;
+    return this.originPrivateChatrooms.reduce((num, o) => o.checked ? ++num : num, 1);
   }
 
   /**
