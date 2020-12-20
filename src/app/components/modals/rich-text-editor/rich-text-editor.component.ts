@@ -71,7 +71,7 @@ export class RichTextEditorComponent implements OnInit {
     setTimeout(() => {
       this.modalController.dismiss();
       this.globalDataService.canDeactivate = true;
-      StrUtil.trimAll(this.text).length > 0 && this.cache();
+      StrUtil.trimAll(this.text).length && this.cache();
     }, 50);
   }
 
@@ -124,7 +124,7 @@ export class RichTextEditorComponent implements OnInit {
   onContentChanged(event: ContentChange) {
     this.text = event.text;
 
-    if (this.throttleTimer === null && StrUtil.trimAll(this.text).length > 0) {
+    if (this.throttleTimer === null && StrUtil.trimAll(this.text).length) {
       this.throttleTimer = window.setTimeout(() => {
         this.cache();
         this.throttleTimer = null;

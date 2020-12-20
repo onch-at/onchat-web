@@ -113,6 +113,18 @@ export class SocketService {
   }
 
   /**
+   * 邀请加入群聊
+   * @param chatroomId 聊天室ID
+   * @param chatroomIdList 私聊聊天室的ID列表
+   */
+  inviteJoinChatroom(chatroomId: number, chatroomIdList: number[]) {
+    this.emit(SocketEvent.InviteJoinChatroom, {
+      chatroomId,
+      chatroomIdList
+    });
+  }
+
+  /**
    * 发送事件
    * @param eventName 事件名
    * @param data 数据

@@ -85,6 +85,10 @@ export class CreatePage implements OnInit {
       this.globalDataService.chatList = this.globalDataService.chatList;
 
       this.overlayService.presentToast('聊天室创建成功！');
+      // 得到邀请的好友的聊天室ID
+      const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.chatroomId);
+      this.socketService.inviteJoinChatroom(result.data.chatroomId, chatroomIdList);
+
       // TODO 跳到群简介页面
       this.router.navigateByUrl('/');
     });
@@ -96,17 +100,13 @@ export class CreatePage implements OnInit {
   }
 
   submit() {
-    if (this.loading) { return; }
-    this.loading = true;
-
-    // 得到邀请的好友的聊天室ID
     const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.chatroomId);
+    this.socketService.inviteJoinChatroom(81, chatroomIdList);
+    // if (this.loading) { return; }
+    // this.loading = true;
 
-    console.log(chatroomIdList);
-
-    const { name, description } = this.chatroomForm.value;
-
-    this.socketService.createChatroom(name.trim(), description ? description.trim() : void 0);
+    // const { name, description } = this.chatroomForm.value;
+    // this.socketService.createChatroom(name.trim(), description ? description.trim() : null);
   }
 
   /**

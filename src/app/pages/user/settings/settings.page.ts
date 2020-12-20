@@ -117,7 +117,7 @@ export class SettingsPage implements OnInit {
     const { nickname, signature, mood, birthday, gender } = this.userInfoForm.value;
 
     this.userInfo.nickname = nickname;
-    this.userInfo.signature = signature.trim();
+    this.userInfo.signature = signature ? signature.trim() : null;
     this.userInfo.mood = mood;
     this.userInfo.birthday = Date.parse(birthday);
     this.userInfo.gender = +gender;

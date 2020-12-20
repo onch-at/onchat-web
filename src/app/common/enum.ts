@@ -78,6 +78,20 @@ export enum FriendRequestStatus {
     Ignore = 4
 }
 
+/** 聊天邀请的状态 */
+export enum ChatInvitationStatus {
+    /** 等待处理 */
+    Wait = 0,
+    /** 同意 */
+    Agree = 1,
+    /** 拒绝 */
+    Reject = 2,
+    /** 删除 */
+    Delete = 3,
+    /** 忽略 */
+    Ignore = 4
+}
+
 /** 聊天室类型 */
 export enum ChatroomType {
     /** 聊天室类型：群聊 */

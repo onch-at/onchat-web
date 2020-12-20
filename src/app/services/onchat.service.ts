@@ -43,14 +43,14 @@ export class OnChatService {
     });
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
-      if (result.data.length > 0) {
+      if (result.data.length) {
         this.globalDataService.receiveFriendRequests = result.data;
         this.feedbackService.dingDengAudio.play();
       }
     });
 
     this.getSendFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
-      if (result.data.length > 0) {
+      if (result.data.length) {
         this.globalDataService.sendFriendRequests = result.data;
       }
     });
