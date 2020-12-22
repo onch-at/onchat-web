@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse } from '@angular/common/http';
-import { ChatroomType, FriendRequestStatus, MessageType } from '../common/enum';
+import { ChatInvitationStatus, ChatroomType, FriendRequestStatus, MessageType } from '../common/enum';
 import { RichTextMessage, TextMessage } from './form.model';
 
 export interface Result<T = null> {
@@ -170,6 +170,25 @@ export interface AgreeFriendRequest {
     targetUsername: string;
     /** 被申请人的头像缩略图 */
     targetAvatarThumbnail: string;
+}
+
+/** 聊天邀请（邀请加入群聊） */
+export interface ChatInvitation extends Entity {
+    /** 聊天室ID */
+    chatroomId: number;
+    /** 邀请者ID */
+    inviterId: number;
+    /** 受邀者ID */
+    inviteeId: number;
+    /** 邀请者状态 */
+    inviterStatus: ChatInvitationStatus;
+    /** 受邀者状态 */
+    inviteeStatus: ChatInvitationStatus;
+
+    /** 邀请者用户名 */
+    inviterUsername: string;
+    /** 邀请者头像 */
+    inviterAvatarThumbnail: string;
 }
 
 

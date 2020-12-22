@@ -100,13 +100,11 @@ export class CreatePage implements OnInit {
   }
 
   submit() {
-    const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.chatroomId);
-    this.socketService.inviteJoinChatroom(81, chatroomIdList);
-    // if (this.loading) { return; }
-    // this.loading = true;
+    if (this.loading) { return; }
+    this.loading = true;
 
-    // const { name, description } = this.chatroomForm.value;
-    // this.socketService.createChatroom(name.trim(), description ? description.trim() : null);
+    const { name, description } = this.chatroomForm.value;
+    this.socketService.createChatroom(name.trim(), description ? description.trim() : null);
   }
 
   /**
