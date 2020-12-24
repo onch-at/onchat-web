@@ -59,7 +59,7 @@ export class ChatPage implements OnInit {
   /** 键盘高度 */
   keyboardHeight: number;
   /** 解除监听的函数集合 */
-  unlistenFns: Function[] = [];
+  unlistenFns: (() => void)[] = [];
 
   constructor(
     private onChatService: OnChatService,
@@ -238,7 +238,7 @@ export class ChatPage implements OnInit {
    * 加载聊天记录
    * @param complete
    */
-  loadRecords(complete?: CallableFunction) {
+  loadRecords(complete?: () => void) {
     if (this.end) { return complete && complete(); }
 
     this.onChatService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<Message[]>) => {
@@ -292,7 +292,7 @@ export class ChatPage implements OnInit {
   /**
    * 滚到底部
    */
-  scrollToBottom(duration: number = 500, complete?: CallableFunction) {
+  scrollToBottom(duration: number = 500, complete?: () => void) {
     this.ionContent.scrollToBottom(duration).then(() => {
       complete && complete();
     });

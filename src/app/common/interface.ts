@@ -1,3 +1,5 @@
+import { KeyValue } from "@angular/common";
+
 /** 浮层通知组件参数 */
 export interface NotificationOptions {
     /** 标题 */
@@ -23,9 +25,9 @@ export interface AlertOptions {
     /** 点击背景关闭 */
     backdropDismiss?: boolean;
     /** 确认时的回调函数 */
-    confirmHandler: CallableFunction;
+    confirmHandler: (data?: KeyValue<string, any>) => any;
     /** 取消时的回调函数 */
-    cancelHandler?: CallableFunction
+    cancelHandler?: (data?: KeyValue<string, any>) => any
     /** 输入组 */
     inputs?: any[];
 }

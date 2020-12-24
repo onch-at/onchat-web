@@ -1,9 +1,9 @@
 import { HttpRequest, HttpResponse } from '@angular/common/http';
-import { ChatInvitationStatus, ChatroomType, FriendRequestStatus, MessageType } from '../common/enum';
-import { RichTextMessage, TextMessage } from './form.model';
+import { ChatroomType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
+import { ChatInvitationMessage, RichTextMessage, TextMessage } from './form.model';
 
 export interface Result<T = null> {
-    code: number;
+    code: ResultCode | number;
     msg: string;
     data: T;
 }
@@ -111,7 +111,7 @@ export class Message extends Entity {
     /** 消息类型 */
     type: MessageType;
     /** 消息内容 */
-    data: TextMessage | RichTextMessage;
+    data: TextMessage | RichTextMessage | ChatInvitationMessage;
     /** 回复消息的消息记录ID */
     replyId?: number;
     /** 消息在客户端发送的时间 */
@@ -180,15 +180,6 @@ export interface ChatInvitation extends Entity {
     inviterId: number;
     /** 受邀者ID */
     inviteeId: number;
-    /** 邀请者状态 */
-    inviterStatus: ChatInvitationStatus;
-    /** 受邀者状态 */
-    inviteeStatus: ChatInvitationStatus;
-
-    /** 邀请者用户名 */
-    inviterUsername: string;
-    /** 邀请者头像 */
-    inviterAvatarThumbnail: string;
 }
 
 

@@ -52,21 +52,35 @@
             [innerHTML]=" item.data['html'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
         </div>
       </li>
+
+      <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item" [ngClass]="{
+        'msg-item-right': globalDataService.user && globalDataService.user.id == item.userId,
+        'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
+      }">
+        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user/card', item.userId]"></ion-img>
+
+        <div class="ql-container ql-snow">
+          <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
+            {{ item.nickname }}
+          </div>
+
+          <span #bubble class="msg-bubble msg-bubble-card ion-activatable ripple-parent">
+            <ion-img class="bg-img" [src]="item.data['avatarThumbnail']"></ion-img>
+            <div class="msg-bubble-card-body">
+              <div class="msg-bubble-card-label">邀请加入群聊</div>
+              <div class="d-flex">
+                <ion-img class="msg-bubble-card-avatar" [src]="item.data['avatarThumbnail']"></ion-img>
+                <div>
+                  <div class="msg-bubble-card-title overflow-ellipsis">{{ item.data['name'] }}</div>
+                  <div class="msg-bubble-card-description">{{ item.data['description'] ? '简介：' +
+                    item.data['description'] : '暂无简介' }}</div>
+                </div>
+              </div>
+            </div>
+            <ion-ripple-effect></ion-ripple-effect>
+          </span>
+        </div>
+      </li>
     </ng-container>
   </ng-container>
-
-  <li class="msg-item msg-item-right">
-
-    <ion-img class="avatar"></ion-img>
-
-    <div>
-      <div class="username">
-        12345
-      </div>
-
-      <span #bubble class="msg-bubble ion-activatable ripple-parent">
-        <img src="https://blog.hypergo.net/api/bing/image.php">
-      </span>
-    </div>
-  </li>
 </ul>

@@ -61,6 +61,12 @@ export class RichTextMessage {
 export class ChatInvitationMessage {
     /** 聊天室ID */
     chatroomId: number;
+    /** 聊天室名称 */
+    name?: string;
+    /** 聊天室描述 */
+    description?: string;
+    /** 聊天室头像 */
+    avatarThumbnail?: string;
 
     constructor(chatroomId: number) {
         this.chatroomId = chatroomId;

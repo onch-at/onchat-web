@@ -49,102 +49,156 @@
   .username {
     font-size: 0.8rem;
   }
+}
+
+.msg-bubble {
+  padding: 0.4rem 0.75rem;
+  margin-top: 0.35rem;
+  min-height: 2rem;
+  min-width: 2rem;
+  max-width: calc(100vw - 7.75rem);
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  word-break: break-word;
+  display: inline-block;
+  white-space: pre-wrap;
+  touch-action: auto !important;
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--oc-color-white);
+  }
+
+  &.ql-editor ::ng-deep {
+    blockquote {
+      display: inline-block;
+      width: 100%;
+      border: 0;
+      background: rgba(#fff, 0.4);
+      padding: 0.3rem 0.75rem;
+    }
+
+    ol,
+    ul {
+      padding-left: 0.5em;
+    }
+
+    pre.ql-syntax {
+      color: #d4d4d4;
+      background: #1e1e1e;
+      white-space: pre;
+      overflow-x: auto;
+      padding: 0.5rem 0.75rem;
+    }
+
+    blockquote,
+    pre.ql-syntax {
+      margin: 0.35rem 0;
+      border-radius: 0.5rem;
+    }
+  }
+}
+
+.msg-item-left {
+  padding-left: 0.75rem;
+  padding-right: 4rem;
+  transform: translateX(-100%);
+  animation: slide-in-right 0.45s ease forwards;
+
+  > div {
+    padding-left: 0.5rem;
+  }
 
   .msg-bubble {
-    padding: 0.4rem 0.75rem;
-    margin-top: 0.35rem;
-    min-height: 2rem;
-    min-width: 2rem;
-    max-width: calc(100vw - 7.75rem);
-    border-radius: 1rem;
-    font-weight: 500;
-    font-size: 0.9rem;
-    word-break: break-word;
-    display: inline-block;
-    white-space: pre-wrap;
-    touch-action: auto !important;
+    background: var(--oc-color-gray);
+  }
+}
 
-    @media (prefers-color-scheme: dark) {
-      color: var(--oc-color-white);
-    }
+.msg-item-right {
+  flex-direction: row-reverse;
+  padding-left: 4rem;
+  padding-right: 0.75rem;
+  transform: translateX(100%);
+  animation: slide-in-left 0.45s ease forwards;
 
-    &.ql-editor ::ng-deep {
-      blockquote {
-        display: inline-block;
-        width: 100%;
-        border: 0;
-        background: rgba(#fff, 0.4);
-        padding: 0.3rem 0.75rem;
-      }
-
-      ol,
-      ul {
-        padding-left: 0.5em;
-      }
-
-      pre.ql-syntax {
-        color: #d4d4d4;
-        background: #1e1e1e;
-        white-space: pre;
-        overflow-x: auto;
-        padding: 0.5rem 0.75rem;
-      }
-
-      blockquote,
-      pre.ql-syntax {
-        margin: 0.35rem 0;
-        border-radius: 0.5rem;
-      }
-    }
+  > div {
+    padding-right: 0.5rem;
+    text-align: right;
   }
 
-  &.msg-item-left {
-    padding-left: 0.75rem;
-    padding-right: 4rem;
-    transform: translateX(-100%);
-    animation: slide-in-right 0.45s ease forwards;
-
-    > div {
-      padding-left: 0.5rem;
-    }
-
-    .msg-bubble {
-      background: var(--oc-color-gray);
-    }
+  .send-spinner {
+    display: block;
+    margin: -0.5rem 0.575rem -0.5rem auto;
+    height: 1.5rem;
+    width: 2rem;
+    font-size: 999rem;
+    --color: var(--oc-color-muted);
   }
 
-  &.msg-item-right {
-    flex-direction: row-reverse;
-    padding-left: 4rem;
-    padding-right: 0.75rem;
-    transform: translateX(100%);
-    animation: slide-in-left 0.45s ease forwards;
+  .username {
+    text-align: right;
+  }
 
-    > div {
-      padding-right: 0.5rem;
-      text-align: right;
-    }
-
-    .send-spinner {
-      display: block;
-      margin: -0.5rem 0.575rem -0.5rem auto;
-      height: 1.5rem;
-      width: 2rem;
-      font-size: 999rem;
-      --color: var(--oc-color-muted);
-    }
-
-    .username {
-      text-align: right;
-    }
-
-    .msg-bubble {
-      background: var(--oc-color-primary);
-      text-align: left;
-    }
+  .msg-bubble {
+    background: var(--oc-color-primary);
+    text-align: left;
   }
 }
 
 .ql-container.ql-snow {
   border: 0;
+}
+
+.msg-bubble.msg-bubble-card {
+  padding: 0;
+  width: 15rem;
+  height: 6.75rem;
+  color: #fff;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+
+  > ion-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .msg-bubble-card-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0.4rem 0.75rem;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .msg-bubble-card-label {
+    margin-bottom: 0.5rem;
+  }
+
+  .msg-bubble-card-avatar {
+    height: 4rem;
+    width: 4rem;
+    margin-right: 0.65rem;
+    border-radius: 50%;
+    border: 0.15rem solid rgba(255, 255, 255, 0.95);
+    object-fit: cover;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .msg-bubble-card-title {
+    margin-bottom: 0.25rem;
+    max-width: 8.85rem;
+  }
+
+  .msg-bubble-card-description {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.8rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
 }

@@ -6,7 +6,7 @@ import { filter, mergeMap } from 'rxjs/operators';
 import { LocalStorageKey, MessageType, ResultCode, SessionStorageKey, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
-import { AgreeFriendRequest, ChatInvitation, ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
+import { AgreeFriendRequest, ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { GlobalDataService } from './services/global-data.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -249,13 +249,6 @@ export class AppComponent implements OnInit {
         this.globalDataService.chatList[index] = chatItem;
         this.globalDataService.chatList = this.globalDataService.chatList;
       }
-    });
-
-    // 入群邀请
-    this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
-      filter((result: Result) => !Array.isArray(result.data))
-    ).subscribe((result: Result<ChatInvitation>) => {
-      console.log(result);
     });
 
     // 如果路由返回被取消，就震动一下，表示阻止

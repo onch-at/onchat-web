@@ -72,7 +72,10 @@ export enum MessageType {
     Text = 1,
     /** 富文本 */
     RichText = 2,
+    /** 文字提示 */
     Tips = 3,
+    /** 群聊邀请 */
+    ChatInvitation = 4
 }
 
 /** 好友申请的状态 */

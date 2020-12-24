@@ -24,15 +24,13 @@
 					<h2 class="font-weight-bold">{{ item.name }}</h2>
 
 					<ng-container *ngIf="item.content" [ngSwitch]="item.content.type">
-						<p *ngSwitchCase="msgType.Text"
-							[innerHTML]="(item.content.userId == globalDataService.user.id ? '我' : item.content.nickname) + '：' + item.content.data['content']">
-						</p>
+						<p *ngSwitchCase="msgType.Text" [innerHTML]="target(item) + item.content.data['content']"></p>
 
-						<p *ngSwitchCase="msgType.RichText"
-							[innerHTML]="(item.content.userId == globalDataService.user.id ? '我' : item.content.nickname) + '：' + item.content.data['text']">
-						</p>
+						<p *ngSwitchCase="msgType.RichText" [innerHTML]="target(item) + item.content.data['text']"></p>
 
 						<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.content.data['content']"></p>
+
+						<p *ngSwitchCase="msgType.ChatInvitation" [innerHTML]="target(item) + '[分享]邀请加入群聊'"></p>
 					</ng-container>
 
 					<p *ngIf="!item.content">进去打个招呼吧？</p>

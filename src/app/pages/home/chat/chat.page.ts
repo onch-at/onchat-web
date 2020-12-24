@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { CHAT_ITEM_ROWS } from 'src/app/common/constant';
-import { MessageType, ResultCode } from 'src/app/common/enum';
+import { ChatroomType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -150,6 +150,21 @@ export class ChatPage implements OnInit {
     this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
       index == i && item.close();
     });
+  }
+
+  // TODO 改成管道，但我还没想好名字
+  /**
+   * 解析会话项的消息的发送者名称
+   * @param chatItem
+   */
+  target(chatItem: ChatItem) {
+    if (chatItem.content.userId == this.globalDataService.user.id) {
+      return '我: ';
+    } else if (chatItem.type == ChatroomType.Private) {
+      return 'Ta: '
+    } else {
+      return chatItem.content.nickname + ': ';
+    }
   }
 
 }

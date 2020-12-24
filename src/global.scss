@@ -137,6 +137,11 @@
 .visibility-hidden {
   visibility: hidden !important;
 }
+.overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 // 标徽字体
 @font-face {
