@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SessionStorageKey, SocketEvent } from 'src/app/common/enum';
+import { ResultCode, SessionStorageKey, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -38,7 +38,7 @@ export class RequestPage implements OnInit {
     this.route.data.subscribe((data: { user: Result<User> | User, friendRequest: Result<FriendRequest> }) => {
       if ((data.user as User).id) {
         this.user = data.user as User;
-      } else if ((data.user as Result<User>).code == 0) {
+      } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
         this.sessionStorageService.setItemToMap(
           SessionStorageKey.UserMap,
@@ -49,7 +49,7 @@ export class RequestPage implements OnInit {
 
       const resultFriendRequest = data.friendRequest;
       // 如果之前有申请过，就把之前填过的信息补全上去
-      if (resultFriendRequest.code == 0) {
+      if (resultFriendRequest.code === ResultCode.Success) {
         this.targetAlias = resultFriendRequest.data.targetAlias || '';
         this.requestReason = resultFriendRequest.data.requestReason || '';
         this.rejectReason = resultFriendRequest.data.rejectReason || null;
@@ -62,11 +62,11 @@ export class RequestPage implements OnInit {
         return;
       }
 
-      result.code == 0 && (result.msg = '好友申请已发出，等待对方验证');
+      result.code === ResultCode.Success && (result.msg = '好友申请已发出，等待对方验证');
 
       this.overlayService.presentToast(result.msg);
 
-      result.code == 0 && setTimeout(() => {
+      result.code === ResultCode.Success && setTimeout(() => {
         this.router.navigate(['/']);
       }, 250);
     });

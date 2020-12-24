@@ -1,3 +1,14 @@
+export enum ResultCode {
+    /** 权限不足 */
+    ErrorNoPermission = -3,
+    /** 参数错误 */
+    ErrorParam = -2,
+    /** 未知错误 */
+    ErrorUnknown = -1,
+    /** 成功 */
+    Success = 0,
+}
+
 /**
  * 枚举周
  */

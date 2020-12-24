@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
-import { ChatroomType, MessageType, SocketEvent } from 'src/app/common/enum';
+import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { TextMessage } from 'src/app/models/form.model';
 import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
@@ -102,7 +102,7 @@ export class ChatPage implements OnInit {
       chatItem.unread = 0;
     } else { // TODO 把数据缓存下来
       this.onChatService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
-        if (result.code !== 0) { return; }
+        if (result.code !== ResultCode.Success) { return; }
 
         const { name, type } = result.data
         this.roomName = name;
@@ -141,7 +141,7 @@ export class ChatPage implements OnInit {
       takeUntil(this.subject),
       // 如果请求成功，并且收到的消息是这个房间的
       filter((result: Result<{ chatroomId: number, msgId: number }>) => {
-        return result.code == 0 && result.data.chatroomId == this.chatroomId
+        return result.code === ResultCode.Success && result.data.chatroomId == this.chatroomId
       })
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       for (const msgItem of this.msgList) {
@@ -242,7 +242,7 @@ export class ChatPage implements OnInit {
     if (this.end) { return complete && complete(); }
 
     this.onChatService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<Message[]>) => {
-      if (result.code === 0) {
+      if (result.code === ResultCode.Success) {
         // 按照ID排序
         // result.data.sort((a: Message, b: Message) => {
         //   return a.id - b.id;

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { filter, mergeMap } from 'rxjs/operators';
-import { LocalStorageKey, MessageType, SessionStorageKey, SocketEvent } from './common/enum';
+import { LocalStorageKey, MessageType, ResultCode, SessionStorageKey, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
 import { AgreeFriendRequest, ChatInvitation, ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
     // 同意好友申请/收到同意好友申请
     this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<AgreeFriendRequest>) => {
       console.log('result: ', result);
-      if (result.code == 0) {
+      if (result.code === ResultCode.Success) {
         // 如果申请人是自己（我的好友申请被同意了）
         if (result.data.selfId == this.globalDataService.user.id) {
           // 去我发出的申请列表里面找这条FriendRequest，并删除
@@ -126,7 +126,7 @@ export class AppComponent implements OnInit {
         // 更新一下聊天列表
         this.globalDataService.chatListPage = 1;
         this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
-          if (result.code !== 0) { return; }
+          if (result.code !== ResultCode.Success) { return; }
 
           this.globalDataService.chatList = result.data;
         });
@@ -135,7 +135,7 @@ export class AppComponent implements OnInit {
         if (this.globalDataService.privateChatrooms.length) {
           this.globalDataService.privateChatroomsPage = 1;
           this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatItem[]>) => {
-            if (result.code !== 0) { return; }
+            if (result.code !== ResultCode.Success) { return; }
 
             this.globalDataService.privateChatrooms = result.data;
           });
@@ -146,7 +146,7 @@ export class AppComponent implements OnInit {
     // 拒绝好友申请/收到拒绝好友申请
     this.socketService.on(SocketEvent.FriendRequestReject).subscribe((result: Result<FriendRequest>) => {
       console.log('result: ', result);
-      if (result.code == 0) {
+      if (result.code === ResultCode.Success) {
         const friendRequest = result.data;
         // 如果申请人是自己
         if (friendRequest.selfId == this.globalDataService.user.id) {

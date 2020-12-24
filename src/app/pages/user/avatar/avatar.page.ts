@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { SessionStorageKey } from 'src/app/common/enum';
+import { ResultCode, SessionStorageKey } from 'src/app/common/enum';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -45,7 +45,7 @@ export class AvatarPage implements OnInit {
     this.route.data.subscribe((data: { user: Result<User> | User }) => {
       if ((data.user as User).id) {
         this.user = data.user as User;
-      } else if ((data.user as Result<User>).code == 0) {
+      } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
         this.sessionStorageService.setItemToMap(
           SessionStorageKey.UserMap,

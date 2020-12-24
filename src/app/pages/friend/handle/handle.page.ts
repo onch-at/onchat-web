@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SessionStorageKey, SocketEvent } from 'src/app/common/enum';
+import { ResultCode, SessionStorageKey, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
@@ -32,7 +32,7 @@ export class HandlePage implements OnInit {
     this.route.data.subscribe((data: { user: Result<User> | User, friendRequest: Result<FriendRequest> }) => {
       if ((data.user as User).id) {
         this.user = data.user as User;
-      } else if ((data.user as Result<User>).code == 0) {
+      } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
         this.sessionStorageService.setItemToMap(
           SessionStorageKey.UserMap,
@@ -50,7 +50,7 @@ export class HandlePage implements OnInit {
     });
 
     this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.subject)).subscribe((result: Result<any>) => {
-      if (result.code == 0 && result.data.selfId == this.user.id) {
+      if (result.code === ResultCode.Success && result.data.selfId == this.user.id) {
         setTimeout(() => {
           this.router.navigate(['/']);
         }, 250);
@@ -58,7 +58,7 @@ export class HandlePage implements OnInit {
     });
 
     this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest>) => {
-      if (result.code == 0 && result.data.selfId == this.user.id) {
+      if (result.code === ResultCode.Success && result.data.selfId == this.user.id) {
         setTimeout(() => {
           this.router.navigate(['/']);
         }, 250);

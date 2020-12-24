@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
-import { SessionStorageKey } from 'src/app/common/enum';
+import { ResultCode, SessionStorageKey } from 'src/app/common/enum';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
@@ -94,12 +94,12 @@ export class RegisterPage implements OnInit {
 
     const { username, password, captcha } = this.registerForm.value;
     this.onChatService.register(new Register(username, password, captcha)).subscribe(async (result: Result<User>) => {
-      if (result.code !== 0) { // 如果请求不成功，则刷新验证码
+      if (result.code !== ResultCode.Success) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }
 
-      const toast = this.overlayService.presentToast(result.msg, result.code === 0 ? 1000 : 2000);
-      if (result.code === 0) {
+      const toast = this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
+      if (result.code === ResultCode.Success) {
         this.globalDataService.user = result.data;
         this.sessionStorageService.setItemToMap(
           SessionStorageKey.UserMap,

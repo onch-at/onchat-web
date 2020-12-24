@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { CHAT_ITEM_ROWS } from 'src/app/common/constant';
-import { MessageType } from 'src/app/common/enum';
+import { MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -96,7 +96,7 @@ export class ChatPage implements OnInit {
   doSticky(item: ChatItem, i: number) {
     if (item.sticky) {
       return this.onChatService.unstickyChatItem(item.id).subscribe((result: Result) => {
-        if (result.code == 0) {
+        if (result.code === ResultCode.Success) {
           item.sticky = false;
           this.globalDataService.chatList = this.globalDataService.chatList;
 
@@ -106,7 +106,7 @@ export class ChatPage implements OnInit {
     }
 
     this.onChatService.stickyChatItem(item.id).subscribe((result: Result) => {
-      if (result.code == 0) {
+      if (result.code === ResultCode.Success) {
         item.sticky = true;
         this.globalDataService.chatList = this.globalDataService.chatList;
 
@@ -123,7 +123,7 @@ export class ChatPage implements OnInit {
   doRead(item: ChatItem, i: number) {
     if (item.unread == 0) {
       return this.onChatService.unread(item.chatroomId).subscribe((result: Result) => {
-        if (result.code == 0) {
+        if (result.code === ResultCode.Success) {
           item.unread = 1;
           this.globalDataService.chatList = this.globalDataService.chatList;
 
@@ -133,7 +133,7 @@ export class ChatPage implements OnInit {
     }
 
     this.onChatService.readed(item.chatroomId).subscribe((result: Result) => {
-      if (result.code == 0) {
+      if (result.code === ResultCode.Success) {
         item.unread = 0;
         this.globalDataService.chatList = this.globalDataService.chatList;
 

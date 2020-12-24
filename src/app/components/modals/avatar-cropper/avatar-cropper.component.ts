@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { ResultCode } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -206,7 +207,7 @@ export class AvatarCropperComponent implements OnInit {
     this.ionLoading = this.overlayService.presentLoading('正在上传…');
 
     this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
-      if (result.code === 0) {
+      if (result.code === ResultCode.Success) {
         this.handler(result);
 
         this.dismiss(imageSrc);

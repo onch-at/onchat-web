@@ -6,7 +6,7 @@ import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
-import { Gender, Mood, SessionStorageKey } from 'src/app/common/enum';
+import { Gender, Mood, ResultCode, SessionStorageKey } from 'src/app/common/enum';
 import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
@@ -125,7 +125,7 @@ export class SettingsPage implements OnInit {
     this.onChatService.saveUserInfo(this.userInfo).subscribe((result: Result<UserInfo>) => {
       this.loading = false;
 
-      if (result.code !== 0) {
+      if (result.code !== ResultCode.Success) {
         return this.overlayService.presentToast('用户信息修改失败！', 2000);
       }
 

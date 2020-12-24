@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Gender, Mood, SessionStorageKey } from 'src/app/common/enum';
+import { Gender, Mood, ResultCode, SessionStorageKey } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -34,7 +34,7 @@ export class CardPage implements OnInit {
     this.route.data.subscribe((data: { user: Result<User> | User }) => {
       if ((data.user as User).id) {
         this.user = data.user as User;
-      } else if ((data.user as Result<User>).code == 0) {
+      } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
         this.sessionStorageService.setItemToMap(
           SessionStorageKey.UserMap,
@@ -48,7 +48,7 @@ export class CardPage implements OnInit {
     });
 
     this.onChatService.isFriend(this.user.id).subscribe((result: Result<number>) => {
-      if (result.code == 0) {
+      if (result.code === ResultCode.Success) {
         this.chatroomId = result.data;
       }
     });

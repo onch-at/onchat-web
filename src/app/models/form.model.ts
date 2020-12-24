@@ -56,6 +56,18 @@ export class RichTextMessage {
 }
 
 /**
+ * 群聊邀请消息
+ */
+export class ChatInvitationMessage {
+    /** 聊天室ID */
+    chatroomId: number;
+
+    constructor(chatroomId: number) {
+        this.chatroomId = chatroomId;
+    }
+}
+
+/**
  * 用户信息表单数据模型
  */
 export class UserInfo {

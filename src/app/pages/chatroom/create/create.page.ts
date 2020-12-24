@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH } from 'src/app/common/constant';
-import { SocketEvent } from 'src/app/common/enum';
+import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatItem, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -67,7 +67,7 @@ export class CreatePage implements OnInit {
       setOriginPrivateChatrooms(this.globalDataService.privateChatrooms);
     } else {
       this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatItem[]>) => {
-        if (result.code !== 0) { return; }
+        if (result.code !== ResultCode.Success) { return; }
 
         this.globalDataService.privateChatrooms = result.data;
         setOriginPrivateChatrooms(result.data);
@@ -77,7 +77,7 @@ export class CreatePage implements OnInit {
     this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.subject)).subscribe((result: Result<ChatItem>) => {
       this.loading = false;
 
-      if (result.code !== 0) {
+      if (result.code !== ResultCode.Success) {
         return this.overlayService.presentToast('聊天室创建失败，原因：' + result.msg);
       }
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
-import { SessionStorageKey } from 'src/app/common/enum';
+import { ResultCode, SessionStorageKey } from 'src/app/common/enum';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
@@ -66,9 +66,9 @@ export class LoginPage implements OnInit {
     const { username, password } = this.loginForm.value;
 
     this.onChatService.login(new Login(username, password)).subscribe(async (result: Result<User>) => {
-      const toast = this.overlayService.presentToast(result.msg, result.code === 0 ? 1000 : 2000);
+      const toast = this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
 
-      if (result.code === 0) {
+      if (result.code === ResultCode.Success) {
         this.globalDataService.user = result.data;
         this.sessionStorageService.setItemToMap(
           SessionStorageKey.UserMap,
