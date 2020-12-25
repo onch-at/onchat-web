@@ -149,10 +149,11 @@
   border: 0;
 }
 
+// 名片气泡
 .msg-bubble.msg-bubble-card {
   padding: 0;
   width: 15rem;
-  height: 6.75rem;
+  height: 6.5rem;
   color: #fff;
   text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.75);
   cursor: pointer;
@@ -174,13 +175,12 @@
   }
 
   .msg-bubble-card-label {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
   }
 
   .msg-bubble-card-avatar {
-    height: 4rem;
-    width: 4rem;
-    margin-right: 0.65rem;
+    height: 3.75rem;
+    width: 3.75rem;
     border-radius: 50%;
     border: 0.15rem solid rgba(255, 255, 255, 0.95);
     object-fit: cover;
@@ -189,16 +189,20 @@
   }
 
   .msg-bubble-card-title {
-    margin-bottom: 0.25rem;
+    padding-bottom: 0.125rem;
     max-width: 8.85rem;
   }
 
   .msg-bubble-card-description {
-    color: rgba(255, 255, 255, 0.95);
     font-size: 0.8rem;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+  }
+
+  .msg-bubble-card-title,
+  .msg-bubble-card-description {
+    padding-left: 0.65rem;
   }
 }

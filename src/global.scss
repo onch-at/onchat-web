@@ -138,7 +138,7 @@
   visibility: hidden !important;
 }
 .overflow-ellipsis {
-  overflow: hidden;
+  overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
