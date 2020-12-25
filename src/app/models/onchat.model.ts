@@ -172,15 +172,6 @@ export interface AgreeFriendRequest {
     targetAvatarThumbnail: string;
 }
 
-/** 聊天邀请（邀请加入群聊） */
-export interface ChatInvitation extends Entity {
-    /** 聊天室ID */
-    chatroomId: number;
-    /** 邀请者ID */
-    inviterId: number;
-    /** 受邀者ID */
-    inviteeId: number;
-}
 
 
 export interface Cache {

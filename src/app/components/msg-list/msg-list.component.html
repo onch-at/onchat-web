@@ -59,7 +59,7 @@
       }">
         <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user/card', item.userId]"></ion-img>
 
-        <div class="ql-container ql-snow">
+        <div>
           <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>

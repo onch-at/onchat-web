@@ -5,7 +5,7 @@ import { ContentChange } from 'ngx-quill';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
-import { LocalStorageKey, MessageType, SocketEvent } from 'src/app/common/enum';
+import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { RichTextMessage } from 'src/app/models/form.model';
 import { Message, Result } from 'src/app/models/onchat.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
@@ -94,7 +94,7 @@ export class RichTextEditorComponent implements OnInit {
     const subscription = this.socketService.on(SocketEvent.Message).subscribe((result: Result<Message>) => {
       const msg = result.data;
       // 如果请求成功，并且收到的消息是这个房间的
-      if (result.code != 0 || msg.chatroomId != this.globalDataService.chatroomId) {
+      if (result.code !== ResultCode.Success || msg.chatroomId != this.globalDataService.chatroomId) {
         return subscription.unsubscribe();
       }
 

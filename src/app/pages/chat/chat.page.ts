@@ -9,7 +9,7 @@ import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { TextMessage } from 'src/app/models/form.model';
-import { ChatItem, Chatroom, Message, Result } from 'src/app/models/onchat.model';
+import { Chatroom, Message, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -94,7 +94,7 @@ export class ChatPage implements OnInit {
     this.loadRecords();
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-    const chatItem = this.globalDataService.chatList.find((o: ChatItem) => o.chatroomId == this.chatroomId);
+    const chatItem = this.globalDataService.chatList.find(o => o.chatroomId == this.chatroomId);
     if (chatItem) {
       this.globalDataService.unreadMsgCount -= chatItem.unread;
       this.roomName = chatItem.name;
@@ -113,7 +113,7 @@ export class ChatPage implements OnInit {
     this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((result: Result<Message>) => {
       const msg = result.data;
       // 如果请求成功，并且收到的消息是这个房间的
-      if (result.code != 0 || msg.chatroomId != this.chatroomId) {
+      if (result.code !== ResultCode.Success || msg.chatroomId != this.chatroomId) {
         return;
       }
 
@@ -380,7 +380,7 @@ export class ChatPage implements OnInit {
         if (data['alias'] == this.roomName) { return; }
 
         this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
-          if (result.code != 0) {
+          if (result.code !== ResultCode.Success) {
             return this.overlayService.presentToast(result.msg);
           }
 
@@ -388,14 +388,14 @@ export class ChatPage implements OnInit {
 
           this.overlayService.presentToast('成功修改好友别名', 1000);
 
-          let chatItem = this.globalDataService.chatList.find((o: ChatItem) => o.chatroomId == this.chatroomId);
+          let chatItem = this.globalDataService.chatList.find(o => o.chatroomId == this.chatroomId);
           if (chatItem) {
             chatItem.name = result.data;
           }
 
           switch (this.chatroomType) {
             case ChatroomType.Private:
-              chatItem = this.globalDataService.privateChatrooms.find((o: ChatItem) => o.chatroomId == this.chatroomId);
+              chatItem = this.globalDataService.privateChatrooms.find(o => o.chatroomId == this.chatroomId);
               if (chatItem) {
                 chatItem.name = result.data;
               }

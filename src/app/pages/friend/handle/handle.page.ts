@@ -41,7 +41,7 @@ export class HandlePage implements OnInit {
         );
       }
 
-      if (data.friendRequest.code != 0) {
+      if (data.friendRequest.code !== ResultCode.Success) {
         this.overlayService.presentToast(data.friendRequest.msg);
         return this.router.navigate(['/']);
       }

@@ -39,7 +39,7 @@ export class OnChatService {
     this.getChatList().subscribe((result: Result<ChatItem[]>) => {
       this.globalDataService.chatList = result.data;
       // 看看有没有未读消息，有就放提示音
-      this.globalDataService.chatList.some((o: ChatItem) => o.unread > 0) && this.feedbackService.booAudio.play();
+      this.globalDataService.chatList.some(o => o.unread > 0) && this.feedbackService.booAudio.play();
     });
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
