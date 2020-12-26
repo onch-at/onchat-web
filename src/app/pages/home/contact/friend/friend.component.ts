@@ -6,11 +6,11 @@ import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 
 @Component({
-  selector: 'app-buddy',
-  templateUrl: './buddy.component.html',
-  styleUrls: ['./buddy.component.scss'],
+  selector: 'app-friend',
+  templateUrl: './friend.component.html',
+  styleUrls: ['./friend.component.scss'],
 })
-export class BuddyComponent implements OnInit {
+export class FriendComponent implements OnInit {
 
   constructor(
     private onChatService: OnChatService,

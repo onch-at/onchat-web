@@ -66,7 +66,8 @@
 
           <span #bubble class="msg-bubble msg-bubble-card ion-activatable ripple-parent"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
-            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
+            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
+            [routerLink]="['/chatroom', item.data['chatroomId']]">
             <ion-img class="bg-img" [src]="item.data['avatarThumbnail']"></ion-img>
             <div class="msg-bubble-card-body">
               <div class="msg-bubble-card-label">邀请加入群聊</div>

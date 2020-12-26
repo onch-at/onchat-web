@@ -1,9 +1,17 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content appHideScrollbar [fullscreen]="true">
+  <ion-header class="d-flex align-items-center" slot="fixed">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
+      </ion-buttons>
 
-<ion-content>
+      <ion-title>{{ chatroom.name }}</ion-title>
 
+      <ion-buttons slot="end">
+        <ion-button>
+          <ion-icon slot="icon-only" name="ellipsis-vertical" style="font-size: 1.5rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 </ion-content>

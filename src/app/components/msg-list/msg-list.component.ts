@@ -4,7 +4,6 @@ import { ChatroomType, MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalDataService } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
 @Component({
@@ -28,7 +27,6 @@ export class MsgListComponent implements OnInit {
     private popoverController: PopoverController,
     private feedbackService: FeedbackService,
     public globalDataService: GlobalDataService,
-    private overlayService: OverlayService
   ) { }
 
   ngOnInit() { }

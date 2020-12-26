@@ -131,7 +131,9 @@ export enum LocalStorageKey {
  */
 export enum SessionStorageKey {
     /** 用户Map缓存 */
-    UserMap = 'user_map'
+    UserMap = 'user_map',
+    /** 聊天室Map缓存 */
+    ChatroomMap = 'chatroom_map',
 }
 
 /**

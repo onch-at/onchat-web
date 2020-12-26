@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BuddyComponent } from './buddy/buddy.component';
 import { ChatroomComponent } from './chatroom/chatroom.component';
 import { ContactPage } from './contact.page';
+import { FriendComponent } from './friend/friend.component';
 import { NewComponent } from './new/new.component';
 
 const routes: Routes = [
@@ -16,8 +16,8 @@ const routes: Routes = [
         data: { animation: 1 }
       },
       {
-        path: 'buddy',
-        component: BuddyComponent,
+        path: 'friend',
+        component: FriendComponent,
         data: { animation: 2 }
       },
       {
@@ -27,7 +27,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: '/home/contact/buddy',
+        redirectTo: '/home/contact/friend',
         pathMatch: 'full'
       }
     ]

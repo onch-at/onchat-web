@@ -44,6 +44,10 @@ const routes: Routes = [
   },
   // 聊天室模块
   {
+    path: 'chatroom',
+    loadChildren: () => import('./pages/chatroom/home/home.module').then(m => m.HomePageModule)
+  },
+  {
     path: 'chatroom/create',
     loadChildren: () => import('./pages/chatroom/create/create.module').then(m => m.CreatePageModule)
   },
@@ -52,10 +56,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    loadChildren: () => import('./pages/chatroom/home/home.module').then(m => m.HomePageModule)
   },
 ];
 

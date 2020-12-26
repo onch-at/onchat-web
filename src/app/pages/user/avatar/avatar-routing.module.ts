@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CanDeactivateGuard } from 'src/app/guards/can-deactivate.guard';
-import { UserResolve } from 'src/app/resolvers/onchat.resolver';
+import { UserResolve } from 'src/app/resolvers/user.resolver';
 import { AvatarPage } from './avatar.page';
 
 const routes: Routes = [

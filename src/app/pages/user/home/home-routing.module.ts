@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserResolve } from 'src/app/resolvers/onchat.resolver';
+import { UserResolve } from 'src/app/resolvers/user.resolver';
 import { HomePage } from './home.page';
 
 const routes: Routes = [

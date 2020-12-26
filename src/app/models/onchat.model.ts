@@ -72,6 +72,8 @@ export interface Chatroom extends IEntity {
     avatar: string;
     /** 聊天室头像缩略图 */
     avatarThumbnail: string;
+    /** 聊天室最大人数 */
+    maxPeopleNum: number;
     /** 聊天室类型 */
     type: number;
 }

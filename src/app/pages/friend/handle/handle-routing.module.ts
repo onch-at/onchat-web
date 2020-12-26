@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { NotFriendGuard } from 'src/app/guards/not-friend.guard';
-import { FriendRequestBySelfIdResolve, UserResolve } from 'src/app/resolvers/onchat.resolver';
+import { FriendRequestBySelfIdResolve } from 'src/app/resolvers/friend-request.resolver';
+import { UserResolve } from 'src/app/resolvers/user.resolver';
 import { HandlePage } from './handle.page';
 
 const routes: Routes = [
