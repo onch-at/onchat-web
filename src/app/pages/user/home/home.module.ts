@@ -6,22 +6,22 @@ import { MoodIconComponent } from 'src/app/components/mood-icon/mood-icon.compon
 import { SharedModule } from 'src/app/modules/shared.module';
 import { ConstellationPipe } from 'src/app/pipes/constellation.pipe';
 import { MoodPipe } from 'src/app/pipes/mood.pipe';
-import { CardPageRoutingModule } from './card-routing.module';
-import { CardPage } from './card.page';
+import { HomePageRoutingModule } from './home-routing.module';
+import { HomePage } from './home.page';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
-    CardPageRoutingModule,
+    HomePageRoutingModule,
     SharedModule
   ],
   declarations: [
-    CardPage,
+    HomePage,
     MoodPipe,
     ConstellationPipe,
     MoodIconComponent,
     ConstellationIconComponent
   ]
 })
-export class CardPageModule { }
+export class HomePageModule { }

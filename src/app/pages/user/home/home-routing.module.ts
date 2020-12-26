@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserResolve } from 'src/app/resolvers/onchat.resolver';
-import { CardPage } from './card.page';
-
+import { HomePage } from './home.page';
 
 const routes: Routes = [
   {
     path: ':userId',
-    component: CardPage,
+    component: HomePage,
     resolve: {
       user: UserResolve
     },
@@ -18,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CardPageRoutingModule { }
+export class HomePageRoutingModule { }

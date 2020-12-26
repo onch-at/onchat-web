@@ -8,11 +8,11 @@ import { OverlayService } from 'src/app/services/overlay.service';
 import { SessionStorageService } from 'src/app/services/session-storage.service';
 
 @Component({
-  selector: 'app-card',
-  templateUrl: './card.page.html',
-  styleUrls: ['./card.page.scss'],
+  selector: 'app-user-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
 })
-export class CardPage implements OnInit {
+export class HomePage implements OnInit {
   /** 用户 */
   user: User;
   /** 私聊房间号 */

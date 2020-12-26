@@ -12,15 +12,15 @@ export class ActiveClassDirective {
   /** 多少毫秒后移除CSS类名 */
   @Input() appActiveClassDuration: number;
 
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2) { }
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
 
   @HostListener('tap')
   onTap() {
     const className = this.appActiveClass || 'active';
-    this.renderer2.addClass(this.elementRef.nativeElement, className);
+    this.renderer.addClass(this.elementRef.nativeElement, className);
 
     this.appActiveClassDuration && setTimeout(() => {
-      this.renderer2.removeClass(this.elementRef.nativeElement, className);
+      this.renderer.removeClass(this.elementRef.nativeElement, className);
     }, this.appActiveClassDuration);
   }
 

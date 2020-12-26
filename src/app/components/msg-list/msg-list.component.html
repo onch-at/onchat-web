@@ -17,7 +17,7 @@
         'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
       }">
 
-        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user/card', item.userId]"></ion-img>
+        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
 
         <div>
           <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
@@ -39,7 +39,7 @@
         'msg-item-right': globalDataService.user && globalDataService.user.id == item.userId,
         'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
       }">
-        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user/card', item.userId]"></ion-img>
+        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
 
         <div class="ql-container ql-snow">
           <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
@@ -57,14 +57,16 @@
         'msg-item-right': globalDataService.user && globalDataService.user.id == item.userId,
         'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
       }">
-        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user/card', item.userId]"></ion-img>
+        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
 
         <div>
           <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
-          <span #bubble class="msg-bubble msg-bubble-card ion-activatable ripple-parent">
+          <span #bubble class="msg-bubble msg-bubble-card ion-activatable ripple-parent"
+            (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <ion-img class="bg-img" [src]="item.data['avatarThumbnail']"></ion-img>
             <div class="msg-bubble-card-body">
               <div class="msg-bubble-card-label">邀请加入群聊</div>

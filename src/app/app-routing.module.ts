@@ -17,8 +17,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/user/register/register.module').then(m => m.RegisterPageModule)
   },
   {
-    path: 'user/card',
-    loadChildren: () => import('./pages/user/card/card.module').then(m => m.CardPageModule)
+    path: 'user',
+    loadChildren: () => import('./pages/user/home/home.module').then(m => m.HomePageModule)
   },
   {
     path: 'user/avatar',
@@ -52,6 +52,10 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/chatroom/home/home.module').then(m => m.HomePageModule)
   },
 ];
 

@@ -1,4 +1,4 @@
-<ion-content appScrollbar [fullscreen]="true">
+<ion-content appHideScrollbar [fullscreen]="true">
   <ion-header class="d-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -18,7 +18,7 @@
   <img class="bg-img" [src]="user.avatarThumbnail">
 
   <main class="flex-col-container align-items-center">
-    <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/card', user.id]">
+    <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user', user.id]">
     <h1>{{ user.username }}</h1>
 
     <ion-item lines="none" *ngIf="rejectReason">

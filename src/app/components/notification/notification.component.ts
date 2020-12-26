@@ -36,7 +36,7 @@ export class NotificationComponent implements OnInit {
 
   constructor(
     private elementRef: ElementRef,
-    private renderer2: Renderer2,
+    private renderer: Renderer2,
     private animationCtrl: AnimationController,
     private gestureCtrl: GestureController
   ) { }
@@ -105,9 +105,9 @@ export class NotificationComponent implements OnInit {
    * 关闭通知
    */
   dismiss(): Observable<void> {
-    this.renderer2.addClass(this.element, 'hide');
+    this.renderer.addClass(this.element, 'hide');
     this.unlistener && this.unlistener();
-    this.unlistener = this.renderer2.listen(this.element, 'transitionend', () => {
+    this.unlistener = this.renderer.listen(this.element, 'transitionend', () => {
       this.overlayRef.dispose();
       this.dismiss$.next();
     });
@@ -126,7 +126,7 @@ export class NotificationComponent implements OnInit {
   onClick(event: Event) {
 
     this.unlistener && this.unlistener();
-    this.unlistener = this.renderer2.listen(this.element, 'transitionend', () => {
+    this.unlistener = this.renderer.listen(this.element, 'transitionend', () => {
       this.dismiss();
       this.handler && this.handler(event);
     });

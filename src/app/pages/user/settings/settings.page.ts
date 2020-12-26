@@ -142,7 +142,7 @@ export class SettingsPage implements OnInit {
       // TODO
       this.location.back();
       this.overlayService.presentToast('用户信息修改成功！', 1000).then(() => {
-        this.router.navigate(['/user/card', user.id]);
+        this.router.navigate(['/user', user.id]);
       });
     });
   }

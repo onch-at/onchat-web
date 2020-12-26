@@ -68,7 +68,7 @@ export class ChatPage implements OnInit {
     private socketService: SocketService,
     private route: ActivatedRoute,
     private router: Router,
-    private renderer2: Renderer2,
+    private renderer: Renderer2,
     private overlayService: OverlayService
   ) { }
 
@@ -149,7 +149,7 @@ export class ChatPage implements OnInit {
           msgItem.type = MessageType.Tips;
           const name = msgItem.userId == this.globalDataService.user.id ? '我' : msgItem.nickname;
           // TODO AS ANY
-          (msgItem.data as any).content = `<a target="_blank" href="/user/card/${msgItem.userId}">${name}</a> 撤回了一条消息`;
+          (msgItem.data as any).content = `<a target="_blank" href="/user/${msgItem.userId}">${name}</a> 撤回了一条消息`;
           break;
         }
       }
@@ -185,7 +185,7 @@ export class ChatPage implements OnInit {
       this.contentClientHeight = element.clientHeight;
     });
 
-    this.unlistenFns.push(this.renderer2.listen(this.drawer.nativeElement, 'transitionend', (e: any) => {
+    this.unlistenFns.push(this.renderer.listen(this.drawer.nativeElement, 'transitionend', (e: any) => {
       const clientHeight = e.target.clientHeight;
       // 只有当抽屉显示（高度不为零）的时候，做抬升滚动
       clientHeight && this.ionContent.scrollByPoint(0, clientHeight, 0);
@@ -203,8 +203,8 @@ export class ChatPage implements OnInit {
   }
 
   onKeyup(e: any) {
-    this.renderer2.setStyle(e.target, 'height', 'auto');
-    this.renderer2.setStyle(e.target, 'height', e.target.scrollHeight + 2.5 + 'px');
+    this.renderer.setStyle(e.target, 'height', 'auto');
+    this.renderer.setStyle(e.target, 'height', e.target.scrollHeight + 2.5 + 'px');
     // const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
     // (diff <= 50 && diff >= 5) && this.scrollToBottom();
   }
@@ -332,7 +332,7 @@ export class ChatPage implements OnInit {
 
     this.msg = '';
 
-    this.renderer2.setStyle(textareaElement, 'height', 'auto');
+    this.renderer.setStyle(textareaElement, 'height', 'auto');
   }
 
   /**

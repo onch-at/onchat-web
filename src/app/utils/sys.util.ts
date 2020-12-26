@@ -15,7 +15,7 @@ export class SysUtil {
 
         selection.addRange(range);
         document.execCommand('copy');
-        element.style.userSelect = 'none';
+        element.style.userSelect = null;
         selection.removeAllRanges();
     }
 
