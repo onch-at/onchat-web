@@ -57,6 +57,15 @@ export class OnChatService {
   }
 
   /**
+   * 获取缓存参数
+   * 附带此参数的请求可被缓存拦截器拦截并缓存
+   * @param cacheTime 缓存时间
+   */
+  private getCacheParam(cacheTime: number = 3600000): { [param: string]: string } {
+    return { cache: cacheTime + '' };
+  }
+
+  /**
    * 登录
    * @param o
    */
@@ -109,8 +118,8 @@ export class OnChatService {
    * 通过用户ID获取用户
    * @param userId 用户ID
    */
-  getUser(userId: number): Observable<Result<User>> {
-    return this.http.get<Result<User>>(env.userUrl + userId);
+  getUser(userId: number, cacheTime: number = 3600000): Observable<Result<User>> {
+    return this.http.get<Result<User>>(env.userUrl + userId, { params: this.getCacheParam() });
   }
 
   /**
@@ -147,7 +156,7 @@ export class OnChatService {
    * @param id 聊天室ID
    */
   getChatroom(id: number): Observable<Result<Chatroom>> {
-    return this.http.get<Result<Chatroom>>(env.chatroomUrl + id);
+    return this.http.get<Result<Chatroom>>(env.chatroomUrl + id, { params: this.getCacheParam() });
   }
 
   /**

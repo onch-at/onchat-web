@@ -1,6 +1,6 @@
 import { OverlayModule } from "@angular/cdk/overlay";
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeExtraZhHans from '@angular/common/locales/extra/zh-Hans';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import { LOCALE_ID, NgModule } from '@angular/core';
@@ -15,6 +15,7 @@ import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { CacheInterceptor } from "./interceptors/cache.interceptor";
 import { SharedModule } from './modules/shared.module';
 
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
@@ -50,7 +51,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: env.production })
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LOCALE_ID, useValue: 'zh-Hans' },
     CookieService,

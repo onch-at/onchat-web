@@ -1,4 +1,3 @@
-import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { ChatroomType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
 import { ChatInvitationMessage, RichTextMessage, TextMessage } from './form.model';
 
@@ -172,17 +171,4 @@ export interface AgreeFriendRequest {
     targetUsername: string;
     /** 被申请人的头像缩略图 */
     targetAvatarThumbnail: string;
-}
-
-
-
-export interface Cache {
-    get(req: HttpRequest<any>): HttpResponse<any> | null;
-    put(req: HttpRequest<any>, res: HttpResponse<any>): void;
-}
-
-export interface CacheEntry {
-    url: string;
-    response: HttpResponse<any>;
-    entryTime: number;
 }

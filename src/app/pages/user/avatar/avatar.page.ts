@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { ResultCode, SessionStorageKey } from 'src/app/common/enum';
+import { ResultCode } from 'src/app/common/enum';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
-import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
@@ -35,7 +34,6 @@ export class AvatarPage implements OnInit {
     private overlayService: OverlayService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
-    private sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private router: Router,
     private modalController: ModalController,
@@ -47,11 +45,6 @@ export class AvatarPage implements OnInit {
         this.user = data.user as User;
       } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
-        this.sessionStorageService.setItemToMap(
-          SessionStorageKey.UserMap,
-          this.user.id,
-          this.user
-        );
       } else {
         this.overlayService.presentToast('用户不存在！');
         this.router.navigate(['/']);
@@ -82,12 +75,6 @@ export class AvatarPage implements OnInit {
             const { avatar, avatarThumbnail } = result.data;
             this.globalDataService.user.avatar = avatar;
             this.globalDataService.user.avatarThumbnail = avatarThumbnail;
-
-            this.sessionStorageService.setItemToMap(
-              SessionStorageKey.UserMap,
-              this.globalDataService.user.id,
-              this.globalDataService.user
-            );
           }
         }
       })).then((modal: HTMLIonModalElement) => {

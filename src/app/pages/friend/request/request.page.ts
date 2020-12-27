@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ResultCode, SessionStorageKey, SocketEvent } from 'src/app/common/enum';
+import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
-import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -27,7 +26,6 @@ export class RequestPage implements OnInit {
 
   constructor(
     public globalDataService: GlobalDataService,
-    private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
     private overlayService: OverlayService,
     private route: ActivatedRoute,
@@ -40,11 +38,6 @@ export class RequestPage implements OnInit {
         this.user = data.user as User;
       } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
-        this.sessionStorageService.setItemToMap(
-          SessionStorageKey.UserMap,
-          this.user.id,
-          this.user
-        );
       }
 
       const resultFriendRequest = data.friendRequest;

@@ -127,16 +127,6 @@ export enum LocalStorageKey {
 }
 
 /**
- * 枚举会话储存的KEY
- */
-export enum SessionStorageKey {
-    /** 用户Map缓存 */
-    UserMap = 'user_map',
-    /** 聊天室Map缓存 */
-    ChatroomMap = 'chatroom_map',
-}
-
-/**
  * 枚举心情
  */
 export enum Mood {

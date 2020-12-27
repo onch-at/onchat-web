@@ -6,14 +6,13 @@ import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
-import { Gender, Mood, ResultCode, SessionStorageKey } from 'src/app/common/enum';
+import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
-import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 
@@ -79,8 +78,7 @@ export class SettingsPage implements OnInit {
     public globalDataService: GlobalDataService,
     private onChatService: OnChatService,
     private overlayService: OverlayService,
-    private modalController: ModalController,
-    private sessionStorageService: SessionStorageService
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -132,12 +130,6 @@ export class SettingsPage implements OnInit {
       const { user } = this.globalDataService;
 
       this.globalDataService.user = { ...user, ...result.data };
-
-      this.sessionStorageService.setItemToMap(
-        SessionStorageKey.UserMap,
-        user.id,
-        this.globalDataService.user
-      );
 
       // TODO
       this.location.back();

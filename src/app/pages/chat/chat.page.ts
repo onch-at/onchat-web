@@ -7,13 +7,12 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
-import { ChatroomType, MessageType, ResultCode, SessionStorageKey, SocketEvent } from 'src/app/common/enum';
+import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { TextMessage } from 'src/app/models/form.model';
 import { Chatroom, Message, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
-import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
 
@@ -70,8 +69,7 @@ export class ChatPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private renderer: Renderer2,
-    private overlayService: OverlayService,
-    private sessionStorageService: SessionStorageService,
+    private overlayService: OverlayService
   ) { }
 
   ngOnInit() {
@@ -109,12 +107,6 @@ export class ChatPage implements OnInit {
         const { name, type } = result.data
         this.roomName = name;
         this.chatroomType = type;
-
-        this.sessionStorageService.setItemToMap(
-          SessionStorageKey.ChatroomMap,
-          this.chatroomId,
-          result.data
-        );
       });
     }
 

@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
-import { ResultCode, SessionStorageKey } from 'src/app/common/enum';
+import { ResultCode } from 'src/app/common/enum';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
-import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { OnChatService } from '../../../services/onchat.service';
@@ -50,7 +49,6 @@ export class LoginPage implements OnInit {
     private onChatService: OnChatService,
     public globalDataService: GlobalDataService,
     private overlayService: OverlayService,
-    private sessionStorageService: SessionStorageService,
     private socketService: SocketService,
     private fb: FormBuilder,
     private router: Router,
@@ -70,11 +68,6 @@ export class LoginPage implements OnInit {
 
       if (result.code === ResultCode.Success) {
         this.globalDataService.user = result.data;
-        this.sessionStorageService.setItemToMap(
-          SessionStorageKey.UserMap,
-          result.data.id,
-          result.data
-        );
         this.socketService.init();
 
         (await toast).onWillDismiss().then(() => { // 在Toast即将关闭前

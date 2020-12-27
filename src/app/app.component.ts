@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { filter, mergeMap } from 'rxjs/operators';
-import { LocalStorageKey, MessageType, ResultCode, SessionStorageKey, SocketEvent } from './common/enum';
+import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
 import { AgreeFriendRequest, ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
@@ -12,7 +12,6 @@ import { GlobalDataService } from './services/global-data.service';
 import { LocalStorageService } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 import { OverlayService } from './services/overlay.service';
-import { SessionStorageService } from './services/session-storage.service';
 import { SocketService } from './services/socket.service';
 
 @Component({
@@ -31,7 +30,6 @@ export class AppComponent implements OnInit {
     private feedbackService: FeedbackService,
     private overlayService: OverlayService,
     private localStorageService: LocalStorageService,
-    private sessionStorageService: SessionStorageService,
     private globalDataService: GlobalDataService,
   ) { }
 
@@ -53,12 +51,6 @@ export class AppComponent implements OnInit {
 
       this.socketService.init();
       this.onChatService.init();
-      const user = result.data as User;
-      this.sessionStorageService.setItemToMap(
-        SessionStorageKey.UserMap,
-        user.id,
-        user
-      );
     });
 
     // 发起/收到好友申请时

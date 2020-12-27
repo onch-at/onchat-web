@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Gender, Mood, ResultCode, SessionStorageKey } from 'src/app/common/enum';
+import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
-import { SessionStorageService } from 'src/app/services/session-storage.service';
 
 @Component({
   selector: 'app-user-home',
@@ -25,7 +24,6 @@ export class HomePage implements OnInit {
     private onChatService: OnChatService,
     public globalDataService: GlobalDataService,
     private overlayService: OverlayService,
-    private sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -36,11 +34,6 @@ export class HomePage implements OnInit {
         this.user = data.user as User;
       } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
-        this.sessionStorageService.setItemToMap(
-          SessionStorageKey.UserMap,
-          this.user.id,
-          this.user
-        );
       } else {
         this.overlayService.presentToast('用户不存在！');
         this.router.navigate(['/']);
