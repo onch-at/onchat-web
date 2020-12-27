@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 import { ChatroomResolve } from 'src/app/resolvers/chatroom.resolver';
 import { HomePage } from './home.page';
 
@@ -9,7 +10,13 @@ const routes: Routes = [
     component: HomePage,
     resolve: {
       chatroom: ChatroomResolve
-    }
+    },
+    canActivate: [
+      AuthGuard
+    ],
+    canLoad: [
+      AuthGuard
+    ],
   }
 ];
 

@@ -17,16 +17,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/user/register/register.module').then(m => m.RegisterPageModule)
   },
   {
-    path: 'user',
-    loadChildren: () => import('./pages/user/home/home.module').then(m => m.HomePageModule)
-  },
-  {
     path: 'user/avatar',
     loadChildren: () => import('./pages/user/avatar/avatar.module').then(m => m.AvatarPageModule)
   },
   {
     path: 'user/settings',
     loadChildren: () => import('./pages/user/settings/settings.module').then(m => m.SettingsPageModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./pages/user/home/home.module').then(m => m.HomePageModule)
   },
   // 聊天
   {
@@ -44,12 +44,12 @@ const routes: Routes = [
   },
   // 聊天室模块
   {
-    path: 'chatroom',
-    loadChildren: () => import('./pages/chatroom/home/home.module').then(m => m.HomePageModule)
-  },
-  {
     path: 'chatroom/create',
     loadChildren: () => import('./pages/chatroom/create/create.module').then(m => m.CreatePageModule)
+  },
+  {
+    path: 'chatroom',
+    loadChildren: () => import('./pages/chatroom/home/home.module').then(m => m.HomePageModule)
   },
 
   {

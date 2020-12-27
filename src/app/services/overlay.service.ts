@@ -42,7 +42,7 @@ export class OverlayService {
         badge: '/assets/icon/favicon.ico',
         icon: icon,
         requireInteraction: true,
-        vibrate: [200, 75, 200],
+        vibrate: [150, 75, 150],
         data: {
           url
         }
