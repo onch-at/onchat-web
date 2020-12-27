@@ -160,10 +160,10 @@ export class ChatPage implements OnInit {
   target(chatItem: ChatItem) {
     if (chatItem.content.userId == this.globalDataService.user.id) {
       return '我: ';
-    } else if (chatItem.type == ChatroomType.Private) {
+    } else if (chatItem.chatroomType == ChatroomType.Private) {
       return 'Ta: '
     } else {
-      return chatItem.content.nickname + ': ';
+      return (chatItem.content.nickname || chatItem.content.userId) + ': ';
     }
   }
 

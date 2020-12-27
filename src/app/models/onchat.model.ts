@@ -88,7 +88,7 @@ export interface ChatItem extends IEntity {
     /** 聊天室头像缩略图 */
     avatarThumbnail: string;
     /** 聊天室类型 */
-    type: ChatroomType;
+    chatroomType: ChatroomType;
     /** 最新消息 */
     content?: Message
     /** 未读消息数 */

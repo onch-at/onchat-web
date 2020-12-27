@@ -98,7 +98,7 @@ export class ChatPage implements OnInit {
     if (chatItem) {
       this.globalDataService.unreadMsgCount -= chatItem.unread;
       this.roomName = chatItem.name;
-      this.chatroomType = chatItem.type;
+      this.chatroomType = chatItem.chatroomType;
       chatItem.unread = 0;
     } else {
       this.onChatService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
