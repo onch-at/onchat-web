@@ -4,11 +4,123 @@ ion-header {
 
     ion-buttons > *,
     ion-title {
-        --color: var(--oc-color-white);
-        filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));
+        --color: #fff;
+        filter: drop-shadow(0 0 0.5rem rgba(#000, 0.75));
     }
 
     ion-title {
         font-size: 0.9rem;
+        transition: opacity ease-in-out 0.25s;
+
+        &.hidden {
+            opacity: 0;
+        }
     }
+}
+
+ion-content {
+    --background: var(--oc-color-gray);
+}
+
+.home-header {
+    position: sticky;
+    top: -12rem;
+    height: 15rem;
+    width: 100%;
+    z-index: 1;
+}
+
+.home-header-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.home-header-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: backdrop-filter ease-in-out 0.125s;
+
+    &.show {
+        backdrop-filter: blur(10px);
+    }
+}
+
+.home-header-info {
+    position: absolute;
+    left: 1rem;
+    bottom: 0.75rem;
+    color: #fff;
+    filter: drop-shadow(0 0 0.5rem rgba(#000, 0.75));
+    transition: opacity ease-in-out 0.25s;
+
+    &.hidden {
+        opacity: 0;
+    }
+}
+
+.home-header-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.125rem;
+    width: 90vw;
+}
+
+.home-header-subtitle {
+    font-size: 0.75rem;
+}
+
+.home-info {
+    background: var(--oc-color-light);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+}
+
+.home-info-item {
+    &:not(:last-child) {
+        margin-bottom: 0.25rem;
+    }
+}
+
+.home-info-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.avatar-list-track {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    > img {
+        object-fit: cover;
+    }
+
+    > img,
+    .add-btn {
+        height: 2.75rem;
+        width: 2.75rem;
+        border-radius: 50%;
+    }
+
+    .add-btn {
+        color: var(--oc-color-medium);
+        font-size: 1.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--oc-color-gray);
+    }
+}
+
+.bottom-bar {
+    position: fixed;
+    left: 1rem;
+    bottom: calc(var(--ion-safe-area-bottom, 0) + 1rem);
+    width: calc(100vw - 2rem);
+    transform: translateY(100%);
+    animation: slide-in-up 0.25s ease 0.1s forwards;
 }

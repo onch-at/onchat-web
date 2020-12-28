@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
 import { Login, Register, UserInfo } from '../models/form.model';
-import { ChatItem, Chatroom, FriendRequest, Message, Result, User } from '../models/onchat.model';
+import { ChatItem, ChatMember, Chatroom, FriendRequest, Message, Result, User } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
 import { GlobalDataService } from './global-data.service';
 
@@ -118,16 +118,8 @@ export class OnChatService {
    * 通过用户ID获取用户
    * @param userId 用户ID
    */
-  getUser(userId: number, cacheTime: number = 3600000): Observable<Result<User>> {
+  getUser(userId: number): Observable<Result<User>> {
     return this.http.get<Result<User>>(env.userUrl + userId, { params: this.getCacheParam() });
-  }
-
-  /**
-   * 获取用户ID
-   * 废弃：获取用户ID请采用checkLogin，成功登录则返回用户ID
-   */
-  getUserId(): Observable<Result<number>> {
-    return this.http.get<Result<number>>(env.userIdUrl);
   }
 
   /**
@@ -174,6 +166,14 @@ export class OnChatService {
    */
   getChatRecords(id: number, msgId?: number): Observable<Result<Message[]>> {
     return this.http.get<Result<Message[]>>(env.chatroomUrl + id + '/records/' + msgId);
+  }
+
+  /**
+   * 获取群聊成员
+   * @param id 聊天室ID
+   */
+  getChatMembers(id: number): Observable<Result<ChatMember[]>> {
+    return this.http.get<Result<ChatMember[]>>(env.chatroomUrl + id + '/members');
   }
 
   /**

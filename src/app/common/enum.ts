@@ -9,9 +9,7 @@ export enum ResultCode {
     Success = 0,
 }
 
-/**
- * 枚举周
- */
+/** 枚举周 */
 export enum WeekDay {
     Sunday = '周日',
     Monday = '周一',
@@ -22,17 +20,13 @@ export enum WeekDay {
     Saturday = '周六',
 }
 
-/**
- * 枚举天
- */
+/** 枚举天 */
 export enum Day {
     Today = '今天',
     Yesterday = '昨天'
 }
 
-/**
- * 枚举Socket事件
- */
+/** 枚举Socket事件 */
 export enum SocketEvent {
     /** 连接打通时 */
     Connect = 'connect',
@@ -62,9 +56,7 @@ export enum SocketEvent {
     InviteJoinChatroom = 'invite_join_chatroom'
 }
 
-/**
- * 枚举消息类型
- */
+/** 枚举消息类型 */
 export enum MessageType {
     /** 系统消息 */
     System = 0,
@@ -116,9 +108,17 @@ export enum ChatroomType {
     Single = 2,
 }
 
-/**
- * 枚举本地储存的KEY
- */
+/** 聊天室成员角色 */
+export enum ChatMemberRole {
+    /** 成员角色：普通 */
+    Normal = 0,
+    /** 成员角色：管理 */
+    Manage = 1,
+    /** 成员角色：主人 */
+    Host = 2
+}
+
+/** 枚举本地储存的KEY */
 export enum LocalStorageKey {
     /** 聊天会话列表缓存 */
     ChatList = 'chat_list',
@@ -126,9 +126,7 @@ export enum LocalStorageKey {
     ChatRichTextMap = 'chat_rich_text_map'
 }
 
-/**
- * 枚举心情
- */
+/** 枚举心情 */
 export enum Mood {
     /** 喜 */
     Joy = 0,
@@ -140,9 +138,7 @@ export enum Mood {
     Fun = 3,
 }
 
-/**
- * 枚举性别
- */
+/** 枚举性别 */
 export enum Gender {
     /** 男性 */
     Male = 0,

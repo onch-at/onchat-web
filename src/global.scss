@@ -402,3 +402,12 @@ form.ng-pristine .feedback-form-invalid {
     opacity: 1;
   }
 }
+// 淡出动画
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

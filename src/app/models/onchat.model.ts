@@ -1,4 +1,4 @@
-import { ChatroomType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
+import { ChatMemberRole, ChatroomType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
 import { ChatInvitationMessage, RichTextMessage, TextMessage } from './form.model';
 
 export interface Result<T = null> {
@@ -7,27 +7,21 @@ export interface Result<T = null> {
     data: T;
 }
 
-/**
- * 唯一基础实体类
- */
+/** 唯一基础实体类 */
 export interface IEntity {
     id: number;
     createTime: number;
     updateTime?: number;
 }
 
-/**
- * 唯一基础实体类
- */
+/** 唯一基础实体类 */
 export class Entity implements IEntity {
     id: number;
     createTime: number;
     updateTime?: number;
 }
 
-/**
- * 用户
- */
+/** 用户 */
 export interface User extends IEntity {
     /** 用户名称 */
     username: string;
@@ -59,9 +53,7 @@ export interface User extends IEntity {
     signature?: string;
 }
 
-/**
- * 聊天室
- */
+/** 聊天室 */
 export interface Chatroom extends IEntity {
     /** 聊天室名称 */
     name: string;
@@ -77,9 +69,19 @@ export interface Chatroom extends IEntity {
     type: number;
 }
 
-/**
- * 聊天列表子项
- */
+/** 聊天室成员 */
+export interface ChatMember extends IEntity {
+    /** 用户ID */
+    userId: number;
+    /** 用户群昵称 */
+    nickname: string;
+    /** 用户头像缩略图 */
+    avatarThumbnail: string;
+    /** 成员角色 */
+    role: ChatMemberRole;
+}
+
+/** 聊天列表子项 */
 export interface ChatItem extends IEntity {
     /** 聊天室ID */
     chatroomId: number;
@@ -97,9 +99,7 @@ export interface ChatItem extends IEntity {
     sticky?: boolean;
 }
 
-/**
- * 消息实体
- */
+/** 消息实体 */
 export class Message extends Entity {
     /** 消息对应的聊天室ID */
     chatroomId: number;

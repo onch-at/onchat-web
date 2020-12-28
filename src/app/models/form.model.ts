@@ -1,8 +1,6 @@
 import { Gender, Mood } from "../common/enum";
 
-/**
- * 登录表单数据模型
- */
+/** 登录表单数据模型  */
 export class Login {
     /** 用户名 */
     username: string;
@@ -15,9 +13,7 @@ export class Login {
     }
 }
 
-/**
- * 注册表单数据模型
- */
+/** 注册表单数据模型 */
 export class Register extends Login {
     /** 验证码 */
     captcha: string;
@@ -28,9 +24,7 @@ export class Register extends Login {
     }
 }
 
-/**
- * 纯文本消息
- */
+/** 纯文本消息 */
 export class TextMessage {
     /** 内容 */
     content: string;
@@ -40,9 +34,7 @@ export class TextMessage {
     }
 }
 
-/**
- * 富文本消息
- */
+/** 富文本消息 */
 export class RichTextMessage {
     /** HTML */
     html: string;
@@ -55,9 +47,7 @@ export class RichTextMessage {
     }
 }
 
-/**
- * 群聊邀请消息
- */
+/** 群聊邀请消息 */
 export class ChatInvitationMessage {
     /** 聊天室ID */
     chatroomId: number;
@@ -73,9 +63,7 @@ export class ChatInvitationMessage {
     }
 }
 
-/**
- * 用户信息表单数据模型
- */
+/** 用户信息表单数据模型 */
 export class UserInfo {
     /** 昵称 */
     nickname: string;

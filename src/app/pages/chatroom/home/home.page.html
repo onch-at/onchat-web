@@ -1,11 +1,11 @@
-<ion-content appHideScrollbar [fullscreen]="true">
+<ion-content #ionContent appHideScrollbar [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onScroll($event)">
   <ion-header class="d-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
       </ion-buttons>
 
-      <ion-title>{{ chatroom.name }}</ion-title>
+      <ion-title [ngClass]="{hidden: !showMask}">{{ chatroom.name }}</ion-title>
 
       <ion-buttons slot="end">
         <ion-button>
@@ -14,4 +14,59 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
+
+  <div class="home-header">
+    <img class="home-header-img" [src]="chatroom.avatarThumbnail">
+    <div class="home-header-mask" [ngClass]="{show: showMask}"></div>
+    <div class="home-header-info" [ngClass]="{hidden: showMask}">
+      <div class="home-header-title font-weight-bold overflow-ellipsis">{{ chatroom.name }}</div>
+      <div class="home-header-subtitle">
+        ROOM-ID：{{ chatroom.id }}&nbsp;&nbsp;
+        成员：{{ chatMembers.length }}/{{ chatroom.maxPeopleNum }}
+      </div>
+    </div>
+  </div>
+
+  <div class="home-info">
+    <div class="home-info-item">
+      {{ chatroom.description || '暂无聊天室简介' }}
+    </div>
+    <div class="home-info-item">
+      聊天室于{{ chatroom.createTime | date: 'yyyy年MM月dd日' }}创建
+    </div>
+  </div>
+
+  <div class="home-info">
+    <div class="home-info-label">聊天室成员</div>
+    <div class="avatar-list-track">
+      <ng-container *ngFor="let item of chatMembers">
+        <img [src]="item.avatarThumbnail">
+      </ng-container>
+
+      <!-- 如果不够6个，就填充一些空元素来维持UI -->
+      <ng-container *ngIf="chatMembers.length < 6">
+        <div *ngFor="let item of getArr(6 - chatMembers.length)"></div>
+      </ng-container>
+
+      <button class="add-btn">
+        <ion-icon name="add-outline"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+  <div style="height: 100vh;">TEST</div>
+
+  <aside class="bottom-bar">
+    <button *ngIf="isMember" appActiveClass [appActiveClassDuration]="250"
+      class="ion-activatable ripple-parent btn-primary btn-block">
+      进去聊聊
+      <ion-ripple-effect></ion-ripple-effect>
+    </button>
+
+    <button *ngIf="!isMember" appActiveClass [appActiveClassDuration]="250"
+      class="ion-activatable ripple-parent btn-primary btn-block">
+      申请加入
+      <ion-ripple-effect></ion-ripple-effect>
+    </button>
+  </aside>
 </ion-content>
