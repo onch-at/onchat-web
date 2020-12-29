@@ -93,9 +93,14 @@ export class HomePage implements OnInit {
           uploader: (avatar: Blob) => this.onChatService.uploadChatroomAvatar(this.chatroom.id, avatar),
           handler: (result: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = result.data;
+            const id = this.chatroom.id;
             this.chatroom.avatar = avatar;
             this.chatroom.avatarThumbnail = avatarThumbnail;
-            this.cacheService.delete(new RegExp('/chatroom/' + this.chatroom.id + '?'));
+            this.cacheService.delete(new RegExp('/chatroom/' + id + '?'));
+            const chatItem = this.globalDataService.chatList.find(o => o.chatroomId === id);
+            if (chatItem) {
+              chatItem.avatarThumbnail = avatarThumbnail;
+            }
           }
         }
       })).then(modal => modal.present())

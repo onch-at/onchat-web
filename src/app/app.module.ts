@@ -25,9 +25,6 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     AppComponent,
     NotificationComponent
   ],
-  entryComponents: [
-    NotificationComponent
-  ],
   imports: [
     SharedModule,
     OverlayModule,

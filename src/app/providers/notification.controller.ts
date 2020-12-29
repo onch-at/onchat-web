@@ -44,7 +44,7 @@ export class NotificationController {
    */
   present(): NotificationController {
     this.dismissTimeout != null && this.clearDismissTimeout();
-    this.subscription && this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
 
     if (!this.componentRef) {
       this.componentRef = this.overlayRef.attach(new ComponentPortal(NotificationComponent));

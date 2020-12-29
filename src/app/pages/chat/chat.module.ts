@@ -28,10 +28,6 @@ import { ChatPage } from './chat.page';
     BubbleToolbarComponent,
     DrawerComponent,
     RichTextEditorComponent
-  ],
-  entryComponents: [
-    BubbleToolbarComponent,
-    RichTextEditorComponent
-  ],
+  ]
 })
 export class ChatPageModule { }

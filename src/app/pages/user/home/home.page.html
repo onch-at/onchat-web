@@ -5,8 +5,7 @@
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
       </ion-buttons>
 
-      <ion-buttons slot="end" *ngIf="globalDataService.user && user.id == globalDataService.user.id"
-        routerLink="/user/settings">
+      <ion-buttons slot="end" *ngIf="user.id == globalDataService.user?.id" routerLink="/user/settings">
         <ion-button>
           <ion-icon slot="icon-only" name="brush-outline" style="font-size: 1.5rem;"></ion-icon>
         </ion-button>
@@ -89,9 +88,8 @@
     </button>
 
     <!-- TODO 这边以后可以和自己聊天 -->
-    <button *ngIf="!chatroomId && globalDataService.user && globalDataService.user.id != user.id" appActiveClass
-      [appActiveClassDuration]="250" [routerLink]="['/friend/request', user.id]"
-      class="ion-activatable ripple-parent btn-primary btn-block">
+    <button *ngIf="!chatroomId && globalDataService.user?.id != user.id" appActiveClass [appActiveClassDuration]="250"
+      [routerLink]="['/friend/request', user.id]" class="ion-activatable ripple-parent btn-primary btn-block">
       加Ta好友
       <ion-ripple-effect></ion-ripple-effect>
     </button>

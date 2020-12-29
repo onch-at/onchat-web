@@ -21,6 +21,6 @@ export class UserResolve implements Resolve<Result<User> | User> {
         const userId = +route.params.userId;
         const { user } = this.globalDataService;
 
-        return (user && user.id === userId) ? user : this.onChatService.getUser(userId);
+        return (user?.id === userId) ? user : this.onChatService.getUser(userId);
     }
 }

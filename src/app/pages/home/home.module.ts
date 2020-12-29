@@ -18,9 +18,6 @@ import { HomePage } from './home.page';
   declarations: [
     HomePage,
     HomeMenuComponent
-  ],
-  entryComponents: [
-    HomeMenuComponent
   ]
 })
 export class HomePageModule { }

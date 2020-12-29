@@ -13,8 +13,8 @@
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="{
-        'msg-item-right': globalDataService.user && globalDataService.user.id == item.userId,
-        'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
+        'msg-item-right':  globalDataService.user?.id == item.userId,
+        'msg-item-left':  globalDataService.user?.id != item.userId
       }">
 
         <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
@@ -30,14 +30,14 @@
             [innerHTML]="item.data['content'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
           </span>
 
-          <ion-spinner *ngIf="globalDataService.user && globalDataService.user.id == item.userId && item.loading"
-            class="send-spinner" name="dots" [duration]="1000"></ion-spinner>
+          <ion-spinner *ngIf="globalDataService.user?.id == item.userId && item.loading" class="send-spinner"
+            name="dots" [duration]="1000"></ion-spinner>
         </div>
       </li>
 
       <li *ngSwitchCase="msgType.RichText" class="msg-item" [ngClass]="{
-        'msg-item-right': globalDataService.user && globalDataService.user.id == item.userId,
-        'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
+        'msg-item-right': globalDataService.user?.id == item.userId,
+        'msg-item-left': globalDataService.user?.id != item.userId
       }">
         <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
 
@@ -54,8 +54,8 @@
       </li>
 
       <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item" [ngClass]="{
-        'msg-item-right': globalDataService.user && globalDataService.user.id == item.userId,
-        'msg-item-left': globalDataService.user && globalDataService.user.id != item.userId
+        'msg-item-right': globalDataService.user?.id == item.userId,
+        'msg-item-left': globalDataService.user?.id != item.userId
       }">
         <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
 

@@ -64,7 +64,7 @@ export class AvatarPage implements OnInit {
     ];
 
     // 如果是自己的头像
-    (this.globalDataService.user && this.user.id == this.globalDataService.user.id) && buttons.unshift({
+    (this.user.id == this.globalDataService.user?.id) && buttons.unshift({
       text: '更换头像',
       handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
         component: AvatarCropperComponent,
