@@ -9,8 +9,8 @@ ion-header {
     }
 
     ion-title {
-        font-size: 0.9rem;
-        transition: opacity ease-in-out 0.25s;
+        font-size: 1rem;
+        transition: opacity ease-in-out 0.125s;
 
         &.hidden {
             opacity: 0;
@@ -28,6 +28,13 @@ ion-content {
     height: 15rem;
     width: 100%;
     z-index: 1;
+    border-radius: 0 0 1.5rem 1.5rem;
+    transition: box-shadow ease-in-out 0.125s;
+    overflow: hidden;
+
+    &.show-mask {
+        box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.125);
+    }
 }
 
 .home-header-img {
@@ -42,11 +49,12 @@ ion-content {
     top: 0;
     width: 100%;
     height: 100%;
+    border-radius: 0 0 1.5rem 1.5rem;
     transition: backdrop-filter ease-in-out 0.125s;
+}
 
-    &.show {
-        backdrop-filter: blur(10px);
-    }
+.show-mask .home-header-mask {
+    backdrop-filter: blur(15px);
 }
 
 .home-header-info {
@@ -55,16 +63,16 @@ ion-content {
     bottom: 0.75rem;
     color: #fff;
     filter: drop-shadow(0 0 0.5rem rgba(#000, 0.75));
-    transition: opacity ease-in-out 0.25s;
+    transition: opacity ease-in-out 0.125s;
+}
 
-    &.hidden {
-        opacity: 0;
-    }
+.show-mask .home-header-info {
+    opacity: 0;
 }
 
 .home-header-title {
     font-size: 1.5rem;
-    margin-bottom: 0.125rem;
+    margin-bottom: 0.05rem;
     width: 90vw;
 }
 
@@ -74,8 +82,15 @@ ion-content {
 
 .home-info {
     background: var(--oc-color-light);
-    padding: 0.5rem 0.75rem;
+    padding: 0.6rem 0.85rem;
     font-size: 0.8rem;
+    border-radius: 1.25rem;
+    margin: 0.75rem;
+}
+
+.home-item {
+    background: var(--oc-color-light);
+    padding: 0.5rem 0.75rem;
     margin-bottom: 0.75rem;
 }
 
@@ -86,7 +101,7 @@ ion-content {
 }
 
 .home-info-label {
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
@@ -94,6 +109,7 @@ ion-content {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
+    margin-bottom: 0.25rem;
 
     > img {
         object-fit: cover;
@@ -104,15 +120,17 @@ ion-content {
         height: 2.75rem;
         width: 2.75rem;
         border-radius: 50%;
+        flex-shrink: 0;
     }
 
     .add-btn {
-        color: var(--oc-color-medium);
+        color: var(--oc-color-muted);
         font-size: 1.75rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--oc-color-gray);
+        background: transparent;
+        border: 0.1rem dashed var(--oc-color-muted);
     }
 }
 

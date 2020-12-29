@@ -69,10 +69,11 @@ export class OverlayService {
    * @param opts 提示框参数
    */
   async presentAlert(opts: AlertOptions) {
-    const { header, message, confirmHandler, cancelHandler, inputs } = opts;
+    const { header, message, confirmHandler, cancelHandler, inputs, backdropDismiss } = opts;
     const alert = await this.alertController.create({
       header,
       message,
+      backdropDismiss,
       inputs,
       buttons: [
         {

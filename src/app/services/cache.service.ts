@@ -41,14 +41,13 @@ export class CacheService {
   }
 
   /**
-   * 通过URL模糊查询以删除缓存
-   * @param url
+   * 通过正则模糊查询以删除缓存
+   * @param regular
    */
-  delete(url: string) {
+  delete(regular: RegExp) {
     for (const key of this.cacheMap.keys()) {
-      if (key.indexOf(url) >= 0) {
+      if (regular.test(key)) {
         this.cacheMap.delete(key);
-        break;
       }
     }
   }

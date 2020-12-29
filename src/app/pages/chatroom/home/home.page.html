@@ -1,4 +1,4 @@
-<ion-content #ionContent appHideScrollbar [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onScroll($event)">
+<ion-content appHideScrollbar [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onScroll($event)">
   <ion-header class="d-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -15,14 +15,15 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="home-header">
+  <div class="home-header" [ngClass]="{'show-mask': showMask}" (tap)="presentActionSheet()">
+    <!-- <img class="home-header-img" src="https://blog.hypergo.net/images/banner/yein.jpg"> -->
     <img class="home-header-img" [src]="chatroom.avatarThumbnail">
-    <div class="home-header-mask" [ngClass]="{show: showMask}"></div>
-    <div class="home-header-info" [ngClass]="{hidden: showMask}">
+    <div class="home-header-mask"></div>
+    <div class="home-header-info">
       <div class="home-header-title font-weight-bold overflow-ellipsis">{{ chatroom.name }}</div>
       <div class="home-header-subtitle">
         ROOM-ID：{{ chatroom.id }}&nbsp;&nbsp;
-        成员：{{ chatMembers.length }}/{{ chatroom.maxPeopleNum }}
+        成员：{{ memberCount }}/{{ chatroom.maxPeopleNum }}
       </div>
     </div>
   </div>
@@ -32,11 +33,11 @@
       {{ chatroom.description || '暂无聊天室简介' }}
     </div>
     <div class="home-info-item">
-      聊天室于{{ chatroom.createTime | date: 'yyyy年MM月dd日' }}创建
+      该聊天室于{{ chatroom.createTime | date: 'yyyy年MM月dd日' }}创建
     </div>
   </div>
 
-  <div class="home-info">
+  <div class="home-item">
     <div class="home-info-label">聊天室成员</div>
     <div class="avatar-list-track">
       <ng-container *ngFor="let item of chatMembers">
@@ -48,8 +49,9 @@
         <div *ngFor="let item of getArr(6 - chatMembers.length)"></div>
       </ng-container>
 
-      <button class="add-btn">
+      <button class="add-btn ion-activatable ripple-parent">
         <ion-icon name="add-outline"></ion-icon>
+        <ion-ripple-effect></ion-ripple-effect>
       </button>
     </div>
   </div>
@@ -57,7 +59,7 @@
   <div style="height: 100vh;">TEST</div>
 
   <aside class="bottom-bar">
-    <button *ngIf="isMember" appActiveClass [appActiveClassDuration]="250"
+    <button *ngIf="isMember" appActiveClass [appActiveClassDuration]="250" [routerLink]="['/chat', chatroom.id]"
       class="ion-activatable ripple-parent btn-primary btn-block">
       进去聊聊
       <ion-ripple-effect></ion-ripple-effect>

@@ -367,6 +367,12 @@ export class ChatPage implements OnInit {
     }
   }
 
+  more() {
+    if (this.chatroomType === ChatroomType.Group) {
+      this.router.navigate(['/chatroom', this.chatroomId]);
+    }
+  }
+
   /**
    * 设置好友别名
    */

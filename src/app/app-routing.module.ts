@@ -48,6 +48,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/chatroom/create/create.module').then(m => m.CreatePageModule)
   },
   {
+    path: 'chatroom/avatar',
+    loadChildren: () => import('./pages/chatroom/avatar/avatar.module').then(m => m.AvatarPageModule)
+  },
+  {
     path: 'chatroom',
     loadChildren: () => import('./pages/chatroom/home/home.module').then(m => m.HomePageModule)
   },

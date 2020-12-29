@@ -98,12 +98,13 @@ export class OnChatService {
 
   /**
    * 上传用户头像
+   * @param avatar 头像
    */
   uploadUserAvatar(avatar: Blob): Observable<Result<AvatarData>> {
     const formData: FormData = new FormData();
     formData.append('image', avatar);
 
-    return this.http.post<Result<{ avatar: string, avatarThumbnail: string }>>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
+    return this.http.post<Result<AvatarData>>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
   }
 
   /**
@@ -173,7 +174,19 @@ export class OnChatService {
    * @param id 聊天室ID
    */
   getChatMembers(id: number): Observable<Result<ChatMember[]>> {
-    return this.http.get<Result<ChatMember[]>>(env.chatroomUrl + id + '/members');
+    return this.http.get<Result<ChatMember[]>>(env.chatroomUrl + id + '/members', { params: this.getCacheParam() });
+  }
+
+  /**
+   * 上传聊天室头像
+   * @param id 聊天室ID
+   * @param avatar 头像
+   */
+  uploadChatroomAvatar(id: number, avatar: Blob): Observable<Result<AvatarData>> {
+    const formData: FormData = new FormData();
+    formData.append('image', avatar);
+
+    return this.http.post<Result<AvatarData>>(env.chatroomUrl + id + '/avatar', formData, HTTP_OPTIONS_DEFAULT);
   }
 
   /**
