@@ -51,7 +51,7 @@ export class HomePage implements OnInit {
       const managers = chatMembers.filter(o => o.role === ChatMemberRole.Manage);
       const normalMembers = chatMembers.filter(o => o.role === ChatMemberRole.Normal);
       // 按照群主>管理员>普通成员排列
-      this.chatMembers = [host, ...managers, ...normalMembers].splice(0, 6);
+      this.chatMembers = [...(host ? [host] : []), ...managers, ...normalMembers].splice(0, 6);
       this.memberCount = chatMembers.length;
 
       // 从群成员里面找自己
@@ -96,7 +96,7 @@ export class HomePage implements OnInit {
             const id = this.chatroom.id;
             this.chatroom.avatar = avatar;
             this.chatroom.avatarThumbnail = avatarThumbnail;
-            this.cacheService.delete(new RegExp('/chatroom/' + id + '?'));
+            this.cacheService.revoke(new RegExp('/chatroom/' + id + '?'));
             const chatItem = this.globalDataService.chatList.find(o => o.chatroomId === id);
             if (chatItem) {
               chatItem.avatarThumbnail = avatarThumbnail;

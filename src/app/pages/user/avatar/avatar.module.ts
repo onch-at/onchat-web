@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { SharedModule } from 'src/app/modules/shared.module';
+import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { AvatarPageRoutingModule } from './avatar-routing.module';
 import { AvatarPage } from './avatar.page';
 
@@ -10,7 +10,7 @@ import { AvatarPage } from './avatar.page';
     CommonModule,
     IonicModule,
     AvatarPageRoutingModule,
-    SharedModule
+    HideScrollbarModule
   ],
   declarations: [
     AvatarPage

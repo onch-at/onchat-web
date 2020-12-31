@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { SharedModule } from 'src/app/modules/shared.module';
+import { ActiveClassModule } from 'src/app/modules/active-class.module';
+import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { ProfilePage } from './profile.page';
 
@@ -12,8 +13,9 @@ import { ProfilePage } from './profile.page';
     FormsModule,
     IonicModule,
     ProfilePageRoutingModule,
-    SharedModule
+    ActiveClassModule,
+    HideScrollbarModule
   ],
   declarations: [ProfilePage]
 })
-export class ProfilePageModule {}
+export class ProfilePageModule { }

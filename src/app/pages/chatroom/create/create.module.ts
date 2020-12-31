@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { CreatePageRoutingModule } from './create-routing.module';
 import { CreatePage } from './create.page';
 
@@ -11,7 +12,8 @@ import { CreatePage } from './create.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    CreatePageRoutingModule
+    CreatePageRoutingModule,
+    HideScrollbarModule
   ],
   declarations: [CreatePage]
 })

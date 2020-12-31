@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { SharedModule } from 'src/app/modules/shared.module';
+import { ActiveClassModule } from 'src/app/modules/active-class.module';
 import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 
@@ -13,8 +13,8 @@ import { LoginPage } from './login.page';
     ReactiveFormsModule,
     IonicModule,
     LoginPageRoutingModule,
-    SharedModule
+    ActiveClassModule
   ],
   declarations: [LoginPage]
 })
-export class LoginPageModule {}
+export class LoginPageModule { }

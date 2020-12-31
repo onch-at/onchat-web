@@ -41,13 +41,14 @@ export class CacheService {
   }
 
   /**
-   * 通过正则模糊查询以删除缓存
+   * 通过正则模糊查询以撤销缓存
    * @param regular
    */
-  delete(regular: RegExp) {
+  revoke(regular: RegExp) {
     for (const key of this.cacheMap.keys()) {
       if (regular.test(key)) {
         this.cacheMap.delete(key);
+        break;
       }
     }
   }

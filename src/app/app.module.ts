@@ -16,7 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { CacheInterceptor } from "./interceptors/cache.interceptor";
-import { SharedModule } from './modules/shared.module';
+import { ActiveClassModule } from "./modules/active-class.module";
+import { HideScrollbarModule } from "./modules/hide-scrollbar.module";
+import { SharedModule } from "./modules/shared.module";
 
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
 
@@ -27,6 +29,8 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
   ],
   imports: [
     SharedModule,
+    ActiveClassModule,
+    HideScrollbarModule,
     OverlayModule,
     BrowserAnimationsModule,
     BrowserModule,
@@ -45,7 +49,9 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
       }
     }),
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: env.production })
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: env.production
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },

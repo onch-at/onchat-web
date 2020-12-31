@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MoodRadioComponent } from 'src/app/components/mood-radio/mood-radio.component';
-import { SharedModule } from 'src/app/modules/shared.module';
+import { ActiveClassModule } from 'src/app/modules/active-class.module';
+import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { SettingsPageRoutingModule } from './settings-routing.module';
 import { SettingsPage } from './settings.page';
 
@@ -13,7 +14,8 @@ import { SettingsPage } from './settings.page';
     ReactiveFormsModule,
     FormsModule,
     IonicModule,
-    SharedModule,
+    ActiveClassModule,
+    HideScrollbarModule,
     SettingsPageRoutingModule
   ],
   declarations: [

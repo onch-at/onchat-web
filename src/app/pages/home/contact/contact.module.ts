@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { ActiveClassModule } from 'src/app/modules/active-class.module';
+import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
 import { ChatroomComponent } from './chatroom/chatroom.component';
 import { ContactPageRoutingModule } from './contact-routing.module';
@@ -15,7 +17,9 @@ import { NewComponent } from './new/new.component';
     FormsModule,
     IonicModule,
     ContactPageRoutingModule,
-    SharedModule
+    SharedModule,
+    HideScrollbarModule,
+    ActiveClassModule
   ],
   declarations: [
     NewComponent,

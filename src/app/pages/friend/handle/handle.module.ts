@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { SharedModule } from 'src/app/modules/shared.module';
+import { ActiveClassModule } from 'src/app/modules/active-class.module';
+import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { HandlePageRoutingModule } from './handle-routing.module';
 import { HandlePage } from './handle.page';
 
@@ -11,7 +12,8 @@ import { HandlePage } from './handle.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    SharedModule,
+    HideScrollbarModule,
+    ActiveClassModule,
     HandlePageRoutingModule
   ],
   declarations: [
