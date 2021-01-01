@@ -203,24 +203,25 @@ export class ChatPage implements OnInit {
     }
   }
 
-  onKeyup(e: any) {
-    this.renderer.setStyle(e.target, 'height', 'auto');
-    this.renderer.setStyle(e.target, 'height', e.target.scrollHeight + 2.5 + 'px');
+  onKeyup(event: KeyboardEvent) {
+    const { target } = event;
+    this.renderer.setStyle(target, 'height', 'auto');
+    this.renderer.setStyle(target, 'height', (target as Element).scrollHeight + 2.5 + 'px');
     // const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
     // (diff <= 50 && diff >= 5) && this.scrollToBottom();
+    if (
+      event.key.toLowerCase() === 'enter' &&
+      !event.ctrlKey &&
+      !event.shiftKey
+    ) {
+      this.send();
+    }
   }
 
   @HostListener('window:resize')
   @Throttle(100)
   onWindowResize() {
     this.upliftScroll();
-  }
-
-  @HostListener('window:keyup', ['$event'])
-  onKeydown(event: KeyboardEvent) {
-    if (event.key.toLowerCase() === 'enter' && !event.ctrlKey && !event.shiftKey) {
-      this.send();
-    }
   }
 
   /**
@@ -323,7 +324,8 @@ export class ChatPage implements OnInit {
    * 发送消息
    */
   send() {
-    if (this.msg.length > TEXT_MSG_MAX_LENGTH) { return; }
+    if (!this.showSendBtn() || this.disableSendBtn()) { return; }
+
     const msg = new Message(+this.chatroomId);
     msg.data = new TextMessage(this.msg);
     this.socketService.message(msg);
