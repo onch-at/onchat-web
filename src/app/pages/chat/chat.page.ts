@@ -40,6 +40,7 @@ export class ChatPage implements OnInit {
   @ViewChild('ionContent', { static: true }) ionContent: IonContent;
   /** 抽屉 */
   @ViewChild('drawer', { static: true }) drawer: ElementRef;
+  @ViewChild('textarea', { static: true }) textarea: ElementRef;
   /** IonContent滚动元素 */
   contentElement: HTMLElement;
   /** IonContent滚动元素初始可视高度 */
@@ -215,6 +216,13 @@ export class ChatPage implements OnInit {
     this.upliftScroll();
   }
 
+  @HostListener('window:keyup', ['$event'])
+  onKeydown(event: KeyboardEvent) {
+    if (event.key.toLowerCase() === 'enter' && !event.ctrlKey && !event.shiftKey) {
+      this.send();
+    }
+  }
+
   /**
    * 加载更多消息
    * @param event
@@ -314,7 +322,7 @@ export class ChatPage implements OnInit {
   /**
    * 发送消息
    */
-  send(textareaElement: HTMLTextAreaElement) {
+  send() {
     if (this.msg.length > TEXT_MSG_MAX_LENGTH) { return; }
     const msg = new Message(+this.chatroomId);
     msg.data = new TextMessage(this.msg);
@@ -332,7 +340,7 @@ export class ChatPage implements OnInit {
 
     this.msg = '';
 
-    this.renderer.setStyle(textareaElement, 'height', 'auto');
+    this.renderer.setStyle(this.textarea.nativeElement, 'height', 'auto');
   }
 
   /**

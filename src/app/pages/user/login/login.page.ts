@@ -63,22 +63,22 @@ export class LoginPage implements OnInit {
 
     const { username, password } = this.loginForm.value;
 
-    this.onChatService.login(new Login(username, password)).subscribe(async (result: Result<User>) => {
+    this.onChatService.login(new Login(username, password)).subscribe((result: Result<User>) => {
       const toast = this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
 
-      if (result.code === ResultCode.Success) {
-        this.globalDataService.user = result.data;
-        this.socketService.init();
-
-        (await toast).onWillDismiss().then(() => { // 在Toast即将关闭前
-          return this.router.navigate(['/']);
-        }).then(() => {
-          this.onChatService.init();
-          this.loading = false;
-        });
-      } else {
+      if (result.code !== ResultCode.Success) {
         this.loading = false;
+        return;
       }
+
+      this.globalDataService.user = result.data;
+      this.socketService.init();
+
+      toast.then(toast => toast.onWillDismiss()).then(() => {
+        this.router.navigate(['/']);
+        this.onChatService.init();
+        this.loading = false;
+      });
     })
   }
 

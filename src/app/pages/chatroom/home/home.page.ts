@@ -67,7 +67,7 @@ export class HomePage implements OnInit {
   }
 
   onScroll(event: any) {
-    this.showMask = event.detail.scrollTop > 175;
+    this.showMask = event.detail.scrollTop > 200;
   }
 
   getArr(length: number) {

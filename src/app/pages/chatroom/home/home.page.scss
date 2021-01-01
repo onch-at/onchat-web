@@ -24,8 +24,8 @@ ion-content {
 
 .home-header {
     position: sticky;
-    top: -12rem;
-    height: 15rem;
+    top: -13rem;
+    height: 16rem;
     width: 100%;
     z-index: 1;
     border-radius: 0 0 1.5rem 1.5rem;
@@ -120,7 +120,6 @@ ion-content {
         height: 2.75rem;
         width: 2.75rem;
         border-radius: 50%;
-        flex-shrink: 0;
     }
 
     .add-btn {

@@ -91,24 +91,26 @@ export class RegisterPage implements OnInit {
     this.loading = true;
 
     const { username, password, captcha } = this.registerForm.value;
-    this.onChatService.register(new Register(username, password, captcha)).subscribe(async (result: Result<User>) => {
+    this.onChatService.register(new Register(username, password, captcha)).subscribe((result: Result<User>) => {
       if (result.code !== ResultCode.Success) { // 如果请求不成功，则刷新验证码
         this.updateCaptcha();
       }
 
       const toast = this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
-      if (result.code === ResultCode.Success) {
-        this.globalDataService.user = result.data;
-        this.onChatService.init();
-        this.socketService.init();
 
-        (await toast).onWillDismiss().then(() => { // 在Toast即将关闭前
-          this.router.navigate(['/']);
-          this.loading = false;
-        });
-      } else {
+      if (result.code !== ResultCode.Success) {
         this.loading = false;
+        return;
       }
+
+      this.globalDataService.user = result.data;
+      this.socketService.init();
+
+      toast.then(toast => toast.onWillDismiss()).then(() => {
+        this.router.navigate(['/']);
+        this.onChatService.init();
+        this.loading = false;
+      });
     });
   }
 
