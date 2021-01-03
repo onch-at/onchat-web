@@ -68,7 +68,7 @@ export class HandlePage implements OnInit {
     this.overlayService.presentAlert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias'] || undefined);
+        this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias']);
       },
       inputs: [
         {
@@ -88,7 +88,7 @@ export class HandlePage implements OnInit {
     this.overlayService.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason'] || undefined);
+        this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason']);
       },
       inputs: [
         {

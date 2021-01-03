@@ -1,13 +1,17 @@
+import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { ChatMemberRole, ResultCode } from 'src/app/common/enum';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
-import { ChatMember, Chatroom, Result } from 'src/app/models/onchat.model';
+import { ChatMember, ChatRequest, Chatroom, Result } from 'src/app/models/onchat.model';
 import { CacheService } from 'src/app/services/cache.service';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
+import { SocketService } from 'src/app/services/socket.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
@@ -27,6 +31,7 @@ export class HomePage implements OnInit {
   /** 成员数量 */
   memberCount: number;
   showMask: boolean;
+  subject: Subject<unknown> = new Subject();
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +40,7 @@ export class HomePage implements OnInit {
     private overlayService: OverlayService,
     private onChatService: OnChatService,
     private cacheService: CacheService,
+    private socketService: SocketService,
     private modalController: ModalController,
   ) { }
 
@@ -63,6 +69,42 @@ export class HomePage implements OnInit {
         this.isHost = member.role === ChatMemberRole.Host;
         this.isManager = member.role === ChatMemberRole.Manage;
       }
+    });
+
+    this.socketService.on(SocketEvent.ChatRequest).pipe(takeUntil(this.subject)).subscribe((result: Result<ChatRequest>) => {
+      // 如果成功并且申请人是自己
+      if (result.code === ResultCode.Success && result.data.applicantId === this.globalDataService.user.id) {
+        this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
+  }
+
+  /**
+   * 申请加入群聊
+   */
+  request() {
+    this.overlayService.presentAlert({
+      header: '申请加入',
+      confirmHandler: (data: KeyValue<string, any>) => {
+        this.socketService.chatRequset(this.chatroom.id, data['reason']);
+      },
+      inputs: [
+        {
+          name: 'reason',
+          type: 'textarea',
+          placeholder: '告诉他们你的申请原因',
+          cssClass: 'ipt-primary',
+          attributes: {
+            rows: 4,
+            maxlength: 50
+          }
+        }
+      ]
     });
   }
 

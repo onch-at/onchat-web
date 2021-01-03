@@ -125,6 +125,18 @@ export class SocketService {
   }
 
   /**
+   * 群聊申请
+   * @param chatroomId 聊天室ID
+   * @param reason 申请原因
+   */
+  chatRequset(chatroomId: number, reason: string = null) {
+    this.emit(SocketEvent.ChatRequest, {
+      chatroomId,
+      reason
+    });
+  }
+
+  /**
    * 发送事件
    * @param eventName 事件名
    * @param data 数据

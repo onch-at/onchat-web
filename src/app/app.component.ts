@@ -6,7 +6,7 @@ import { filter, mergeMap } from 'rxjs/operators';
 import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
-import { AgreeFriendRequest, ChatItem, FriendRequest, Message, Result, User } from './models/onchat.model';
+import { AgreeFriendRequest, ChatItem, ChatRequest, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { GlobalDataService } from './services/global-data.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -249,6 +249,15 @@ export class AppComponent implements OnInit {
         chatItem.updateTime = Date.now();
         this.globalDataService.chatList[index] = chatItem;
         this.globalDataService.chatList = this.globalDataService.chatList;
+      }
+    });
+
+    this.socketService.on(SocketEvent.ChatRequest).subscribe((result: Result<ChatRequest>) => {
+      // 如果申请人不是自己
+      if (result.code === ResultCode.Success && result.data.applicantId !== this.globalDataService.user.id) {
+        // this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
+        console.log(result);
+
       }
     });
 

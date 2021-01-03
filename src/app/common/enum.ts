@@ -53,7 +53,9 @@ export enum SocketEvent {
     /** 创建聊天室 */
     CreateChatroom = 'create_chatroom',
     /** 邀请好友入群 */
-    InviteJoinChatroom = 'invite_join_chatroom'
+    InviteJoinChatroom = 'invite_join_chatroom',
+    /** 聊天申请（加群申请） */
+    ChatRequest = 'chat_request',
 }
 
 /** 枚举消息类型 */
@@ -84,8 +86,8 @@ export enum FriendRequestStatus {
     Ignore = 4
 }
 
-/** 聊天邀请的状态 */
-export enum ChatInvitationStatus {
+/** 聊天申请的状态 */
+export enum ChatRequestStatus {
     /** 等待处理 */
     Wait = 0,
     /** 同意 */

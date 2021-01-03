@@ -28,7 +28,7 @@ export class NewComponent implements OnInit {
     this.overlayService.presentAlert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestAgree(friendRequestId, data['selfAlias'] || undefined);
+        this.socketService.friendRequestAgree(friendRequestId, data['selfAlias']);
       },
       inputs: [{
         name: 'selfAlias',
@@ -46,7 +46,7 @@ export class NewComponent implements OnInit {
     this.overlayService.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestReject(friendRequestId, data['rejectReason'] || undefined);
+        this.socketService.friendRequestReject(friendRequestId, data['rejectReason']);
       },
       inputs: [{
         name: 'rejectReason',

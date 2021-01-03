@@ -58,7 +58,7 @@ addEventListener('message', async ({ data }) => {
   output.blob = await cropCanvas.convertToBlob({
     type: 'image/' + format,
     quality: quality
-  })
+  });
 
   postMessage(output);
 });

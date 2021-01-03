@@ -55,7 +55,7 @@ export class RequestPage implements OnInit {
         return;
       }
 
-      result.code === ResultCode.Success && (result.msg = '好友申请已发出，等待对方验证');
+      result.code === ResultCode.Success && (result.msg = '好友申请已发出，等待对方验证…');
 
       this.overlayService.presentToast(result.msg);
 
@@ -71,7 +71,7 @@ export class RequestPage implements OnInit {
   }
 
   friendRequest() {
-    this.socketService.friendRequest(this.user.id, this.targetAlias || undefined, this.requestReason || undefined);
+    this.socketService.friendRequest(this.user.id, this.targetAlias, this.requestReason);
   }
 
 }

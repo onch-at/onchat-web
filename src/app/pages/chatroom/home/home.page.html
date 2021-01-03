@@ -65,7 +65,7 @@
       <ion-ripple-effect></ion-ripple-effect>
     </button>
 
-    <button *ngIf="!isMember" appActiveClass [appActiveClassDuration]="250"
+    <button *ngIf="!isMember" appActiveClass [appActiveClassDuration]="250" (tap)="request()"
       class="ion-activatable ripple-parent btn-primary btn-block">
       申请加入
       <ion-ripple-effect></ion-ripple-effect>

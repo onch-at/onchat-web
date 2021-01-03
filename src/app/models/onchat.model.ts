@@ -1,4 +1,4 @@
-import { ChatMemberRole, ChatroomType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
+import { ChatMemberRole, ChatRequestStatus, ChatroomType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
 import { ChatInvitationMessage, RichTextMessage, TextMessage } from './form.model';
 
 export interface Result<T = null> {
@@ -171,4 +171,22 @@ export interface AgreeFriendRequest {
     targetUsername: string;
     /** 被申请人的头像缩略图 */
     targetAvatarThumbnail: string;
+}
+
+/**
+ * 入群申请
+ */
+export interface ChatRequest {
+    /** 申请人ID */
+    applicantId: number;
+    /** 聊天室ID */
+    chatroomId: number;
+    /** 已读列表（群主、管理员） */
+    readedList: number[];
+    /** 拒绝原因 */
+    rejectReason?: string;
+    /** 申请原因 */
+    requestReason?: string;
+    /** 状态 */
+    status: ChatRequestStatus;
 }
