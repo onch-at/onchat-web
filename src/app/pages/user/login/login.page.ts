@@ -74,11 +74,11 @@ export class LoginPage implements OnInit {
       this.globalDataService.user = result.data;
       this.socketService.init();
 
-      toast.then(toast => toast.onWillDismiss()).then(() => {
+      setTimeout(() => {
         this.router.navigate(['/']);
         this.onChatService.init();
         this.loading = false;
-      });
+      }, 1000);
     })
   }
 

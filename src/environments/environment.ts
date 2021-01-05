@@ -24,6 +24,7 @@ export const environment = {
   chatroomUrl: '/onchat/chatroom/',
 
   friendUrl: '/onchat/friend/',
+  chatUrl: '/onchat/chat/',
 
   socketUrl: '',
   socketPath: '/ws/socket.io',

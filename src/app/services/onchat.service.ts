@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
 import { Login, Register, UserInfo } from '../models/form.model';
-import { ChatItem, ChatMember, Chatroom, FriendRequest, Message, Result, User } from '../models/onchat.model';
+import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
 import { GlobalDataService } from './global-data.service';
 
@@ -36,7 +36,7 @@ export class OnChatService {
 
   init(): void {
     /** 获取聊天列表 */
-    this.getChatList().subscribe((result: Result<ChatItem[]>) => {
+    this.getChatList().subscribe((result: Result<ChatSession[]>) => {
       this.globalDataService.chatList = result.data;
       // 看看有没有未读消息，有就放提示音
       this.globalDataService.chatList.some(o => o.unread > 0) && this.feedbackService.booAudio.play();
@@ -133,15 +133,15 @@ export class OnChatService {
   /**
    * 获取用户的聊天列表
    */
-  getChatList(): Observable<Result<ChatItem[]>> {
-    return this.http.get<Result<ChatItem[]>>(env.userChatListUrl);
+  getChatList(): Observable<Result<ChatSession[]>> {
+    return this.http.get<Result<ChatSession[]>>(env.userChatListUrl);
   }
 
   /**
    * 获取私聊聊天室列表
    */
-  getPrivateChatrooms(): Observable<Result<ChatItem[]>> {
-    return this.http.get<Result<ChatItem[]>>(env.userUrl + 'chatrooms/private');
+  getPrivateChatrooms(): Observable<Result<ChatSession[]>> {
+    return this.http.get<Result<ChatSession[]>>(env.userUrl + 'chatrooms/private');
   }
 
   /**
@@ -193,7 +193,7 @@ export class OnChatService {
    * 置顶聊天列表子项
    * @param id 聊天列表子项ID
    */
-  stickyChatItem(id: number): Observable<Result> {
+  stickyChatSession(id: number): Observable<Result> {
     return this.http.put<Result>(env.chatListStickyUrl + id, null);
   }
 
@@ -201,24 +201,24 @@ export class OnChatService {
    * 取消置顶聊天列表子项
    * @param id 聊天列表子项ID
    */
-  unstickyChatItem(id: number): Observable<Result> {
+  unstickyChatSession(id: number): Observable<Result> {
     return this.http.put<Result>(env.chatListUnstickyUrl + id, null);
   }
 
   /**
    * 将聊天列表子项设为已读
-   * @param chatroomId 聊天室ID
+   * @param id 聊天列表子项ID
    */
-  readed(chatroomId: number): Observable<Result> {
-    return this.http.put<Result>(env.chatListReadedUrl + chatroomId, null);
+  readed(id: number): Observable<Result> {
+    return this.http.put<Result>(env.chatListReadedUrl + id, null);
   }
 
   /**
    * 将聊天列表子项设为未读
-   * @param chatroomId 聊天室ID
+   * @param id 聊天列表子项ID
    */
-  unread(chatroomId: number): Observable<Result> {
-    return this.http.put<Result>(env.chatListUnreadUrl + chatroomId, null);
+  unread(id: number): Observable<Result> {
+    return this.http.put<Result>(env.chatListUnreadUrl + id, null);
   }
 
   /**
@@ -275,5 +275,12 @@ export class OnChatService {
    */
   isFriend(targetId: number): Observable<Result<number>> {
     return this.http.get<Result<number>>(env.friendUrl + targetId + '/isfriend');
+  }
+
+  /**
+   * 获得我收到的入群申请
+   */
+  getReceiveChatRequests(): Observable<Result<ChatRequest[]>> {
+    return this.http.get<Result<ChatRequest[]>>(env.chatUrl + 'requests/receive');
   }
 }

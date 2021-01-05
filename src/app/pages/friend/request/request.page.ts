@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
@@ -49,7 +49,10 @@ export class RequestPage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.FriendRequest).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest | FriendRequest[]>) => {
+    this.socketService.on(SocketEvent.FriendRequest).pipe(
+      takeUntil(this.subject),
+      debounceTime(100)
+    ).subscribe((result: Result<FriendRequest | FriendRequest[]>) => {
       const friendRequest = result.data;
       if (Array.isArray(friendRequest) || friendRequest.selfId != this.globalDataService.user.id || friendRequest.targetId != this.user.id) {
         return;

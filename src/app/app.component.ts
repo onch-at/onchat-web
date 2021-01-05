@@ -6,7 +6,7 @@ import { filter, mergeMap } from 'rxjs/operators';
 import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
-import { AgreeFriendRequest, ChatItem, ChatRequest, FriendRequest, Message, Result, User } from './models/onchat.model';
+import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { FeedbackService } from './services/feedback.service';
 import { GlobalDataService } from './services/global-data.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
 
         // 更新一下聊天列表
         this.globalDataService.chatListPage = 1;
-        this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
+        this.onChatService.getChatList().subscribe((result: Result<ChatSession[]>) => {
           if (result.code !== ResultCode.Success) { return; }
 
           this.globalDataService.chatList = result.data;
@@ -128,7 +128,7 @@ export class AppComponent implements OnInit {
         // 更新好友列表
         if (this.globalDataService.privateChatrooms.length) {
           this.globalDataService.privateChatroomsPage = 1;
-          this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatItem[]>) => {
+          this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatSession[]>) => {
             if (result.code !== ResultCode.Success) { return; }
 
             this.globalDataService.privateChatrooms = result.data;
@@ -177,11 +177,11 @@ export class AppComponent implements OnInit {
       console.log(result)
       const { chatroomId, user } = this.globalDataService;
       // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-      const chatItem = this.globalDataService.chatList.find(o => o.chatroomId == msg.chatroomId);
+      const chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId == msg.chatroomId);
 
       // 如果消息不是自己的话，就播放提示音
       if (msg.userId != user.id) {
-        const chatroomName = chatItem ? chatItem.name : '收到新消息';
+        const chatroomName = chatSession ? chatSession.title : '收到新消息';
 
         let content = '[收到新消息]';
         switch (msg.type) {
@@ -215,20 +215,20 @@ export class AppComponent implements OnInit {
         this.feedbackService.booAudio.play();
       }
 
-      if (chatItem) {
+      if (chatSession) {
         // 如果用户已经进入消息所属房间
         if (chatroomId == msg.chatroomId) {
-          chatItem.unread = 0;
+          chatSession.unread = 0;
         } else if (msg.userId != this.globalDataService.user.id) {
-          chatItem.unread++;
+          chatSession.unread++;
         }
 
-        chatItem.content = msg;
-        chatItem.updateTime = Date.now();
+        chatSession.content = msg;
+        chatSession.updateTime = Date.now();
         this.globalDataService.chatList = this.globalDataService.chatList;
       } else { // 如果不存在于列表当中，就刷新数据
         this.globalDataService.chatListPage = 1;
-        this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
+        this.onChatService.getChatList().subscribe((result: Result<ChatSession[]>) => {
           this.globalDataService.chatList = result.data;
         });
       }
@@ -238,16 +238,16 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.RevokeMsg).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       if (result.code !== ResultCode.Success) { return; }
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
-      const index = this.globalDataService.chatList.findIndex(o => o.chatroomId == result.data.chatroomId);
+      const index = this.globalDataService.chatList.findIndex(o => o.data.chatroomId == result.data.chatroomId);
       if (index >= 0) {
-        const chatItem = this.globalDataService.chatList[index];
-        chatItem.unread > 0 && chatItem.unread--;
-        chatItem.content = JSON.parse(JSON.stringify(chatItem.content));
-        chatItem.content.type = MessageType.Tips;
-        const name = chatItem.content.userId == this.globalDataService.user.id ? '我' : chatItem.content.nickname;
-        (chatItem.content.data as any).content = name + ' 撤回了一条消息';
-        chatItem.updateTime = Date.now();
-        this.globalDataService.chatList[index] = chatItem;
+        const chatSession = this.globalDataService.chatList[index];
+        chatSession.unread > 0 && chatSession.unread--;
+        chatSession.content = JSON.parse(JSON.stringify(chatSession.content));
+        chatSession.content.type = MessageType.Tips;
+        const name = chatSession.content.userId == this.globalDataService.user.id ? '我' : chatSession.content.nickname;
+        (chatSession.content.data as any).content = name + ' 撤回了一条消息';
+        chatSession.updateTime = Date.now();
+        this.globalDataService.chatList[index] = chatSession;
         this.globalDataService.chatList = this.globalDataService.chatList;
       }
     });

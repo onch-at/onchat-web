@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enum';
-import { ChatItem, FriendRequest, User } from '../models/onchat.model';
+import { ChatSession, FriendRequest, User } from '../models/onchat.model';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -20,11 +20,11 @@ export class GlobalDataService {
   /** 我的发起的好友申请列表 */
   private _sendFriendRequests: FriendRequest[] = [];
   /** 缓存聊天列表 */
-  private _chatList: ChatItem[] = [];
+  private _chatList: ChatSession[] = [];
   /** 缓存聊天列表的分页页码 */
   private _chatListPage: number = 1;
   /** 私聊聊天室列表 */
-  private _privateChatrooms: ChatItem[] = [];
+  private _privateChatrooms: ChatSession[] = [];
   /** 私聊聊天室列表的分页页码 */
   private _privateChatroomsPage: number = 1;
 
@@ -80,7 +80,7 @@ export class GlobalDataService {
     return this._unreadMsgCount;
   }
 
-  set chatList(chatList: ChatItem[]) {
+  set chatList(chatList: ChatSession[]) {
     this._chatList = sortChatList(chatList);
     this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
 
@@ -88,11 +88,11 @@ export class GlobalDataService {
       this.unreadMsgCount = 0;
     }
 
-    for (const chatItem of chatList) {
+    for (const chatSession of chatList) {
       // 计算未读消息总数
       // 如果有未读消息，
       // 且总未读数大于100，则停止遍历
-      if (chatItem.unread > 0 && (this.unreadMsgCount += chatItem.unread) >= 100) {
+      if (chatSession.unread > 0 && (this.unreadMsgCount += chatSession.unread) >= 100) {
         break;
       }
     }
@@ -100,7 +100,7 @@ export class GlobalDataService {
     'setAppBadge' in navigator && (navigator as any).setAppBadge(this.unreadMsgCount);
   }
 
-  get chatList(): ChatItem[] {
+  get chatList(): ChatSession[] {
     return this._chatList;
   }
 
@@ -112,13 +112,13 @@ export class GlobalDataService {
     return this._chatListPage;
   }
 
-  set privateChatrooms(privateChatrooms: ChatItem[]) {
-    this._privateChatrooms = privateChatrooms.sort((a: ChatItem, b: ChatItem) => {
-      return a.name.localeCompare(b.name);
+  set privateChatrooms(privateChatrooms: ChatSession[]) {
+    this._privateChatrooms = privateChatrooms.sort((a: ChatSession, b: ChatSession) => {
+      return a.title.localeCompare(b.title);
     });
   }
 
-  get privateChatrooms(): ChatItem[] {
+  get privateChatrooms(): ChatSession[] {
     return this._privateChatrooms;
   }
 
@@ -135,6 +135,6 @@ export class GlobalDataService {
  * 按照时间/置顶顺序排序聊天列表
  * @param chatList
  */
-export function sortChatList(chatList: ChatItem[]): ChatItem[] {
-  return chatList.sort((a: ChatItem, b: ChatItem) => b.updateTime - a.updateTime).sort((a: ChatItem, b: ChatItem) => +b.sticky - +a.sticky);
+export function sortChatList(chatList: ChatSession[]): ChatSession[] {
+  return chatList.sort((a: ChatSession, b: ChatSession) => b.updateTime - a.updateTime).sort((a: ChatSession, b: ChatSession) => +b.sticky - +a.sticky);
 }

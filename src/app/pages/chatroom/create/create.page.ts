@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
-import { ChatItem, Result } from 'src/app/models/onchat.model';
+import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -26,7 +26,7 @@ export class CreatePage implements OnInit {
   /** 加载中 */
   loading: boolean = false;
   /** 原始私聊聊天室列表 */
-  originPrivateChatrooms: (ChatItem & { checked: boolean })[] = [];
+  originPrivateChatrooms: (ChatSession & { checked: boolean })[] = [];
   /** 分页页码 */
   privateChatroomsPage: number = 1;
   /** 搜索关键字 */
@@ -59,14 +59,14 @@ export class CreatePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    const setOriginPrivateChatrooms = (privateChatrooms: ChatItem[]) => {
+    const setOriginPrivateChatrooms = (privateChatrooms: ChatSession[]) => {
       this.originPrivateChatrooms = privateChatrooms.map(o => ({ ...o, checked: false }));
     }
 
     if (this.globalDataService.privateChatrooms.length) {
       setOriginPrivateChatrooms(this.globalDataService.privateChatrooms);
     } else {
-      this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatItem[]>) => {
+      this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatSession[]>) => {
         if (result.code !== ResultCode.Success) { return; }
 
         this.globalDataService.privateChatrooms = result.data;
@@ -74,7 +74,7 @@ export class CreatePage implements OnInit {
       });
     }
 
-    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.subject)).subscribe((result: Result<ChatItem>) => {
+    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.subject)).subscribe((result: Result<ChatSession>) => {
       this.loading = false;
 
       if (result.code !== ResultCode.Success) {
@@ -86,8 +86,8 @@ export class CreatePage implements OnInit {
 
       this.overlayService.presentToast('聊天室创建成功！');
       // 得到邀请的好友的聊天室ID
-      const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.chatroomId);
-      this.socketService.inviteJoinChatroom(result.data.chatroomId, chatroomIdList);
+      const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.data.chatroomId);
+      this.socketService.inviteJoinChatroom(result.data.data.chatroomId, chatroomIdList);
 
       // TODO 跳到群简介页面
       this.router.navigateByUrl('/');
@@ -125,7 +125,7 @@ export class CreatePage implements OnInit {
    * 删除已选群成员
    * @param item
    */
-  deleteMember(item: ChatItem & { checked: boolean }) {
+  deleteMember(item: ChatSession & { checked: boolean }) {
     item.checked = false;
   }
 
@@ -135,7 +135,7 @@ export class CreatePage implements OnInit {
   privateChatrooms() {
     let { originPrivateChatrooms, keyword } = this;
     if (keyword.length) {
-      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.name.indexOf(keyword) >= 0);
+      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.title.indexOf(keyword) >= 0);
     }
     return this.privateChatroomsPage ? originPrivateChatrooms.slice(0, this.privateChatroomsPage * CHAT_ITEM_ROWS) : originPrivateChatrooms;
   }

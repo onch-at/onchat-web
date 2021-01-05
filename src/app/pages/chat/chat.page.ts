@@ -95,12 +95,12 @@ export class ChatPage implements OnInit {
     this.loadRecords();
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-    const chatItem = this.globalDataService.chatList.find(o => o.chatroomId == this.chatroomId);
-    if (chatItem) {
-      this.globalDataService.unreadMsgCount -= chatItem.unread;
-      this.roomName = chatItem.name;
-      this.chatroomType = chatItem.chatroomType;
-      chatItem.unread = 0;
+    const chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId == this.chatroomId);
+    if (chatSession) {
+      this.globalDataService.unreadMsgCount -= chatSession.unread;
+      this.roomName = chatSession.title;
+      this.chatroomType = chatSession.data.chatroomType;
+      chatSession.unread = 0;
     } else {
       this.onChatService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
         if (result.code !== ResultCode.Success) { return; }
@@ -404,16 +404,16 @@ export class ChatPage implements OnInit {
 
           this.overlayService.presentToast('成功修改好友别名', 1000);
 
-          let chatItem = this.globalDataService.chatList.find(o => o.chatroomId == this.chatroomId);
-          if (chatItem) {
-            chatItem.name = result.data;
+          let chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId == this.chatroomId);
+          if (chatSession) {
+            chatSession.title = result.data;
           }
 
           switch (this.chatroomType) {
             case ChatroomType.Private:
-              chatItem = this.globalDataService.privateChatrooms.find(o => o.chatroomId == this.chatroomId);
-              if (chatItem) {
-                chatItem.name = result.data;
+              chatSession = this.globalDataService.privateChatrooms.find(o => o.data.chatroomId == this.chatroomId);
+              if (chatSession) {
+                chatSession.title = result.data;
               }
               break;
 

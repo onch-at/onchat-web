@@ -72,6 +72,14 @@ export enum MessageType {
     ChatInvitation = 4
 }
 
+/** 枚举聊天会话类型 */
+export enum ChatSessionType {
+    /** 聊天室 */
+    Chatroom = 0,
+    /** 聊天室通知 */
+    ChatroomNotice = 1
+}
+
 /** 好友申请的状态 */
 export enum FriendRequestStatus {
     /** 等待验证 */

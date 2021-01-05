@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CHAT_ITEM_ROWS } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
-import { ChatItem, Result } from 'src/app/models/onchat.model';
+import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 
@@ -19,7 +19,7 @@ export class FriendComponent implements OnInit {
 
   ngOnInit() {
     if (!this.globalDataService.privateChatrooms.length) {
-      this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatItem[]>) => {
+      this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatSession[]>) => {
         if (result.code !== ResultCode.Success) { return; }
 
         this.globalDataService.privateChatrooms = result.data;

@@ -74,7 +74,7 @@
         <ion-img slot="start" *ngIf="i > 5" [src]="item.avatarThumbnail"></ion-img>
         <img slot="start" *ngIf="i <= 5" [src]="item.avatarThumbnail">
 
-        <ion-label>{{ item.name }}</ion-label>
+        <ion-label>{{ item.title }}</ion-label>
 
         <ion-checkbox slot="end" mode="ios" [(ngModel)]="item.checked"></ion-checkbox>
       </ion-item>

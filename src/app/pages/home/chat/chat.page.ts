@@ -1,8 +1,9 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { CHAT_ITEM_ROWS } from 'src/app/common/constant';
-import { ChatroomType, MessageType, ResultCode } from 'src/app/common/enum';
-import { ChatItem, Result } from 'src/app/models/onchat.model';
+import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
+import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { DateUtil } from 'src/app/utils/date.util';
@@ -13,12 +14,13 @@ import { DateUtil } from 'src/app/utils/date.util';
   styleUrls: ['./chat.page.scss']
 })
 export class ChatPage implements OnInit {
-  /** 消息类型枚举 */
   msgType = MessageType;
+  chatSessionType = ChatSessionType;
 
   @ViewChildren(IonItemSliding) ionItemSlidings: QueryList<IonItemSliding>;
 
   constructor(
+    private router: Router,
     private onChatService: OnChatService,
     public globalDataService: GlobalDataService,
   ) { }
@@ -32,7 +34,7 @@ export class ChatPage implements OnInit {
    * 如果加上trackBy方法，Angular将会知道具体的变更元素，
    * 并针对性地对此特定元素进行DOM刷新，提升页面渲染性能。
    */
-  trackByFn(index: number, item: ChatItem): number {
+  trackByFn(index: number, item: ChatSession): number {
     return item.id;
   }
 
@@ -42,7 +44,7 @@ export class ChatPage implements OnInit {
    */
   refresh(event: any) {
     this.globalDataService.chatListPage = 1;
-    this.onChatService.getChatList().subscribe((result: Result<ChatItem[]>) => {
+    this.onChatService.getChatList().subscribe((result: Result<ChatSession[]>) => {
       this.globalDataService.chatList = result.data;
       event.target.complete();
     });
@@ -81,7 +83,7 @@ export class ChatPage implements OnInit {
    * 移除聊天列表子项
    * @param index
    */
-  removeChatItem(index: number) {
+  removeChatSession(index: number) {
     // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
     setTimeout(() => {
       this.globalDataService.chatList.splice(index, 1);
@@ -93,9 +95,9 @@ export class ChatPage implements OnInit {
    * @param item
    * @param i
    */
-  doSticky(item: ChatItem, i: number) {
+  doSticky(item: ChatSession, i: number) {
     if (item.sticky) {
-      return this.onChatService.unstickyChatItem(item.id).subscribe((result: Result) => {
+      return this.onChatService.unstickyChatSession(item.id).subscribe((result: Result) => {
         if (result.code === ResultCode.Success) {
           item.sticky = false;
           this.globalDataService.chatList = this.globalDataService.chatList;
@@ -105,7 +107,7 @@ export class ChatPage implements OnInit {
       });
     }
 
-    this.onChatService.stickyChatItem(item.id).subscribe((result: Result) => {
+    this.onChatService.stickyChatSession(item.id).subscribe((result: Result) => {
       if (result.code === ResultCode.Success) {
         item.sticky = true;
         this.globalDataService.chatList = this.globalDataService.chatList;
@@ -120,9 +122,9 @@ export class ChatPage implements OnInit {
    * @param item
    * @param i
    */
-  doRead(item: ChatItem, i: number) {
+  doRead(item: ChatSession, i: number) {
     if (item.unread == 0) {
-      return this.onChatService.unread(item.chatroomId).subscribe((result: Result) => {
+      return this.onChatService.unread(item.id).subscribe((result: Result) => {
         if (result.code === ResultCode.Success) {
           item.unread = 1;
           this.globalDataService.chatList = this.globalDataService.chatList;
@@ -132,7 +134,7 @@ export class ChatPage implements OnInit {
       });
     }
 
-    this.onChatService.readed(item.chatroomId).subscribe((result: Result) => {
+    this.onChatService.readed(item.id).subscribe((result: Result) => {
       if (result.code === ResultCode.Success) {
         item.unread = 0;
         this.globalDataService.chatList = this.globalDataService.chatList;
@@ -152,18 +154,26 @@ export class ChatPage implements OnInit {
     });
   }
 
+  onTap(chatSession: ChatSession) {
+    switch (chatSession.type) {
+      case ChatSessionType.Chatroom:
+        this.router.navigate(['chat', chatSession.data.chatroomId]);
+        break
+    }
+  }
+
   // TODO 改成管道，但我还没想好名字
   /**
    * 解析会话项的消息的发送者名称
-   * @param chatItem
+   * @param chatSession
    */
-  target(chatItem: ChatItem) {
-    if (chatItem.content.userId == this.globalDataService.user.id) {
+  target(chatSession: ChatSession) {
+    if (chatSession.content.userId == this.globalDataService.user.id) {
       return '我: ';
-    } else if (chatItem.chatroomType == ChatroomType.Private) {
+    } else if (chatSession.data.chatroomType == ChatroomType.Private) {
       return 'Ta: '
     } else {
-      return (chatItem.content.nickname || chatItem.content.userId) + ': ';
+      return (chatSession.content.nickname || chatSession.content.userId) + ': ';
     }
   }
 

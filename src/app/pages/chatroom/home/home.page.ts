@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { ChatMember, ChatRequest, Chatroom, Result } from 'src/app/models/onchat.model';
@@ -71,7 +71,10 @@ export class HomePage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.ChatRequest).pipe(takeUntil(this.subject)).subscribe((result: Result<ChatRequest>) => {
+    this.socketService.on(SocketEvent.ChatRequest).pipe(
+      takeUntil(this.subject),
+      debounceTime(100)
+    ).subscribe((result: Result<ChatRequest>) => {
       // 如果成功并且申请人是自己
       if (result.code === ResultCode.Success && result.data.applicantId === this.globalDataService.user.id) {
         this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
@@ -97,7 +100,7 @@ export class HomePage implements OnInit {
         {
           name: 'reason',
           type: 'textarea',
-          placeholder: '告诉他们你的申请原因',
+          placeholder: '可以告诉他们你的申请原因',
           cssClass: 'ipt-primary',
           attributes: {
             rows: 4,
@@ -139,9 +142,9 @@ export class HomePage implements OnInit {
             this.chatroom.avatar = avatar;
             this.chatroom.avatarThumbnail = avatarThumbnail;
             this.cacheService.revoke(new RegExp('/chatroom/' + id + '?'));
-            const chatItem = this.globalDataService.chatList.find(o => o.chatroomId === id);
-            if (chatItem) {
-              chatItem.avatarThumbnail = avatarThumbnail;
+            const chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId === id);
+            if (chatSession) {
+              chatSession.avatarThumbnail = avatarThumbnail;
             }
           }
         }
