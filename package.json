@@ -9,6 +9,7 @@
     "start": "ng serve --host=0.0.0.0",
     "https": "ng serve --host=0.0.0.0 --ssl true --ssl-cert localhost.pem --ssl-key localhost-key.pem ",
     "build": "ionic build --prod --aot --build-optimizer --engine=browser",
+    "bundle-report": "ng build --prod --stats-json && webpack-bundle-analyzer --port=9111 www/stats.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -27,7 +28,7 @@
     "@angular/router": "^10.2.4",
     "@angular/service-worker": "^10.2.4",
     "@ionic/angular": "^5.5.2",
-    "core-js": "^3.8.1",
+    "core-js": "^3.8.2",
     "hammerjs": "^2.0.8",
     "ngx-cookie-service": "^10.1.1",
     "ngx-image-cropper": "^3.3.2",
@@ -35,7 +36,7 @@
     "ngx-socket-io": "^3.2.0",
     "quill": "^1.3.7",
     "rxjs": "^6.6.3",
-    "tslib": "^2.0.3",
+    "tslib": "^2.1.0",
     "zone.js": "^0.10.3"
   },
   "devDependencies": {
@@ -47,7 +48,7 @@
     "@ionic/angular-toolkit": "^2.3.3",
     "@types/jasmine": "~3.5.14",
     "@types/jasminewd2": "~2.0.8",
-    "@types/node": "^14.14.16",
+    "@types/node": "^14.14.20",
     "codelyzer": "^6.0.1",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.2",
@@ -59,6 +60,7 @@
     "protractor": "^7.0.0",
     "ts-node": "~9.0.0",
     "tslint": "~6.1.3",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "webpack-bundle-analyzer": "^4.3.0"
   }
 }

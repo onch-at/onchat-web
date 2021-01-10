@@ -25,6 +25,10 @@ ion-item {
     object-fit: cover;
     background: var(--oc-color-secondary);
     overflow: hidden;
+
+    @media (prefers-color-scheme: dark) {
+      filter: brightness(0.75);
+    }
   }
 
   .chat-list-item-img,
@@ -33,10 +37,6 @@ ion-item {
     width: 3.25rem;
     height: 3.25rem;
     border-radius: 50%;
-
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0.75);
-    }
   }
 
   .chat-list-item-icon {
@@ -47,7 +47,7 @@ ion-item {
 
     ion-icon {
       font-size: 1.65rem;
-      color: #fff;
+      color: var(--oc-color-white);
     }
   }
 

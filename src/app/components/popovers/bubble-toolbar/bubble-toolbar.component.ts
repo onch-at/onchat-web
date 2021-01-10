@@ -1,10 +1,10 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
   selector: 'app-bubble-toolbar',
@@ -25,6 +25,7 @@ export class BubbleToolbarComponent implements OnInit {
     public globalDataService: GlobalDataService,
     private socketService: SocketService,
     private popoverController: PopoverController,
+    private clipboard: Clipboard
   ) { }
 
   ngOnInit() { }
@@ -33,7 +34,7 @@ export class BubbleToolbarComponent implements OnInit {
    * 复制文本消息
    */
   copyText() {
-    SysUtil.copyText(this.element);
+    this.clipboard.copy(this.element.innerText);
     this.dismiss();
   }
 

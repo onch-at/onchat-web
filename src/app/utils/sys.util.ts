@@ -3,23 +3,6 @@ import { Renderer2 } from '@angular/core';
 export class SysUtil {
 
     /**
-     * 复制节点文本
-     * @param element
-     */
-    static copyText(element: HTMLElement): void {
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        element.style.userSelect = 'text';
-        const range = document.createRange();
-        range.selectNodeContents(element);
-
-        selection.addRange(range);
-        document.execCommand('copy');
-        element.style.userSelect = null;
-        selection.removeAllRanges();
-    }
-
-    /**
      * 暴力注入CSS样式到目标元素的ShadowRoot中
      * @param renderer 渲染器
      * @param element 目标元素

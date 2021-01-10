@@ -60,7 +60,7 @@
 				<div class="info">
 					<time>
 						{{ item.updateTime | detailDate }}
-						<ng-container *ngIf="isSameWeek(item.updateTime)">
+						<ng-container *ngIf="canShowTime(item.updateTime)">
 							{{ item.updateTime | date:'BBBBhh:mm' }}
 						</ng-container>
 					</time>

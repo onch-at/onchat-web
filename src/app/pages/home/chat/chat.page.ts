@@ -44,8 +44,7 @@ export class ChatPage implements OnInit {
    */
   refresh(event: any) {
     this.globalDataService.chatListPage = 1;
-    this.onChatService.getChatList().subscribe((result: Result<ChatSession[]>) => {
-      this.globalDataService.chatList = result.data;
+    this.onChatService.setChatSession().subscribe(() => {
       event.target.complete();
     });
   }
@@ -71,11 +70,7 @@ export class ChatPage implements OnInit {
     event.target.complete();
   }
 
-  /**
-   * 是否在同一周
-   * @param date
-   */
-  isSameWeek(date: number) {
+  canShowTime(date: number) {
     return DateUtil.isSameWeek(new Date(date));
   }
 

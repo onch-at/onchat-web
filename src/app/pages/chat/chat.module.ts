@@ -1,3 +1,4 @@
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +25,8 @@ import { ChatPage } from './chat.page';
     HideScrollbarModule,
     QuillModule.forRoot({
       placeholder: '在此处插入文字…'
-    })
+    }),
+    ClipboardModule
   ],
   declarations: [
     ChatPage,

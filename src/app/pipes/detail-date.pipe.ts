@@ -17,10 +17,14 @@ export class DetailDatePipe implements PipeTransform {
   ];
 
   transform(value: any): string | WeekDay {
-    const nowDate = new Date();
+    const now = new Date();
     const date = new Date(value);
 
-    if (date.toLocaleDateString() == nowDate.toLocaleDateString()) { // 如果是今天
+    if (DateUtil.isJust(date)) {
+      return '刚刚';
+    }
+
+    if (date.toLocaleDateString() == now.toLocaleDateString()) { // 如果是今天
       return Day.Today;
     }
 

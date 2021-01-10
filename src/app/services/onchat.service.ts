@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { environment as env } from '../../environments/environment';
+import { ChatSessionType } from '../common/enum';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
 import { Login, Register, UserInfo } from '../models/form.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
@@ -35,12 +37,7 @@ export class OnChatService {
   ) { }
 
   init(): void {
-    /** 获取聊天列表 */
-    this.getChatList().subscribe((result: Result<ChatSession[]>) => {
-      this.globalDataService.chatList = result.data;
-      // 看看有没有未读消息，有就放提示音
-      this.globalDataService.chatList.some(o => o.unread > 0) && this.feedbackService.booAudio.play();
-    });
+    this.setChatSession().subscribe();
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data.length) {
@@ -54,6 +51,38 @@ export class OnChatService {
         this.globalDataService.sendFriendRequests = result.data;
       }
     });
+  }
+
+  setChatSession() {
+    return this.getChatSession().pipe(
+      mergeMap((result: Result<ChatSession[]>) => {
+        this.globalDataService.chatList = result.data;
+        // 看看有没有未读消息，有就放提示音
+        this.globalDataService.chatList.some(o => o.unread > 0) && this.feedbackService.booAudio.play();
+
+        return this.getReceiveChatRequests();
+      }),
+
+      mergeMap((result: Result<ChatRequest[]>) => {
+        if (result.data.length) {
+          this.globalDataService.receiveChatRequests = result.data;
+          const unreadCount = result.data.reduce((count, o) => {
+            return count + (o.readedList.includes(this.globalDataService.user.id) ? 0 : 1);
+          }, 0);
+
+          if (!unreadCount) { return; }
+
+          this.globalDataService.unreadMsgCount += unreadCount;
+
+          const chatSession = this.globalDataService.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
+          if (chatSession) {
+            chatSession.unread = unreadCount;
+          }
+        }
+
+        return of(null);
+      })
+    );
   }
 
   /**
@@ -133,8 +162,8 @@ export class OnChatService {
   /**
    * 获取用户的聊天列表
    */
-  getChatList(): Observable<Result<ChatSession[]>> {
-    return this.http.get<Result<ChatSession[]>>(env.userChatListUrl);
+  getChatSession(): Observable<Result<ChatSession[]>> {
+    return this.http.get<Result<ChatSession[]>>(env.userUrl + '/chatsession');
   }
 
   /**

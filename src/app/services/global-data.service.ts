@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enum';
-import { ChatSession, FriendRequest, User } from '../models/onchat.model';
+import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -19,6 +19,8 @@ export class GlobalDataService {
   private _receiveFriendRequests: FriendRequest[] = [];
   /** 我的发起的好友申请列表 */
   private _sendFriendRequests: FriendRequest[] = [];
+  /** 我收到的群通知 */
+  private _receiveChatRequests: ChatRequest[] = [];
   /** 缓存聊天列表 */
   private _chatList: ChatSession[] = [];
   /** 缓存聊天列表的分页页码 */
@@ -56,20 +58,28 @@ export class GlobalDataService {
     return this._canDeactivate;
   }
 
-  set receiveFriendRequests(friendRequests: FriendRequest[]) {
-    this._receiveFriendRequests = friendRequests;
+  set receiveFriendRequests(requests: FriendRequest[]) {
+    this._receiveFriendRequests = requests;
   }
 
   get receiveFriendRequests() {
     return this._receiveFriendRequests;
   }
 
-  set sendFriendRequests(friendRequests: FriendRequest[]) {
-    this._sendFriendRequests = friendRequests;
+  set sendFriendRequests(requests: FriendRequest[]) {
+    this._sendFriendRequests = requests;
   }
 
   get sendFriendRequests() {
     return this._sendFriendRequests;
+  }
+
+  set receiveChatRequests(requests: ChatRequest[]) {
+    this._receiveChatRequests = requests;
+  }
+
+  get receiveChatRequests() {
+    return this._receiveChatRequests;
   }
 
   set unreadMsgCount(num: number) {
