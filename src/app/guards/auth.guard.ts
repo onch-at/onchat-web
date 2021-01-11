@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     private router: Router
   ) { }
 
-  canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
+  private handle(): boolean | Observable<boolean> {
     if (this.globalDataService.user) { return true; }
 
     return new Observable(observer => {
@@ -27,35 +27,17 @@ export class AuthGuard implements CanActivate, CanLoad {
         }
 
         observer.next(!!result.data);
-        observer.complete();
-      }, () => {
-        observer.next(false);
         observer.complete();
       });
     });
   }
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.globalDataService.user) { return true; }
+  canLoad(route: Route, segments: UrlSegment[]): boolean | Promise<boolean> | Observable<boolean> {
+    return this.handle();
+  }
 
-    return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
-        if (result.data) {
-          this.globalDataService.user = result.data as User;
-        } else {
-          this.router.navigate(['/user/login']); // 返回登录页面
-        }
-
-        observer.next(!!result.data);
-        observer.complete();
-      }, () => {
-        observer.next(false);
-        observer.complete();
-      });
-    });
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return this.handle();
   }
 
 }

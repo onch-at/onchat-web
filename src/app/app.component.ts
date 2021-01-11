@@ -44,8 +44,9 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.Connect).pipe(
       mergeMap(() => this.onChatService.checkLogin())
     ).subscribe((result: Result<boolean | User>) => {
-      this.globalDataService.user = result.data ? result.data as User : null;
-      if (!result.data) {
+      const { data } = result;
+      this.globalDataService.user = data ? data as User : null;
+      if (!data) {
         return this.router.navigate(['/user/login']);
       }
 
@@ -90,82 +91,83 @@ export class AppComponent implements OnInit {
 
     // 同意好友申请/收到同意好友申请
     this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<AgreeFriendRequest>) => {
+      const { code, data } = result;
       console.log('result: ', result);
-      if (result.code === ResultCode.Success) {
-        // 如果申请人是自己（我的好友申请被同意了）
-        if (result.data.selfId == this.globalDataService.user.id) {
-          // 去我发出的申请列表里面找这条FriendRequest，并删除
-          let index = this.globalDataService.sendFriendRequests.findIndex(o => o.id == result.data.friendRequestId);
-          index >= 0 && this.globalDataService.sendFriendRequests.splice(index, 1);
-          // 去我收到的申请列表里面通过找这条FriendRequest，并删除
-          index = this.globalDataService.receiveFriendRequests.findIndex(o => o.selfId == result.data.targetId);
-          index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
+      if (code !== ResultCode.Success) { return; }
 
-          const opts: NotificationOptions = {
-            icon: result.data.targetAvatarThumbnail,
-            title: '好友申请已同意',
-            description: '已和 ' + result.data.targetUsername + ' 成为好友',
-            url: '/chat/' + result.data.chatroomId
-          };
+      // 如果申请人是自己（我的好友申请被同意了）
+      if (data.selfId == this.globalDataService.user.id) {
+        // 去我发出的申请列表里面找这条FriendRequest，并删除
+        let index = this.globalDataService.sendFriendRequests.findIndex(o => o.id == data.friendRequestId);
+        index >= 0 && this.globalDataService.sendFriendRequests.splice(index, 1);
+        // 去我收到的申请列表里面通过找这条FriendRequest，并删除
+        index = this.globalDataService.receiveFriendRequests.findIndex(o => o.selfId == data.targetId);
+        index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
 
-          document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
-          this.feedbackService.booAudio.play();
-        } else if (result.data.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
-          const index = this.globalDataService.receiveFriendRequests.findIndex(o => o.id == result.data.friendRequestId);
-          index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
+        const opts: NotificationOptions = {
+          icon: data.targetAvatarThumbnail,
+          title: '好友申请已同意',
+          description: '已和 ' + data.targetUsername + ' 成为好友',
+          url: '/chat/' + data.chatroomId
+        };
 
-          this.overlayService.presentToast('成功添加新好友');
-        }
+        document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
+        this.feedbackService.booAudio.play();
+      } else if (data.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
+        const index = this.globalDataService.receiveFriendRequests.findIndex(o => o.id == data.friendRequestId);
+        index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
 
-        // 更新一下聊天列表
-        this.globalDataService.chatListPage = 1;
-        this.onChatService.getChatSession().subscribe((result: Result<ChatSession[]>) => {
+        this.overlayService.presentToast('成功添加新好友');
+      }
+
+      // 更新一下聊天列表
+      this.globalDataService.chatListPage = 1;
+      this.onChatService.getChatSession().subscribe((result: Result<ChatSession[]>) => {
+        if (result.code !== ResultCode.Success) { return; }
+
+        this.globalDataService.chatList = result.data;
+      });
+
+      // 更新好友列表
+      if (this.globalDataService.privateChatrooms.length) {
+        this.globalDataService.privateChatroomsPage = 1;
+        this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatSession[]>) => {
           if (result.code !== ResultCode.Success) { return; }
 
-          this.globalDataService.chatList = result.data;
+          this.globalDataService.privateChatrooms = result.data;
         });
-
-        // 更新好友列表
-        if (this.globalDataService.privateChatrooms.length) {
-          this.globalDataService.privateChatroomsPage = 1;
-          this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatSession[]>) => {
-            if (result.code !== ResultCode.Success) { return; }
-
-            this.globalDataService.privateChatrooms = result.data;
-          });
-        }
       }
     });
 
     // 拒绝好友申请/收到拒绝好友申请
     this.socketService.on(SocketEvent.FriendRequestReject).subscribe((result: Result<FriendRequest>) => {
       console.log('result: ', result);
-      if (result.code === ResultCode.Success) {
-        const friendRequest = result.data;
-        // 如果申请人是自己
-        if (friendRequest.selfId == this.globalDataService.user.id) {
-          const index = this.globalDataService.sendFriendRequests.findIndex(o => o.id == friendRequest.id);
-          if (index >= 0) {
-            this.globalDataService.sendFriendRequests[index] = friendRequest;
-          } else {
-            this.globalDataService.sendFriendRequests.unshift(friendRequest);
-          }
+      if (result.code !== ResultCode.Success) { return; }
 
-          const opts: NotificationOptions = {
-            icon: friendRequest.targetAvatarThumbnail,
-            title: '好友申请被拒绝',
-            description: '用户 ' + friendRequest.targetUsername + ' 拒绝了你的好友申请',
-            url: '/friend/request/' + friendRequest.targetId
-          };
-
-          document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
-          this.feedbackService.dingDengAudio.play();
-        } else if (friendRequest.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
-          const index = this.globalDataService.receiveFriendRequests.findIndex(o => o.id == friendRequest.id);
-          index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
-
-          this.overlayService.presentToast('已拒绝该好友申请');
+      const friendRequest = result.data;
+      // 如果申请人是自己
+      if (friendRequest.selfId == this.globalDataService.user.id) {
+        const index = this.globalDataService.sendFriendRequests.findIndex(o => o.id == friendRequest.id);
+        if (index >= 0) {
+          this.globalDataService.sendFriendRequests[index] = friendRequest;
+        } else {
+          this.globalDataService.sendFriendRequests.unshift(friendRequest);
         }
+
+        const opts: NotificationOptions = {
+          icon: friendRequest.targetAvatarThumbnail,
+          title: '好友申请被拒绝',
+          description: '用户 ' + friendRequest.targetUsername + ' 拒绝了你的好友申请',
+          url: '/friend/request/' + friendRequest.targetId
+        };
+
+        document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
+        this.feedbackService.dingDengAudio.play();
+      } else if (friendRequest.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
+        const index = this.globalDataService.receiveFriendRequests.findIndex(o => o.id == friendRequest.id);
+        index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
+
+        this.overlayService.presentToast('已拒绝该好友申请');
       }
     });
 
@@ -252,13 +254,22 @@ export class AppComponent implements OnInit {
       }
     });
 
+    // 收到入群申请时
     this.socketService.on(SocketEvent.ChatRequest).subscribe((result: Result<ChatRequest>) => {
+      const { code, data } = result;
       // 如果申请人不是自己
-      if (result.code === ResultCode.Success && result.data.applicantId !== this.globalDataService.user.id) {
-        // this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
-        console.log(result);
+      if (code !== ResultCode.Success || data?.applicantId === this.globalDataService.user.id) { return; }
 
+      const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === data.id);
+
+      if (index >= 0) {
+        this.globalDataService.receiveChatRequests[index] = data;
+      } else {
+        this.globalDataService.receiveChatRequests.unshift(data);
+        this.feedbackService.booAudio.play();
       }
+
+      this.globalDataService.receiveChatRequests = this.globalDataService.receiveChatRequests;
     });
 
     // 如果路由返回被取消，就震动一下，表示阻止

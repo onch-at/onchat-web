@@ -178,7 +178,7 @@ export interface AgreeFriendRequest {
 /**
  * 入群申请
  */
-export interface ChatRequest {
+export interface ChatRequest extends IEntity {
     /** 申请人ID */
     applicantId: number;
     /** 聊天室ID */

@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { ImageCropperComponent } from 'ngx-image-cropper';
+import { ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ResultCode } from 'src/app/common/enum';
@@ -154,6 +154,7 @@ export class AvatarCropperComponent implements OnInit {
           transform,
           aspectRatio,
           imageBitmap,
+          resizeCanvas,
           imagePosition,
           backgroundColor,
           transformedSize,

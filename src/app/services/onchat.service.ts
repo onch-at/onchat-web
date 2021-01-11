@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { environment as env } from '../../environments/environment';
-import { ChatSessionType } from '../common/enum';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
 import { Login, Register, UserInfo } from '../models/form.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
@@ -40,14 +39,14 @@ export class OnChatService {
     this.setChatSession().subscribe();
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
-      if (result.data.length) {
+      if (result.data?.length) {
         this.globalDataService.receiveFriendRequests = result.data;
         this.feedbackService.dingDengAudio.play();
       }
     });
 
     this.getSendFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
-      if (result.data.length) {
+      if (result.data?.length) {
         this.globalDataService.sendFriendRequests = result.data;
       }
     });
@@ -64,21 +63,11 @@ export class OnChatService {
       }),
 
       mergeMap((result: Result<ChatRequest[]>) => {
-        if (result.data.length) {
-          this.globalDataService.receiveChatRequests = result.data;
-          const unreadCount = result.data.reduce((count, o) => {
-            return count + (o.readedList.includes(this.globalDataService.user.id) ? 0 : 1);
-          }, 0);
-
-          if (!unreadCount) { return; }
-
-          this.globalDataService.unreadMsgCount += unreadCount;
-
-          const chatSession = this.globalDataService.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
-          if (chatSession) {
-            chatSession.unread = unreadCount;
-          }
+        if (!result.data?.length) {
+          return of(null);
         }
+
+        this.globalDataService.receiveChatRequests = result.data;
 
         return of(null);
       })
@@ -163,7 +152,7 @@ export class OnChatService {
    * 获取用户的聊天列表
    */
   getChatSession(): Observable<Result<ChatSession[]>> {
-    return this.http.get<Result<ChatSession[]>>(env.userUrl + '/chatsession');
+    return this.http.get<Result<ChatSession[]>>(env.userUrl + 'chatsession');
   }
 
   /**
@@ -223,7 +212,7 @@ export class OnChatService {
    * @param id 聊天列表子项ID
    */
   stickyChatSession(id: number): Observable<Result> {
-    return this.http.put<Result>(env.chatListStickyUrl + id, null);
+    return this.http.put<Result>(`${env.userUrl}chatsession/sticky/${id}`, null);
   }
 
   /**
@@ -231,7 +220,7 @@ export class OnChatService {
    * @param id 聊天列表子项ID
    */
   unstickyChatSession(id: number): Observable<Result> {
-    return this.http.put<Result>(env.chatListUnstickyUrl + id, null);
+    return this.http.put<Result>(`${env.userUrl}chatsession/unsticky/${id}`, null);
   }
 
   /**
@@ -239,7 +228,7 @@ export class OnChatService {
    * @param id 聊天列表子项ID
    */
   readed(id: number): Observable<Result> {
-    return this.http.put<Result>(env.chatListReadedUrl + id, null);
+    return this.http.put<Result>(`${env.userUrl}chatsession/readed/${id}`, null);
   }
 
   /**
@@ -247,7 +236,7 @@ export class OnChatService {
    * @param id 聊天列表子项ID
    */
   unread(id: number): Observable<Result> {
-    return this.http.put<Result>(env.chatListUnreadUrl + id, null);
+    return this.http.put<Result>(`${env.userUrl}chatsession/unread/${id}`, null);
   }
 
   /**

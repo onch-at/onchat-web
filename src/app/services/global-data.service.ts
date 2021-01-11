@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageKey } from '../common/enum';
+import { ChatSessionType, LocalStorageKey } from '../common/enum';
 import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
 import { LocalStorageService } from './local-storage.service';
 
@@ -76,6 +76,19 @@ export class GlobalDataService {
 
   set receiveChatRequests(requests: ChatRequest[]) {
     this._receiveChatRequests = requests;
+
+    const unreadCount = requests.reduce((count, o) => {
+      return count + (o.readedList.includes(this.user.id) ? 0 : 1);
+    }, 0);
+
+    if (!unreadCount) { return; }
+
+    this.unreadMsgCount += unreadCount;
+
+    const chatSession = this.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
+    if (chatSession) {
+      chatSession.unread = unreadCount;
+    }
   }
 
   get receiveChatRequests() {

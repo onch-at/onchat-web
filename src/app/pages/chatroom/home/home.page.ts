@@ -12,6 +12,7 @@ import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { StrUtil } from 'src/app/utils/str.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
@@ -94,7 +95,7 @@ export class HomePage implements OnInit {
     this.overlayService.presentAlert({
       header: '申请加入',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.chatRequset(this.chatroom.id, data['reason']);
+        this.socketService.chatRequset(this.chatroom.id, StrUtil.trimAll(data['reason']).length ? data['reason'] : undefined);
       },
       inputs: [
         {
