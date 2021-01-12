@@ -36,7 +36,9 @@ export class OnChatService {
   ) { }
 
   init(): void {
-    this.setChatSession().subscribe().unsubscribe();
+    const subscription = this.setChatSession().subscribe(() => {
+      subscription.unsubscribe();
+    });
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data?.length) {

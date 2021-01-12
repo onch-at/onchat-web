@@ -269,7 +269,11 @@ export class AppComponent implements OnInit {
       const chatSession = this.globalDataService.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
       // 如果列表里没有聊天室通知会话,就需要重新拉取
       if (!chatSession) {
-        return this.onChatService.setChatSession().subscribe().unsubscribe();
+        const subscription = this.onChatService.setChatSession().subscribe(() => {
+          subscription.unsubscribe();
+        });
+
+        return;
       }
 
       const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === data.id);
