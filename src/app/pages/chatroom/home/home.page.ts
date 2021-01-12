@@ -76,8 +76,13 @@ export class HomePage implements OnInit {
       takeUntil(this.subject),
       debounceTime(100)
     ).subscribe((result: Result<ChatRequest>) => {
-      // 如果成功并且申请人是自己
-      if (result.code === ResultCode.Success && result.data.applicantId === this.globalDataService.user.id) {
+      const { code, data, msg } = result;
+
+      if (code !== ResultCode.Success) {
+        return this.overlayService.presentToast('申请失败，原因：' + msg);
+      }
+
+      if (data.applicantId === this.globalDataService.user.id) {
         this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
       }
     });

@@ -4,12 +4,12 @@ import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } fro
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { TextMessage } from 'src/app/models/form.model';
-import { Chatroom, Message, Result } from 'src/app/models/onchat.model';
+import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -25,9 +25,13 @@ export class ChatPage implements OnInit {
   textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
   msg: string = '';
   /** 当前房间名字 */
-  roomName: string = '';
+  chatroomName: string = 'Loading…';
   /** 房间ID */
   chatroomId: number;
+  /** 聊天室类型 */
+  chatroomType: ChatroomType = ChatroomType.Group;
+  /** 会话 */
+  chatSession: ChatSession;
   /** 消息ID，用于查询指定消息段 */
   msgId: number = 0;
   /** 聊天记录 */
@@ -40,6 +44,7 @@ export class ChatPage implements OnInit {
   @ViewChild('ionContent', { static: true }) ionContent: IonContent;
   /** 抽屉 */
   @ViewChild('drawer', { static: true }) drawer: ElementRef;
+  /** 文本框 */
   @ViewChild('textarea', { static: true }) textarea: ElementRef;
   /** IonContent滚动元素 */
   contentElement: HTMLElement;
@@ -47,8 +52,6 @@ export class ChatPage implements OnInit {
   contentClientHeight: number;
   /** 是否有未读消息 */
   hasUnread: boolean = false;
-  /** 聊天室类型 */
-  chatroomType: ChatroomType = ChatroomType.Group;
   /**
    * 用户发送的消息体
    * sendTime => 在msgList中的index
@@ -90,59 +93,65 @@ export class ChatPage implements OnInit {
 
     // 记录当前房间ID，用于处理聊天列表
     this.globalDataService.chatroomId = this.route.snapshot.params.id;
-    this.chatroomId = this.route.snapshot.params.id;
+    this.chatroomId = +this.route.snapshot.params.id;
 
     this.loadRecords();
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-    const chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId == this.chatroomId);
-    if (chatSession) {
-      this.globalDataService.unreadMsgCount -= chatSession.unread;
-      this.roomName = chatSession.title;
-      this.chatroomType = chatSession.data.chatroomType;
-      chatSession.unread = 0;
+    this.chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId === this.chatroomId);
+
+    if (this.chatSession) {
+      this.globalDataService.unreadMsgCount -= this.chatSession.unread;
+      this.chatroomName = this.chatSession.title;
+      this.chatroomType = this.chatSession.data.chatroomType;
+      this.chatSession.unread = 0;
     } else {
       this.onChatService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
         if (result.code !== ResultCode.Success) { return; }
 
         const { name, type } = result.data
-        this.roomName = name;
+        this.chatroomName = name;
         this.chatroomType = type;
       });
     }
 
-    this.socketService.on(SocketEvent.Message).pipe(takeUntil(this.subject)).subscribe((result: Result<Message>) => {
-      const msg = result.data;
-      // 如果请求成功，并且收到的消息是这个房间的
-      if (result.code !== ResultCode.Success || msg.chatroomId != this.chatroomId) {
-        return;
-      }
+    this.socketService.on(SocketEvent.Message).pipe(
+      takeUntil(this.subject),
+      filter((result: Result<Message>) => {
+        const { code, data } = result;
+        return code === ResultCode.Success && data.chatroomId === this.chatroomId
+      }),
+      tap({
+        next: (result: Result<Message>) => {
+          const { data } = result;
+          // 如果是自己发的消息
+          if (data.userId == this.globalDataService.user.id) {
+            const index = this.sendMsgMap.get(data.sendTime);
+            data.avatarThumbnail = this.globalDataService.user.avatarThumbnail;
 
-      // 如果是自己发的消息
-      if (msg.userId == this.globalDataService.user.id) {
-        const index = this.sendMsgMap.get(msg.sendTime);
-        msg.avatarThumbnail = this.globalDataService.user.avatarThumbnail;
-
-        if (index >= 0) {
-          this.msgList[index] = msg;
-          this.sendMsgMap.delete(msg.sendTime);
-        } else {
-          this.msgList.push(msg);
-          this.scrollToBottom();
+            if (index >= 0) {
+              this.msgList[index] = data;
+              this.sendMsgMap.delete(data.sendTime);
+            } else {
+              this.msgList.push(data);
+              this.scrollToBottom();
+            }
+          } else {
+            this.msgList.push(data);
+            this.tryToScrollToBottom();
+          }
         }
-      } else {
-        // 如果消息不是自己的，就设为已读
-        this.onChatService.readed(this.chatroomId).subscribe();
-        this.msgList.push(msg);
-        this.tryToScrollToBottom();
-      }
+      }),
+      debounceTime(3000)
+    ).subscribe(() => {
+      this.onChatService.readedChatSession(this.chatSession.id).subscribe();
     });
 
     this.socketService.on(SocketEvent.RevokeMsg).pipe(
       takeUntil(this.subject),
-      // 如果请求成功，并且收到的消息是这个房间的
       filter((result: Result<{ chatroomId: number, msgId: number }>) => {
-        return result.code === ResultCode.Success && result.data.chatroomId == this.chatroomId
+        const { code, data } = result;
+        return code === ResultCode.Success && data.chatroomId === this.chatroomId
       })
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       for (const msgItem of this.msgList) {
@@ -158,14 +167,15 @@ export class ChatPage implements OnInit {
 
     // 重新连接时候检查还有没有未发送的
     // 重新连接后会重新初始化
-    this.socketService.onInit().pipe(takeUntil(this.subject)).subscribe(() => {
-      if (this.sendMsgMap.size > 0) {
-        let msg: Message;
-        for (const index of this.sendMsgMap.values()) {
-          msg = this.msgList[index];
-          delete msg.loading;
-          this.socketService.message(msg);
-        }
+    this.socketService.onInit().pipe(
+      takeUntil(this.subject),
+      filter(() => this.sendMsgMap.size > 0)
+    ).subscribe(() => {
+      let msg: Message;
+      for (const index of this.sendMsgMap.values()) {
+        msg = this.msgList[index];
+        delete msg.loading;
+        this.socketService.message(msg);
       }
     });
   }
@@ -393,14 +403,14 @@ export class ChatPage implements OnInit {
     this.overlayService.presentAlert({
       header: '好友别名',
       confirmHandler: (data: KeyValue<string, any>) => {
-        if (data['alias'] == this.roomName) { return; }
+        if (data['alias'] == this.chatroomName) { return; }
 
         this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
           if (result.code !== ResultCode.Success) {
             return this.overlayService.presentToast(result.msg);
           }
 
-          this.roomName = result.data;
+          this.chatroomName = result.data;
 
           this.overlayService.presentToast('成功修改好友别名', 1000);
 
@@ -424,7 +434,7 @@ export class ChatPage implements OnInit {
       inputs: [{
         name: 'alias',
         type: 'text',
-        value: this.roomName,
+        value: this.chatroomName,
         placeholder: '给对方起个好听的别名吧',
         cssClass: 'ipt-primary',
         attributes: {

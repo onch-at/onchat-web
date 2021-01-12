@@ -119,21 +119,26 @@ export class ChatPage implements OnInit {
    */
   doRead(item: ChatSession, i: number) {
     if (item.unread == 0) {
-      return this.onChatService.unread(item.id).subscribe((result: Result) => {
+      return this.onChatService.unreadChatSession(item.id).subscribe((result: Result) => {
         if (result.code === ResultCode.Success) {
           item.unread = 1;
-          this.globalDataService.chatList = this.globalDataService.chatList;
-
           this.closeIonItemSliding(i);
         }
       });
     }
 
-    this.onChatService.readed(item.id).subscribe((result: Result) => {
+    if (item.type === ChatSessionType.ChatroomNotice) {
+      return this.onChatService.readedChatRequests().subscribe((result: Result) => {
+        if (result.code === ResultCode.Success) {
+          item.unread = 0;
+          this.closeIonItemSliding(i);
+        }
+      });
+    }
+
+    this.onChatService.readedChatSession(item.id).subscribe((result: Result) => {
       if (result.code === ResultCode.Success) {
         item.unread = 0;
-        this.globalDataService.chatList = this.globalDataService.chatList;
-
         this.closeIonItemSliding(i);
       }
     });

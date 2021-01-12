@@ -227,7 +227,7 @@ export class OnChatService {
    * 将聊天列表子项设为已读
    * @param id 聊天列表子项ID
    */
-  readed(id: number): Observable<Result> {
+  readedChatSession(id: number): Observable<Result> {
     return this.http.put<Result>(`${env.userUrl}chatsession/readed/${id}`, null);
   }
 
@@ -235,7 +235,7 @@ export class OnChatService {
    * 将聊天列表子项设为未读
    * @param id 聊天列表子项ID
    */
-  unread(id: number): Observable<Result> {
+  unreadChatSession(id: number): Observable<Result> {
     return this.http.put<Result>(`${env.userUrl}chatsession/unread/${id}`, null);
   }
 
@@ -300,5 +300,12 @@ export class OnChatService {
    */
   getReceiveChatRequests(): Observable<Result<ChatRequest[]>> {
     return this.http.get<Result<ChatRequest[]>>(env.chatUrl + 'requests/receive');
+  }
+
+  /**
+   * 已读入群申请
+   */
+  readedChatRequests(): Observable<Result> {
+    return this.http.put<Result>(env.chatUrl + 'requests/readed', null);
   }
 }

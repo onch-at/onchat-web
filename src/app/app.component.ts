@@ -90,10 +90,11 @@ export class AppComponent implements OnInit {
     });
 
     // 同意好友申请/收到同意好友申请
-    this.socketService.on(SocketEvent.FriendRequestAgree).subscribe((result: Result<AgreeFriendRequest>) => {
-      const { code, data } = result;
+    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe((result: Result<AgreeFriendRequest>) => {
+      const { data } = result;
       console.log('result: ', result);
-      if (code !== ResultCode.Success) { return; }
 
       // 如果申请人是自己（我的好友申请被同意了）
       if (data.selfId == this.globalDataService.user.id) {
@@ -140,9 +141,10 @@ export class AppComponent implements OnInit {
     });
 
     // 拒绝好友申请/收到拒绝好友申请
-    this.socketService.on(SocketEvent.FriendRequestReject).subscribe((result: Result<FriendRequest>) => {
+    this.socketService.on(SocketEvent.FriendRequestReject).pipe(
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe((result: Result<FriendRequest>) => {
       console.log('result: ', result);
-      if (result.code !== ResultCode.Success) { return; }
 
       const friendRequest = result.data;
       // 如果申请人是自己
@@ -172,9 +174,9 @@ export class AppComponent implements OnInit {
     });
 
     // 收到消息时
-    this.socketService.on(SocketEvent.Message).subscribe((result: Result<Message>) => {
-      if (result.code !== ResultCode.Success) { return; }
-
+    this.socketService.on(SocketEvent.Message).pipe(
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe((result: Result<Message>) => {
       const msg = result.data;
       console.log(result)
       const { chatroomId, user } = this.globalDataService;
@@ -237,8 +239,9 @@ export class AppComponent implements OnInit {
     });
 
     // 撤回消息时
-    this.socketService.on(SocketEvent.RevokeMsg).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
-      if (result.code !== ResultCode.Success) { return; }
+    this.socketService.on(SocketEvent.RevokeMsg).pipe(
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
       const index = this.globalDataService.chatList.findIndex(o => o.data.chatroomId == result.data.chatroomId);
       if (index >= 0) {
@@ -255,11 +258,14 @@ export class AppComponent implements OnInit {
     });
 
     // 收到入群申请时
-    this.socketService.on(SocketEvent.ChatRequest).subscribe((result: Result<ChatRequest>) => {
-      const { code, data } = result;
-      // 如果申请人不是自己
-      if (code !== ResultCode.Success || data?.applicantId === this.globalDataService.user.id) { return; }
-
+    this.socketService.on(SocketEvent.ChatRequest).pipe(
+      filter((result: Result<ChatRequest>) => {
+        const { code, data } = result;
+        // 如果申请人不是自己
+        return code === ResultCode.Success && data?.applicantId !== this.globalDataService.user.id;
+      })
+    ).subscribe((result: Result<ChatRequest>) => {
+      const { data } = result;
       const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === data.id);
 
       if (index >= 0) {
