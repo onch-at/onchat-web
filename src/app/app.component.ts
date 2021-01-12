@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { filter, mergeMap } from 'rxjs/operators';
-import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
+import { ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
@@ -266,6 +266,12 @@ export class AppComponent implements OnInit {
       })
     ).subscribe((result: Result<ChatRequest>) => {
       const { data } = result;
+      const chatSession = this.globalDataService.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
+      // 如果列表里没有聊天室通知会话,就需要重新拉取
+      if (!chatSession) {
+        return this.onChatService.setChatSession().subscribe().unsubscribe();
+      }
+
       const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === data.id);
 
       if (index >= 0) {

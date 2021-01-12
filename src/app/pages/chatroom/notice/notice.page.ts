@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatSessionType } from 'src/app/common/enum';
 import { GlobalDataService } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 
@@ -16,6 +17,11 @@ export class NoticePage implements OnInit {
 
   ngOnInit() {
     this.onChatService.readedChatRequests().subscribe();
+    const chatSession = this.globalDataService.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
+    if (chatSession) {
+      this.globalDataService.unreadMsgCount -= chatSession.unread;
+      chatSession.unread = 0;
+    }
   }
 
 }

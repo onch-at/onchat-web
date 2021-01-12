@@ -122,6 +122,7 @@ export class ChatPage implements OnInit {
       return this.onChatService.unreadChatSession(item.id).subscribe((result: Result) => {
         if (result.code === ResultCode.Success) {
           item.unread = 1;
+          this.globalDataService.unreadMsgCount++;
           this.closeIonItemSliding(i);
         }
       });
@@ -131,6 +132,7 @@ export class ChatPage implements OnInit {
       return this.onChatService.readedChatRequests().subscribe((result: Result) => {
         if (result.code === ResultCode.Success) {
           item.unread = 0;
+          this.globalDataService.unreadMsgCount--;
           this.closeIonItemSliding(i);
         }
       });
@@ -139,6 +141,7 @@ export class ChatPage implements OnInit {
     this.onChatService.readedChatSession(item.id).subscribe((result: Result) => {
       if (result.code === ResultCode.Success) {
         item.unread = 0;
+        this.globalDataService.unreadMsgCount--;
         this.closeIonItemSliding(i);
       }
     });

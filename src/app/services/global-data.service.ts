@@ -31,7 +31,7 @@ export class GlobalDataService {
   private _privateChatroomsPage: number = 1;
 
   constructor(
-    private localStorageService: LocalStorageService,
+    private localStorageService: LocalStorageService
   ) { }
 
   set user(user: User) {
