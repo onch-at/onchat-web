@@ -45,11 +45,11 @@
 				</ng-container>
 			</ion-label>
 
-			<ng-container [ngSwitch]="item.selfStatus || friendRequestStatus.Wait">
-				<span class="status" *ngSwitchCase="friendRequestStatus.Wait">待验证</span>
-				<span class="status" *ngSwitchCase="friendRequestStatus.Reject">已拒绝</span>
-				<span class="status" *ngSwitchDefault>未知状态</span>
-			</ng-container>
+			<span class="status" [ngSwitch]="item.selfStatus || friendRequestStatus.Wait">
+				<ng-container *ngSwitchCase="friendRequestStatus.Wait">待验证</ng-container>
+				<ng-container *ngSwitchCase="friendRequestStatus.Reject">已拒绝</ng-container>
+				<ng-container *ngSwitchDefault>未知状态</ng-container>
+			</span>
 		</ion-item>
 
 		<ion-item-options side="end">

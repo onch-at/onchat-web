@@ -158,7 +158,11 @@ export class ChatPage implements OnInit {
     switch (chatSession.type) {
       case ChatSessionType.Chatroom:
         this.router.navigate(['chat', chatSession.data.chatroomId]);
-        break
+        break;
+
+      case ChatSessionType.ChatroomNotice:
+        this.router.navigateByUrl('/chatroom/notice');
+        break;
     }
   }
 

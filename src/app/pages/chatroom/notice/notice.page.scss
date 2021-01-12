@@ -1,0 +1,78 @@
+ion-header {
+    height: 3rem;
+    background: rgba(var(--oc-color-white-rgb), 0.75);
+    backdrop-filter: blur(15px);
+    border-radius: 0 0 1.5rem 1.5rem;
+
+    ion-buttons > *,
+    ion-title {
+        --color: var(--oc-color-black);
+    }
+
+    ion-title {
+        font-size: 1rem;
+    }
+
+    ion-spinner {
+        --color: var(--oc-color-black);
+        margin-right: 0.25rem;
+    }
+}
+
+.chat-request-list {
+    margin-top: 3rem;
+}
+
+ion-item {
+    position: relative;
+    touch-action: auto !important;
+    --padding-start: 1rem;
+    --padding-end: 0;
+    --padding-top: 0.25rem;
+    --padding-bottom: 0.25rem;
+    --min-height: auto;
+
+    ion-img,
+    img {
+        margin: 0 0.75rem 0 0;
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 50%;
+        object-fit: cover;
+        background: var(--oc-color-secondary);
+        overflow: hidden;
+
+        @media (prefers-color-scheme: dark) {
+            filter: brightness(0.75);
+        }
+    }
+
+    h2 {
+        color: var(--oc-color-dark);
+        font-size: 0.9rem;
+        margin: 0 0 0.125rem;
+    }
+
+    p {
+        font-size: 0.7rem;
+        color: var(--oc-color-muted);
+        margin: 0;
+    }
+
+    button {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.7rem;
+        margin-right: 0.2rem;
+        border-radius: 1rem;
+    }
+
+    .status {
+        color: var(--oc-color-muted);
+        font-size: 0.75rem;
+        margin-right: 0.2rem;
+    }
+}
+
+ion-item-option {
+    font-size: 0.8rem;
+}

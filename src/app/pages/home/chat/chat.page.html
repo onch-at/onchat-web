@@ -7,52 +7,56 @@
 
 	<!-- <ion-searchbar animated placeholder="搜索"></ion-searchbar> -->
 
-	<ion-list class="chat-list">
+	<ion-list class="chat-session-list">
 
 		<ion-item-sliding mode="md" *ngFor="let item of chatList(); let i = index; trackBy: trackByFn">
 			<ion-item-options side="start">
-				<ion-item-option (tap)="doSticky(item, i)" class="bg-gray color-medium">
+				<ion-item-option (tap)="doSticky(item, i)" class="chat-session-list-item-option bg-gray color-medium">
 					{{ item.sticky ? '取消置顶' : '置顶' }}
 				</ion-item-option>
 			</ion-item-options>
 
-			<ion-item [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false" [button]="true"
-				(tap)="onTap(item)">
+			<ion-item class="chat-session-list-item" [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
+				[button]="true" (tap)="onTap(item)">
 
 				<ng-container [ngSwitch]="item.type">
 					<!-- 聊天室类型 -->
 					<ng-container *ngSwitchCase="chatSessionType.Chatroom">
-						<ion-img slot="start" *ngIf="i > 9" [src]="item.avatarThumbnail" class="chat-list-item-img">
+						<ion-img slot="start" *ngIf="i > 9" [src]="item.avatarThumbnail"
+							class="chat-session-list-item-img">
 						</ion-img>
-						<img slot="start" *ngIf="i <= 9" [src]="item.avatarThumbnail" class="chat-list-item-img">
+						<img slot="start" *ngIf="i <= 9" [src]="item.avatarThumbnail"
+							class="chat-session-list-item-img">
 
 						<ion-label class="item-content">
-							<h2 class="font-weight-bold">{{ item.title }}</h2>
+							<h2 class="chat-session-list-item-title">{{ item.title }}</h2>
 
 							<ng-container *ngIf="item.content" [ngSwitch]="item.content.type">
-								<p *ngSwitchCase="msgType.Text"
+								<p *ngSwitchCase="msgType.Text" class="chat-session-list-item-desc"
 									[innerHTML]="target(item) + item.content.data['content']"></p>
 
-								<p *ngSwitchCase="msgType.RichText"
+								<p *ngSwitchCase="msgType.RichText" class="chat-session-list-item-desc"
 									[innerHTML]="target(item) + item.content.data['text']"></p>
 
-								<p *ngSwitchCase="msgType.Tips" [innerHTML]="item.content.data['content']"></p>
+								<p *ngSwitchCase="msgType.Tips" class="chat-session-list-item-desc"
+									[innerHTML]="item.content.data['content']"></p>
 
-								<p *ngSwitchCase="msgType.ChatInvitation" [innerHTML]="target(item) + '[分享]邀请加入群聊'"></p>
+								<p *ngSwitchCase="msgType.ChatInvitation" class="chat-session-list-item-desc"
+									[innerHTML]="target(item) + '[分享]邀请加入群聊'"></p>
 							</ng-container>
-							<p *ngIf="!item.content">进去打个招呼吧？</p>
+							<p *ngIf="!item.content" class="chat-session-list-item-desc">进去打个招呼吧？</p>
 						</ion-label>
 					</ng-container>
 
 					<!-- 聊天室通知 -->
 					<ng-container *ngSwitchCase="chatSessionType.ChatroomNotice">
-						<div slot="start" class="chat-list-item-icon">
+						<div slot="start" class="chat-session-list-item-icon">
 							<ion-icon name="notifications"></ion-icon>
 						</div>
 
 						<ion-label class="item-content">
-							<h2 class="font-weight-bold">聊天室通知</h2>
-							<p>{{ item.unread ? '你有' : '暂无'}}新的聊天室通知</p>
+							<h2 class="chat-session-list-item-title">聊天室通知</h2>
+							<p class="chat-session-list-item-desc">{{ item.unread ? '你有' : '暂无'}}新的聊天室通知</p>
 						</ion-label>
 					</ng-container>
 				</ng-container>
@@ -71,10 +75,11 @@
 			</ion-item>
 
 			<ion-item-options side="end">
-				<ion-item-option class="bg-primary" (tap)="doRead(item, i)">
+				<ion-item-option class="chat-session-list-item-option bg-primary" (tap)="doRead(item, i)">
 					{{ item.unread == 0 ? '设为未读' : '设为已读' }}
 				</ion-item-option>
-				<ion-item-option class="bg-danger" (tap)="removeChatSession(i)">移除</ion-item-option>
+				<ion-item-option class="chat-session-list-item-option bg-danger" (tap)="removeChatSession(i)">移除
+				</ion-item-option>
 			</ion-item-options>
 		</ion-item-sliding>
 	</ion-list>

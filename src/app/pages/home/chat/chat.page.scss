@@ -1,4 +1,4 @@
-ion-item {
+.chat-session-list-item {
   position: relative;
   touch-action: auto !important;
   --padding-start: 1rem;
@@ -21,7 +21,7 @@ ion-item {
     transform: rotate(45deg);
   }
 
-  .chat-list-item-img {
+  .chat-session-list-item-img {
     object-fit: cover;
     background: var(--oc-color-secondary);
     overflow: hidden;
@@ -31,15 +31,15 @@ ion-item {
     }
   }
 
-  .chat-list-item-img,
-  .chat-list-item-icon {
+  .chat-session-list-item-img,
+  .chat-session-list-item-icon {
     margin: 0 0.75rem 0 0;
     width: 3.25rem;
     height: 3.25rem;
     border-radius: 50%;
   }
 
-  .chat-list-item-icon {
+  .chat-session-list-item-icon {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,20 +51,21 @@ ion-item {
     }
   }
 
-  h2 {
+  .chat-session-list-item-title {
     color: var(--oc-color-dark);
     font-size: 0.9rem;
+    font-weight: bold;
     margin: 0 0 0.125rem;
   }
 
-  p {
+  .chat-session-list-item-desc {
     font-size: 0.7rem;
     color: var(--oc-color-muted);
     margin: 0;
   }
 }
 
-ion-item-option {
+.chat-session-list-item-option {
   font-size: 0.8rem;
 }
 
