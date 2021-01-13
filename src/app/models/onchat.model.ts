@@ -181,6 +181,8 @@ export interface AgreeFriendRequest {
 export interface ChatRequest extends IEntity {
     /** 申请人ID */
     applicantId: number;
+    /** 处理人ID */
+    handlerId: number;
     /** 聊天室ID */
     chatroomId: number;
     /** 已读列表（群主、管理员） */
@@ -196,6 +198,8 @@ export interface ChatRequest extends IEntity {
     applicantAvatarThumbnail?: string;
     /** 申请人的昵称 */
     applicantNickname?: string;
+    /** 处理人的昵称 */
+    handlerNickname?: string;
     /** 聊天室的名字 */
     chatroomName?: string;
 }

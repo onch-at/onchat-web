@@ -42,7 +42,7 @@ export class SettingsPage implements OnInit {
 
   userInfoForm: FormGroup = this.fb.group({
     nickname: [
-      null, [
+      '', [
         Validators.required,
         Validators.minLength(NICKNAME_MIN_LENGTH),
         Validators.maxLength(NICKNAME_MAX_LENGTH)
@@ -83,13 +83,14 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
     const { user } = this.globalDataService;
-    const { controls } = this.userInfoForm;
 
-    controls.nickname.setValue(user.nickname);
-    controls.signature.setValue(user.signature);
-    controls.mood.setValue(user.mood ?? Mood.Joy);
-    controls.birthday.setValue(user.birthday ? new Date(user.birthday).toISOString() : this.today);
-    controls.gender.setValue(user.gender ?? Gender.Secret);
+    this.userInfoForm.setValue({
+      nickname: user.nickname,
+      signature: user.signature,
+      mood: user.mood ?? Mood.Joy,
+      birthday: user.birthday ? new Date(user.birthday).toISOString() : this.today,
+      gender: user.gender ?? Gender.Secret
+    });
 
     const subscription = this.userInfoForm.valueChanges.pipe(takeUntil(this.subject)).subscribe(() => {
       this.dirty = true;
@@ -102,7 +103,8 @@ export class SettingsPage implements OnInit {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    this.userInfoForm.controls[controlName].setValue(StrUtil.trimAll(this.userInfoForm.value[controlName]));
+    const value = StrUtil.trimAll(this.userInfoForm.get(controlName).value);
+    this.userInfoForm.setValue({ controlName: value });
   }
 
   /**

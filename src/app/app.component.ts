@@ -1,6 +1,6 @@
-
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NavigationCancel, Router } from '@angular/router';
+import { Event, NavigationCancel, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { filter, mergeMap } from 'rxjs/operators';
 import { ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
@@ -22,6 +22,7 @@ import { SocketService } from './services/socket.service';
 export class AppComponent implements OnInit {
 
   constructor(
+    private location: Location,
     private router: Router,
     private swUpdate: SwUpdate,
     private swPush: SwPush,
@@ -30,7 +31,7 @@ export class AppComponent implements OnInit {
     private feedbackService: FeedbackService,
     private overlayService: OverlayService,
     private localStorageService: LocalStorageService,
-    private globalDataService: GlobalDataService,
+    public globalDataService: GlobalDataService,
   ) { }
 
   ngOnInit() {
@@ -48,7 +49,9 @@ export class AppComponent implements OnInit {
       const { data } = result;
       this.globalDataService.user = data ? data as User : null;
       if (!data) {
-        return this.router.navigateByUrl('/user/login');
+        // 如果不在用户登录、注册页，就跳转
+        const isNotAuthPage = /^(?!(\/user\/(login|register)))/.test(this.location.path());
+        return isNotAuthPage && this.router.navigateByUrl('/user/login');
       }
 
       this.socketService.init();
@@ -123,13 +126,7 @@ export class AppComponent implements OnInit {
       }
 
       // 更新一下聊天列表
-      this.globalDataService.chatSessionsPage = 1;
-      this.onChatService.getChatSession().subscribe((result: Result<ChatSession[]>) => {
-        if (result.code !== ResultCode.Success) { return; }
-
-        this.globalDataService.chatSessions = result.data;
-        this.globalDataService.totalUnreadMsgCount();
-      });
+      this.onChatService.initChatSession().subscribe();
 
       // 更新好友列表
       if (this.globalDataService.privateChatrooms.length) {
@@ -233,11 +230,7 @@ export class AppComponent implements OnInit {
         chatSession.updateTime = Date.now();
         this.globalDataService.sortChatSessions();
       } else { // 如果不存在于列表当中，就刷新数据
-        this.globalDataService.chatSessionsPage = 1;
-        this.onChatService.getChatSession().subscribe((result: Result<ChatSession[]>) => {
-          this.globalDataService.chatSessions = result.data;
-          this.globalDataService.totalUnreadMsgCount();
-        });
+        this.onChatService.initChatSession().subscribe();
       }
     });
 
@@ -287,12 +280,17 @@ export class AppComponent implements OnInit {
 
       chatSession.updateTime = Date.now();
       this.globalDataService.sortChatSessions();
+      this.globalDataService.totalUnreadMsgCount();
     });
 
-    // 如果路由返回被取消，就震动一下，表示阻止
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationCancel)
-    ).subscribe(() => this.feedbackService.slightVibrate());
+    this.router.events.subscribe((event: Event) => {
+      this.globalDataService.navigationLoading = event instanceof NavigationStart;
+
+      // 如果路由返回被取消，就震动一下，表示阻止
+      if (event instanceof NavigationCancel) {
+        this.feedbackService.slightVibrate();
+      }
+    });
 
     this.checkSocketConnectState();
 

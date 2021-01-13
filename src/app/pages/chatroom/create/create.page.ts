@@ -35,7 +35,7 @@ export class CreatePage implements OnInit {
 
   chatroomForm: FormGroup = this.fb.group({
     name: [
-      null, [
+      '', [
         Validators.required,
         Validators.minLength(CHATROOM_NAME_MIN_LENGTH),
         Validators.maxLength(CHATROOM_NAME_MAX_LENGTH)

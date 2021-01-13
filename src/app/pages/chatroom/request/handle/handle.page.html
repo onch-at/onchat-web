@@ -1,0 +1,54 @@
+<ion-content appHideScrollbar [fullscreen]="true">
+  <ion-header class="display-flex align-items-center" slot="fixed">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
+      </ion-buttons>
+
+      <ion-title>入群申请</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <img class="bg-img" [src]="chatRequest.applicantAvatarThumbnail">
+
+  <main class="flex-col-container align-items-center">
+    <img class="avatar" [src]="chatRequest.applicantAvatarThumbnail" [routerLink]="['/user', chatRequest.applicantId]">
+    <h1>{{ chatRequest.applicantNickname }}</h1>
+
+    <ion-item lines="none">
+      <ion-label position="stacked">申请原因</ion-label>
+      <p>{{ chatRequest.requestReason || (chatRequest.applicantNickname + ' 申请加入 ' + chatRequest.chatroomName) }}</p>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label position="stacked">相关信息</ion-label>
+      <ul>
+        <li>聊天室：{{ chatRequest.chatroomName }}</li>
+        <li *ngIf="chatRequest.handlerId">
+          处理人：{{ chatRequest.handlerNickname }}
+          <ng-container [ngSwitch]="chatRequest.status || chatRequestStatus.Wait">
+            <ng-container *ngSwitchCase="chatRequestStatus.Wait">待处理</ng-container>
+            <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
+            <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
+            <ng-container *ngSwitchDefault>未知状态</ng-container>
+          </ng-container>
+        </li>
+      </ul>
+    </ion-item>
+
+    <div style="flex: auto;"></div>
+
+    <ion-buttons class="bottom-bar" *ngIf="!chatRequest.handlerId">
+      <button appActiveClass [appActiveClassDuration]="250" (tap)="reject()"
+        class="ion-activatable ripple-parent btn-secondary btn-block">
+        拒绝申请
+        <ion-ripple-effect></ion-ripple-effect>
+      </button>
+      <button appActiveClass [appActiveClassDuration]="250" (tap)="agree()"
+        class="ion-activatable ripple-parent btn-primary btn-block">
+        同意申请
+        <ion-ripple-effect></ion-ripple-effect>
+      </button>
+    </ion-buttons>
+  </main>
+</ion-content>

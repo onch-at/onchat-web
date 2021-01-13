@@ -17,13 +17,13 @@
 
   <ion-list class="chat-request-list">
     <ion-item-sliding mode="md" *ngFor="let item of globalDataService.receiveChatRequests; let i = index;">
-      <ion-item lines="none" [detail]="false">
+      <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/request/handle', item.id]">
         <ion-img slot="start" *ngIf="i > 9" [src]="item.applicantAvatarThumbnail"></ion-img>
         <img slot="start" *ngIf="i <= 9" [src]="item.applicantAvatarThumbnail">
 
         <ion-label class="item-content">
           <h2 class="font-weight-bold">{{ item.applicantNickname }}</h2>
-          <p>{{ item.requestReason || '申请加入 ' + item.chatroomName }}</p>
+          <p>{{ '申请加入 ' + item.chatroomName }}</p>
         </ion-label>
 
         <button appActiveClass [appActiveClassDuration]="250" class="ion-activatable ripple-parent btn-primary">

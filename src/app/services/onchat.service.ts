@@ -54,6 +54,8 @@ export class OnChatService {
   }
 
   initChatSession() {
+    this.globalDataService.chatSessionsPage = 1;
+
     return this.getChatSession().pipe(
       mergeMap((result: Result<ChatSession[]>) => {
         this.globalDataService.chatSessions = result.data;
@@ -297,6 +299,15 @@ export class OnChatService {
    */
   getReceiveChatRequests(): Observable<Result<ChatRequest[]>> {
     return this.http.get<Result<ChatRequest[]>>(env.chatUrl + 'requests/receive');
+  }
+
+  /**
+   * 通过请求id来获取我收到的入群申请
+   * @param id 入群申请ID
+   * @returns
+   */
+  getReceiveChatRequestById(id: number): Observable<Result<ChatRequest>> {
+    return this.http.get<Result<ChatRequest>>(env.chatUrl + 'requests/receive/' + id);
   }
 
   /**

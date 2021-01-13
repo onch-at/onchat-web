@@ -17,8 +17,6 @@ import { OnChatService } from '../../../services/onchat.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  /** 是否正在加载中 */
-  loading: boolean = false;
   /** 密码框类型 */
   pwdInputType: string = 'password';
   usernameMaxLength: number = USERNAME_MAX_LENGTH;
@@ -26,7 +24,7 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup = this.fb.group({
     username: [
-      null, [
+      '', [
         Validators.pattern(USERNAME_PATTERN),
         Validators.required,
         Validators.minLength(USERNAME_MIN_LENGTH),
@@ -34,7 +32,7 @@ export class LoginPage implements OnInit {
       ]
     ],
     password: [
-      null, [
+      '', [
         Validators.required,
         Validators.minLength(PASSWORD_MIN_LENGTH),
         Validators.maxLength(PASSWORD_MAX_LENGTH)
@@ -57,17 +55,17 @@ export class LoginPage implements OnInit {
   ngOnInit() { }
 
   login() {
-    if (this.loginForm.invalid || this.loading) { return; }
+    if (this.loginForm.invalid || this.globalDataService.navigationLoading) { return; }
 
-    this.loading = true;
+    this.globalDataService.navigationLoading = true;
 
     const { username, password } = this.loginForm.value;
 
     this.onChatService.login(new Login(username, password)).subscribe((result: Result<User>) => {
-      const toast = this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
+      this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
 
       if (result.code !== ResultCode.Success) {
-        this.loading = false;
+        this.globalDataService.navigationLoading = false;
         return;
       }
 
@@ -77,7 +75,6 @@ export class LoginPage implements OnInit {
       setTimeout(() => {
         this.router.navigateByUrl('/');
         this.onChatService.init();
-        this.loading = false;
       }, 1000);
     })
   }
@@ -94,7 +91,8 @@ export class LoginPage implements OnInit {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    this.loginForm.controls[controlName].setValue(StrUtil.trimAll(this.loginForm.value[controlName]));
+    const value = StrUtil.trimAll(this.loginForm.get(controlName).value);
+    this.loginForm.setValue({ controlName: value });
   }
 
 }

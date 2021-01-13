@@ -19,8 +19,6 @@ import { passwordFeedback, usernameFeedback } from '../login/login.page';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  /** 是否正在加载中 */
-  loading: boolean = false;
   /** 密码框类型 */
   pwdInputType: string = 'password';
   /** 验证码URL */
@@ -30,7 +28,7 @@ export class RegisterPage implements OnInit {
 
   registerForm: FormGroup = this.fb.group({
     username: [
-      null, [
+      '', [
         Validators.pattern(USERNAME_PATTERN),
         Validators.required,
         Validators.minLength(5),
@@ -38,21 +36,21 @@ export class RegisterPage implements OnInit {
       ]
     ],
     password: [
-      null, [
+      '', [
         Validators.required,
         Validators.minLength(PASSWORD_MIN_LENGTH),
         Validators.maxLength(PASSWORD_MAX_LENGTH)
       ]
     ],
     confirmPassword: [
-      null, [
+      '', [
         Validators.required,
         Validators.minLength(PASSWORD_MIN_LENGTH),
         Validators.maxLength(PASSWORD_MAX_LENGTH)
       ]
     ],
     captcha: [
-      null, [
+      '', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(4)
@@ -82,25 +80,21 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     const username = this.route.snapshot.queryParams.username;
-    username && this.registerForm.controls.username.setValue(username);
+    username && this.registerForm.setValue({ username });
   }
 
   register() {
-    if (this.registerForm.invalid || this.loading) { return; }
+    if (this.registerForm.invalid || this.globalDataService.navigationLoading) { return; }
 
-    this.loading = true;
+    this.globalDataService.navigationLoading = true;
 
     const { username, password, captcha } = this.registerForm.value;
     this.onChatService.register(new Register(username, password, captcha)).subscribe((result: Result<User>) => {
+      this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
+
       if (result.code !== ResultCode.Success) { // 如果请求不成功，则刷新验证码
-        this.updateCaptcha();
-      }
-
-      const toast = this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
-
-      if (result.code !== ResultCode.Success) {
-        this.loading = false;
-        return;
+        this.globalDataService.navigationLoading = false;
+        return this.updateCaptcha();
       }
 
       this.globalDataService.user = result.data;
@@ -109,7 +103,6 @@ export class RegisterPage implements OnInit {
       setTimeout(() => {
         this.router.navigateByUrl('/');
         this.onChatService.init();
-        this.loading = false;
       }, 1000);
     });
   }
@@ -119,7 +112,7 @@ export class RegisterPage implements OnInit {
    */
   updateCaptcha() {
     this.captchaUrl = env.captchaUrl + '?' + Date.now();
-    this.registerForm.controls.captcha.setValue('');
+    this.registerForm.setValue({ captcha: '' });
   }
 
   /**
@@ -134,7 +127,8 @@ export class RegisterPage implements OnInit {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    this.registerForm.controls[controlName].setValue(StrUtil.trimAll(this.registerForm.value[controlName]));
+    const value = StrUtil.trimAll(this.registerForm.get(controlName).value);
+    this.registerForm.setValue({ controlName: value });
   }
 
 }

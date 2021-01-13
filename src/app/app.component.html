@@ -1,3 +1,6 @@
 <ion-app>
+  <ion-progress-bar class="progress-bar" type="indeterminate" mode="md" reversed="true"
+    [hidden]="!globalDataService.navigationLoading">
+  </ion-progress-bar>
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

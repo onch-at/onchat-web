@@ -1,0 +1,97 @@
+ion-header {
+    height: 3rem;
+    background: transparent;
+
+    ion-buttons > *,
+    ion-title {
+        --color: var(--oc-color-white);
+        filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));
+    }
+
+    ion-title {
+        font-size: 1rem;
+    }
+}
+
+.bg-img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    // 用于屏幕键盘弹起到时候，过渡
+    transition: height 0.125s ease-out, width 0.125s ease-out;
+}
+
+main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    padding: 4rem 0 calc(var(--ion-safe-area-bottom, 0) + 1rem);
+    background: linear-gradient(to bottom, transparent, rgba(var(--oc-color-white-rgb), 0.5));
+    backdrop-filter: blur(15px);
+}
+
+.avatar {
+    width: 7.5rem;
+    height: 7.5rem;
+    border-radius: 5rem;
+    border: 0.25rem solid rgba(var(--oc-color-white-rgb), 0.5);
+    object-fit: cover;
+}
+
+h1 {
+    color: var(--oc-color-white);
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75);
+    margin: 1rem 0 1.25rem;
+}
+
+ion-item {
+    --background: rgba(var(--oc-color-white-rgb), 0.75);
+    --padding-start: 1rem;
+    --inner-padding-end: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+    overflow: hidden;
+
+    > ion-label {
+        font-size: 0.95rem;
+        margin: 0.6rem 0 0;
+        --color: var(--oc-color-dark);
+    }
+
+    > p,
+    > ul {
+        flex: 1;
+        font-size: 1rem;
+        margin: 0 0 0.4rem;
+        padding: 0.25rem 0;
+        color: var(--oc-color-medium);
+    }
+
+    > ul li:not(:last-child) {
+        margin-bottom: 0.125rem;
+    }
+}
+
+ion-buttons {
+    .btn-block {
+        flex: 1;
+
+        &:first-child {
+            margin-right: 1rem;
+        }
+    }
+}
+
+.bottom-bar,
+ion-item {
+    width: calc(100vw - 2rem);
+    flex-shrink: 0;
+}

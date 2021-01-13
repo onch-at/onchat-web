@@ -44,7 +44,6 @@ export class ChatPage implements OnInit {
    * @param event
    */
   refresh(event: any) {
-    this.globalDataService.chatSessionsPage = 1;
     this.onChatService.initChatSession().subscribe(() => {
       event.target.complete();
     });
