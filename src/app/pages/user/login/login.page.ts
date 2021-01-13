@@ -75,7 +75,7 @@ export class LoginPage implements OnInit {
       this.socketService.init();
 
       setTimeout(() => {
-        this.router.navigate(['/']);
+        this.router.navigateByUrl('/');
         this.onChatService.init();
         this.loading = false;
       }, 1000);

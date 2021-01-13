@@ -1,6 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
+import { filter } from 'rxjs/operators';
 import { CHAT_ITEM_ROWS } from 'src/app/common/constant';
 import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
@@ -43,15 +44,15 @@ export class ChatPage implements OnInit {
    * @param event
    */
   refresh(event: any) {
-    this.globalDataService.chatListPage = 1;
-    this.onChatService.setChatSession().subscribe(() => {
+    this.globalDataService.chatSessionsPage = 1;
+    this.onChatService.initChatSession().subscribe(() => {
       event.target.complete();
     });
   }
 
-  chatList() {
-    const { chatListPage, chatList } = this.globalDataService;
-    return chatListPage ? chatList.slice(0, chatListPage * CHAT_ITEM_ROWS) : chatList;
+  chatSessions() {
+    const { chatSessionsPage, chatSessions } = this.globalDataService;
+    return chatSessionsPage ? chatSessions.slice(0, chatSessionsPage * CHAT_ITEM_ROWS) : chatSessions;
   }
 
   /**
@@ -59,12 +60,12 @@ export class ChatPage implements OnInit {
    * @param event
    */
   loadData(event: any) {
-    if (!this.globalDataService.chatListPage) {
+    if (!this.globalDataService.chatSessionsPage) {
       return event.target.complete();
     }
 
-    if (++this.globalDataService.chatListPage * CHAT_ITEM_ROWS >= this.globalDataService.chatList.length) {
-      this.globalDataService.chatListPage = null;
+    if (++this.globalDataService.chatSessionsPage * CHAT_ITEM_ROWS >= this.globalDataService.chatSessions.length) {
+      this.globalDataService.chatSessionsPage = null;
     }
 
     event.target.complete();
@@ -81,7 +82,7 @@ export class ChatPage implements OnInit {
   removeChatSession(index: number) {
     // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
     setTimeout(() => {
-      this.globalDataService.chatList.splice(index, 1);
+      this.globalDataService.chatSessions.splice(index, 1);
     }, 50);
   }
 
@@ -90,25 +91,15 @@ export class ChatPage implements OnInit {
    * @param item
    * @param i
    */
-  doSticky(item: ChatSession, i: number) {
-    if (item.sticky) {
-      return this.onChatService.unstickyChatSession(item.id).subscribe((result: Result) => {
-        if (result.code === ResultCode.Success) {
-          item.sticky = false;
-          this.globalDataService.chatList = this.globalDataService.chatList;
+  doStickyChatSession(item: ChatSession, i: number) {
+    const request = item.sticky ? this.onChatService.unstickyChatSession : this.onChatService.stickyChatSession;
 
-          this.closeIonItemSliding(i);
-        }
-      });
-    }
-
-    this.onChatService.stickyChatSession(item.id).subscribe((result: Result) => {
-      if (result.code === ResultCode.Success) {
-        item.sticky = true;
-        this.globalDataService.chatList = this.globalDataService.chatList;
-
-        this.closeIonItemSliding(i);
-      }
+    request(item.id).pipe(
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe(() => {
+      item.sticky = !item.sticky;
+      this.globalDataService.sortChatSessions();
+      this.closeIonItemSliding(i);
     });
   }
 
@@ -117,33 +108,33 @@ export class ChatPage implements OnInit {
    * @param item
    * @param i
    */
-  doRead(item: ChatSession, i: number) {
+  doReadChatSession(item: ChatSession, i: number) {
     if (item.unread == 0) {
-      return this.onChatService.unreadChatSession(item.id).subscribe((result: Result) => {
-        if (result.code === ResultCode.Success) {
-          item.unread = 1;
-          this.globalDataService.unreadMsgCount++;
-          this.closeIonItemSliding(i);
-        }
+      return this.onChatService.unreadChatSession(item.id).pipe(
+        filter((result: Result) => result.code === ResultCode.Success)
+      ).subscribe(() => {
+        item.unread = 1;
+        this.globalDataService.unreadMsgCount++;
+        this.closeIonItemSliding(i);
       });
     }
 
     if (item.type === ChatSessionType.ChatroomNotice) {
-      return this.onChatService.readedChatRequests().subscribe((result: Result) => {
-        if (result.code === ResultCode.Success) {
-          item.unread = 0;
-          this.globalDataService.unreadMsgCount--;
-          this.closeIonItemSliding(i);
-        }
-      });
-    }
-
-    this.onChatService.readedChatSession(item.id).subscribe((result: Result) => {
-      if (result.code === ResultCode.Success) {
+      return this.onChatService.readedChatRequests().pipe(
+        filter((result: Result) => result.code === ResultCode.Success)
+      ).subscribe(() => {
         item.unread = 0;
         this.globalDataService.unreadMsgCount--;
         this.closeIonItemSliding(i);
-      }
+      });
+    }
+
+    this.onChatService.readedChatSession(item.id).pipe(
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe(() => {
+      item.unread = 0;
+      this.globalDataService.unreadMsgCount--;
+      this.closeIonItemSliding(i);
     });
   }
 

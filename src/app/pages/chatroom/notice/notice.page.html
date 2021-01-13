@@ -1,5 +1,5 @@
 <ion-content appHideScrollbar [fullscreen]="true">
-  <ion-header class="d-flex align-items-center" slot="fixed">
+  <ion-header class="display-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
@@ -23,7 +23,7 @@
 
         <ion-label class="item-content">
           <h2 class="font-weight-bold">{{ item.applicantNickname }}</h2>
-          <p>{{ item.requestReason || '申请加入 ' + item.chatroomName + ' 聊天室' }}</p>
+          <p>{{ item.requestReason || '申请加入 ' + item.chatroomName }}</p>
         </ion-label>
 
         <button appActiveClass [appActiveClassDuration]="250" class="ion-activatable ripple-parent btn-primary">

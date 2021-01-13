@@ -3,7 +3,7 @@
     <img *ngIf="globalDataService.user" class="avatar" [src]="globalDataService.user.avatarThumbnail"
       [routerLink]="['/user', globalDataService.user.id]">
 
-    <div class="button-group d-flex">
+    <div class="button-group display-flex">
       <ion-button expand="block" fill="clear" routerDirection="root" routerLink="/home/chat" routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
         <ion-badge [ngClass]="{'visibility-hidden': globalDataService.unreadMsgCount <= 0}" class="bg-danger">
@@ -34,9 +34,10 @@
     </div>
   </aside>
 
-  <ion-header class="d-flex align-items-center" slot="fixed" [ngStyle]="{'border-radius': sharp ? 0 : '0 0 1.5rem 0'}">
+  <ion-header class="display-flex align-items-center" slot="fixed"
+    [ngStyle]="{'border-radius': sharp ? 0 : '0 0 1.5rem 0'}">
     <ion-toolbar>
-      <span class="brand"></span>
+      <span class="onchat-brand"></span>
 
       <ion-buttons slot="end">
         <ion-button (tap)="presentPopover($event)">

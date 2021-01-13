@@ -35,9 +35,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // 首先加载出缓存数据，保证用户体验
-    const data = this.localStorageService.get(LocalStorageKey.ChatList);
+    const data = this.localStorageService.get(LocalStorageKey.ChatSessions);
     if (data) {
-      this.globalDataService.chatList = data
+      this.globalDataService.chatSessions = data;
+      this.globalDataService.totalUnreadMsgCount();
     }
 
     // 连接打通时
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
       const { data } = result;
       this.globalDataService.user = data ? data as User : null;
       if (!data) {
-        return this.router.navigate(['/user/login']);
+        return this.router.navigateByUrl('/user/login');
       }
 
       this.socketService.init();
@@ -122,11 +123,12 @@ export class AppComponent implements OnInit {
       }
 
       // 更新一下聊天列表
-      this.globalDataService.chatListPage = 1;
+      this.globalDataService.chatSessionsPage = 1;
       this.onChatService.getChatSession().subscribe((result: Result<ChatSession[]>) => {
         if (result.code !== ResultCode.Success) { return; }
 
-        this.globalDataService.chatList = result.data;
+        this.globalDataService.chatSessions = result.data;
+        this.globalDataService.totalUnreadMsgCount();
       });
 
       // 更新好友列表
@@ -181,7 +183,7 @@ export class AppComponent implements OnInit {
       console.log(result)
       const { chatroomId, user } = this.globalDataService;
       // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-      const chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId == msg.chatroomId);
+      const chatSession = this.globalDataService.chatSessions.find(o => o.data.chatroomId == msg.chatroomId);
 
       // 如果消息不是自己的话，就播放提示音
       if (msg.userId != user.id) {
@@ -229,11 +231,12 @@ export class AppComponent implements OnInit {
 
         chatSession.content = msg;
         chatSession.updateTime = Date.now();
-        this.globalDataService.chatList = this.globalDataService.chatList;
+        this.globalDataService.sortChatSessions();
       } else { // 如果不存在于列表当中，就刷新数据
-        this.globalDataService.chatListPage = 1;
+        this.globalDataService.chatSessionsPage = 1;
         this.onChatService.getChatSession().subscribe((result: Result<ChatSession[]>) => {
-          this.globalDataService.chatList = result.data;
+          this.globalDataService.chatSessions = result.data;
+          this.globalDataService.totalUnreadMsgCount();
         });
       }
     });
@@ -243,17 +246,17 @@ export class AppComponent implements OnInit {
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
-      const index = this.globalDataService.chatList.findIndex(o => o.data.chatroomId == result.data.chatroomId);
+      const index = this.globalDataService.chatSessions.findIndex(o => o.data.chatroomId == result.data.chatroomId);
       if (index >= 0) {
-        const chatSession = this.globalDataService.chatList[index];
+        const chatSession = this.globalDataService.chatSessions[index];
         chatSession.unread > 0 && chatSession.unread--;
         chatSession.content = JSON.parse(JSON.stringify(chatSession.content));
         chatSession.content.type = MessageType.Tips;
         const name = chatSession.content.userId == this.globalDataService.user.id ? '我' : chatSession.content.nickname;
         (chatSession.content.data as any).content = name + ' 撤回了一条消息';
         chatSession.updateTime = Date.now();
-        this.globalDataService.chatList[index] = chatSession;
-        this.globalDataService.chatList = this.globalDataService.chatList;
+        this.globalDataService.chatSessions[index] = chatSession;
+        this.globalDataService.sortChatSessions();
       }
     });
 
@@ -266,26 +269,24 @@ export class AppComponent implements OnInit {
       })
     ).subscribe((result: Result<ChatRequest>) => {
       const { data } = result;
-      const chatSession = this.globalDataService.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
+      const chatSession = this.globalDataService.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
       // 如果列表里没有聊天室通知会话,就需要重新拉取
       if (!chatSession) {
-        const subscription = this.onChatService.setChatSession().subscribe(() => {
-          subscription.unsubscribe();
-        });
-
-        return;
+        return this.onChatService.initChatSession().subscribe();
       }
 
       const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === data.id);
 
       if (index >= 0) {
         this.globalDataService.receiveChatRequests[index] = data;
+        this.globalDataService.sortChatRequests();
       } else {
         this.globalDataService.receiveChatRequests.unshift(data);
         this.feedbackService.booAudio.play();
       }
 
-      this.globalDataService.receiveChatRequests = this.globalDataService.receiveChatRequests;
+      chatSession.updateTime = Date.now();
+      this.globalDataService.sortChatSessions();
     });
 
     // 如果路由返回被取消，就震动一下，表示阻止

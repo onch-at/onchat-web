@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChatSessionType, LocalStorageKey } from '../common/enum';
 import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
+import { EntityUtil } from '../utils/entity.util';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -22,9 +23,9 @@ export class GlobalDataService {
   /** 我收到的群通知 */
   private _receiveChatRequests: ChatRequest[] = [];
   /** 缓存聊天列表 */
-  private _chatList: ChatSession[] = [];
+  private _chatSessions: ChatSession[] = [];
   /** 缓存聊天列表的分页页码 */
-  private _chatListPage: number = 1;
+  private _chatSessionsPage: number = 1;
   /** 私聊聊天室列表 */
   private _privateChatrooms: ChatSession[] = [];
   /** 私聊聊天室列表的分页页码 */
@@ -76,19 +77,7 @@ export class GlobalDataService {
 
   set receiveChatRequests(requests: ChatRequest[]) {
     this._receiveChatRequests = requests;
-
-    const unreadCount = requests.reduce((count, o) => {
-      return count + (o.readedList.includes(this.user.id) ? 0 : 1);
-    }, 0);
-
-    if (!unreadCount) { return; }
-
-    this.unreadMsgCount += unreadCount;
-
-    const chatSession = this.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
-    if (chatSession) {
-      chatSession.unread = unreadCount;
-    }
+    this.sortChatRequests();
   }
 
   get receiveChatRequests() {
@@ -97,42 +86,29 @@ export class GlobalDataService {
 
   set unreadMsgCount(num: number) {
     this._unreadMsgCount = num;
+    'setAppBadge' in navigator && (navigator as any).setAppBadge(num);
   }
 
   get unreadMsgCount() {
     return this._unreadMsgCount;
   }
 
-  set chatList(chatList: ChatSession[]) {
-    this._chatList = sortChatList(chatList);
-    this.localStorageService.set(LocalStorageKey.ChatList, this.chatList);
-
-    if (this.unreadMsgCount > 0) {
-      this.unreadMsgCount = 0;
-    }
-
-    for (const chatSession of chatList) {
-      // 计算未读消息总数
-      // 如果有未读消息，
-      // 且总未读数大于100，则停止遍历
-      if (chatSession.unread > 0 && (this.unreadMsgCount += chatSession.unread) >= 100) {
-        break;
-      }
-    }
-
-    'setAppBadge' in navigator && (navigator as any).setAppBadge(this.unreadMsgCount);
+  set chatSessions(chatSessions: ChatSession[]) {
+    this._chatSessions = chatSessions;
+    this.sortChatSessions();
+    this.localStorageService.set(LocalStorageKey.ChatSessions, this.chatSessions);
   }
 
-  get chatList(): ChatSession[] {
-    return this._chatList;
+  get chatSessions(): ChatSession[] {
+    return this._chatSessions;
   }
 
-  set chatListPage(page: number) {
-    this._chatListPage = page;
+  set chatSessionsPage(page: number) {
+    this._chatSessionsPage = page;
   }
 
-  get chatListPage() {
-    return this._chatListPage;
+  get chatSessionsPage() {
+    return this._chatSessionsPage;
   }
 
   set privateChatrooms(privateChatrooms: ChatSession[]) {
@@ -152,12 +128,51 @@ export class GlobalDataService {
   get privateChatroomsPage() {
     return this._privateChatroomsPage;
   }
-}
 
-/**
- * 按照时间/置顶顺序排序聊天列表
- * @param chatList
- */
-export function sortChatList(chatList: ChatSession[]): ChatSession[] {
-  return chatList.sort((a: ChatSession, b: ChatSession) => b.updateTime - a.updateTime).sort((a: ChatSession, b: ChatSession) => +b.sticky - +a.sticky);
+  /**
+   * 计算未读消息数
+   */
+  totalUnreadMsgCount() {
+    if (this.unreadMsgCount > 0) {
+      this.unreadMsgCount = 0;
+    }
+
+    this.totalUnreadChatRequestCount();
+
+    for (const chatSession of this.chatSessions) {
+      // 计算未读消息总数，如果有未读消息，
+      // 且总未读数大于100，则停止遍历
+      if (chatSession.unread > 0 && (this.unreadMsgCount += chatSession.unread) >= 100) {
+        break;
+      }
+    }
+  }
+
+  /**
+   * 计算未读的聊天室通知消息数量
+   */
+  private totalUnreadChatRequestCount() {
+    const unreadCount = this.receiveChatRequests.reduce((count, o) => {
+      return count + (o.readedList.includes(this.user.id) ? 0 : 1);
+    }, 0);
+
+    const chatSession = this.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
+    if (chatSession) {
+      chatSession.unread = unreadCount;
+    }
+  }
+
+  /**
+   * 按照时间/置顶顺序排序聊天列表
+   */
+  sortChatSessions() {
+    this.chatSessions.sort(EntityUtil.sortByUpdateTime).sort((a, b) => +b.sticky - +a.sticky);
+  }
+
+  /**
+   * 排序聊天室通知
+   */
+  sortChatRequests() {
+    this.receiveChatRequests.sort(EntityUtil.sortByUpdateTime);
+  }
 }

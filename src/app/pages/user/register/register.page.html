@@ -1,20 +1,20 @@
 <ion-content [fullscreen]="true">
   <ion-progress-bar type="indeterminate" mode="md" reversed="true" [hidden]="!loading"></ion-progress-bar>
   <div class="flex-col-container">
-    <ion-grid class="d-flex align-items-center">
+    <ion-grid class="display-flex align-items-center">
       <ion-row>
         <ion-col size="12">
           <div class="logo text-center">
-            <h1 class="brand"></h1>
+            <h1 class="onchat-brand"></h1>
             <h5 class="font-weight-bold">世 界 都 在 聊</h5>
           </div>
 
           <form [formGroup]="registerForm">
             <div class="form-group">
-              <input type="text" class="d-block text-center ipt-primary" id="username" formControlName="username"
+              <input type="text" class="display-block text-center ipt-primary" id="username" formControlName="username"
                 (blur)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
 
-              <div class="feedback-control-invalid">
+              <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.username.errors">
                   {{ usernameFeedback(registerForm.controls.username.errors) }}
@@ -23,13 +23,12 @@
             </div>
 
             <div class="form-group">
-              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="password" autocomplete="off"
-                formControlName="password" (blur)="trimAll('password')" placeholder="密码" [maxlength]="passwordMaxLength"
-                required>
-              <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
-                (tap)="togglePwdInputType()"></ion-icon>
+              <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="password"
+                autocomplete="off" formControlName="password" (blur)="trimAll('password')" placeholder="密码"
+                [maxlength]="passwordMaxLength" required>
+              <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
 
-              <div class="feedback-control-invalid">
+              <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.password.errors">
                   {{ passwordFeedback(registerForm.controls.password.errors) }}
@@ -38,13 +37,12 @@
             </div>
 
             <div class="form-group">
-              <input [type]="pwdInputType" class="d-block text-center ipt-primary" id="confirm-password"
+              <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="confirm-password"
                 autocomplete="off" formControlName="confirmPassword" (blur)="trimAll('confirmPassword')"
                 placeholder="确认密码" [maxlength]="passwordMaxLength" required>
-              <ion-icon slot="icon-only" [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'"
-                (tap)="togglePwdInputType()"></ion-icon>
+              <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
 
-              <div class="feedback-control-invalid">
+              <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.confirmPassword.errors">
                   {{ passwordFeedback(registerForm.controls.confirmPassword.errors) }}
@@ -58,12 +56,12 @@
             </div>
 
             <div class="form-group form-group-row">
-              <input type="text" class="d-block text-center ipt-primary" id="captcha" formControlName="captcha"
+              <input type="text" class="display-block text-center ipt-primary" id="captcha" formControlName="captcha"
                 (blur)="trimAll('captcha')" placeholder="验证码" maxlength="4" required>
               <img appActiveClass [appActiveClassDuration]="250" class="captcha" [src]="captchaUrl"
                 (tap)="updateCaptcha()">
 
-              <div class="feedback-control-invalid">
+              <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.captcha.errors">
                   {{ captchaFeedback(registerForm.controls.captcha.errors) }}

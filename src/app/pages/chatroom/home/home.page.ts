@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
     this.route.data.subscribe((data: { chatroom: Result<Chatroom>, chatMembers: Result<ChatMember[]> }) => {
       if (data.chatroom.code !== ResultCode.Success) {
         this.overlayService.presentToast('聊天室不存在！');
-        return this.router.navigate(['/']);
+        return this.router.navigateByUrl('/');
       }
 
       this.chatroom = data.chatroom.data;
@@ -148,7 +148,7 @@ export class HomePage implements OnInit {
             this.chatroom.avatar = avatar;
             this.chatroom.avatarThumbnail = avatarThumbnail;
             this.cacheService.revoke(new RegExp('/chatroom/' + id + '?'));
-            const chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId === id);
+            const chatSession = this.globalDataService.chatSessions.find(o => o.data.chatroomId === id);
             if (chatSession) {
               chatSession.avatarThumbnail = avatarThumbnail;
             }

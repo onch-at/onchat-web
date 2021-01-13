@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate, CanLoad {
         if (result.data) {
           this.globalDataService.user = result.data as User;
         } else {
-          this.router.navigate(['/user/login']); // 返回登录页面
+          this.router.navigateByUrl('/user/login');
         }
 
         observer.next(!!result.data);

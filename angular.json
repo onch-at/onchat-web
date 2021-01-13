@@ -37,7 +37,13 @@
             ],
             "styles": [
               {
-                "input": "src/theme/variables.scss"
+                "input": "src/styles/themes/original.scss"
+              },
+              {
+                "input": "src/styles/override.scss"
+              },
+              {
+                "input": "src/styles/animation.scss"
               },
               {
                 "input": "src/global.scss"

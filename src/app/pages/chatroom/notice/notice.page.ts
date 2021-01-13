@@ -17,7 +17,7 @@ export class NoticePage implements OnInit {
 
   ngOnInit() {
     this.onChatService.readedChatRequests().subscribe();
-    const chatSession = this.globalDataService.chatList.find(o => o.type === ChatSessionType.ChatroomNotice);
+    const chatSession = this.globalDataService.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
     if (chatSession) {
       this.globalDataService.unreadMsgCount -= chatSession.unread;
       chatSession.unread = 0;

@@ -98,13 +98,14 @@ export class ChatPage implements OnInit {
     this.loadRecords();
 
     // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-    this.chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId === this.chatroomId);
+    this.chatSession = this.globalDataService.chatSessions.find(o => o.data.chatroomId === this.chatroomId);
 
     if (this.chatSession) {
-      this.globalDataService.unreadMsgCount -= this.chatSession.unread;
-      this.chatroomName = this.chatSession.title;
-      this.chatroomType = this.chatSession.data.chatroomType;
+      const { unread, title, data } = this.chatSession;
       this.chatSession.unread = 0;
+      this.globalDataService.unreadMsgCount -= unread;
+      this.chatroomName = title;
+      this.chatroomType = data.chatroomType;
     } else {
       this.onChatService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
         if (result.code !== ResultCode.Success) { return; }
@@ -285,7 +286,7 @@ export class ChatPage implements OnInit {
         this.end = true;
       } else if (result.code == -3) { // 如果没有权限
         this.overlayService.presentToast('你还没有权限进入此聊天室！');
-        this.router.navigate(['/']); // 没权限还想进来，回首页去吧
+        this.router.navigateByUrl('/'); // 没权限还想进来，回首页去吧
       }
       complete && complete();
     });
@@ -414,7 +415,7 @@ export class ChatPage implements OnInit {
 
           this.overlayService.presentToast('成功修改好友别名', 1000);
 
-          let chatSession = this.globalDataService.chatList.find(o => o.data.chatroomId == this.chatroomId);
+          let chatSession = this.globalDataService.chatSessions.find(o => o.data.chatroomId == this.chatroomId);
           if (chatSession) {
             chatSession.title = result.data;
           }

@@ -47,7 +47,7 @@ export class AvatarPage implements OnInit {
         this.user = (data.user as Result<User>).data;
       } else {
         this.overlayService.presentToast('用户不存在！');
-        this.router.navigate(['/']);
+        this.router.navigateByUrl('/');
       }
     });
   }

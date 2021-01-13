@@ -23,8 +23,6 @@
 @import "~quill/dist/quill.core.css";
 @import "~quill/dist/quill.snow.css";
 
-@import "./cover.scss";
-
 /* Optional CSS utils that can be commented out */
 // @import "~@ionic/angular/css/padding.css";
 // @import "~@ionic/angular/css/float-elements.css";
@@ -86,16 +84,16 @@
 .bg-medium {
   background-color: var(--oc-color-medium) !important;
 }
-.d-block {
+.display-block {
   display: block !important;
 }
-.d-inline {
+.display-inline {
   display: inline !important;
 }
-.d-inline-block {
+.display-inline-block {
   display: inline-block !important;
 }
-.d-flex {
+.display-flex {
   display: flex !important;
 }
 .justify-content-center {
@@ -189,7 +187,7 @@ textarea {
 }
 
 // LOGO文字标徽定义
-.brand {
+.onchat-brand {
   font-family: "Alibaba-Sans-Black";
   letter-spacing: -0.05em;
 
@@ -225,7 +223,7 @@ textarea {
 }
 
 // 主要输入框的警告模式
-.ipt-primary ~ .feedback-control-invalid,
+.ipt-primary ~ .form-control-warning,
 form .feedback-form-invalid {
   color: var(--oc-color-danger);
   opacity: 1;
@@ -233,8 +231,8 @@ form .feedback-form-invalid {
 }
 
 // 主要输入框的正常模式
-.ipt-primary.ng-valid ~ .feedback-control-invalid,
-.ipt-primary.ng-pristine ~ .feedback-control-invalid,
+.ipt-primary.ng-valid ~ .form-control-warning,
+.ipt-primary.ng-pristine ~ .form-control-warning,
 form.ng-valid .feedback-form-invalid,
 form.ng-pristine .feedback-form-invalid {
   height: 0;
@@ -319,95 +317,4 @@ form.ng-pristine .feedback-form-invalid {
 .btn-light {
   box-shadow: none;
   transition: all 0.15s ease-in-out, box-shadow 0.25s ease-in-out;
-}
-
-// 向左滑出
-@keyframes slide-in-left {
-  from {
-    transform: translate3d(100%, 0, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-// 向右滑出
-@keyframes slide-in-right {
-  from {
-    transform: translate3d(-100%, 0, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-// 向上滑出
-@keyframes slide-in-up {
-  from {
-    transform: translate3d(0, 100%, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-// 向下滑出
-@keyframes slide-in-down {
-  from {
-    transform: translate3d(0, -100%, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-// 回弹动画
-@keyframes active {
-  0% {
-    transform: scale3d(1, 1, 1);
-  }
-  25% {
-    transform: scale3d(0.75, 0.75, 1);
-  }
-  75% {
-    transform: scale3d(1.25, 1.25, 1);
-  }
-  100% {
-    transform: scale3d(1.1, 1.1, 1);
-  }
-}
-// 缩小入场动画
-@keyframes zoom-out {
-  from {
-    transform: scale3d(1.075, 1.075, 1);
-    opacity: 0.25;
-  }
-  to {
-    transform: scale3d(1, 1, 1);
-    opacity: 1;
-  }
-}
-// 涟漪动画
-@keyframes ripple {
-  from {
-    transform: scale3d(0, 0, 1);
-  }
-  to {
-    transform: scale3d(1, 1, 1);
-    opacity: 0;
-  }
-}
-// 淡入动画
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-// 淡出动画
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
 }

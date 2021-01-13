@@ -36,14 +36,13 @@ export class OnChatService {
   ) { }
 
   init(): void {
-    const subscription = this.setChatSession().subscribe(() => {
+    const subscription = this.initChatSession().subscribe(() => {
       subscription.unsubscribe();
     });
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data?.length) {
         this.globalDataService.receiveFriendRequests = result.data;
-        this.feedbackService.dingDengAudio.play();
       }
     });
 
@@ -54,22 +53,18 @@ export class OnChatService {
     });
   }
 
-  setChatSession() {
+  initChatSession() {
     return this.getChatSession().pipe(
       mergeMap((result: Result<ChatSession[]>) => {
-        this.globalDataService.chatList = result.data;
-        // 看看有没有未读消息，有就放提示音
-        this.globalDataService.chatList.some(o => o.unread > 0) && this.feedbackService.booAudio.play();
-
+        this.globalDataService.chatSessions = result.data;
         return this.getReceiveChatRequests();
       }),
 
       mergeMap((result: Result<ChatRequest[]>) => {
-        if (!result.data?.length) {
-          return of(null);
+        if (result.data?.length) {
+          this.globalDataService.receiveChatRequests = result.data;
         }
-
-        this.globalDataService.receiveChatRequests = result.data;
+        this.globalDataService.totalUnreadMsgCount();
 
         return of(null);
       })

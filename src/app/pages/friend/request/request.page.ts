@@ -63,7 +63,7 @@ export class RequestPage implements OnInit {
       this.overlayService.presentToast(result.msg);
 
       result.code === ResultCode.Success && setTimeout(() => {
-        this.router.navigate(['/']);
+        this.router.navigateByUrl('/');
       }, 250);
     });
   }

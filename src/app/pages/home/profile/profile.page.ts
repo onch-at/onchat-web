@@ -33,8 +33,9 @@ export class ProfilePage implements OnInit {
       message: ' 你确定要退出登录吗？',
       confirmHandler: () => this.onChatService.logout().subscribe(() => {
         this.globalDataService.user = null;
-        this.globalDataService.chatList = [];
-        this.globalDataService.chatListPage = 1;
+        this.globalDataService.chatSessions = [];
+        this.globalDataService.chatSessionsPage = 1;
+        this.globalDataService.receiveChatRequests = [];
         this.globalDataService.receiveFriendRequests = [];
         this.globalDataService.sendFriendRequests = [];
         this.globalDataService.privateChatrooms = [];
@@ -42,7 +43,7 @@ export class ProfilePage implements OnInit {
 
         this.socketService.unload();
 
-        this.router.navigate(['/user/login']);
+        this.router.navigateByUrl('/user/login');
       })
     });
   }

@@ -1,6 +1,6 @@
 <ion-content #ionContent appHideScrollbar [fullscreen]="true" [scrollEvents]="hasUnread"
   (ionScrollEnd)="onIonScrollEnd()">
-  <ion-header class="d-flex align-items-center" slot="fixed">
+  <ion-header class="display-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button
@@ -10,7 +10,7 @@
       </ion-buttons>
 
       <ion-title>
-        <div class="brand"></div>
+        <div class="onchat-brand"></div>
         <div class="font-weight-bold" (tap)="setFriendAlias()">{{ chatroomName }}</div>
       </ion-title>
 
@@ -46,7 +46,7 @@
       <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
       <button [hidden]="!showSendBtn()" appActiveClass [appActiveClassDuration]="250"
         class="ion-activatable ripple-parent btn-primary send-btn" (click)="send()" [disabled]="disableSendBtn()">
-        <label [for]="'message-' + chatroomId" class="d-flex align-items-center justify-content-center">
+        <label [for]="'message-' + chatroomId" class="display-flex align-items-center justify-content-center">
           <ion-icon name="arrow-up"></ion-icon>
           <ion-ripple-effect></ion-ripple-effect>
         </label>

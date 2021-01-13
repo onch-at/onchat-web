@@ -22,7 +22,7 @@ export class NotAuthGuard implements CanActivate, CanLoad {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
           this.globalDataService.user = result.data as User;
-          this.router.navigate(['/']); // 如果登录了就返回主页
+          this.router.navigateByUrl('/'); // 如果登录了就返回主页
         }
 
         observer.next(!result.data);

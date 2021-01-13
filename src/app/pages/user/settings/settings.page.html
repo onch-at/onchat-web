@@ -1,5 +1,5 @@
 <ion-content appHideScrollbar [fullscreen]="true">
-  <ion-header class="d-flex align-items-center" slot="fixed">
+  <ion-header class="display-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
@@ -22,11 +22,11 @@
 
     <form [formGroup]="userInfoForm">
       <div class="form-group">
-        <label class="d-block">昵称</label>
+        <label class="display-block">昵称</label>
         <ion-input class="ipt-primary text-center" formControlName="nickname" (ionChange)="trimAll('nickname')"
           placeholder="请输入昵称" [maxlength]="nicknameMaxLength" clearInput required></ion-input>
 
-        <div class="feedback-control-invalid">
+        <div class="form-control-warning">
           <ion-icon name="warning"></ion-icon>
           <span *ngIf="userInfoForm.controls.nickname.errors">
             {{ nicknameFeedback(userInfoForm.controls.nickname.errors) }}
@@ -35,11 +35,11 @@
       </div>
 
       <div class="form-group">
-        <label class="d-block">个性签名</label>
+        <label class="display-block">个性签名</label>
         <ion-textarea class="ipt-primary text-center" formControlName="signature" rows="1"
           [maxlength]="signatureMaxLength" placeholder="请输入个性签名" autoGrow clearInput></ion-textarea>
 
-        <div class="feedback-control-invalid">
+        <div class="form-control-warning">
           <ion-icon name="warning"></ion-icon>
           <span *ngIf="userInfoForm.controls.signature.errors">
             {{ signatureFeedback(userInfoForm.controls.signature.errors) }}
@@ -48,19 +48,19 @@
       </div>
 
       <div class="form-group">
-        <label class="d-block">心情</label>
+        <label class="display-block">心情</label>
         <app-mood-radio formControlName="mood"></app-mood-radio>
       </div>
 
       <div class="form-group">
-        <label class="d-block">生日</label>
+        <label class="display-block">生日</label>
         <ion-datetime class="ipt-primary text-center" formControlName="birthday" displayFormat="YYYY-MM-DD"
           [max]="today" [monthNames]="monthNames" cancelText="取消" doneText="确认">
         </ion-datetime>
       </div>
 
       <div class="form-group">
-        <label class="d-block">性别</label>
+        <label class="display-block">性别</label>
         <ion-segment formControlName="gender">
           <ion-segment-button [value]="gender.Male">男</ion-segment-button>
           <ion-segment-button [value]="gender.Female">女</ion-segment-button>
@@ -69,7 +69,7 @@
       </div>
 
       <!-- <div class="form-group">
-        <label class="d-block">电子邮箱</label>
+        <label class="display-block">电子邮箱</label>
         <ion-input class="ipt-primary text-center" clearInput formControlName="email" (ionChange)="trimAll('email')"
           placeholder="请输入电子邮箱" [maxlength]="usernameMaxLength" required></ion-input>
       </div> -->

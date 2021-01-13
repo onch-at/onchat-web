@@ -35,7 +35,7 @@ export class AvatarPage implements OnInit {
     this.route.data.subscribe((data: { chatroom: Result<Chatroom> }) => {
       if (data.chatroom.code !== ResultCode.Success) {
         this.overlayService.presentToast('聊天室不存在！');
-        return this.router.navigate(['/']);
+        return this.router.navigateByUrl('/');
       }
 
       this.chatroom = data.chatroom.data;

@@ -131,7 +131,7 @@ export enum ChatMemberRole {
 /** 枚举本地储存的KEY */
 export enum LocalStorageKey {
     /** 聊天会话列表缓存 */
-    ChatList = 'chat_list',
+    ChatSessions = 'chat_sessions',
     /** 聊天富文本草稿 */
     ChatRichTextMap = 'chat_rich_text_map'
 }

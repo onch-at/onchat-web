@@ -81,8 +81,8 @@ export class CreatePage implements OnInit {
         return this.overlayService.presentToast('聊天室创建失败，原因：' + result.msg);
       }
 
-      this.globalDataService.chatList.push(result.data);
-      this.globalDataService.chatList = this.globalDataService.chatList;
+      this.globalDataService.chatSessions.push(result.data);
+      this.globalDataService.sortChatSessions();
 
       this.overlayService.presentToast('聊天室创建成功！');
       // 得到邀请的好友的聊天室ID

@@ -1,5 +1,5 @@
 <ion-content appHideScrollbar [fullscreen]="true">
-  <ion-header class="d-flex align-items-center" slot="fixed">
+  <ion-header class="display-flex align-items-center" slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
@@ -21,11 +21,11 @@
 
     <form [formGroup]="chatroomForm">
       <div class="form-group">
-        <label class="d-block">聊天室名称</label>
+        <label class="display-block">聊天室名称</label>
         <ion-input class="ipt-primary text-center" formControlName="name" placeholder="请输入聊天室名称"
           [maxlength]="nameMaxLength" clearInput required></ion-input>
 
-        <div class="feedback-control-invalid">
+        <div class="form-control-warning">
           <ion-icon name="warning"></ion-icon>
           <span *ngIf="chatroomForm.controls.name.errors">
             {{ nameFeedback(chatroomForm.controls.name.errors) }}
@@ -34,12 +34,12 @@
       </div>
 
       <div class="form-group">
-        <label class="d-block">聊天室简介</label>
+        <label class="display-block">聊天室简介</label>
         <ion-textarea class="ipt-primary text-center" formControlName="description" rows="3"
           [maxlength]="descriptionMaxLength" placeholder="请输入聊天室简介" autoGrow clearInput>
         </ion-textarea>
 
-        <div class="feedback-control-invalid">
+        <div class="form-control-warning">
           <ion-icon name="warning"></ion-icon>
           <span *ngIf="chatroomForm.controls.description.errors">
             {{ descriptionFeedback(chatroomForm.controls.description.errors) }}
@@ -48,7 +48,7 @@
       </div>
 
       <div class="form-group">
-        <label class="d-flex justify-content-space-between">
+        <label class="display-flex justify-content-space-between">
           <span>聊天室成员</span>
           <span>{{ peopleNum() }}人</span>
         </label>

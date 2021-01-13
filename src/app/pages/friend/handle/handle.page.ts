@@ -36,7 +36,7 @@ export class HandlePage implements OnInit {
 
       if (data.friendRequest.code !== ResultCode.Success) {
         this.overlayService.presentToast(data.friendRequest.msg);
-        return this.router.navigate(['/']);
+        return this.router.navigateByUrl('/');
       }
 
       this.friendRequest = data.friendRequest.data;
@@ -45,7 +45,7 @@ export class HandlePage implements OnInit {
     this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.subject)).subscribe((result: Result<any>) => {
       if (result.code === ResultCode.Success && result.data.selfId == this.user.id) {
         setTimeout(() => {
-          this.router.navigate(['/']);
+          this.router.navigateByUrl('/');
         }, 250);
       }
     });
@@ -53,7 +53,7 @@ export class HandlePage implements OnInit {
     this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest>) => {
       if (result.code === ResultCode.Success && result.data.selfId == this.user.id) {
         setTimeout(() => {
-          this.router.navigate(['/']);
+          this.router.navigateByUrl('/');
         }, 250);
       }
     });
