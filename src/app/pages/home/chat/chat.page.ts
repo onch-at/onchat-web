@@ -91,9 +91,7 @@ export class ChatPage implements OnInit {
    * @param i
    */
   doStickyChatSession(item: ChatSession, i: number) {
-    const request = item.sticky ? this.onChatService.unstickyChatSession : this.onChatService.stickyChatSession;
-
-    request(item.id).pipe(
+    this.onChatService[item.sticky ? 'unstickyChatSession' : 'stickyChatSession'](item.id).pipe(
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe(() => {
       item.sticky = !item.sticky;
