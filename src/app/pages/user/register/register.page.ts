@@ -128,7 +128,7 @@ export class RegisterPage implements OnInit {
    */
   trimAll(controlName: string) {
     const value = StrUtil.trimAll(this.registerForm.get(controlName).value);
-    this.registerForm.setValue({ controlName: value });
+    this.registerForm.controls[controlName].setValue(value);
   }
 
 }

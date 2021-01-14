@@ -141,13 +141,6 @@ export class OnChatService {
   }
 
   /**
-   * 获取该用户下所有聊天室
-   */
-  getChatrooms(): Observable<Result<Chatroom[]>> {
-    return this.http.get<Result<Chatroom[]>>(env.userChatroomsUrl);
-  }
-
-  /**
    * 获取用户的聊天列表
    */
   getChatSession(): Observable<Result<ChatSession[]>> {

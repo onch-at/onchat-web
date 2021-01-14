@@ -104,7 +104,7 @@ export class SettingsPage implements OnInit {
    */
   trimAll(controlName: string) {
     const value = StrUtil.trimAll(this.userInfoForm.get(controlName).value);
-    this.userInfoForm.setValue({ controlName: value });
+    this.userInfoForm.controls[controlName].setValue(value);
   }
 
   /**

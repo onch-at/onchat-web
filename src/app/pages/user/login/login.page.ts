@@ -25,8 +25,8 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup = this.fb.group({
     username: [
       '', [
-        Validators.pattern(USERNAME_PATTERN),
         Validators.required,
+        Validators.pattern(USERNAME_PATTERN),
         Validators.minLength(USERNAME_MIN_LENGTH),
         Validators.maxLength(USERNAME_MAX_LENGTH)
       ]
@@ -92,7 +92,7 @@ export class LoginPage implements OnInit {
    */
   trimAll(controlName: string) {
     const value = StrUtil.trimAll(this.loginForm.get(controlName).value);
-    this.loginForm.setValue({ controlName: value });
+    this.loginForm.controls[controlName].setValue(value);
   }
 
 }
