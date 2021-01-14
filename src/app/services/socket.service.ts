@@ -45,9 +45,7 @@ export class SocketService {
    * @param msg
    */
   message(msg: Message) {
-    this.emit(SocketEvent.Message, {
-      msg
-    });
+    this.emit(SocketEvent.Message, { msg });
   }
 
   /**
@@ -57,8 +55,8 @@ export class SocketService {
    */
   revokeMsg(chatroomId: number, msgId: number) {
     this.emit(SocketEvent.RevokeMsg, {
-      chatroomId: +chatroomId,
-      msgId: +msgId
+      chatroomId,
+      msgId
     });
   }
 
@@ -134,6 +132,14 @@ export class SocketService {
       chatroomId,
       reason
     });
+  }
+
+  /**
+   * 同意群聊申请
+   * @param requestId
+   */
+  chatRequsetAgree(requestId: number) {
+    this.emit(SocketEvent.ChatRequestAgree, { requestId });
   }
 
   /**

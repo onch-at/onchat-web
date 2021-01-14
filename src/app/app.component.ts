@@ -129,14 +129,13 @@ export class AppComponent implements OnInit {
       this.onChatService.initChatSession().subscribe();
 
       // 更新好友列表
-      if (this.globalDataService.privateChatrooms.length) {
+      // 如果为空才更新，因为为空时，进入好友列表页会自动查询
+      this.globalDataService.privateChatrooms.length && this.onChatService.getPrivateChatrooms().pipe(
+        filter((result: Result) => result.code === ResultCode.Success)
+      ).subscribe((result: Result<ChatSession[]>) => {
         this.globalDataService.privateChatroomsPage = 1;
-        this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatSession[]>) => {
-          if (result.code !== ResultCode.Success) { return; }
-
-          this.globalDataService.privateChatrooms = result.data;
-        });
-      }
+        this.globalDataService.privateChatrooms = result.data;
+      });
     });
 
     // 拒绝好友申请/收到拒绝好友申请
@@ -281,6 +280,45 @@ export class AppComponent implements OnInit {
       chatSession.updateTime = Date.now();
       this.globalDataService.sortChatSessions();
       this.globalDataService.totalUnreadMsgCount();
+    });
+
+    // 同意别人入群/同意我入群
+    this.socketService.on(SocketEvent.ChatRequestAgree).subscribe((result: Result<[ChatRequest, ChatSession]>) => {
+      const { code, data, msg } = result;
+      const { user } = this.globalDataService;
+
+      if (code !== ResultCode.Success) {
+        return this.overlayService.presentToast(msg);
+      }
+
+      const [request, chatSession] = data;
+
+      // 如果是同意我入群
+      if (chatSession.userId === user.id) {
+        const opts: NotificationOptions = {
+          icon: chatSession.avatarThumbnail,
+          title: '成功申请加入聊天室',
+          description: '你已加入 ' + chatSession.title,
+          url: '/chatroom/' + chatSession.data.chatroomId
+        };
+
+        document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
+        this.feedbackService.booAudio.play();
+
+        this.globalDataService.chatSessions.push(chatSession);
+        this.globalDataService.sortChatSessions();
+        return this.globalDataService.unreadMsgCount++;
+      }
+
+      // 同意别人入群
+      const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === request.id);
+      if (index >= 0) {
+        this.globalDataService.receiveChatRequests[index] = request;
+        this.globalDataService.totalUnreadMsgCount();
+      }
+
+      // 如果我是处理人
+      request.handlerId === user.id && this.overlayService.presentToast('已同意该申请！');
     });
 
     this.router.events.subscribe((event: Event) => {

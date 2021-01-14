@@ -26,13 +26,20 @@
           <p>{{ '申请加入 ' + item.chatroomName }}</p>
         </ion-label>
 
-        <button appActiveClass [appActiveClassDuration]="250" class="ion-activatable ripple-parent btn-primary">
+        <button *ngIf="!item.handlerId" appActiveClass [appActiveClassDuration]="250"
+          class="ion-activatable ripple-parent btn-primary" (click)="agreeChatRequest(item.id, $event)">
           同意
           <ion-ripple-effect></ion-ripple-effect>
         </button>
+
+        <span *ngIf="item.handlerId" class="status" [ngSwitch]="item.status">
+          <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
+          <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
+          <ng-container *ngSwitchDefault>未知状态</ng-container>
+        </span>
       </ion-item>
 
-      <ion-item-options side="end">
+      <ion-item-options *ngIf="!item.handlerId" side="end">
         <ion-item-option class="bg-danger">拒绝</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>

@@ -1,4 +1,4 @@
-import { ChatMemberRole, ChatRequestStatus, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
+import { ChatMemberRole, ChatRequestStatus, ChatSessionType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
 import { ChatInvitationMessage, RichTextMessage, TextMessage } from './form.model';
 
 export interface Result<T = null> {
@@ -83,16 +83,16 @@ export interface ChatMember extends IEntity {
 
 /** 聊天会话 */
 export interface ChatSession extends IEntity {
-    /** 聊天室ID */
-    // chatroomId: number;
+    /** 用户ID */
+    userId: number;
     /** 聊天室名称 */
     title: string;
     /** 聊天室头像缩略图 */
     avatarThumbnail: string;
-    /** 聊天室类型 */
-    // chatroomType: ChatroomType;
+    /** 详细数据 */
     data: any;
-    type: number;
+    /** 会话类型 */
+    type: ChatSessionType;
     /** 最新消息 */
     content?: Message
     /** 未读消息数 */

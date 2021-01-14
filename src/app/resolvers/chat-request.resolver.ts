@@ -6,7 +6,7 @@ import { GlobalDataService } from "../services/global-data.service";
 import { OnChatService } from "../services/onchat.service";
 
 /**
- * 用户Resolve，根据路由参数中的userId来获得user
+ * 群聊申请Resolve，根据路由参数中的chatRequestId来获得ChatRequest
  */
 @Injectable({
     providedIn: 'root',

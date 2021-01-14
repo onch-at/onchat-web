@@ -168,7 +168,7 @@ export class GlobalDataService {
 
     const chatSession = this.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
     if (chatSession) {
-      chatSession.unread = unreadCount;
+      chatSession.unread += unreadCount;
     }
   }
 
@@ -176,7 +176,7 @@ export class GlobalDataService {
    * 按照时间/置顶顺序排序聊天列表
    */
   sortChatSessions() {
-    this.chatSessions.sort(EntityUtil.sortByUpdateTime).sort((a, b) => +b.sticky - +a.sticky);
+    this.chatSessions.sort(EntityUtil.sortByUpdateTime).sort((a, b) => +b.sticky || 0 - +a.sticky || 0);
   }
 
   /**

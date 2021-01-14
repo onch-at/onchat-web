@@ -56,6 +56,10 @@ export enum SocketEvent {
     InviteJoinChatroom = 'invite_join_chatroom',
     /** 聊天申请（加群申请） */
     ChatRequest = 'chat_request',
+    /** 同意加群申请 */
+    ChatRequestAgree = 'chat_request_agree',
+    /** 拒绝加群申请 */
+    ChatRequestReject = 'chat_request_reject'
 }
 
 /** 枚举消息类型 */

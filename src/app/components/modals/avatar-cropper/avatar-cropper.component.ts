@@ -103,8 +103,7 @@ export class AvatarCropperComponent implements OnInit {
     // 如果支持离屏画布，并且当前允许裁剪
     if (
       'OffscreenCanvas' in window &&
-      imageCropper.sourceImage &&
-      imageCropper.sourceImage.nativeElement &&
+      imageCropper.sourceImage?.nativeElement &&
       imageCropper.transformedImage
     ) {
       const worker = new Worker('../../../workers/image-cropper.worker', { type: 'module' });
@@ -194,7 +193,7 @@ export class AvatarCropperComponent implements OnInit {
     // 如果文件大于1MB
     if (size > 1048576) {
       // 如果质量大于0，可以继续压缩
-      if (this.imageCropper.imageQuality > 0) {
+      if (this.imageCropper.imageQuality >= 5) {
         this.imageCropper.imageQuality -= 5;
 
         await this.overlayService.presentToast('图片文件体积过大，尝试进一步压缩…');

@@ -2,6 +2,7 @@ ion-header {
     height: 3rem;
     background: rgba(var(--oc-color-white-rgb), 0.75);
     backdrop-filter: blur(15px);
+    border-radius: 0 0 1.5rem 1.5rem;
 
     ion-buttons > *,
     ion-title {
@@ -93,9 +94,6 @@ ion-searchbar {
     position: sticky;
     top: calc(3rem - 1px);
     padding: 0.5rem 1rem;
-    background: rgba(var(--oc-color-white-rgb), 0.75);
-    backdrop-filter: blur(15px);
-    border-radius: 0 0 1.5rem 1.5rem;
     z-index: 1;
 
     &.sc-ion-searchbar-ios-h {
@@ -103,6 +101,11 @@ ion-searchbar {
             .searchbar-input-container {
                 height: 2.5rem;
                 line-height: 2.5rem;
+            }
+
+            .searchbar-input {
+                --background: rgba(var(--oc-color-gray-rgb), 0.5);
+                backdrop-filter: blur(15px);
             }
         }
     }
