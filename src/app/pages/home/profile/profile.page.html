@@ -1,5 +1,5 @@
 <ion-content *ngIf="globalDataService.user" appHideScrollbar>
-  <div class="profile-card ion-activatable ripple-parent" routerLink="/user/settings">
+  <div class="profile-card ion-activatable ripple-container" routerLink="/user/settings">
     <img class="profile-card-bg-img" [src]="'https://blog.hypergo.net/api/bing/image.php'">
 
     <div class="profile-card-content">
@@ -19,7 +19,7 @@
   </div>
 
   <button appActiveClass [appActiveClassDuration]="250" (tap)="logout()"
-    class="ion-activatable ripple-parent btn-secondary btn-block logout-btn">
+    class="ion-activatable ripple-container btn-secondary btn-block logout-btn">
     退出登录
     <ion-ripple-effect></ion-ripple-effect>
   </button>

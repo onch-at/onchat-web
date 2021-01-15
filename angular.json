@@ -46,6 +46,9 @@
                 "input": "src/styles/animation.scss"
               },
               {
+                "input": "src/styles/atom.scss"
+              },
+              {
                 "input": "src/global.scss"
               }
             ],

@@ -56,7 +56,7 @@ export class NotificationController {
     this.componentRef.instance.title = title;
     this.componentRef.instance.description = description;
     this.componentRef.instance.icon = icon;
-    this.componentRef.instance.overlayDuration = duration || 3000;
+    this.componentRef.instance.overlayDuration = duration || 5000;
     this.componentRef.instance.url = url;
     this.componentRef.instance.handler = handler;
 

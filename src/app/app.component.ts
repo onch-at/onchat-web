@@ -7,6 +7,7 @@ import { ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent 
 import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
+import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
 import { GlobalDataService } from './services/global-data.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -22,14 +23,15 @@ import { SocketService } from './services/socket.service';
 export class AppComponent implements OnInit {
 
   constructor(
-    private location: Location,
     private router: Router,
-    private swUpdate: SwUpdate,
     private swPush: SwPush,
+    private swUpdate: SwUpdate,
+    private location: Location,
+    private cacheService: CacheService,
     private socketService: SocketService,
     private onChatService: OnChatService,
-    private feedbackService: FeedbackService,
     private overlayService: OverlayService,
+    private feedbackService: FeedbackService,
     private localStorageService: LocalStorageService,
     public globalDataService: GlobalDataService,
   ) { }
@@ -288,16 +290,19 @@ export class AppComponent implements OnInit {
       const { user } = this.globalDataService;
 
       if (code !== ResultCode.Success) {
-        return this.overlayService.presentToast(msg);
+        return this.overlayService.presentToast('操作失败，原因：' + msg);
       }
 
       const [request, chatSession] = data;
+
+      // 清除这个聊天室的缓存
+      this.cacheService.revoke(new RegExp('/chatroom/' + request.chatroomId + '?'));
 
       // 如果是同意我入群
       if (chatSession.userId === user.id) {
         const opts: NotificationOptions = {
           icon: chatSession.avatarThumbnail,
-          title: '成功申请加入聊天室',
+          title: '聊天室申请加入成功',
           description: '你已加入 ' + chatSession.title,
           url: '/chatroom/' + chatSession.data.chatroomId
         };
@@ -318,7 +323,42 @@ export class AppComponent implements OnInit {
       }
 
       // 如果我是处理人
-      request.handlerId === user.id && this.overlayService.presentToast('已同意该申请！');
+      request.handlerId === user.id && this.overlayService.presentToast('操作成功，已同意该申请！');
+    });
+
+    // 拒绝别人的入群申请/入群申请被拒绝
+    this.socketService.on(SocketEvent.ChatRequestReject).subscribe((result: Result<ChatRequest>) => {
+      const { code, data, msg } = result;
+      const { user } = this.globalDataService;
+
+      if (code !== ResultCode.Success) {
+        return this.overlayService.presentToast('操作失败，原因：' + msg);
+      }
+
+      // 如果我是申请人，我被拒绝了
+      if (data.applicantId === user.id) {
+        const opts: NotificationOptions = {
+          icon: data.chatroomAvatarThumbnail,
+          title: '聊天室申请加入失败',
+          description: data.handlerNickname + ' 拒绝让你加入 ' + data.chatroomName,
+          url: '/chatroom/' + data.chatroomId //TODO 跳到详情页
+        };
+
+        document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
+        return this.feedbackService.booAudio.play();
+
+        // 更新本地数据
+        // this.globalDataService.chatSessions.push(chatSession);
+        // this.globalDataService.sortChatSessions();
+        // return this.globalDataService.unreadMsgCount++;
+      }
+
+      // 如果处理人是我自己
+      const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === data.id);
+      if (index >= 0) {
+        this.globalDataService.receiveChatRequests[index] = data;
+      }
+      this.overlayService.presentToast('操作成功，已拒绝该申请！');
     });
 
     this.router.events.subscribe((event: Event) => {

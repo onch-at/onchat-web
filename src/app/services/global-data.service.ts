@@ -87,8 +87,8 @@ export class GlobalDataService {
   }
 
   set unreadMsgCount(num: number) {
-    this._unreadMsgCount = num;
-    'setAppBadge' in navigator && (navigator as any).setAppBadge(num);
+    this._unreadMsgCount = num > 0 ? num : 0;
+    'setAppBadge' in navigator && (navigator as any).setAppBadge(this._unreadMsgCount);
   }
 
   get unreadMsgCount() {
@@ -168,7 +168,7 @@ export class GlobalDataService {
 
     const chatSession = this.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
     if (chatSession) {
-      chatSession.unread += unreadCount;
+      chatSession.unread = unreadCount;
     }
   }
 

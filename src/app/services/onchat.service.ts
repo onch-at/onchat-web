@@ -36,9 +36,7 @@ export class OnChatService {
   ) { }
 
   init(): void {
-    const subscription = this.initChatSession().subscribe(() => {
-      subscription.unsubscribe();
-    });
+    this.initChatSession().subscribe();
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data?.length) {
@@ -76,9 +74,9 @@ export class OnChatService {
   /**
    * 获取缓存参数
    * 附带此参数的请求可被缓存拦截器拦截并缓存
-   * @param cacheTime 缓存时间
+   * @param cacheTime 缓存时间,默认半小时
    */
-  private getCacheParam(cacheTime: number = 3600000): { [param: string]: string } {
+  private getCacheParam(cacheTime: number = 1800000): { [param: string]: string } {
     return { cache: cacheTime + '' };
   }
 

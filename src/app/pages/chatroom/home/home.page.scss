@@ -111,15 +111,12 @@ ion-content {
     justify-content: space-between;
     margin-bottom: 0.25rem;
 
-    > img {
-        object-fit: cover;
-    }
-
-    > img,
+    .avatar-list-img,
     .add-btn {
         height: 2.75rem;
         width: 2.75rem;
         border-radius: 50%;
+        object-fit: cover;
     }
 
     .add-btn {

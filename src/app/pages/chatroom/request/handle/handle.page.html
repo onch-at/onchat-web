@@ -23,15 +23,24 @@
     <ion-item lines="none">
       <ion-label position="stacked">相关信息</ion-label>
       <ul>
-        <li>聊天室：{{ chatRequest.chatroomName }}</li>
+        <li>
+          聊天室：{{ chatRequest.chatroomName }}
+        </li>
+
         <li *ngIf="chatRequest.handlerId">
           处理人：{{ chatRequest.handlerNickname }}
-          <ng-container [ngSwitch]="chatRequest.status || chatRequestStatus.Wait">
-            <ng-container *ngSwitchCase="chatRequestStatus.Wait">待处理</ng-container>
+        </li>
+
+        <li *ngIf="chatRequest.handlerId">
+          处理结果：<ng-container [ngSwitch]="chatRequest.status || chatRequestStatus.Wait">
             <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
             <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
             <ng-container *ngSwitchDefault>未知状态</ng-container>
           </ng-container>
+        </li>
+
+        <li *ngIf="chatRequest.status === chatRequestStatus.Reject && chatRequest.rejectReason">
+          拒绝原因：{{ chatRequest.rejectReason }}
         </li>
       </ul>
     </ion-item>
@@ -40,12 +49,12 @@
 
     <ion-buttons class="bottom-bar" *ngIf="!chatRequest.handlerId">
       <button appActiveClass [appActiveClassDuration]="250" (tap)="reject()"
-        class="ion-activatable ripple-parent btn-secondary btn-block">
+        class="ion-activatable ripple-container btn-secondary btn-block">
         拒绝申请
         <ion-ripple-effect></ion-ripple-effect>
       </button>
       <button appActiveClass [appActiveClassDuration]="250" (tap)="agree()"
-        class="ion-activatable ripple-parent btn-primary btn-block">
+        class="ion-activatable ripple-container btn-primary btn-block">
         同意申请
         <ion-ripple-effect></ion-ripple-effect>
       </button>

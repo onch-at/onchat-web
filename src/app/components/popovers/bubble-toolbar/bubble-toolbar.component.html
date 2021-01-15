@@ -1,19 +1,19 @@
 <ul class="bubble-toolbar" (touchend)="$event.preventDefault()">
   <li *ngIf="msgItem.type === msgType.Text || msgItem.type === msgType.RichText"
-    class="bubble-toolbar-item ion-activatable ripple-parent" (tap)="copyText()">
+    class="bubble-toolbar-item ion-activatable ripple-container" (tap)="copyText()">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-icon name="copy-outline"></ion-icon>
     复制
   </li>
 
   <li *ngIf="globalDataService?.user.id === msgItem.userId && now <= (msgItem.createTime + 120000)"
-    class="bubble-toolbar-item ion-activatable ripple-parent" (tap)="revokeMsg()">
+    class="bubble-toolbar-item ion-activatable ripple-container" (tap)="revokeMsg()">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-icon name="arrow-undo-outline"></ion-icon>
     撤回
   </li>
 
-  <li class="bubble-toolbar-item ion-activatable ripple-parent" (tap)="dismiss()">
+  <li class="bubble-toolbar-item ion-activatable ripple-container" (tap)="dismiss()">
     <ion-ripple-effect></ion-ripple-effect>
     <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
     回复

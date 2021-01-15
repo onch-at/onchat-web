@@ -29,12 +29,12 @@
     </div>
 
     <div class="card-content">
-      <article class="signature ion-activatable ripple-parent">
+      <article class="signature ion-activatable ripple-container">
         {{ user.signature || '这个人很懒，什么都没写~' }}
         <ion-ripple-effect></ion-ripple-effect>
       </article>
 
-      <div class="last-online ion-activatable ripple-parent">
+      <div class="last-online ion-activatable ripple-container">
         <ion-icon name="time"></ion-icon>
         最近一次上线时间：{{ user.loginTime | date:'yyyy年M月d日' }}
         <ion-ripple-effect></ion-ripple-effect>
@@ -82,14 +82,14 @@
 
   <aside class="bottom-bar">
     <button *ngIf="chatroomId" appActiveClass [appActiveClassDuration]="250" [routerLink]="['/chat', chatroomId]"
-      class="ion-activatable ripple-parent btn-primary btn-block">
+      class="ion-activatable ripple-container btn-primary btn-block">
       跟Ta聊聊
       <ion-ripple-effect></ion-ripple-effect>
     </button>
 
     <!-- TODO 这边以后可以和自己聊天 -->
     <button *ngIf="!chatroomId && globalDataService.user?.id != user.id" appActiveClass [appActiveClassDuration]="250"
-      [routerLink]="['/friend/request', user.id]" class="ion-activatable ripple-parent btn-primary btn-block">
+      [routerLink]="['/friend/request', user.id]" class="ion-activatable ripple-container btn-primary btn-block">
       加Ta好友
       <ion-ripple-effect></ion-ripple-effect>
     </button>

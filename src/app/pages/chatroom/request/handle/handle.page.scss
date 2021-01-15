@@ -75,6 +75,10 @@ ion-item {
         color: var(--oc-color-medium);
     }
 
+    > ul {
+        font-size: 0.95rem;
+    }
+
     > ul li:not(:last-child) {
         margin-bottom: 0.125rem;
     }

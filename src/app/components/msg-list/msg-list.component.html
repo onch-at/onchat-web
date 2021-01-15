@@ -24,7 +24,7 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble class="msg-bubble ion-activatable ripple-parent"
+          <span #bubble class="msg-bubble ion-activatable ripple-container"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
             [innerHTML]="item.data['content'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
@@ -46,7 +46,7 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble class="msg-bubble ion-activatable ripple-parent ql-editor"
+          <span #bubble class="msg-bubble ion-activatable ripple-container ql-editor"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
             [innerHTML]=" item.data['html'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
@@ -64,7 +64,7 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble class="msg-bubble msg-bubble-card ion-activatable ripple-parent"
+          <span #bubble class="msg-bubble msg-bubble-card ion-activatable ripple-container"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
             [routerLink]="['/chatroom', item.data['chatroomId']]">

@@ -81,14 +81,7 @@ export class MsgListComponent implements OnInit {
    * @param otherTime 上一个时间
    */
   canShowTime(time: number, otherTime: number): boolean {
-    const date = new Date(time);
-    const otherDate = new Date(otherTime);
-
-    if ((date.getTime() - otherDate.getTime()) < 300000) {
-      return false;
-    }
-
-    return true;
+    return (time - otherTime) > 60000; // 一分钟
   }
 
 }

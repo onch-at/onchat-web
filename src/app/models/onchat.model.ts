@@ -202,4 +202,6 @@ export interface ChatRequest extends IEntity {
     handlerNickname?: string;
     /** 聊天室的名字 */
     chatroomName?: string;
+    /** 聊天室头像 */
+    chatroomAvatarThumbnail?: string;
 }

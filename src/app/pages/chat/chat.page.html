@@ -45,7 +45,7 @@
 
       <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
       <button [hidden]="!showSendBtn()" appActiveClass [appActiveClassDuration]="250"
-        class="ion-activatable ripple-parent btn-primary send-btn" (click)="send()" [disabled]="disableSendBtn()">
+        class="ion-activatable ripple-container btn-primary send-btn" (click)="send()" [disabled]="disableSendBtn()">
         <label [for]="'message-' + chatroomId" class="display-flex align-items-center justify-content-center">
           <ion-icon name="arrow-up"></ion-icon>
           <ion-ripple-effect></ion-ripple-effect>
@@ -53,7 +53,7 @@
       </button>
 
       <button [hidden]="showSendBtn()" appActiveClass [appActiveClassDuration]="250"
-        class="ion-activatable ripple-parent btn-secondary more-btn" (click)="toggleDrawer()">
+        class="ion-activatable ripple-container btn-secondary more-btn" (click)="toggleDrawer()">
         <ion-icon name="add-circle-outline"></ion-icon>
         <ion-ripple-effect></ion-ripple-effect>
       </button>
