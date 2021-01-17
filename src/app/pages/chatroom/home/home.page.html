@@ -41,7 +41,7 @@
     <div class="home-info-label">聊天室成员</div>
     <div class="avatar-list-track">
       <ng-container *ngFor="let item of chatMembers">
-        <img class="avatar-list-img" [src]="item.avatarThumbnail">
+        <img class="avatar-list-img" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
       </ng-container>
 
       <!-- 如果不够6个，就填充一些空元素来维持UI -->

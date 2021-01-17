@@ -156,7 +156,6 @@
   height: 6.5rem;
   color: #fff;
   text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.75);
-  cursor: pointer;
 
   > ion-img {
     width: 100%;
@@ -172,6 +171,7 @@
     height: 100%;
     padding: 0.4rem 0.75rem;
     background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(2.5px);
   }
 
   .msg-bubble-card-label {
@@ -182,7 +182,7 @@
     height: 3.75rem;
     width: 3.75rem;
     border-radius: 50%;
-    border: 0.15rem solid rgba(255, 255, 255, 0.95);
+    border: 0.15rem solid rgba(255, 255, 255, 0.75);
     object-fit: cover;
     overflow: hidden;
     flex-shrink: 0;

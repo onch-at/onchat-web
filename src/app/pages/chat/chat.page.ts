@@ -1,8 +1,8 @@
-import { Platform } from '@angular/cdk/platform';
+// import { Platform } from '@angular/cdk/platform';
 import { KeyValue } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
-import { IonContent } from '@ionic/angular';
+import { IonContent, Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
@@ -66,8 +66,8 @@ export class ChatPage implements OnInit {
   unlistenFns: (() => void)[] = [];
 
   constructor(
-    private onChatService: OnChatService,
     public globalDataService: GlobalDataService,
+    private onChatService: OnChatService,
     private platform: Platform,
     private socketService: SocketService,
     private route: ActivatedRoute,
@@ -221,6 +221,7 @@ export class ChatPage implements OnInit {
     // const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
     // (diff <= 50 && diff >= 5) && this.scrollToBottom();
     if (
+      this.platform.is('desktop') &&
       event.key.toLowerCase() === 'enter' &&
       !event.ctrlKey &&
       !event.shiftKey
@@ -246,7 +247,7 @@ export class ChatPage implements OnInit {
       });
     }
     // 暴力兼容苹果内核
-    const isIos = this.platform.IOS;
+    const isIos = this.platform.is('ios');
     isIos && (this.ionContent.scrollY = false);
     this.loadRecords(() => {
       isIos && (this.ionContent.scrollY = true);

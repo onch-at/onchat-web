@@ -296,7 +296,7 @@ export class AppComponent implements OnInit {
       const [request, chatSession] = data;
 
       // 清除这个聊天室的缓存
-      this.cacheService.revoke(new RegExp('/chatroom/' + request.chatroomId + '?'));
+      this.cacheService.revoke('/chatroom/' + request.chatroomId + '?');
 
       // 如果是同意我入群
       if (chatSession.userId === user.id) {

@@ -1,21 +1,21 @@
 <div class="mood-radio-group">
-  <input type="radio" name="mood" id="joy" [value]="mood.Joy" [(ngModel)]="value">
-  <label for="joy" appActiveClass [appActiveClassDuration]="400">
+  <input type="radio" name="mood" id="mood-joy" [value]="mood.Joy" [(ngModel)]="value">
+  <label class="cursor-pointer" for="mood-joy" appActiveClass [appActiveClassDuration]="400">
     <ion-icon src="/assets/svg/mood/joy.svg"></ion-icon>
   </label>
 
-  <input type="radio" name="mood" id="angry" [value]="mood.Angry" [(ngModel)]="value">
-  <label for="angry" appActiveClass [appActiveClassDuration]="400">
+  <input type="radio" name="mood" id="mood-angry" [value]="mood.Angry" [(ngModel)]="value">
+  <label class="cursor-pointer" for="mood-angry" appActiveClass [appActiveClassDuration]="400">
     <ion-icon src="/assets/svg/mood/angry.svg"></ion-icon>
   </label>
 
-  <input type="radio" name="mood" id="sorrow" [value]="mood.Sorrow" [(ngModel)]="value">
-  <label for="sorrow" appActiveClass [appActiveClassDuration]="400">
+  <input type="radio" name="mood" id="mood-sorrow" [value]="mood.Sorrow" [(ngModel)]="value">
+  <label class="cursor-pointer" for="mood-sorrow" appActiveClass [appActiveClassDuration]="400">
     <ion-icon src="/assets/svg/mood/sorrow.svg"></ion-icon>
   </label>
 
-  <input type="radio" name="mood" id="fun" [value]="mood.Fun" [(ngModel)]="value">
-  <label for="fun" appActiveClass [appActiveClassDuration]="400">
+  <input type="radio" name="mood" id="mood-fun" [value]="mood.Fun" [(ngModel)]="value">
+  <label class="cursor-pointer" for="mood-fun" appActiveClass [appActiveClassDuration]="400">
     <ion-icon src="/assets/svg/mood/fun.svg"></ion-icon>
   </label>
 </div>

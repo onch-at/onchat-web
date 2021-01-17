@@ -85,14 +85,14 @@ export class OnChatService {
    * @param o
    */
   login(o: Login): Observable<Result<User>> {
-    return this.http.post<Result<User>>(env.userLoginUrl, o, HTTP_OPTIONS_JSON);
+    return this.http.post<Result<User>>(env.userUrl + 'login', o, HTTP_OPTIONS_JSON);
   }
 
   /**
    * 登出
    */
   logout(): Observable<null> {
-    return this.http.get<null>(env.userLogoutUrl);
+    return this.http.get<null>(env.userUrl + 'logout');
   }
 
   /**
@@ -100,7 +100,7 @@ export class OnChatService {
    * 成功登录,则返回User；否则返回false
    */
   checkLogin(): Observable<Result<boolean | User>> {
-    return this.http.get<Result<boolean | User>>(env.userCheckLoginUrl);
+    return this.http.get<Result<boolean | User>>(env.userUrl + 'checklogin');
   }
 
   /**
@@ -108,7 +108,7 @@ export class OnChatService {
    * @param o
    */
   register(o: Register): Observable<Result<User>> {
-    return this.http.post<Result<User>>(env.userRegisterUrl, o, HTTP_OPTIONS_JSON);
+    return this.http.post<Result<User>>(env.userUrl + 'register', o, HTTP_OPTIONS_JSON);
   }
 
   /**

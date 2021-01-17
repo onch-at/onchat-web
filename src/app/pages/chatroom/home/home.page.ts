@@ -147,7 +147,7 @@ export class HomePage implements OnInit {
             const id = this.chatroom.id;
             this.chatroom.avatar = avatar;
             this.chatroom.avatarThumbnail = avatarThumbnail;
-            this.cacheService.revoke(new RegExp('/chatroom/' + id + '?'));
+            this.cacheService.revoke('/chatroom/' + id + '?');
             const chatSession = this.globalDataService.chatSessions.find(o => o.data.chatroomId === id);
             if (chatSession) {
               chatSession.avatarThumbnail = avatarThumbnail;

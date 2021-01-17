@@ -17,7 +17,7 @@
         'msg-item-left':  globalDataService.user?.id != item.userId
       }">
 
-        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
+        <img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
           <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
@@ -39,7 +39,7 @@
         'msg-item-right': globalDataService.user?.id == item.userId,
         'msg-item-left': globalDataService.user?.id != item.userId
       }">
-        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
+        <img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div class="ql-container ql-snow">
           <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
@@ -57,7 +57,7 @@
         'msg-item-right': globalDataService.user?.id == item.userId,
         'msg-item-left': globalDataService.user?.id != item.userId
       }">
-        <ion-img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]"></ion-img>
+        <img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
           <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
@@ -69,7 +69,7 @@
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
             [routerLink]="['/chatroom', item.data['chatroomId']]">
             <ion-img class="bg-img" [src]="item.data['avatarThumbnail']"></ion-img>
-            <div class="msg-bubble-card-body">
+            <div class="msg-bubble-card-body cursor-pointer">
               <div class="msg-bubble-card-label">邀请加入群聊</div>
               <div class="display-flex">
                 <ion-img class="msg-bubble-card-avatar" [src]="item.data['avatarThumbnail']"></ion-img>
