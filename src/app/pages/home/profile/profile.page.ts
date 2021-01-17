@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -14,7 +14,7 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private router: Router,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private onChatService: OnChatService,
     private overlayService: OverlayService,
     private socketService: SocketService,
@@ -24,7 +24,7 @@ export class ProfilePage implements OnInit {
 
   navigateToAvatarPage(event: any) {
     event.stopPropagation();
-    this.router.navigate(['/user/avatar', this.globalDataService.user.id]);
+    this.router.navigate(['/user/avatar', this.globalData.user.id]);
   }
 
   logout() {
@@ -32,14 +32,14 @@ export class ProfilePage implements OnInit {
       header: '退出登录',
       message: ' 你确定要退出登录吗？',
       confirmHandler: () => this.onChatService.logout().subscribe(() => {
-        this.globalDataService.user = null;
-        this.globalDataService.chatSessions = [];
-        this.globalDataService.chatSessionsPage = 1;
-        this.globalDataService.receiveChatRequests = [];
-        this.globalDataService.receiveFriendRequests = [];
-        this.globalDataService.sendFriendRequests = [];
-        this.globalDataService.privateChatrooms = [];
-        this.globalDataService.privateChatroomsPage = 1;
+        this.globalData.user = null;
+        this.globalData.chatSessions = [];
+        this.globalData.chatSessionsPage = 1;
+        this.globalData.receiveChatRequests = [];
+        this.globalData.receiveFriendRequests = [];
+        this.globalData.sendFriendRequests = [];
+        this.globalData.privateChatrooms = [];
+        this.globalData.privateChatroomsPage = 1;
 
         this.socketService.unload();
 

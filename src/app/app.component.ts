@@ -9,8 +9,8 @@ import { RichTextMessage, TextMessage } from './models/form.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
-import { GlobalDataService } from './services/global-data.service';
-import { LocalStorageService } from './services/local-storage.service';
+import { GlobalData } from './services/global-data.service';
+import { LocalStorage } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 import { OverlayService } from './services/overlay.service';
 import { SocketService } from './services/socket.service';
@@ -32,16 +32,16 @@ export class AppComponent implements OnInit {
     private onChatService: OnChatService,
     private overlayService: OverlayService,
     private feedbackService: FeedbackService,
-    private localStorageService: LocalStorageService,
-    public globalDataService: GlobalDataService,
+    private localStorage: LocalStorage,
+    public globalData: GlobalData,
   ) { }
 
   ngOnInit() {
     // 首先加载出缓存数据，保证用户体验
-    const data = this.localStorageService.get(LocalStorageKey.ChatSessions);
+    const data = this.localStorage.get(LocalStorageKey.ChatSessions);
     if (data) {
-      this.globalDataService.chatSessions = data;
-      this.globalDataService.totalUnreadMsgCount();
+      this.globalData.chatSessions = data;
+      this.globalData.totalUnreadMsgCount();
     }
 
     // 连接打通时
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
       mergeMap(() => this.onChatService.checkLogin())
     ).subscribe((result: Result<boolean | User>) => {
       const { data } = result;
-      this.globalDataService.user = data ? data as User : null;
+      this.globalData.user = data ? data as User : null;
       if (!data) {
         // 如果不在用户登录、注册页，就跳转
         const isNotAuthPage = /^(?!(\/user\/(login|register)))/.test(this.location.path());
@@ -66,13 +66,13 @@ export class AppComponent implements OnInit {
       if (result.code !== ResultCode.Success) { return; } //TODO
       const friendRequest = result.data;
       // 收到好友申请提示，判断自己是不是被申请人
-      if (friendRequest.targetId == this.globalDataService.user.id) {
-        const index = this.globalDataService.receiveFriendRequests.findIndex(o => o.id == friendRequest.id);
+      if (friendRequest.targetId == this.globalData.user.id) {
+        const index = this.globalData.receiveFriendRequests.findIndex(o => o.id == friendRequest.id);
         // 如果这条好友申请已经在列表里
         if (index >= 0) {
-          this.globalDataService.receiveFriendRequests[index] = friendRequest; // 静默更改
+          this.globalData.receiveFriendRequests[index] = friendRequest; // 静默更改
         } else {
-          this.globalDataService.receiveFriendRequests.unshift(friendRequest);
+          this.globalData.receiveFriendRequests.unshift(friendRequest);
         }
 
         const opts: NotificationOptions = {
@@ -84,13 +84,13 @@ export class AppComponent implements OnInit {
 
         document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
         this.feedbackService.dingDengAudio.play();
-      } else if (friendRequest.selfId == this.globalDataService.user.id) {
-        const index = this.globalDataService.sendFriendRequests.findIndex(o => o.id == friendRequest.id);
+      } else if (friendRequest.selfId == this.globalData.user.id) {
+        const index = this.globalData.sendFriendRequests.findIndex(o => o.id == friendRequest.id);
         // 如果这条好友申请已经在列表里
         if (index >= 0) {
-          this.globalDataService.sendFriendRequests[index] = friendRequest; // 静默更改
+          this.globalData.sendFriendRequests[index] = friendRequest; // 静默更改
         } else {
-          this.globalDataService.sendFriendRequests.unshift(friendRequest);
+          this.globalData.sendFriendRequests.unshift(friendRequest);
         }
       }
     });
@@ -103,13 +103,13 @@ export class AppComponent implements OnInit {
       console.log('result: ', result);
 
       // 如果申请人是自己（我的好友申请被同意了）
-      if (data.selfId == this.globalDataService.user.id) {
+      if (data.selfId == this.globalData.user.id) {
         // 去我发出的申请列表里面找这条FriendRequest，并删除
-        let index = this.globalDataService.sendFriendRequests.findIndex(o => o.id == data.friendRequestId);
-        index >= 0 && this.globalDataService.sendFriendRequests.splice(index, 1);
+        let index = this.globalData.sendFriendRequests.findIndex(o => o.id == data.friendRequestId);
+        index >= 0 && this.globalData.sendFriendRequests.splice(index, 1);
         // 去我收到的申请列表里面通过找这条FriendRequest，并删除
-        index = this.globalDataService.receiveFriendRequests.findIndex(o => o.selfId == data.targetId);
-        index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
+        index = this.globalData.receiveFriendRequests.findIndex(o => o.selfId == data.targetId);
+        index >= 0 && this.globalData.receiveFriendRequests.splice(index, 1);
 
         const opts: NotificationOptions = {
           icon: data.targetAvatarThumbnail,
@@ -120,9 +120,9 @@ export class AppComponent implements OnInit {
 
         document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
         this.feedbackService.booAudio.play();
-      } else if (data.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
-        const index = this.globalDataService.receiveFriendRequests.findIndex(o => o.id == data.friendRequestId);
-        index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
+      } else if (data.targetId == this.globalData.user.id) { // 如果自己是被申请人
+        const index = this.globalData.receiveFriendRequests.findIndex(o => o.id == data.friendRequestId);
+        index >= 0 && this.globalData.receiveFriendRequests.splice(index, 1);
 
         this.overlayService.presentToast('成功添加新好友');
       }
@@ -132,11 +132,11 @@ export class AppComponent implements OnInit {
 
       // 更新好友列表
       // 如果为空才更新，因为为空时，进入好友列表页会自动查询
-      this.globalDataService.privateChatrooms.length && this.onChatService.getPrivateChatrooms().pipe(
+      this.globalData.privateChatrooms.length && this.onChatService.getPrivateChatrooms().pipe(
         filter((result: Result) => result.code === ResultCode.Success)
       ).subscribe((result: Result<ChatSession[]>) => {
-        this.globalDataService.privateChatroomsPage = 1;
-        this.globalDataService.privateChatrooms = result.data;
+        this.globalData.privateChatroomsPage = 1;
+        this.globalData.privateChatrooms = result.data;
       });
     });
 
@@ -148,12 +148,12 @@ export class AppComponent implements OnInit {
 
       const friendRequest = result.data;
       // 如果申请人是自己
-      if (friendRequest.selfId == this.globalDataService.user.id) {
-        const index = this.globalDataService.sendFriendRequests.findIndex(o => o.id == friendRequest.id);
+      if (friendRequest.selfId == this.globalData.user.id) {
+        const index = this.globalData.sendFriendRequests.findIndex(o => o.id == friendRequest.id);
         if (index >= 0) {
-          this.globalDataService.sendFriendRequests[index] = friendRequest;
+          this.globalData.sendFriendRequests[index] = friendRequest;
         } else {
-          this.globalDataService.sendFriendRequests.unshift(friendRequest);
+          this.globalData.sendFriendRequests.unshift(friendRequest);
         }
 
         const opts: NotificationOptions = {
@@ -165,9 +165,9 @@ export class AppComponent implements OnInit {
 
         document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
         this.feedbackService.dingDengAudio.play();
-      } else if (friendRequest.targetId == this.globalDataService.user.id) { // 如果自己是被申请人
-        const index = this.globalDataService.receiveFriendRequests.findIndex(o => o.id == friendRequest.id);
-        index >= 0 && this.globalDataService.receiveFriendRequests.splice(index, 1);
+      } else if (friendRequest.targetId == this.globalData.user.id) { // 如果自己是被申请人
+        const index = this.globalData.receiveFriendRequests.findIndex(o => o.id == friendRequest.id);
+        index >= 0 && this.globalData.receiveFriendRequests.splice(index, 1);
 
         this.overlayService.presentToast('已拒绝该好友申请');
       }
@@ -179,9 +179,9 @@ export class AppComponent implements OnInit {
     ).subscribe((result: Result<Message>) => {
       const msg = result.data;
       console.log(result)
-      const { chatroomId, user } = this.globalDataService;
+      const { chatroomId, user } = this.globalData;
       // 先去聊天列表缓存里面查，看看有没有这个房间的数据
-      const chatSession = this.globalDataService.chatSessions.find(o => o.data.chatroomId == msg.chatroomId);
+      const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId == msg.chatroomId);
 
       // 如果消息不是自己的话，就播放提示音
       if (msg.userId != user.id) {
@@ -223,13 +223,13 @@ export class AppComponent implements OnInit {
         // 如果用户已经进入消息所属房间
         if (chatroomId == msg.chatroomId) {
           chatSession.unread = 0;
-        } else if (msg.userId != this.globalDataService.user.id) {
+        } else if (msg.userId != this.globalData.user.id) {
           chatSession.unread++;
         }
 
         chatSession.content = msg;
         chatSession.updateTime = Date.now();
-        this.globalDataService.sortChatSessions();
+        this.globalData.sortChatSessions();
       } else { // 如果不存在于列表当中，就刷新数据
         this.onChatService.initChatSession().subscribe();
       }
@@ -240,17 +240,17 @@ export class AppComponent implements OnInit {
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
-      const index = this.globalDataService.chatSessions.findIndex(o => o.data.chatroomId == result.data.chatroomId);
+      const index = this.globalData.chatSessions.findIndex(o => o.data.chatroomId == result.data.chatroomId);
       if (index >= 0) {
-        const chatSession = this.globalDataService.chatSessions[index];
+        const chatSession = this.globalData.chatSessions[index];
         chatSession.unread > 0 && chatSession.unread--;
         chatSession.content = JSON.parse(JSON.stringify(chatSession.content));
         chatSession.content.type = MessageType.Tips;
-        const name = chatSession.content.userId == this.globalDataService.user.id ? '我' : chatSession.content.nickname;
+        const name = chatSession.content.userId == this.globalData.user.id ? '我' : chatSession.content.nickname;
         (chatSession.content.data as any).content = name + ' 撤回了一条消息';
         chatSession.updateTime = Date.now();
-        this.globalDataService.chatSessions[index] = chatSession;
-        this.globalDataService.sortChatSessions();
+        this.globalData.chatSessions[index] = chatSession;
+        this.globalData.sortChatSessions();
       }
     });
 
@@ -259,35 +259,35 @@ export class AppComponent implements OnInit {
       filter((result: Result<ChatRequest>) => {
         const { code, data } = result;
         // 如果申请人不是自己
-        return code === ResultCode.Success && data?.applicantId !== this.globalDataService.user.id;
+        return code === ResultCode.Success && data?.applicantId !== this.globalData.user.id;
       })
     ).subscribe((result: Result<ChatRequest>) => {
       const { data } = result;
-      const chatSession = this.globalDataService.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
+      const chatSession = this.globalData.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
       // 如果列表里没有聊天室通知会话,就需要重新拉取
       if (!chatSession) {
         return this.onChatService.initChatSession().subscribe();
       }
 
-      const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === data.id);
+      const index = this.globalData.receiveChatRequests.findIndex(o => o.id === data.id);
 
       if (index >= 0) {
-        this.globalDataService.receiveChatRequests[index] = data;
-        this.globalDataService.sortChatRequests();
+        this.globalData.receiveChatRequests[index] = data;
+        this.globalData.sortChatRequests();
       } else {
-        this.globalDataService.receiveChatRequests.unshift(data);
+        this.globalData.receiveChatRequests.unshift(data);
         this.feedbackService.booAudio.play();
       }
 
       chatSession.updateTime = Date.now();
-      this.globalDataService.sortChatSessions();
-      this.globalDataService.totalUnreadMsgCount();
+      this.globalData.sortChatSessions();
+      this.globalData.totalUnreadMsgCount();
     });
 
     // 同意别人入群/同意我入群
     this.socketService.on(SocketEvent.ChatRequestAgree).subscribe((result: Result<[ChatRequest, ChatSession]>) => {
       const { code, data, msg } = result;
-      const { user } = this.globalDataService;
+      const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
         return this.overlayService.presentToast('操作失败，原因：' + msg);
@@ -310,16 +310,16 @@ export class AppComponent implements OnInit {
         document.hidden ? this.overlayService.presentNativeNotification(opts) : this.overlayService.presentNotification(opts);
         this.feedbackService.booAudio.play();
 
-        this.globalDataService.chatSessions.push(chatSession);
-        this.globalDataService.sortChatSessions();
-        return this.globalDataService.unreadMsgCount++;
+        this.globalData.chatSessions.push(chatSession);
+        this.globalData.sortChatSessions();
+        return this.globalData.unreadMsgCount++;
       }
 
       // 同意别人入群
-      const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === request.id);
+      const index = this.globalData.receiveChatRequests.findIndex(o => o.id === request.id);
       if (index >= 0) {
-        this.globalDataService.receiveChatRequests[index] = request;
-        this.globalDataService.totalUnreadMsgCount();
+        this.globalData.receiveChatRequests[index] = request;
+        this.globalData.totalUnreadMsgCount();
       }
 
       // 如果我是处理人
@@ -329,7 +329,7 @@ export class AppComponent implements OnInit {
     // 拒绝别人的入群申请/入群申请被拒绝
     this.socketService.on(SocketEvent.ChatRequestReject).subscribe((result: Result<ChatRequest>) => {
       const { code, data, msg } = result;
-      const { user } = this.globalDataService;
+      const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
         return this.overlayService.presentToast('操作失败，原因：' + msg);
@@ -348,21 +348,21 @@ export class AppComponent implements OnInit {
         return this.feedbackService.booAudio.play();
 
         // 更新本地数据
-        // this.globalDataService.chatSessions.push(chatSession);
-        // this.globalDataService.sortChatSessions();
-        // return this.globalDataService.unreadMsgCount++;
+        // this.globalData.chatSessions.push(chatSession);
+        // this.globalData.sortChatSessions();
+        // return this.globalData.unreadMsgCount++;
       }
 
       // 如果处理人是我自己
-      const index = this.globalDataService.receiveChatRequests.findIndex(o => o.id === data.id);
+      const index = this.globalData.receiveChatRequests.findIndex(o => o.id === data.id);
       if (index >= 0) {
-        this.globalDataService.receiveChatRequests[index] = data;
+        this.globalData.receiveChatRequests[index] = data;
       }
       this.overlayService.presentToast('操作成功，已拒绝该申请！');
     });
 
     this.router.events.subscribe((event: Event) => {
-      this.globalDataService.navigationLoading = event instanceof NavigationStart;
+      this.globalData.navigationLoading = event instanceof NavigationStart;
 
       // 如果路由返回被取消，就震动一下，表示阻止
       if (event instanceof NavigationCancel) {

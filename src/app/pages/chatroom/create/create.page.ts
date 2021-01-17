@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -55,7 +55,7 @@ export class CreatePage implements OnInit {
     private onChatService: OnChatService,
     private socketService: SocketService,
     private overlayService: OverlayService,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
   ) { }
 
   ngOnInit() {
@@ -63,13 +63,13 @@ export class CreatePage implements OnInit {
       this.originPrivateChatrooms = privateChatrooms.map(o => ({ ...o, checked: false }));
     }
 
-    if (this.globalDataService.privateChatrooms.length) {
-      setOriginPrivateChatrooms(this.globalDataService.privateChatrooms);
+    if (this.globalData.privateChatrooms.length) {
+      setOriginPrivateChatrooms(this.globalData.privateChatrooms);
     } else {
       this.onChatService.getPrivateChatrooms().subscribe((result: Result<ChatSession[]>) => {
         if (result.code !== ResultCode.Success) { return; }
 
-        this.globalDataService.privateChatrooms = result.data;
+        this.globalData.privateChatrooms = result.data;
         setOriginPrivateChatrooms(result.data);
       });
     }
@@ -81,8 +81,8 @@ export class CreatePage implements OnInit {
         return this.overlayService.presentToast('聊天室创建失败，原因：' + result.msg);
       }
 
-      this.globalDataService.chatSessions.push(result.data);
-      this.globalDataService.sortChatSessions();
+      this.globalData.chatSessions.push(result.data);
+      this.globalData.sortChatSessions();
 
       this.overlayService.presentToast('聊天室创建成功！');
       // 得到邀请的好友的聊天室ID
@@ -149,7 +149,7 @@ export class CreatePage implements OnInit {
       return event.target.complete();
     }
 
-    if (++this.privateChatroomsPage * CHAT_ITEM_ROWS >= this.globalDataService.privateChatrooms.length) {
+    if (++this.privateChatroomsPage * CHAT_ITEM_ROWS >= this.globalData.privateChatrooms.length) {
       this.privateChatroomsPage = null;
     }
 

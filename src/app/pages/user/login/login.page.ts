@@ -5,7 +5,7 @@ import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME
 import { ResultCode } from 'src/app/common/enum';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
 
   constructor(
     private onChatService: OnChatService,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private overlayService: OverlayService,
     private socketService: SocketService,
     private fb: FormBuilder,
@@ -55,9 +55,9 @@ export class LoginPage implements OnInit {
   ngOnInit() { }
 
   login() {
-    if (this.loginForm.invalid || this.globalDataService.navigationLoading) { return; }
+    if (this.loginForm.invalid || this.globalData.navigationLoading) { return; }
 
-    this.globalDataService.navigationLoading = true;
+    this.globalData.navigationLoading = true;
 
     const { username, password } = this.loginForm.value;
 
@@ -65,11 +65,11 @@ export class LoginPage implements OnInit {
       this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
 
       if (result.code !== ResultCode.Success) {
-        this.globalDataService.navigationLoading = false;
+        this.globalData.navigationLoading = false;
         return;
       }
 
-      this.globalDataService.user = result.data;
+      this.globalData.user = result.data;
       this.socketService.init();
 
       setTimeout(() => {

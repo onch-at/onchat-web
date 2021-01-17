@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ResultCode } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 
@@ -37,7 +37,7 @@ export class AvatarCropperComponent implements OnInit {
   subject: Subject<unknown> = new Subject();
 
   constructor(
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private modalController: ModalController,
     private overlayService: OverlayService,
     private sanitizer: DomSanitizer,
@@ -64,7 +64,7 @@ export class AvatarCropperComponent implements OnInit {
    */
   dismiss(data: SafeUrl = null) {
     this.modalController.dismiss(data);
-    this.globalDataService.canDeactivate = true;
+    this.globalData.canDeactivate = true;
   }
 
   /**
@@ -203,7 +203,7 @@ export class AvatarCropperComponent implements OnInit {
       }
     }
 
-    this.globalDataService.canDeactivate = false;
+    this.globalData.canDeactivate = false;
     this.ionLoading = this.overlayService.presentLoading('正在上传…');
 
     this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
@@ -217,7 +217,7 @@ export class AvatarCropperComponent implements OnInit {
       }
 
       (await this.ionLoading).dismiss();
-      this.globalDataService.canDeactivate = true;
+      this.globalData.canDeactivate = true;
     });
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { horizontalSlideAnimation } from 'src/app/animations/slide.animation';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 
 @Component({
   selector: 'app-contact',
@@ -14,7 +14,7 @@ import { GlobalDataService } from 'src/app/services/global-data.service';
 export class ContactPage implements OnInit {
 
   constructor(
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
   ) { }
 
   ngOnInit() {

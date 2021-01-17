@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActionSheetController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { AlertOptions, NotificationOptions } from '../common/interface';
 import { NotificationController } from '../providers/notification.controller';
-import { GlobalDataService } from './global-data.service';
+import { GlobalData } from './global-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { GlobalDataService } from './global-data.service';
 export class OverlayService {
 
   constructor(
-    private globalDataService: GlobalDataService,
+    private globalData: GlobalData,
     private toastController: ToastController,
     private alertController: AlertController,
     private actionSheetController: ActionSheetController,
@@ -19,7 +19,7 @@ export class OverlayService {
   ) { }
 
   private setDeactivate(deactivate: boolean) {
-    this.globalDataService.canDeactivate = deactivate;
+    this.globalData.canDeactivate = deactivate;
   }
 
   /**

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { ChatSessionType, LocalStorageKey } from '../common/enum';
 import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
 import { EntityUtil } from '../utils/entity.util';
-import { LocalStorageService } from './local-storage.service';
+import { LocalStorage } from './local-storage.service';
 
+/** 全局数据服务 */
 @Injectable({
   providedIn: 'root'
 })
-export class GlobalDataService {
+export class GlobalData {
   /** 当前用户 */
   private _user: User = null;
   /** 记录当前所在的聊天室ID */
@@ -34,7 +35,7 @@ export class GlobalDataService {
   private _navigationLoading: boolean = false;
 
   constructor(
-    private localStorageService: LocalStorageService
+    private localStorage: LocalStorage
   ) { }
 
   set user(user: User) {
@@ -98,7 +99,7 @@ export class GlobalDataService {
   set chatSessions(chatSessions: ChatSession[]) {
     this._chatSessions = chatSessions;
     this.sortChatSessions();
-    this.localStorageService.set(LocalStorageKey.ChatSessions, this.chatSessions);
+    this.localStorage.set(LocalStorageKey.ChatSessions, this.chatSessions);
   }
 
   get chatSessions(): ChatSession[] {

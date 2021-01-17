@@ -7,7 +7,7 @@ import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.c
 import { Login, Register, UserInfo } from '../models/form.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
 import { FeedbackService } from './feedback.service';
-import { GlobalDataService } from './global-data.service';
+import { GlobalData } from './global-data.service';
 
 const HTTP_OPTIONS_JSON = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' }),
@@ -31,7 +31,7 @@ export class OnChatService {
 
   constructor(
     private http: HttpClient,
-    private globalDataService: GlobalDataService,
+    private globalData: GlobalData,
     private feedbackService: FeedbackService,
   ) { }
 
@@ -40,31 +40,31 @@ export class OnChatService {
 
     this.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data?.length) {
-        this.globalDataService.receiveFriendRequests = result.data;
+        this.globalData.receiveFriendRequests = result.data;
       }
     });
 
     this.getSendFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
       if (result.data?.length) {
-        this.globalDataService.sendFriendRequests = result.data;
+        this.globalData.sendFriendRequests = result.data;
       }
     });
   }
 
   initChatSession() {
-    this.globalDataService.chatSessionsPage = 1;
+    this.globalData.chatSessionsPage = 1;
 
     return this.getChatSession().pipe(
       mergeMap((result: Result<ChatSession[]>) => {
-        this.globalDataService.chatSessions = result.data;
+        this.globalData.chatSessions = result.data;
         return this.getReceiveChatRequests();
       }),
 
       mergeMap((result: Result<ChatRequest[]>) => {
         if (result.data?.length) {
-          this.globalDataService.receiveChatRequests = result.data;
+          this.globalData.receiveChatRequests = result.data;
         }
-        this.globalDataService.totalUnreadMsgCount();
+        this.globalData.totalUnreadMsgCount();
 
         return of(null);
       })

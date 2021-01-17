@@ -9,8 +9,8 @@ import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/c
 import { RichTextMessage } from 'src/app/models/form.model';
 import { Message, Result } from 'src/app/models/onchat.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
-import { GlobalDataService } from 'src/app/services/global-data.service';
-import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { GlobalData } from 'src/app/services/global-data.service';
+import { LocalStorage } from 'src/app/services/local-storage.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -43,8 +43,8 @@ export class RichTextEditorComponent implements OnInit {
   };
 
   constructor(
-    public globalDataService: GlobalDataService,
-    private localStorageService: LocalStorageService,
+    public globalData: GlobalData,
+    private localStorage: LocalStorage,
     private overlayService: OverlayService,
     private socketService: SocketService,
     private modalController: ModalController,
@@ -52,16 +52,14 @@ export class RichTextEditorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.globalDataService.canDeactivate = false;
+    this.globalData.canDeactivate = false;
 
-    this.html = this.localStorageService.getItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalDataService.chatroomId);
+    this.html = this.localStorage.getItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalData.chatroomId);
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationCancel),
       takeUntil(this.subject)
-    ).subscribe(() => {
-      this.dismiss();
-    });
+    ).subscribe(() => this.dismiss());
   }
 
   /**
@@ -70,7 +68,7 @@ export class RichTextEditorComponent implements OnInit {
   dismiss() {
     setTimeout(() => {
       this.modalController.dismiss();
-      this.globalDataService.canDeactivate = true;
+      this.globalData.canDeactivate = true;
       StrUtil.trimAll(this.text).length && this.cache();
     }, 50);
   }
@@ -89,20 +87,20 @@ export class RichTextEditorComponent implements OnInit {
 
     const loading = this.overlayService.presentLoading('正在发送…');
 
-    const message = new Message(+this.globalDataService.chatroomId, MessageType.RichText);
+    const message = new Message(+this.globalData.chatroomId, MessageType.RichText);
 
     const subscription = this.socketService.on(SocketEvent.Message).subscribe((result: Result<Message>) => {
       const msg = result.data;
       // 如果请求成功，并且收到的消息是这个房间的
-      if (result.code !== ResultCode.Success || msg.chatroomId != this.globalDataService.chatroomId) {
+      if (result.code !== ResultCode.Success || msg.chatroomId != this.globalData.chatroomId) {
         return subscription.unsubscribe();
       }
 
       // 如果是自己发的消息，并且是刚刚这一条
-      if (msg.userId == this.globalDataService.user.id && msg.sendTime == message.sendTime) {
+      if (msg.userId == this.globalData.user.id && msg.sendTime == message.sendTime) {
         this.text = '';
         this.throttleTimer && clearTimeout(this.throttleTimer);
-        this.localStorageService.removeItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalDataService.chatroomId);
+        this.localStorage.removeItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalData.chatroomId);
 
         loading.then((loading: HTMLIonLoadingElement) => {
           loading.dismiss()
@@ -137,9 +135,9 @@ export class RichTextEditorComponent implements OnInit {
    */
   cache() {
     this.throttleTimer && clearTimeout(this.throttleTimer);
-    this.localStorageService.setItemToMap(
+    this.localStorage.setItemToMap(
       LocalStorageKey.ChatRichTextMap,
-      this.globalDataService.chatroomId,
+      this.globalData.chatroomId,
       this.html
     );
   }

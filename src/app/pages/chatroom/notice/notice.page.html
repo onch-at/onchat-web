@@ -16,7 +16,7 @@
   </ion-header>
 
   <ion-list class="chat-request-list">
-    <ion-item-sliding mode="md" *ngFor="let item of globalDataService.receiveChatRequests; let i = index;">
+    <ion-item-sliding mode="md" *ngFor="let item of globalData.receiveChatRequests; let i = index;">
       <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/request/handle', item.id]">
         <ion-img slot="start" *ngIf="i > 9" [src]="item.applicantAvatarThumbnail"></ion-img>
         <img slot="start" *ngIf="i <= 9" [src]="item.applicantAvatarThumbnail">

@@ -8,7 +8,7 @@ import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { ChatMember, ChatRequest, Chatroom, Result } from 'src/app/models/onchat.model';
 import { CacheService } from 'src/app/services/cache.service';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -37,7 +37,7 @@ export class HomePage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private overlayService: OverlayService,
     private onChatService: OnChatService,
     private cacheService: CacheService,
@@ -62,7 +62,7 @@ export class HomePage implements OnInit {
       this.memberCount = chatMembers.length;
 
       // 从群成员里面找自己
-      const member = chatMembers.find(o => o.userId === this.globalDataService.user.id);
+      const member = chatMembers.find(o => o.userId === this.globalData.user.id);
 
       this.isMember = !!member;
 
@@ -82,7 +82,7 @@ export class HomePage implements OnInit {
         return this.overlayService.presentToast('申请失败，原因：' + msg);
       }
 
-      if (data.applicantId === this.globalDataService.user.id) {
+      if (data.applicantId === this.globalData.user.id) {
         this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
       }
     });
@@ -148,7 +148,7 @@ export class HomePage implements OnInit {
             this.chatroom.avatar = avatar;
             this.chatroom.avatarThumbnail = avatarThumbnail;
             this.cacheService.revoke('/chatroom/' + id + '?');
-            const chatSession = this.globalDataService.chatSessions.find(o => o.data.chatroomId === id);
+            const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === id);
             if (chatSession) {
               chatSession.avatarThumbnail = avatarThumbnail;
             }

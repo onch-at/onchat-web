@@ -10,7 +10,7 @@ import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -75,14 +75,14 @@ export class SettingsPage implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private location: Location,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private onChatService: OnChatService,
     private overlayService: OverlayService,
     private modalController: ModalController
   ) { }
 
   ngOnInit() {
-    const { user } = this.globalDataService;
+    const { user } = this.globalData;
 
     this.userInfoForm.setValue({
       nickname: user.nickname,
@@ -131,9 +131,9 @@ export class SettingsPage implements OnInit {
         return this.overlayService.presentToast('用户信息修改失败！', 2000);
       }
 
-      const { user } = this.globalDataService;
+      const { user } = this.globalData;
 
-      this.globalDataService.user = { ...user, ...result.data };
+      this.globalData.user = { ...user, ...result.data };
 
       // TODO
       this.location.back();

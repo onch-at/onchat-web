@@ -5,7 +5,7 @@ import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME
 import { ResultCode } from 'src/app/common/enum';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -69,7 +69,7 @@ export class RegisterPage implements OnInit {
   };
 
   constructor(
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
@@ -84,20 +84,20 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
-    if (this.registerForm.invalid || this.globalDataService.navigationLoading) { return; }
+    if (this.registerForm.invalid || this.globalData.navigationLoading) { return; }
 
-    this.globalDataService.navigationLoading = true;
+    this.globalData.navigationLoading = true;
 
     const { username, password, captcha } = this.registerForm.value;
     this.onChatService.register(new Register(username, password, captcha)).subscribe((result: Result<User>) => {
       this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
 
       if (result.code !== ResultCode.Success) { // 如果请求不成功，则刷新验证码
-        this.globalDataService.navigationLoading = false;
+        this.globalData.navigationLoading = false;
         return this.updateCaptcha();
       }
 
-      this.globalDataService.user = result.data;
+      this.globalData.user = result.data;
       this.socketService.init();
 
       setTimeout(() => {

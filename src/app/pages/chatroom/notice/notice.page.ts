@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ChatRequestStatus, ChatSessionType } from 'src/app/common/enum';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -18,14 +18,14 @@ export class NoticePage implements OnInit {
     private onChatService: OnChatService,
     private socketService: SocketService,
     private overlayService: OverlayService,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
   ) { }
 
   ngOnInit() {
     this.onChatService.readedChatRequests().subscribe();
-    const chatSession = this.globalDataService.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
+    const chatSession = this.globalData.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
     if (chatSession) {
-      this.globalDataService.unreadMsgCount -= chatSession.unread;
+      this.globalData.unreadMsgCount -= chatSession.unread;
       chatSession.unread = 0;
     }
   }

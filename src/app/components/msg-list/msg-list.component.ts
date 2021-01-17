@@ -3,7 +3,7 @@ import { PopoverController } from '@ionic/angular';
 import { ChatroomType, MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
 @Component({
@@ -26,7 +26,7 @@ export class MsgListComponent implements OnInit {
   constructor(
     private popoverController: PopoverController,
     private feedbackService: FeedbackService,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
   ) { }
 
   ngOnInit() { }

@@ -13,14 +13,14 @@
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="{
-        'msg-item-right':  globalDataService.user?.id == item.userId,
-        'msg-item-left':  globalDataService.user?.id != item.userId
+        'msg-item-right':  globalData.user?.id == item.userId,
+        'msg-item-left':  globalData.user?.id != item.userId
       }">
 
-        <img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId != globalData.user.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
@@ -30,19 +30,19 @@
             [innerHTML]="item.data['content'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
           </span>
 
-          <ion-spinner *ngIf="globalDataService.user?.id == item.userId && item.loading" class="send-spinner"
-            name="dots" [duration]="1000"></ion-spinner>
+          <ion-spinner *ngIf="globalData.user?.id == item.userId && item.loading" class="send-spinner" name="dots"
+            [duration]="1000"></ion-spinner>
         </div>
       </li>
 
       <li *ngSwitchCase="msgType.RichText" class="msg-item" [ngClass]="{
-        'msg-item-right': globalDataService.user?.id == item.userId,
-        'msg-item-left': globalDataService.user?.id != item.userId
+        'msg-item-right': globalData.user?.id == item.userId,
+        'msg-item-left': globalData.user?.id != item.userId
       }">
-        <img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div class="ql-container ql-snow">
-          <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId != globalData.user.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
@@ -54,13 +54,13 @@
       </li>
 
       <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item" [ngClass]="{
-        'msg-item-right': globalDataService.user?.id == item.userId,
-        'msg-item-left': globalDataService.user?.id != item.userId
+        'msg-item-right': globalData.user?.id == item.userId,
+        'msg-item-left': globalData.user?.id != item.userId
       }">
-        <img class="avatar" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId != globalDataService.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId != globalData.user.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 

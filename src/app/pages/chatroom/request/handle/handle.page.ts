@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ChatRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -22,7 +22,7 @@ export class HandlePage implements OnInit {
   constructor(
     private socketService: SocketService,
     private overlayService: OverlayService,
-    private globalDataService: GlobalDataService,
+    private globalData: GlobalData,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -44,7 +44,7 @@ export class HandlePage implements OnInit {
       filter((result: Result<ChatRequest>) => {
         const { code, data } = result;
         // 操作成功,并且处理人是我
-        return code === ResultCode.Success && data.handlerId === this.globalDataService.user.id
+        return code === ResultCode.Success && data.handlerId === this.globalData.user.id
       })
     ).subscribe((result: Result<ChatRequest>) => {
       this.chatRequest = result.data;

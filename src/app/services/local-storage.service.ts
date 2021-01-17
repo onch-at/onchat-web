@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enum';
 
+/** 本地存储服务 */
 @Injectable({
   providedIn: 'root'
 })
-export class LocalStorageService {
+export class LocalStorage {
 
   /**
    * 保存数据

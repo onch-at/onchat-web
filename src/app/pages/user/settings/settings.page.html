@@ -17,8 +17,7 @@
   </ion-header>
 
   <main class="flex-col-container align-items-center">
-    <img *ngIf="globalDataService.user" class="avatar" [src]="globalDataService.user.avatarThumbnail"
-      (tap)="presentActionSheet()">
+    <img *ngIf="globalData.user" class="avatar" [src]="globalData.user.avatarThumbnail" (tap)="presentActionSheet()">
 
     <form [formGroup]="userInfoForm">
       <div class="form-group">

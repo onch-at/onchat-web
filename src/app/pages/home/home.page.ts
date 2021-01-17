@@ -4,7 +4,7 @@ import { PopoverController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { HomeMenuComponent } from 'src/app/components/popovers/home-menu/home-menu.component';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +19,7 @@ export class HomePage implements OnInit {
   constructor(
     private router: Router,
     private popoverController: PopoverController,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
   ) { }
 
   ngOnInit() {

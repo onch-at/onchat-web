@@ -1,22 +1,21 @@
 <ion-content [fullscreen]="true">
   <aside class="sidebar" slot="fixed">
-    <img *ngIf="globalDataService.user" class="avatar" [src]="globalDataService.user.avatarThumbnail"
-      [routerLink]="['/user', globalDataService.user.id]">
+    <img *ngIf="globalData.user" class="avatar cursor-pointer" [src]="globalData.user.avatarThumbnail"
+      [routerLink]="['/user', globalData.user.id]">
 
     <div class="button-group display-flex">
       <ion-button expand="block" fill="clear" routerDirection="root" routerLink="/home/chat" routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
-        <ion-badge [ngClass]="{'visibility-hidden': globalDataService.unreadMsgCount <= 0}" class="bg-danger">
-          {{ globalDataService.unreadMsgCount | numLimit }}
+        <ion-badge [ngClass]="{'visibility-hidden': globalData.unreadMsgCount <= 0}" class="bg-danger">
+          {{ globalData.unreadMsgCount | numLimit }}
         </ion-badge>
       </ion-button>
 
       <ion-button expand="block" fill="clear" routerDirection="root" routerLink="/home/contact"
         routerLinkActive="active">
         <ion-icon slot="icon-only" name="people"></ion-icon>
-        <ion-badge [ngClass]="{'visibility-hidden': globalDataService.receiveFriendRequests.length <= 0}"
-          class="bg-danger">
-          {{ globalDataService.receiveFriendRequests.length | numLimit }}
+        <ion-badge [ngClass]="{'visibility-hidden': globalData.receiveFriendRequests.length <= 0}" class="bg-danger">
+          {{ globalData.receiveFriendRequests.length | numLimit }}
         </ion-badge>
       </ion-button>
 

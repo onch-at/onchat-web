@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Result, User } from '../models/onchat.model';
-import { GlobalDataService } from '../services/global-data.service';
+import { GlobalData } from '../services/global-data.service';
 import { OnChatService } from '../services/onchat.service';
 
 @Injectable({
@@ -11,17 +11,17 @@ import { OnChatService } from '../services/onchat.service';
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
     private onChatService: OnChatService,
-    private globalDataService: GlobalDataService,
+    private globalData: GlobalData,
     private router: Router
   ) { }
 
   private handle(): boolean | Observable<boolean> {
-    if (this.globalDataService.user) { return true; }
+    if (this.globalData.user) { return true; }
 
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
-          this.globalDataService.user = result.data as User;
+          this.globalData.user = result.data as User;
         } else {
           this.router.navigateByUrl('/user/login');
         }

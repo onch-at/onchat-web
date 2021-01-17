@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class BubbleToolbarComponent implements OnInit {
   msgType: typeof MessageType = MessageType;
 
   constructor(
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private socketService: SocketService,
     private popoverController: PopoverController,
     private clipboard: Clipboard
@@ -42,7 +42,7 @@ export class BubbleToolbarComponent implements OnInit {
    * 撤回消息
    */
   revokeMsg() {
-    this.socketService.revokeMsg(+this.globalDataService.chatroomId, +this.msgItem.id);
+    this.socketService.revokeMsg(+this.globalData.chatroomId, +this.msgItem.id);
     this.dismiss();
   }
 

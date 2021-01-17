@@ -6,7 +6,7 @@ import { ResultCode } from 'src/app/common/enum';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
@@ -30,7 +30,7 @@ export class AvatarPage implements OnInit {
   };
 
   constructor(
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private overlayService: OverlayService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
@@ -64,7 +64,7 @@ export class AvatarPage implements OnInit {
     ];
 
     // 如果是自己的头像
-    (this.user.id == this.globalDataService.user?.id) && buttons.unshift({
+    (this.user.id == this.globalData.user?.id) && buttons.unshift({
       text: '更换头像',
       handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
         component: AvatarCropperComponent,
@@ -73,8 +73,8 @@ export class AvatarPage implements OnInit {
           uploader: (avatar: Blob) => this.onChatService.uploadUserAvatar(avatar),
           handler: (result: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = result.data;
-            this.globalDataService.user.avatar = avatar;
-            this.globalDataService.user.avatarThumbnail = avatarThumbnail;
+            this.globalData.user.avatar = avatar;
+            this.globalData.user.avatarThumbnail = avatarThumbnail;
           }
         }
       })).then((modal: HTMLIonModalElement) => {

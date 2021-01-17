@@ -55,7 +55,7 @@
 
         <div class="avatar-list">
           <div class="avatar-list-track">
-            <img [src]="globalDataService.user.avatarThumbnail">
+            <img [src]="globalData.user.avatarThumbnail">
             <ng-container *ngFor="let item of originPrivateChatrooms">
               <img *ngIf="item.checked" [src]="item.avatarThumbnail" (click)="deleteMember(item)">
             </ng-container>

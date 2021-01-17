@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Result, User } from '../models/onchat.model';
-import { GlobalDataService } from '../services/global-data.service';
+import { GlobalData } from '../services/global-data.service';
 import { OnChatService } from '../services/onchat.service';
 
 @Injectable({
@@ -11,17 +11,17 @@ import { OnChatService } from '../services/onchat.service';
 export class NotAuthGuard implements CanActivate, CanLoad {
   constructor(
     private onChatService: OnChatService,
-    private globalDataService: GlobalDataService,
+    private globalData: GlobalData,
     private router: Router
   ) { }
 
   private handle(): boolean | Observable<boolean> {
-    if (this.globalDataService.user) { return false; }
+    if (this.globalData.user) { return false; }
 
     return new Observable(observer => {
       this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
-          this.globalDataService.user = result.data as User;
+          this.globalData.user = result.data as User;
           this.router.navigateByUrl('/'); // 如果登录了就返回主页
         }
 

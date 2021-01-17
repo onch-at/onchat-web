@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -25,7 +25,7 @@ export class RequestPage implements OnInit {
   subject: Subject<unknown> = new Subject();
 
   constructor(
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private socketService: SocketService,
     private overlayService: OverlayService,
     private route: ActivatedRoute,
@@ -54,7 +54,7 @@ export class RequestPage implements OnInit {
       debounceTime(100)
     ).subscribe((result: Result<FriendRequest | FriendRequest[]>) => {
       const friendRequest = result.data;
-      if (Array.isArray(friendRequest) || friendRequest.selfId != this.globalDataService.user.id || friendRequest.targetId != this.user.id) {
+      if (Array.isArray(friendRequest) || friendRequest.selfId != this.globalData.user.id || friendRequest.targetId != this.user.id) {
         return;
       }
 

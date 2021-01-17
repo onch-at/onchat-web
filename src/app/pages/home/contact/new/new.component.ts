@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FriendRequestStatus } from 'src/app/common/enum';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -14,7 +14,7 @@ export class NewComponent implements OnInit {
   friendRequestStatus: typeof FriendRequestStatus = FriendRequestStatus;
 
   constructor(
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private socketService: SocketService,
     private overlayService: OverlayService,
   ) { }

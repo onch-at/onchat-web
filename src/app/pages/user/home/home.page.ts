@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
-import { GlobalDataService } from 'src/app/services/global-data.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 
@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
 
   constructor(
     private onChatService: OnChatService,
-    public globalDataService: GlobalDataService,
+    public globalData: GlobalData,
     private overlayService: OverlayService,
     private route: ActivatedRoute,
     private router: Router
