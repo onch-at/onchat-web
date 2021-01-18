@@ -80,7 +80,7 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     const username = this.route.snapshot.queryParams.username;
-    username && this.registerForm.setValue({ username });
+    username && this.registerForm.controls.username.setValue(username);
   }
 
   register() {
