@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
-import { CHAT_ITEM_ROWS } from 'src/app/common/constant';
+import { CHAT_SESSIONS_ROWS } from 'src/app/common/constant';
 import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -49,7 +49,7 @@ export class ChatPage implements OnInit {
 
   chatSessions() {
     const { chatSessionsPage, chatSessions } = this.globalData;
-    return chatSessionsPage ? chatSessions.slice(0, chatSessionsPage * CHAT_ITEM_ROWS) : chatSessions;
+    return chatSessionsPage ? chatSessions.slice(0, chatSessionsPage * CHAT_SESSIONS_ROWS) : chatSessions;
   }
 
   /**
@@ -61,7 +61,7 @@ export class ChatPage implements OnInit {
       return event.target.complete();
     }
 
-    if (++this.globalData.chatSessionsPage * CHAT_ITEM_ROWS >= this.globalData.chatSessions.length) {
+    if (++this.globalData.chatSessionsPage * CHAT_SESSIONS_ROWS >= this.globalData.chatSessions.length) {
       this.globalData.chatSessionsPage = null;
     }
 

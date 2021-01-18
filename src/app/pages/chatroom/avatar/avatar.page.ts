@@ -53,7 +53,7 @@ export class AvatarPage implements OnInit {
       { text: '取消', role: 'cancel' }
     ];
 
-    this.overlayService.presentActionSheet(undefined, buttons);
+    this.overlayService.presentActionSheet(buttons);
   }
 
 }

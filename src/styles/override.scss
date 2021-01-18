@@ -448,6 +448,15 @@ ion-item {
     .item-content {
         margin: 0.75rem 0;
     }
+
+    &.item-interactive-disabled {
+        ion-img,
+        img {
+            cursor: default;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    }
 }
 
 // Toast

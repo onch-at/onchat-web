@@ -1,9 +1,9 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
 import { MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class BubbleToolbarComponent implements OnInit {
   constructor(
     public globalData: GlobalData,
     private socketService: SocketService,
-    private popoverController: PopoverController,
+    private overlayService: OverlayService,
     private clipboard: Clipboard
   ) { }
 
@@ -50,7 +50,7 @@ export class BubbleToolbarComponent implements OnInit {
    * 关闭气泡消息工具条
    */
   dismiss() {
-    this.popoverController.dismiss();
+    this.overlayService.dismissPopover();
   }
 
 }

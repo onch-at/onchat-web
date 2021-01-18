@@ -22,7 +22,7 @@ export class RequestPage implements OnInit {
   requestReason: string = null;
   /** 对方的拒绝原因 */
   rejectReason: string = null;
-  subject: Subject<unknown> = new Subject();
+  private subject: Subject<unknown> = new Subject();
 
   constructor(
     public globalData: GlobalData,

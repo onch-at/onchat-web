@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ResultCode } from 'src/app/common/enum';
@@ -36,7 +35,7 @@ export class AvatarPage implements OnInit {
     private feedbackService: FeedbackService,
     private route: ActivatedRoute,
     private router: Router,
-    private modalController: ModalController,
+    private modalCtrl: ModalController,
   ) { }
 
   ngOnInit() {
@@ -66,28 +65,22 @@ export class AvatarPage implements OnInit {
     // 如果是自己的头像
     (this.user.id == this.globalData.user?.id) && buttons.unshift({
       text: '更换头像',
-      handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
+      handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.overlayService.presentModal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
           uploader: (avatar: Blob) => this.onChatService.uploadUserAvatar(avatar),
           handler: (result: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = result.data;
+            this.user.avatar = avatar;
             this.globalData.user.avatar = avatar;
             this.globalData.user.avatarThumbnail = avatarThumbnail;
           }
         }
-      })).then((modal: HTMLIonModalElement) => {
-        modal.present();
-        modal.onWillDismiss().then((e: { data: SafeUrl }) => {
-          if (e.data) {
-            this.user.avatar = e.data as string;
-          }
-        });
-      })
+      }))
     });
 
-    this.overlayService.presentActionSheet(undefined, buttons);
+    this.overlayService.presentActionSheet(buttons);
   }
 
 }

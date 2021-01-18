@@ -38,7 +38,7 @@ export class SettingsPage implements OnInit {
   dirty: boolean = false;
   /** 加载中 */
   loading: boolean = false;
-  subject: Subject<unknown> = new Subject();
+  private subject: Subject<unknown> = new Subject();
 
   userInfoForm: FormGroup = this.fb.group({
     nickname: [
@@ -78,7 +78,7 @@ export class SettingsPage implements OnInit {
     public globalData: GlobalData,
     private onChatService: OnChatService,
     private overlayService: OverlayService,
-    private modalController: ModalController
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -147,22 +147,23 @@ export class SettingsPage implements OnInit {
     const buttons = [
       {
         text: '更换头像',
-        handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
+        handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.overlayService.presentModal({
           component: AvatarCropperComponent,
           componentProps: {
             imageChangedEvent: event
           }
-        })).then((modal: HTMLIonModalElement) => {
-          modal.present();
-        })
+        }))
       },
       {
         text: '更换背景图'
       },
-      { text: '取消', role: 'cancel' }
+      {
+        text: '取消',
+        role: 'cancel'
+      }
     ];
 
-    this.overlayService.presentActionSheet(undefined, buttons);
+    this.overlayService.presentActionSheet(buttons);
   }
 
   nicknameFeedback(errors: ValidationErrors): string {

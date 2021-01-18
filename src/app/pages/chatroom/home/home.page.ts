@@ -1,12 +1,13 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { debounceTime, filter, first, takeUntil, tap } from 'rxjs/operators';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
-import { ChatMember, ChatRequest, Chatroom, Result } from 'src/app/models/onchat.model';
+import { ChatSessionSelectorComponent } from 'src/app/components/modals/chat-session-selector/chat-session-selector.component';
+import { ChatMember, ChatRequest, Chatroom, ChatSession, Result } from 'src/app/models/onchat.model';
 import { CacheService } from 'src/app/services/cache.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -32,7 +33,7 @@ export class HomePage implements OnInit {
   /** 成员数量 */
   memberCount: number;
   showMask: boolean;
-  subject: Subject<unknown> = new Subject();
+  private subject: Subject<unknown> = new Subject();
 
   constructor(
     private route: ActivatedRoute,
@@ -42,7 +43,6 @@ export class HomePage implements OnInit {
     private onChatService: OnChatService,
     private cacheService: CacheService,
     private socketService: SocketService,
-    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -58,7 +58,7 @@ export class HomePage implements OnInit {
       const managers = chatMembers.filter(o => o.role === ChatMemberRole.Manage);
       const normalMembers = chatMembers.filter(o => o.role === ChatMemberRole.Normal);
       // 按照群主>管理员>普通成员排列
-      this.chatMembers = [...(host ? [host] : []), ...managers, ...normalMembers].splice(0, 6);
+      this.chatMembers = [...(host ? [host] : []), ...managers, ...normalMembers];
       this.memberCount = chatMembers.length;
 
       // 从群成员里面找自己
@@ -125,6 +125,49 @@ export class HomePage implements OnInit {
     return new Array(length).fill('');
   }
 
+  /**
+   * 邀请好友入群
+   */
+  inviteJoinChatroom() {
+    // 等待加载出好友会话后的一个可观察对象
+    const observable: Observable<ChatSession[] | Result<ChatSession[]>> = this.globalData.privateChatrooms.length ?
+      of(null) : this.onChatService.getPrivateChatrooms().pipe(
+        filter((result: Result) => result.code === ResultCode.Success),
+        tap((result: Result<ChatSession[]>) => {
+          this.globalData.privateChatrooms = result.data;
+        })
+      );
+
+    observable.subscribe(() => this.overlayService.presentModal({
+      component: ChatSessionSelectorComponent,
+      componentProps: {
+        title: '邀请好友',
+        // 筛选出不在这个聊天室的好友会话
+        chatSessions: this.globalData.privateChatrooms.filter(o => !this.chatMembers.some(p => p.userId === o.data.userId)).map(o => ({ ...o, checked: false })),
+        limit: 30,
+        handler: (data: ChatSessionCheckbox[]) => {
+          // 得到聊天室ID
+          const list = data.map(o => o.data.chatroomId);
+          const observable = new Observable(observer => {
+            this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
+              first(),
+              takeUntil(this.subject),
+            ).subscribe((result: Result<number[]>) => {
+              const { code, msg } = result;
+              this.overlayService.presentToast(code === ResultCode.Success ? '邀请消息已发出！' : '邀请失败，原因：' + msg);
+              observer.next();
+              observer.complete();
+            });
+          });
+
+          this.socketService.inviteJoinChatroom(this.chatroom.id, list);
+
+          return observable;
+        }
+      }
+    }));
+  }
+
   presentActionSheet() {
     const buttons = [
       {
@@ -132,12 +175,15 @@ export class HomePage implements OnInit {
           this.router.navigate(['/chatroom/avatar', this.chatroom.id]);
         }
       },
-      { text: '取消', role: 'cancel' }
+      {
+        text: '取消',
+        role: 'cancel'
+      }
     ];
 
     // 如果是群主、管理员
     (this.isHost || this.isManager) && buttons.unshift({
-      text: '更换头像', handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.modalController.create({
+      text: '更换头像', handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.overlayService.presentModal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
@@ -154,10 +200,10 @@ export class HomePage implements OnInit {
             }
           }
         }
-      })).then(modal => modal.present())
+      }))
     });
 
-    this.overlayService.presentActionSheet(undefined, buttons);
+    this.overlayService.presentActionSheet(buttons);
   }
 
 }

@@ -17,7 +17,7 @@ export class HandlePage implements OnInit {
   /** 用户 */
   user: User;
   friendRequest: FriendRequest;
-  subject: Subject<unknown> = new Subject();
+  private subject: Subject<unknown> = new Subject();
 
   constructor(
     private socketService: SocketService,

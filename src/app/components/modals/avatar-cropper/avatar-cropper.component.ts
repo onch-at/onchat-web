@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -25,7 +24,7 @@ export class AvatarCropperComponent implements OnInit {
   /** 上传器 */
   @Input() uploader: (avatar: Blob) => Observable<Result<AvatarData>>;
   /** 处理程序 */
-  @Input() handler: (result: Result<AvatarData>) => void;
+  @Input() handler: (result: Result<AvatarData>) => unknown;
   /** 图片裁剪组件 */
   @ViewChild(ImageCropperComponent, { static: true }) imageCropper: ImageCropperComponent;
   /** 图片格式，优先级：webp -> jpeg -> png */
@@ -34,11 +33,10 @@ export class AvatarCropperComponent implements OnInit {
   ionLoading: Promise<HTMLIonLoadingElement>;
   /** 无法加载图片 */
   error: boolean = false;
-  subject: Subject<unknown> = new Subject();
+  private subject: Subject<unknown> = new Subject();
 
   constructor(
     public globalData: GlobalData,
-    private modalController: ModalController,
     private overlayService: OverlayService,
     private sanitizer: DomSanitizer,
     private router: Router
@@ -62,8 +60,8 @@ export class AvatarCropperComponent implements OnInit {
    * 关闭自己
    * @param data 需要传回一个image src
    */
-  dismiss(data: SafeUrl = null) {
-    this.modalController.dismiss(data);
+  dismiss(data?: SafeUrl) {
+    this.overlayService.dismissModal(data);
     this.globalData.canDeactivate = true;
   }
 
@@ -207,6 +205,9 @@ export class AvatarCropperComponent implements OnInit {
     this.ionLoading = this.overlayService.presentLoading('Uploading…');
 
     this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
+      (await this.ionLoading).dismiss();
+      this.globalData.canDeactivate = true;
+
       if (result.code === ResultCode.Success) {
         this.handler(result);
 
@@ -215,9 +216,6 @@ export class AvatarCropperComponent implements OnInit {
       } else {
         this.overlayService.presentToast(result.msg);
       }
-
-      (await this.ionLoading).dismiss();
-      this.globalData.canDeactivate = true;
     });
   }
 

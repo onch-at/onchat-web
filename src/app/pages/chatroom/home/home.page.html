@@ -40,7 +40,7 @@
   <div class="home-item">
     <div class="home-info-label">聊天室成员</div>
     <div class="avatar-list-track">
-      <ng-container *ngFor="let item of chatMembers">
+      <ng-container *ngFor="let item of chatMembers | slice: 0:6">
         <img class="avatar-list-img cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
       </ng-container>
 
@@ -49,7 +49,7 @@
         <div *ngFor="let item of getArr(6 - chatMembers.length)" class="avatar-list-img"></div>
       </ng-container>
 
-      <button class="add-btn ion-activatable ripple-container">
+      <button class="add-btn ion-activatable ripple-container" (tap)="inviteJoinChatroom()">
         <ion-icon name="add-outline"></ion-icon>
         <ion-ripple-effect></ion-ripple-effect>
       </button>

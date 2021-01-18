@@ -56,7 +56,7 @@ export class ChatPage implements OnInit {
    * sendTime => 在msgList中的index
    */
   sendMsgMap: Map<number, number> = new Map();
-  subject: Subject<unknown> = new Subject();
+  private subject: Subject<unknown> = new Subject();
   /** 是否显示抽屉 */
   showDrawer: boolean = false;
   /** 键盘高度 */
@@ -121,25 +121,23 @@ export class ChatPage implements OnInit {
         const { code, data } = result;
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
       }),
-      tap({
-        next: (result: Result<Message>) => {
-          const { data } = result;
-          // 如果不是自己发的消息
-          if (data.userId !== this.globalData.user.id) {
-            this.msgList.push(data);
-            return this.tryToScrollToBottom();
-          }
+      tap((result: Result<Message>) => {
+        const { data } = result;
+        // 如果不是自己发的消息
+        if (data.userId !== this.globalData.user.id) {
+          this.msgList.push(data);
+          return this.tryToScrollToBottom();
+        }
 
-          const index = this.sendMsgMap.get(data.sendTime);
-          data.avatarThumbnail = this.globalData.user.avatarThumbnail;
+        const index = this.sendMsgMap.get(data.sendTime);
+        data.avatarThumbnail = this.globalData.user.avatarThumbnail;
 
-          if (index >= 0) {
-            this.msgList[index] = data;
-            this.sendMsgMap.delete(data.sendTime);
-          } else {
-            this.msgList.push(data);
-            this.scrollToBottom();
-          }
+        if (index >= 0) {
+          this.msgList[index] = data;
+          this.sendMsgMap.delete(data.sendTime);
+        } else {
+          this.msgList.push(data);
+          this.scrollToBottom();
         }
       }),
       debounceTime(3000)

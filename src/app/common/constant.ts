@@ -39,4 +39,4 @@ export const SIGNATURE_MAX_LENGTH: number = 100;
 export const TEXT_MSG_MAX_LENGTH: number = 3000;
 
 /** 会话列表分页行数 */
-export const CHAT_ITEM_ROWS: number = 15;
+export const CHAT_SESSIONS_ROWS: number = 15;

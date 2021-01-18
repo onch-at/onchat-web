@@ -1,6 +1,8 @@
 ion-header {
     height: 3rem;
-    background: var(--oc-color-light);
+    background: rgba(var(--oc-color-white-rgb), 0.75);
+    backdrop-filter: blur(15px);
+    border-radius: 0 0 1.5rem 1.5rem;
 
     ion-buttons ion-back-button,
     ion-buttons ion-button,
@@ -10,5 +12,74 @@ ion-header {
 
     ion-title {
         font-size: 1rem;
+    }
+
+    ion-spinner {
+        --color: var(--oc-color-black);
+        margin-right: 0.25rem;
+    }
+}
+
+ion-content {
+    --padding-top: 3rem;
+}
+
+ion-searchbar {
+    position: sticky;
+    top: -1px;
+    padding: 0.5rem 1rem;
+    z-index: 1;
+
+    &.sc-ion-searchbar-ios-h {
+        ::ng-deep {
+            .searchbar-input-container {
+                height: 2.5rem;
+                line-height: 2.5rem;
+            }
+
+            .searchbar-input {
+                --background: rgba(var(--oc-color-gray-rgb), 0.5);
+                backdrop-filter: blur(15px);
+            }
+        }
+    }
+}
+
+.chat-session-list {
+    width: 100vw;
+
+    ion-item {
+        --padding-start: 1.125rem;
+        --padding-end: 1.125rem;
+        --inner-padding-end: 0;
+    }
+
+    ion-img,
+    img {
+        height: 2.75rem;
+        width: 2.75rem;
+        margin: 0 0.75rem 0 0;
+        border-radius: 50%;
+        object-fit: cover;
+        background: var(--oc-color-secondary);
+        overflow: hidden;
+    }
+
+    ion-label {
+        margin: 1.125rem 0;
+        font-size: 1rem;
+    }
+
+    ion-checkbox {
+        --background: var(--oc-color-white);
+        --border-width: 0.075rem;
+        --border-color: rgba(var(--oc-color-dark-rgb), 0.5);
+        --size: 1.5rem;
+        --checkmark-width: 0.15rem;
+        --background-checked: var(--oc-color-primary);
+        --border-color-checked: var(--oc-color-primary);
+        --transition: background-color ease-in-out 0.125s;
+
+        margin: 0 0 0 0.75rem;
     }
 }

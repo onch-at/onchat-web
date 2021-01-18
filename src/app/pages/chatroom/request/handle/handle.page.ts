@@ -17,7 +17,7 @@ import { SocketService } from 'src/app/services/socket.service';
 export class HandlePage implements OnInit {
   chatRequest: ChatRequest;
   chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
-  subject: Subject<unknown> = new Subject();
+  private subject: Subject<unknown> = new Subject();
 
   constructor(
     private socketService: SocketService,

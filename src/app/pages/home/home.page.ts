@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Scroll } from '@angular/router';
-import { PopoverController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { HomeMenuComponent } from 'src/app/components/popovers/home-menu/home-menu.component';
 import { GlobalData } from 'src/app/services/global-data.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +14,11 @@ import { GlobalData } from 'src/app/services/global-data.service';
 export class HomePage implements OnInit {
   sharp: boolean = false;
 
-  subject: Subject<unknown> = new Subject();
+  private subject: Subject<unknown> = new Subject();
 
   constructor(
     private router: Router,
-    private popoverController: PopoverController,
+    private overlayService: OverlayService,
     public globalData: GlobalData,
   ) { }
 
@@ -37,13 +37,12 @@ export class HomePage implements OnInit {
     this.subject.complete();
   }
 
-  async presentPopover(event: any) {
-    const popover = await this.popoverController.create({
+  presenHomeMenutPopover(event: Event) {
+    this.overlayService.presentPopover({
       component: HomeMenuComponent,
       event: event,
       cssClass: 'home-menu-popover'
     });
-    return await popover.present();
   }
 
 }

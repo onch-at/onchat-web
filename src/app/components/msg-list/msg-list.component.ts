@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
 import { ChatroomType, MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
 @Component({
@@ -24,7 +24,7 @@ export class MsgListComponent implements OnInit {
   @Input() chatroomType: ChatroomType;
 
   constructor(
-    private popoverController: PopoverController,
+    private overlayService: OverlayService,
     private feedbackService: FeedbackService,
     public globalData: GlobalData,
   ) { }
@@ -48,10 +48,10 @@ export class MsgListComponent implements OnInit {
    * @param element
    * @param event
    */
-  async presentBubbleToolbarPopover(msgItem: Message, element: Element, event: any) {
+  async presentBubbleToolbarPopover(msgItem: Message, element: Element, event: Event) {
     event.preventDefault();
 
-    const popover = await this.popoverController.create({
+    const popover = await this.overlayService.presentPopover({
       component: BubbleToolbarComponent,
       componentProps: {
         element,
@@ -64,15 +64,11 @@ export class MsgListComponent implements OnInit {
       backdropDismiss: false
     });
 
-    await popover.present();
-
     this.feedbackService.slightVibrate();
     // 延迟300ms后才打开点击背景关闭popover
     setTimeout(() => {
       popover.backdropDismiss = true;
     }, 300);
-
-    return popover;
   }
 
   /**

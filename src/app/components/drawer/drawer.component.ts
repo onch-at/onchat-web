@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
+import { OverlayService } from 'src/app/services/overlay.service';
 import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-editor.component';
 
 @Component({
@@ -12,24 +12,17 @@ export class DrawerComponent implements OnInit {
   @Input() page: ChatPage;
 
   constructor(
-    private modalController: ModalController,
+    private overlayService: OverlayService,
   ) { }
 
   ngOnInit() { }
 
   editRichText() {
-    this.modalController.create({
+    this.overlayService.presentModal({
       component: RichTextEditorComponent,
       componentProps: {
         page: this.page
       }
-    }).then((modal: HTMLIonModalElement) => {
-      modal.present();
-      // modal.onWillDismiss().then((e: { data: SafeUrl }) => {
-      //   if (e.data) {
-      //     this.user.avatar = e.data as string;
-      //   }
-      // });
     });
   }
 

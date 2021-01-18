@@ -19,7 +19,7 @@
 
   <main>
     <quill-editor class="flex-col-container" [(ngModel)]="html" [modules]="modules"
-      (onContentChanged)="onContentChanged($event)">
+      (onContentChanged)="onContentChanged($event); cache()">
     </quill-editor>
   </main>
 

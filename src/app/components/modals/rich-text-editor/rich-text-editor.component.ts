@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NavigationCancel, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { NavigationEnd, Router } from '@angular/router';
 import { ContentChange } from 'ngx-quill';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
+import { Throttle } from 'src/app/common/decorator';
 import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { RichTextMessage } from 'src/app/models/form.model';
 import { Message, Result } from 'src/app/models/onchat.model';
@@ -25,8 +25,7 @@ export class RichTextEditorComponent implements OnInit {
 
   html: string;
   text: string = '';
-  subject: Subject<unknown> = new Subject();
-  throttleTimer: number = null;
+  private subject: Subject<unknown> = new Subject();
 
   modules = {
     toolbar: [
@@ -47,30 +46,29 @@ export class RichTextEditorComponent implements OnInit {
     private localStorage: LocalStorage,
     private overlayService: OverlayService,
     private socketService: SocketService,
-    private modalController: ModalController,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.globalData.canDeactivate = false;
-
     this.html = this.localStorage.getItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalData.chatroomId);
 
     this.router.events.pipe(
-      filter(event => event instanceof NavigationCancel),
+      filter(event => event instanceof NavigationEnd),
       takeUntil(this.subject)
     ).subscribe(() => this.dismiss());
+  }
+
+  ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
   /**
    * 关闭自己
    */
   dismiss() {
-    setTimeout(() => {
-      this.modalController.dismiss();
-      this.globalData.canDeactivate = true;
-      StrUtil.trimAll(this.text).length && this.cache();
-    }, 50);
+    this.overlayService.dismissModal();
+    StrUtil.trimAll(this.text).length && this.cache();
   }
 
   showSendBtn() {
@@ -99,7 +97,6 @@ export class RichTextEditorComponent implements OnInit {
       // 如果是自己发的消息，并且是刚刚这一条
       if (msg.userId == this.globalData.user.id && msg.sendTime == message.sendTime) {
         this.text = '';
-        this.throttleTimer && clearTimeout(this.throttleTimer);
         this.localStorage.removeItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalData.chatroomId);
 
         loading.then((loading: HTMLIonLoadingElement) => {
@@ -121,21 +118,14 @@ export class RichTextEditorComponent implements OnInit {
    */
   onContentChanged(event: ContentChange) {
     this.text = event.text;
-
-    if (this.throttleTimer === null && StrUtil.trimAll(this.text).length) {
-      this.throttleTimer = window.setTimeout(() => {
-        this.cache();
-        this.throttleTimer = null;
-      }, 3000);
-    }
   }
 
   /**
    * 缓存编辑的富文本到本地
    */
+  @Throttle(3000)
   cache() {
-    this.throttleTimer && clearTimeout(this.throttleTimer);
-    this.localStorage.setItemToMap(
+    StrUtil.trimAll(this.text).length && this.localStorage.setItemToMap(
       LocalStorageKey.ChatRichTextMap,
       this.globalData.chatroomId,
       this.html

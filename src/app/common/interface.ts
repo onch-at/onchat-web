@@ -1,6 +1,14 @@
 import { KeyValue } from "@angular/common";
+import { ChatSession } from "../models/onchat.model";
 
-/** 浮层通知组件参数 */
+/** 组件引用 */
+type ComponentRef = Function | HTMLElement | string | null;
+/** 组件参数 */
+type ComponentProps<T = null> = { [key: string]: any };
+/** 聊天会话多选框类型 */
+export type ChatSessionCheckbox = ChatSession & { checked: boolean };
+
+/** 浮层通知组件选项 */
 export interface NotificationOptions {
     /** 标题 */
     title: string;
@@ -16,7 +24,7 @@ export interface NotificationOptions {
     handler?: (event: Event) => void;
 }
 
-/** 警告框组件参数 */
+/** 警告框组件选项 */
 export interface AlertOptions {
     /** 标头 */
     header: string;
@@ -30,4 +38,51 @@ export interface AlertOptions {
     cancelHandler?: (data?: KeyValue<string, any>) => any
     /** 输入组 */
     inputs?: any[];
+}
+
+/**
+ * 摘录至：
+ * @link https://github.com/ionic-team/ionic-framework/blob/master/core/src/components/action-sheet/action-sheet-interface.ts
+ */
+export interface ActionSheetButton {
+    /** 文字 */
+    text?: string;
+    /** 按钮角色 */
+    role?: 'cancel' | 'destructive' | 'selected' | string;
+    /** 图标 */
+    icon?: string;
+    /** CSS Class */
+    cssClass?: string | string[];
+    /** 点击处理器 */
+    handler?: () => any;
+}
+
+/** 模态框组件选项 */
+export interface ModalOptions<T extends ComponentRef = ComponentRef> {
+    /** 组件 */
+    component: T;
+    /** 组件参数 */
+    componentProps?: ComponentProps;
+    /** 点击背景关闭 */
+    backdropDismiss?: boolean;
+    /** CSS Class */
+    cssClass?: string | string[];
+}
+
+/** 弹出框组件选项 */
+export interface PopoverOptions<T extends ComponentRef = ComponentRef> {
+    /** 组件 */
+    component: T;
+    /** 组件参数 */
+    componentProps?: ComponentProps<T>;
+    /** 展示背景 */
+    showBackdrop?: boolean;
+    /** 点击背景关闭 */
+    backdropDismiss?: boolean;
+    /** CSS Class */
+    cssClass?: string | string[];
+    /** 触发源事件 */
+    event?: Event;
+    /** 关闭键盘 */
+    keyboardClose?: boolean;
 }
