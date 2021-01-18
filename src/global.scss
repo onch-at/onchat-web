@@ -30,23 +30,6 @@
 // @import "~@ionic/angular/css/text-transformation.css";
 // @import "~@ionic/angular/css/flex-utils.css";
 
-.overflow-ellipsis {
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-// 标徽字体
-@font-face {
-  font-display: fallback;
-  font-family: "Alibaba-Sans-Black";
-  src: url("/assets/font/Alibaba-Sans-Black/font.gif");
-  src: url("/assets/font/Alibaba-Sans-Black/font.gif") format("embedded-opentype"),
-    url("/assets/font/Alibaba-Sans-Black/font.bmp") format("woff"),
-    url("/assets/font/Alibaba-Sans-Black/font.jpg") format("truetype"),
-    url("/assets/font/Alibaba-Sans-Black/font.png") format("svg");
-}
-
 * {
   outline: 0;
   scrollbar-width: thin;
@@ -60,6 +43,19 @@
 
 body {
   background: var(--oc-color-white);
+}
+
+.overflow-ellipsis {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+img,
+ion-img {
+  @media (prefers-color-scheme: dark) {
+    filter: brightness(0.75);
+  }
 }
 
 .flex-col-container {
@@ -172,19 +168,8 @@ form.ng-pristine .feedback-form-invalid {
 }
 
 .btn-danger {
-  position: relative;
   color: var(--oc-color-danger);
   background-color: var(--oc-color-white);
-
-  // &::after {
-  //   content: "";
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   right: 0;
-  //   bottom: 0;
-  //   background-color: rgba(var(--oc-color-danger-rgb), 0.3);
-  // }
 
   &.active {
     box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-danger-rgb), 0.75);

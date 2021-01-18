@@ -1,4 +1,3 @@
-// import { Platform } from '@angular/cdk/platform';
 import { KeyValue } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
@@ -125,21 +124,21 @@ export class ChatPage implements OnInit {
       tap({
         next: (result: Result<Message>) => {
           const { data } = result;
-          // 如果是自己发的消息
-          if (data.userId == this.globalData.user.id) {
-            const index = this.sendMsgMap.get(data.sendTime);
-            data.avatarThumbnail = this.globalData.user.avatarThumbnail;
+          // 如果不是自己发的消息
+          if (data.userId !== this.globalData.user.id) {
+            this.msgList.push(data);
+            return this.tryToScrollToBottom();
+          }
 
-            if (index >= 0) {
-              this.msgList[index] = data;
-              this.sendMsgMap.delete(data.sendTime);
-            } else {
-              this.msgList.push(data);
-              this.scrollToBottom();
-            }
+          const index = this.sendMsgMap.get(data.sendTime);
+          data.avatarThumbnail = this.globalData.user.avatarThumbnail;
+
+          if (index >= 0) {
+            this.msgList[index] = data;
+            this.sendMsgMap.delete(data.sendTime);
           } else {
             this.msgList.push(data);
-            this.tryToScrollToBottom();
+            this.scrollToBottom();
           }
         }
       }),

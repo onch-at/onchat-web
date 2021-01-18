@@ -2,7 +2,8 @@ ion-header {
     height: 3rem;
     background: transparent;
 
-    ion-buttons > *,
+    ion-buttons ion-back-button,
+    ion-buttons ion-button,
     ion-title {
         --color: var(--oc-color-white);
         filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));

@@ -114,7 +114,7 @@ export class OverlayService {
    * 弹出加载中
    * @param message 文字
    */
-  async presentLoading(message: string = '正在加载…') {
+  async presentLoading(message: string = 'Loading…') {
     const loading = await this.loadingController.create({
       cssClass: 'ion-loading',
       spinner: 'crescent',

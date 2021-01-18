@@ -100,7 +100,7 @@ export class OnChatService {
    * 成功登录,则返回User；否则返回false
    */
   checkLogin(): Observable<Result<boolean | User>> {
-    return this.http.get<Result<boolean | User>>(env.userUrl + 'checklogin');
+    return this.http.get<Result<boolean | User>>(env.userUrl + 'checklogin', { params: this.getCacheParam(1000) });
   }
 
   /**

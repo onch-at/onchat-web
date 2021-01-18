@@ -2,7 +2,8 @@ ion-header {
     height: 3rem;
     background: transparent;
 
-    ion-buttons > * {
+    ion-buttons ion-back-button,
+    ion-buttons ion-button {
         --color: #fff;
         filter: drop-shadow(0 0 0.5rem #000);
     }
@@ -16,10 +17,4 @@ ion-content {
 ion-slides {
     height: 100%;
     width: 100%;
-}
-
-img {
-    @media (prefers-color-scheme: dark) {
-        filter: brightness(0.75);
-    }
 }

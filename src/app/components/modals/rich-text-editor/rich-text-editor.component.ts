@@ -85,7 +85,7 @@ export class RichTextEditorComponent implements OnInit {
       return this.overlayService.presentToast('字数超出上限！');
     }
 
-    const loading = this.overlayService.presentLoading('正在发送…');
+    const loading = this.overlayService.presentLoading('Sending…');
 
     const message = new Message(+this.globalData.chatroomId, MessageType.RichText);
 

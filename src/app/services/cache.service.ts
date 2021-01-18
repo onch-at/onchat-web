@@ -42,7 +42,7 @@ export class CacheService {
 
   /**
    * 通过标记（字符串、正则）模糊查询以撤销缓存
-   * @param regular
+   * @param mark
    */
   revoke(mark: string | RegExp) {
     for (const key of this.cacheMap.keys()) {

@@ -40,10 +40,6 @@
     background: var(--oc-color-secondary);
     border-radius: 2rem;
     overflow: hidden;
-
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0.85);
-    }
   }
 
   .username {

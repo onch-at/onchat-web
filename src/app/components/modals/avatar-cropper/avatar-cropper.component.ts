@@ -45,7 +45,7 @@ export class AvatarCropperComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.ionLoading = this.overlayService.presentLoading('正在加载…');
+    this.ionLoading = this.overlayService.presentLoading();
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -72,7 +72,7 @@ export class AvatarCropperComponent implements OnInit {
    */
   uploadImage() {
     SysUtil.uploadFile('image/*').then((event: any) => {
-      this.ionLoading = this.overlayService.presentLoading('正在加载…');
+      this.ionLoading = this.overlayService.presentLoading();
       this.error = false;
       this.imageCropper.imageQuality = 90;
       this.imageChangedEvent = event;
@@ -179,7 +179,7 @@ export class AvatarCropperComponent implements OnInit {
    * 提交
    */
   async submit() {
-    const loading = await this.overlayService.presentLoading('正在解析…');
+    const loading = await this.overlayService.presentLoading('Parsing…');
 
     const { imageBlob, imageSrc } = await this.crop();
 
@@ -204,7 +204,7 @@ export class AvatarCropperComponent implements OnInit {
     }
 
     this.globalData.canDeactivate = false;
-    this.ionLoading = this.overlayService.presentLoading('正在上传…');
+    this.ionLoading = this.overlayService.presentLoading('Uploading…');
 
     this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
       if (result.code === ResultCode.Success) {

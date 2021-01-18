@@ -2,7 +2,8 @@ ion-header {
   height: 3rem;
   background: transparent;
 
-  ion-buttons > * {
+  ion-buttons ion-back-button,
+  ion-buttons ion-button {
     --color: var(--oc-color-white);
     filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));
   }
@@ -15,10 +16,6 @@ ion-header {
   height: 100vh;
   width: 100vw;
   object-fit: cover;
-
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.5);
-  }
 }
 
 .card {
@@ -46,10 +43,6 @@ ion-header {
     border-radius: 50%;
     border: 0.25rem solid rgba(var(--oc-color-white-rgb), 0.25);
     flex-shrink: 0;
-
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0.75);
-    }
   }
 
   .info {

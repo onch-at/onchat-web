@@ -29,10 +29,6 @@
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-
-    @media (prefers-color-scheme: dark) {
-        filter: brightness(0.85);
-    }
 }
 
 .notification-body {

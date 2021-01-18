@@ -406,7 +406,7 @@ export class AppComponent implements OnInit {
         header: '发现新版本',
         message: '是否立即重启以更新到新版本？',
         backdropDismiss: false,
-        confirmHandler: () => document.location.reload()
+        confirmHandler: () => window.location.reload()
       });
     }));
   }

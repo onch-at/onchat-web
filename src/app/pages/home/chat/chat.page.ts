@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
@@ -17,8 +17,6 @@ import { DateUtil } from 'src/app/utils/date.util';
 export class ChatPage implements OnInit {
   msgType = MessageType;
   chatSessionType = ChatSessionType;
-
-  @ViewChildren(IonItemSliding) ionItemSlidings: QueryList<IonItemSliding>;
 
   constructor(
     private router: Router,
@@ -90,13 +88,13 @@ export class ChatPage implements OnInit {
    * @param item
    * @param i
    */
-  doStickyChatSession(item: ChatSession, i: number) {
+  doStickyChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
     this.onChatService[item.sticky ? 'unstickyChatSession' : 'stickyChatSession'](item.id).pipe(
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe(() => {
       item.sticky = !item.sticky;
       this.globalData.sortChatSessions();
-      this.closeIonItemSliding(i);
+      ionItemSliding.close();
     });
   }
 
@@ -105,43 +103,25 @@ export class ChatPage implements OnInit {
    * @param item
    * @param i
    */
-  doReadChatSession(item: ChatSession, i: number) {
+  doReadChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
     if (item.unread == 0) {
       return this.onChatService.unreadChatSession(item.id).pipe(
         filter((result: Result) => result.code === ResultCode.Success)
       ).subscribe(() => {
         item.unread = 1;
         this.globalData.unreadMsgCount++;
-        this.closeIonItemSliding(i);
+        ionItemSliding.close();
       });
     }
 
-    if (item.type === ChatSessionType.ChatroomNotice) {
-      return this.onChatService.readedChatRequests().pipe(
-        filter((result: Result) => result.code === ResultCode.Success)
-      ).subscribe(() => {
-        item.unread = 0;
-        this.globalData.unreadMsgCount--;
-        this.closeIonItemSliding(i);
-      });
-    }
+    const observable = item.type === ChatSessionType.ChatroomNotice ? this.onChatService.readedChatRequests() : this.onChatService.readedChatSession(item.id);
 
-    this.onChatService.readedChatSession(item.id).pipe(
+    observable.pipe(
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe(() => {
       item.unread = 0;
       this.globalData.unreadMsgCount--;
-      this.closeIonItemSliding(i);
-    });
-  }
-
-  /**
-   * 合上IonItemSliding
-   * @param i
-   */
-  closeIonItemSliding(i: number) {
-    this.ionItemSlidings.forEach((item: IonItemSliding, index: number) => {
-      index == i && item.close();
+      ionItemSliding.close();
     });
   }
 

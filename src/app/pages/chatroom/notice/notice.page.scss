@@ -4,7 +4,8 @@ ion-header {
     backdrop-filter: blur(15px);
     border-radius: 0 0 1.5rem 1.5rem;
 
-    ion-buttons > *,
+    ion-buttons ion-back-button,
+    ion-buttons ion-button,
     ion-title {
         --color: var(--oc-color-black);
     }
@@ -41,10 +42,6 @@ ion-item {
         object-fit: cover;
         background: var(--oc-color-secondary);
         overflow: hidden;
-
-        @media (prefers-color-scheme: dark) {
-            filter: brightness(0.75);
-        }
     }
 
     h2 {

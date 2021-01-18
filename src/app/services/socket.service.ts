@@ -69,7 +69,7 @@ export class SocketService {
    */
   friendRequest(userId: number, targetAlias: string = null, requestReason: string = null) {
     this.emit(SocketEvent.FriendRequest, {
-      userId: +userId,
+      userId,
       targetAlias,
       requestReason
     });

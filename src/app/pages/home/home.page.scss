@@ -16,10 +16,6 @@
     border-radius: 50%;
     background: var(--oc-color-white);
     border: 0.075rem solid var(--oc-color-white);
-
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0.85);
-    }
   }
 
   .button-group {

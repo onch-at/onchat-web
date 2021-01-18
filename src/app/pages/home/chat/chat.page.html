@@ -9,9 +9,10 @@
 
 	<ion-list class="chat-session-list">
 
-		<ion-item-sliding mode="md" *ngFor="let item of chatSessions(); let i = index; trackBy: trackByFn">
+		<ion-item-sliding #ionItemSliding mode="md"
+			*ngFor="let item of chatSessions(); let i = index; trackBy: trackByFn">
 			<ion-item-options side="start">
-				<ion-item-option (tap)="doStickyChatSession(item, i)"
+				<ion-item-option (tap)="doStickyChatSession(item, ionItemSliding)"
 					class="chat-session-list-item-option bg-gray color-medium">
 					{{ item.sticky ? '取消置顶' : '置顶' }}
 				</ion-item-option>
@@ -76,7 +77,8 @@
 			</ion-item>
 
 			<ion-item-options side="end">
-				<ion-item-option class="chat-session-list-item-option bg-primary" (tap)="doReadChatSession(item, i)">
+				<ion-item-option class="chat-session-list-item-option bg-primary"
+					(tap)="doReadChatSession(item, ionItemSliding)">
 					{{ item.unread == 0 ? '设为未读' : '设为已读' }}
 				</ion-item-option>
 				<ion-item-option class="chat-session-list-item-option bg-danger" (tap)="removeChatSession(i)">移除

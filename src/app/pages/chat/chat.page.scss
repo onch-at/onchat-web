@@ -21,7 +21,8 @@ ion-header {
     }
   }
 
-  ion-buttons > * {
+  ion-buttons ion-back-button,
+  ion-buttons ion-button {
     --color: var(--oc-color-medium);
   }
 

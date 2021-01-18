@@ -20,8 +20,4 @@ img.captcha {
   &.active {
     box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
   }
-
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.75);
-  }
 }

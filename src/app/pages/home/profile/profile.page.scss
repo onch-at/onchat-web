@@ -32,10 +32,6 @@
     border-radius: 50%;
     background: rgba(#fff, 0.75);
     backdrop-filter: blur(5px);
-
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0.75);
-    }
   }
 
   .profile-card-info {
