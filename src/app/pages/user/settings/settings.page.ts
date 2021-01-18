@@ -30,6 +30,8 @@ export class SettingsPage implements OnInit {
   gender: typeof Gender = Gender;
   /** 月份别名 */
   monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+  /** 初始时间 */
+  min: string = new Date(1971, 0, 2).toISOString();
   /** 今天的ISO时间 */
   today: string = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
   /** 用户信息表单提交数据体 */

@@ -110,7 +110,8 @@ export class ChatSessionSelectorComponent implements OnInit {
   list() {
     let { chatSessions, keyword } = this;
     if (keyword.length) {
-      chatSessions = chatSessions.filter(o => o.title.includes(keyword));
+      // 模糊搜索：别名和用户ID
+      chatSessions = chatSessions.filter(o => o.title.includes(keyword) || (o.data.userId + '').includes(keyword));
     }
     return this.chatSessionsPage ? chatSessions.slice(0, this.chatSessionsPage * ITEM_ROWS) : chatSessions;
   }

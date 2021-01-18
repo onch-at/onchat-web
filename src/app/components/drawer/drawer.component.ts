@@ -12,7 +12,7 @@ export class DrawerComponent implements OnInit {
   @Input() page: ChatPage;
 
   constructor(
-    private overlayService: OverlayService,
+    private overlayService: OverlayService
   ) { }
 
   ngOnInit() { }

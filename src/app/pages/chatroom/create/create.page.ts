@@ -136,7 +136,8 @@ export class CreatePage implements OnInit {
   privateChatrooms() {
     let { originPrivateChatrooms, keyword } = this;
     if (keyword.length) {
-      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.title.includes(keyword));
+      // 模糊搜索：别名和用户ID
+      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.title.includes(keyword) || (o.data.userId + '').includes(keyword));
     }
     return this.privateChatroomsPage ? originPrivateChatrooms.slice(0, this.privateChatroomsPage * ITEM_ROWS) : originPrivateChatrooms;
   }

@@ -10,6 +10,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
+import { QuillModule } from "ngx-quill";
 import { SocketIoModule } from 'ngx-socket-io';
 import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -36,6 +37,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     BrowserModule,
     HammerModule,
     HttpClientModule,
+    AppRoutingModule,
     IonicModule.forRoot({
       mode: 'ios',
       backButtonText: '',
@@ -48,7 +50,9 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
         transports: ['websocket'] // 只使用WebSocket连接
       }
     }),
-    AppRoutingModule,
+    QuillModule.forRoot({
+      placeholder: '在此处插入文字…'
+    }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: env.production
     })

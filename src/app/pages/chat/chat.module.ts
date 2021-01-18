@@ -23,9 +23,7 @@ import { ChatPage } from './chat.page';
     SharedModule,
     ActiveClassModule,
     HideScrollbarModule,
-    QuillModule.forRoot({
-      placeholder: '在此处插入文字…'
-    }),
+    QuillModule,
     ClipboardModule
   ],
   declarations: [
