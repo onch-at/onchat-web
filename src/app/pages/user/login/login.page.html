@@ -38,14 +38,17 @@
         </ion-col>
 
         <ion-col style="padding-right: .55rem;">
-          <button appActiveClass [appActiveClassDuration]="250" class="ion-activatable ripple-container btn-primary"
-            routerLink="/user/register" [queryParams]="{username: loginForm.value.username}">注册<ion-ripple-effect>
-            </ion-ripple-effect></button>
+          <button appRipple appActiveClass class="btn-primary" routerLink="/user/register"
+            [queryParams]="{username: loginForm.value.username}">
+            注册
+          </button>
         </ion-col>
 
         <ion-col style="padding-left: .55rem;">
-          <button appActiveClass [appActiveClassDuration]="250" [disabled]="loginForm.invalid" (tap)="login()"
-            class="ion-activatable ripple-container btn-primary">登录<ion-ripple-effect></ion-ripple-effect></button>
+          <button appRipple appActiveClass [disabled]="loginForm.invalid" (tap)="login()"
+            class="ion-activatable btn-primary">
+            登录
+          </button>
         </ion-col>
       </ion-row>
     </ion-grid>

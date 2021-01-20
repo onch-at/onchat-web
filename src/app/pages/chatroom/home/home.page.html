@@ -49,9 +49,8 @@
         <div *ngFor="let item of getArr(6 - chatMembers.length)" class="avatar-list-img"></div>
       </ng-container>
 
-      <button class="add-btn ion-activatable ripple-container" (tap)="inviteJoinChatroom()">
+      <button appRipple class="add-btn" (tap)="inviteJoinChatroom()">
         <ion-icon name="add-outline"></ion-icon>
-        <ion-ripple-effect></ion-ripple-effect>
       </button>
     </div>
   </div>
@@ -59,16 +58,13 @@
   <div style="height: 100vh;">TEST</div>
 
   <aside class="bottom-bar">
-    <button *ngIf="isMember" appActiveClass [appActiveClassDuration]="250" [routerLink]="['/chat', chatroom.id]"
-      class="ion-activatable ripple-container btn-primary btn-block">
+    <button *ngIf="isMember" appRipple appActiveClass [routerLink]="['/chat', chatroom.id]"
+      class="btn-primary btn-block">
       进去聊聊
-      <ion-ripple-effect></ion-ripple-effect>
     </button>
 
-    <button *ngIf="!isMember" appActiveClass [appActiveClassDuration]="250" (tap)="request()"
-      class="ion-activatable ripple-container btn-primary btn-block">
+    <button *ngIf="!isMember" appRipple appActiveClass (tap)="request()" class="btn-primary btn-block">
       申请加入
-      <ion-ripple-effect></ion-ripple-effect>
     </button>
   </aside>
 </ion-content>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActiveClassModule } from 'src/app/modules/active-class.module';
 import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
+import { RippleModule } from 'src/app/modules/ripple.module';
 import { HandlePageRoutingModule } from './handle-routing.module';
 import { HandlePage } from './handle.page';
 
@@ -14,7 +15,8 @@ import { HandlePage } from './handle.page';
     IonicModule,
     HideScrollbarModule,
     ActiveClassModule,
-    HandlePageRoutingModule
+    HandlePageRoutingModule,
+    RippleModule
   ],
   declarations: [
     HandlePage,

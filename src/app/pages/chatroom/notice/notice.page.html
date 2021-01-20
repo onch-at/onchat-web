@@ -26,10 +26,9 @@
           <p>{{ '申请加入 ' + item.chatroomName }}</p>
         </ion-label>
 
-        <button *ngIf="!item.handlerId" appActiveClass [appActiveClassDuration]="250"
-          class="ion-activatable ripple-container btn-primary" (click)="agreeChatRequest(item.id, $event)">
+        <button *ngIf="!item.handlerId" appRipple appActiveClass class="btn-primary"
+          (click)="agreeChatRequest(item.id, $event)">
           同意
-          <ion-ripple-effect></ion-ripple-effect>
         </button>
 
         <span *ngIf="item.handlerId" class="status" [ngSwitch]="item.status">

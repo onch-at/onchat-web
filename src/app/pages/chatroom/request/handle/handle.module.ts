@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActiveClassModule } from 'src/app/modules/active-class.module';
+import { RippleModule } from 'src/app/modules/ripple.module';
 import { HandlePageRoutingModule } from './handle-routing.module';
 import { HandlePage } from './handle.page';
 
@@ -12,7 +13,8 @@ import { HandlePage } from './handle.page';
     FormsModule,
     IonicModule,
     ActiveClassModule,
-    HandlePageRoutingModule
+    HandlePageRoutingModule,
+    RippleModule
   ],
   declarations: [HandlePage]
 })

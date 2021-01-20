@@ -29,15 +29,13 @@
     </div>
 
     <div class="card-content">
-      <article class="signature ion-activatable ripple-container">
+      <article appRipple class="signature">
         {{ user.signature || '这个人很懒，什么都没写~' }}
-        <ion-ripple-effect></ion-ripple-effect>
       </article>
 
-      <div class="last-online ion-activatable ripple-container">
+      <div appRipple class="last-online">
         <ion-icon name="time"></ion-icon>
         最近一次上线时间：{{ user.loginTime | date:'yyyy年M月d日' }}
-        <ion-ripple-effect></ion-ripple-effect>
       </div>
 
       <ul class="details-list">
@@ -81,17 +79,15 @@
   </div>
 
   <aside class="bottom-bar">
-    <button *ngIf="chatroomId" appActiveClass [appActiveClassDuration]="250" [routerLink]="['/chat', chatroomId]"
-      class="ion-activatable ripple-container btn-primary btn-block">
+    <button *ngIf="chatroomId" appRipple appActiveClass [routerLink]="['/chat', chatroomId]"
+      class="btn-primary btn-block">
       跟Ta聊聊
-      <ion-ripple-effect></ion-ripple-effect>
     </button>
 
     <!-- TODO 这边以后可以和自己聊天 -->
-    <button *ngIf="!chatroomId && globalData.user?.id != user.id" appActiveClass [appActiveClassDuration]="250"
-      [routerLink]="['/friend/request', user.id]" class="ion-activatable ripple-container btn-primary btn-block">
+    <button *ngIf="!chatroomId && globalData.user?.id != user.id" appRipple appActiveClass
+      [routerLink]="['/friend/request', user.id]" class="btn-primary btn-block">
       加Ta好友
-      <ion-ripple-effect></ion-ripple-effect>
     </button>
   </aside>
 </ion-content>

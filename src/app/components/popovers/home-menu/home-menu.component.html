@@ -1,12 +1,10 @@
 <ul class="home-menu" (touchend)="$event.preventDefault()" (tap)="dismiss()">
-  <li class="home-menu-item ion-activatable ripple-container" (tap)="navigate(['/chatroom/create'])">
+  <li appRipple class="home-menu-item" (tap)="navigate(['/chatroom/create'])">
     <ion-icon name="chatbubble-ellipses"></ion-icon>
     <span>创建聊天室</span>
-    <ion-ripple-effect></ion-ripple-effect>
   </li>
-  <li class="home-menu-item ion-activatable ripple-container">
+  <li appRipple class="home-menu-item">
     <ion-icon name="person-add"></ion-icon>
     <span>添加新朋友</span>
-    <ion-ripple-effect></ion-ripple-effect>
   </li>
 </ul>

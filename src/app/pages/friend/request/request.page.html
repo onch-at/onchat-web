@@ -39,10 +39,8 @@
 
     <div style="flex: auto;"></div>
 
-    <button appActiveClass [appActiveClassDuration]="250" (tap)="friendRequest()"
-      class="ion-activatable ripple-container btn-primary btn-block">
+    <button appRipple appActiveClass (tap)="friendRequest()" class="btn-primary btn-block">
       立即申请
-      <ion-ripple-effect></ion-ripple-effect>
     </button>
   </main>
 </ion-content>

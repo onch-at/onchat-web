@@ -57,8 +57,7 @@
             <div class="form-group form-group-row">
               <input type="text" class="display-block text-center ipt-primary" id="captcha" formControlName="captcha"
                 (blur)="trimAll('captcha')" placeholder="验证码" maxlength="4" required>
-              <img appActiveClass [appActiveClassDuration]="250" class="captcha" [src]="captchaUrl"
-                (tap)="updateCaptcha()">
+              <img appActiveClass class="captcha" [src]="captchaUrl" (tap)="updateCaptcha()">
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
@@ -71,10 +70,9 @@
         </ion-col>
 
         <ion-col class="text-center" size="12">
-          <button appActiveClass [appActiveClassDuration]="250" [disabled]="registerForm.invalid"
-            class="ion-activatable ripple-container btn-primary" style="margin-bottom: .75rem;" (tap)="register()">
+          <button appRipple appActiveClass [disabled]="registerForm.invalid" class="btn-primary"
+            style="margin-bottom: .75rem;" (tap)="register()">
             注册
-            <ion-ripple-effect></ion-ripple-effect>
           </button>
           <span class="color-dark outline-none cursor-pointer" style="font-size: .9rem;"
             routerLink="/user/login">已有账号？立即登录！</span>

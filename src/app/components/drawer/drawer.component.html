@@ -1,15 +1,12 @@
 <ion-slides [pager]="true">
   <ion-slide>
     <div class="grid-container">
-      <button appActiveClass [appActiveClassDuration]="250" class="ion-activatable ripple-container btn-light">
+      <button appRipple appActiveClass class="btn-light">
         <ion-icon name="image"></ion-icon>
-        <ion-ripple-effect></ion-ripple-effect>
       </button>
 
-      <button appActiveClass [appActiveClassDuration]="250" class="ion-activatable ripple-container btn-light"
-        (tap)="editRichText()">
+      <button appRipple appActiveClass class="btn-light" (tap)="editRichText()">
         <ion-icon name="brush"></ion-icon>
-        <ion-ripple-effect></ion-ripple-effect>
       </button>
     </div>
   </ion-slide>

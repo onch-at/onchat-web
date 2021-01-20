@@ -24,10 +24,9 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble class="msg-bubble ion-activatable ripple-container"
-            (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+          <span #bubble appRipple class="msg-bubble" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-            [innerHTML]="item.data['content'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html">
+            [innerHTML]="item.data['content'] | hyperlink | html">
           </span>
 
           <ion-spinner *ngIf="globalData.user?.id == item.userId && item.loading" class="send-spinner" name="dots"
@@ -46,10 +45,10 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble class="msg-bubble ion-activatable ripple-container ql-editor"
+          <span #bubble appRipple class="msg-bubble ql-editor"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-            [innerHTML]=" item.data['html'] + '<ion-ripple-effect></ion-ripple-effect>' | hyperlink | html"></span>
+            [innerHTML]=" item.data['html'] | hyperlink | html"></span>
         </div>
       </li>
 
@@ -64,7 +63,7 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble class="msg-bubble msg-bubble-card ion-activatable ripple-container"
+          <span #bubble appRipple class="msg-bubble msg-bubble-card"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
             [routerLink]="['/chatroom', item.data['chatroomId']]">
@@ -80,7 +79,6 @@
                 </div>
               </div>
             </div>
-            <ion-ripple-effect></ion-ripple-effect>
           </span>
         </div>
       </li>

@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { AvatarCropperComponent } from '../components/modals/avatar-cropper/avatar-cropper.component';
 import { ActiveClassModule } from './active-class.module';
+import { RippleModule } from './ripple.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { ActiveClassModule } from './active-class.module';
     ImageCropperModule,
     ActiveClassModule,
     CommonModule,
-    IonicModule
+    IonicModule,
+    RippleModule
   ],
   exports: [
     AvatarCropperComponent,

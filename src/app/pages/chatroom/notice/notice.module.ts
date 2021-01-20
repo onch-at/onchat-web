@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActiveClassModule } from 'src/app/modules/active-class.module';
+import { RippleModule } from 'src/app/modules/ripple.module';
 import { NoticePageRoutingModule } from './notice-routing.module';
 import { NoticePage } from './notice.page';
 
@@ -12,7 +13,8 @@ import { NoticePage } from './notice.page';
     FormsModule,
     IonicModule,
     ActiveClassModule,
-    NoticePageRoutingModule
+    NoticePageRoutingModule,
+    RippleModule
   ],
   declarations: [NoticePage]
 })

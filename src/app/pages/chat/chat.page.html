@@ -21,7 +21,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <main [ngStyle]="{ 'padding-bottom': 'calc(0.75rem + ' + bottomBar.clientHeight + 'px)' } " (click)="hideDrawer()">
+  <main [ngStyle]="{ 'padding-bottom': 'calc(0.75rem + ' + bottomBar.clientHeight + 'px)' }" (click)="hideDrawer()">
     <ion-infinite-scroll position="top" threshold="-10px" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
@@ -30,8 +30,7 @@
   </main>
 
   <div #bottomBar class="bottom-bar" slot="fixed">
-    <button appActiveClass [appActiveClassDuration]="250" class="tips-btn btn-primary" [ngClass]="{'show': hasUnread}"
-      (tap)="scrollToBottom()">
+    <button appActiveClass class="tips-btn btn-primary" [ngClass]="{'show': hasUnread}" (tap)="scrollToBottom()">
       收到新消息
       <ion-icon name="arrow-down-outline"></ion-icon>
     </button>
@@ -43,18 +42,15 @@
         placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
 
       <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
-      <button [hidden]="!showSendBtn()" appActiveClass [appActiveClassDuration]="250"
-        class="ion-activatable ripple-container btn-primary send-btn" (click)="send()" [disabled]="disableSendBtn()">
+      <button appRipple appActiveClass class="btn-primary send-btn" (click)="send()" [hidden]="!showSendBtn()"
+        [disabled]="disableSendBtn()">
         <label [for]="'message-' + chatroomId" class="display-flex align-items-center justify-content-center">
           <ion-icon name="arrow-up"></ion-icon>
-          <ion-ripple-effect></ion-ripple-effect>
         </label>
       </button>
 
-      <button [hidden]="showSendBtn()" appActiveClass [appActiveClassDuration]="250"
-        class="ion-activatable ripple-container btn-secondary more-btn" (click)="toggleDrawer()">
+      <button appRipple appActiveClass class="btn-secondary more-btn" (click)="toggleDrawer()" [hidden]="showSendBtn()">
         <ion-icon name="add-circle-outline"></ion-icon>
-        <ion-ripple-effect></ion-ripple-effect>
       </button>
     </div>
 

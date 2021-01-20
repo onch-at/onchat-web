@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
 
 /**
- * 在宿主元素被Active时（tap）添加一个CSS类名，并且在指定时间后移除，不填写duration代表不移除
+ * 在宿主元素被Active时（tap）添加一个CSS类名，并且在指定时间后移除
  */
 @Directive({
   selector: '[appActiveClass]'
@@ -12,16 +12,19 @@ export class ActiveClassDirective {
   /** 多少毫秒后移除CSS类名 */
   @Input() appActiveClassDuration: number;
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) { }
 
   @HostListener('tap')
   onTap() {
     const className = this.appActiveClass || 'active';
     this.renderer.addClass(this.elementRef.nativeElement, className);
 
-    this.appActiveClassDuration && setTimeout(() => {
+    setTimeout(() => {
       this.renderer.removeClass(this.elementRef.nativeElement, className);
-    }, this.appActiveClassDuration);
+    }, this.appActiveClassDuration || 250);
   }
 
 }
