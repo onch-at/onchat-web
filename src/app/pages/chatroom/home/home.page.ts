@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, filter, first, takeUntil, tap } from 'rxjs/operators';
+import { MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
@@ -22,6 +23,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   chatroom: Chatroom;
   chatMembers: ChatMember[];
   /** 是否是聊天室主人 */
@@ -33,7 +35,6 @@ export class HomePage implements OnInit {
   /** 成员数量 */
   memberCount: number;
   showMask: boolean;
-  private subject: Subject<unknown> = new Subject();
 
   constructor(
     private route: ActivatedRoute,
@@ -144,7 +145,7 @@ export class HomePage implements OnInit {
         title: '邀请好友',
         // 筛选出不在这个聊天室的好友会话
         chatSessions: this.globalData.privateChatrooms.filter(o => !this.chatMembers.some(p => p.userId === o.data.userId)).map(o => ({ ...o, checked: false })),
-        limit: 30,
+        limit: MSG_BROADCAST_QUANTITY_LIMIT,
         handler: (data: ChatSessionCheckbox[]) => {
           // 得到聊天室ID
           const list = data.map(o => o.data.chatroomId);

@@ -14,6 +14,7 @@ const ITEM_ROWS: number = 15;
   styleUrls: ['./chat-session-selector.component.scss'],
 })
 export class ChatSessionSelectorComponent implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   /** 标题 */
   @Input() title: string;
   /** 会话列表 */
@@ -28,8 +29,6 @@ export class ChatSessionSelectorComponent implements OnInit {
   chatSessionsPage: number = 1;
   /** 加载中 */
   loading: boolean = false;
-
-  private subject: Subject<unknown> = new Subject();
 
   constructor(
     public globalData: GlobalData,
@@ -110,8 +109,9 @@ export class ChatSessionSelectorComponent implements OnInit {
   list() {
     let { chatSessions, keyword } = this;
     if (keyword.length) {
+      keyword = keyword.toLowerCase();
       // 模糊搜索：别名和用户ID
-      chatSessions = chatSessions.filter(o => o.title.includes(keyword) || (o.data.userId + '').includes(keyword));
+      chatSessions = chatSessions.filter(o => o.title.toLowerCase().includes(keyword) || (o.data.userId + '').includes(keyword));
     }
     return this.chatSessionsPage ? chatSessions.slice(0, this.chatSessionsPage * ITEM_ROWS) : chatSessions;
   }

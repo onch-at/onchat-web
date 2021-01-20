@@ -21,11 +21,10 @@ import { StrUtil } from 'src/app/utils/str.util';
   styleUrls: ['./rich-text-editor.component.scss'],
 })
 export class RichTextEditorComponent implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   @Input() page: ChatPage;
-
   html: string;
   text: string = '';
-  private subject: Subject<unknown> = new Subject();
 
   modules = {
     toolbar: [

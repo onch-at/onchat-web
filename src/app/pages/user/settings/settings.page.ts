@@ -22,6 +22,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   /** 昵称最大长度 */
   nicknameMaxLength: number = USERNAME_MAX_LENGTH;
   /** 个性签名最大长度 */
@@ -40,7 +41,6 @@ export class SettingsPage implements OnInit {
   dirty: boolean = false;
   /** 加载中 */
   loading: boolean = false;
-  private subject: Subject<unknown> = new Subject();
 
   userInfoForm: FormGroup = this.fb.group({
     nickname: [

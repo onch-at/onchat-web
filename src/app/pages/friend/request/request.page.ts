@@ -14,6 +14,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./request.page.scss'],
 })
 export class RequestPage implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   /** 用户 */
   user: User;
   /** 好友别名 */
@@ -22,7 +23,6 @@ export class RequestPage implements OnInit {
   requestReason: string = null;
   /** 对方的拒绝原因 */
   rejectReason: string = null;
-  private subject: Subject<unknown> = new Subject();
 
   constructor(
     public globalData: GlobalData,

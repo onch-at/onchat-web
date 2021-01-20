@@ -14,10 +14,10 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./handle.page.scss'],
 })
 export class HandlePage implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   /** 用户 */
   user: User;
   friendRequest: FriendRequest;
-  private subject: Subject<unknown> = new Subject();
 
   constructor(
     private socketService: SocketService,

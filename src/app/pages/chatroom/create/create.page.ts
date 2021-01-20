@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/f
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH } from 'src/app/common/constant';
+import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
@@ -20,6 +20,7 @@ const ITEM_ROWS: number = 10;
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   /** 群名最大长度 */
   nameMaxLength: number = CHATROOM_NAME_MAX_LENGTH;
   /** 群简介最大长度 */
@@ -32,7 +33,6 @@ export class CreatePage implements OnInit {
   privateChatroomsPage: number = 1;
   /** 搜索关键字 */
   keyword: string = '';
-  private subject: Subject<unknown> = new Subject();
 
   chatroomForm: FormGroup = this.fb.group({
     name: [
@@ -87,7 +87,7 @@ export class CreatePage implements OnInit {
 
       this.overlayService.presentToast('聊天室创建成功！');
       // 得到邀请的好友的聊天室ID
-      const chatroomIdList = this.originPrivateChatrooms.filter(o => o.checked).map(o => o.data.chatroomId);
+      const chatroomIdList = this.getCheckedChatSessions().map(o => o.data.chatroomId);
       this.socketService.inviteJoinChatroom(result.data.data.chatroomId, chatroomIdList);
 
       // TODO 跳到群简介页面
@@ -123,11 +123,34 @@ export class CreatePage implements OnInit {
   }
 
   /**
-   * 删除已选群成员
+   * 检测checkbox变更
+   */
+  onChange(item: ChatSessionCheckbox) {
+    if (this.getCheckedChatSessions().length > MSG_BROADCAST_QUANTITY_LIMIT) {
+      item.checked = false;
+    }
+  }
+
+  /**
+   * 删除已选会话
    * @param item
    */
-  deleteMember(item: ChatSessionCheckbox) {
+  deleteChatSessions(item: ChatSessionCheckbox) {
     item.checked = false;
+  }
+
+  /**
+   * 是否禁用checkbox
+   */
+  disabled() {
+    return this.getCheckedChatSessions().length >= MSG_BROADCAST_QUANTITY_LIMIT;
+  }
+
+  /**
+   * 获得已选会话列表
+   */
+  getCheckedChatSessions() {
+    return this.originPrivateChatrooms.filter(o => o.checked);
   }
 
   /**
@@ -136,8 +159,9 @@ export class CreatePage implements OnInit {
   privateChatrooms() {
     let { originPrivateChatrooms, keyword } = this;
     if (keyword.length) {
+      keyword = keyword.toLowerCase();
       // 模糊搜索：别名和用户ID
-      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.title.includes(keyword) || (o.data.userId + '').includes(keyword));
+      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.title.toLowerCase().includes(keyword) || (o.data.userId + '').includes(keyword));
     }
     return this.privateChatroomsPage ? originPrivateChatrooms.slice(0, this.privateChatroomsPage * ITEM_ROWS) : originPrivateChatrooms;
   }

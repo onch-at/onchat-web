@@ -40,3 +40,6 @@ export const TEXT_MSG_MAX_LENGTH: number = 3000;
 
 /** 会话列表分页行数 */
 export const CHAT_SESSIONS_ROWS: number = 15;
+
+/** 消息广播数量限制（群发消息） */
+export const MSG_BROADCAST_QUANTITY_LIMIT: number = 30;

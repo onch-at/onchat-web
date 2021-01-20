@@ -12,9 +12,8 @@ import { OverlayService } from 'src/app/services/overlay.service';
   styleUrls: ['home.page.scss']
 })
 export class HomePage implements OnInit {
-  sharp: boolean = false;
-
   private subject: Subject<unknown> = new Subject();
+  sharp: boolean = false;
 
   constructor(
     private router: Router,

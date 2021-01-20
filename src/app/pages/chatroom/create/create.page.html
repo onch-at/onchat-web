@@ -57,7 +57,7 @@
           <div class="avatar-list-track">
             <img [src]="globalData.user.avatarThumbnail">
             <ng-container *ngFor="let item of originPrivateChatrooms">
-              <img *ngIf="item.checked" [src]="item.avatarThumbnail" (click)="deleteMember(item)">
+              <img *ngIf="item.checked" [src]="item.avatarThumbnail" (click)="deleteChatSessions(item)">
             </ng-container>
           </div>
         </div>
@@ -76,7 +76,8 @@
 
         <ion-label>{{ item.title }}</ion-label>
 
-        <ion-checkbox slot="end" mode="ios" [(ngModel)]="item.checked"></ion-checkbox>
+        <ion-checkbox slot="end" mode="ios" [(ngModel)]="item.checked" (ionChange)="onChange(item)"
+          [disabled]="!item.checked && disabled()"></ion-checkbox>
       </ion-item>
     </ion-list>
 

@@ -19,6 +19,7 @@ export type AvatarData = { avatar: string; avatarThumbnail: string };
   styleUrls: ['./avatar-cropper.component.scss'],
 })
 export class AvatarCropperComponent implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   /** 文件变更事件 */
   @Input() imageChangedEvent: Event;
   /** 上传器 */
@@ -33,7 +34,6 @@ export class AvatarCropperComponent implements OnInit {
   ionLoading: Promise<HTMLIonLoadingElement>;
   /** 无法加载图片 */
   error: boolean = false;
-  private subject: Subject<unknown> = new Subject();
 
   constructor(
     public globalData: GlobalData,

@@ -21,6 +21,7 @@ import { StrUtil } from 'src/app/utils/str.util';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
+  private subject: Subject<unknown> = new Subject();
   textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
   msg: string = '';
   /** 当前房间名字 */
@@ -56,7 +57,6 @@ export class ChatPage implements OnInit {
    * sendTime => 在msgList中的index
    */
   sendMsgMap: Map<number, number> = new Map();
-  private subject: Subject<unknown> = new Subject();
   /** 是否显示抽屉 */
   showDrawer: boolean = false;
   /** 键盘高度 */

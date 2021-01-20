@@ -64,13 +64,6 @@ ion-img {
   flex-direction: column;
 }
 
-// 使用涟漪效果的父类
-.ripple-container {
-  position: relative !important;
-  overflow: hidden !important;
-  cursor: pointer !important;
-}
-
 input,
 textarea {
   appearance: none;
