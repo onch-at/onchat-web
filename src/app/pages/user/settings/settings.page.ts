@@ -2,7 +2,6 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
@@ -79,8 +78,7 @@ export class SettingsPage implements OnInit {
     private location: Location,
     public globalData: GlobalData,
     private onChatService: OnChatService,
-    private overlayService: OverlayService,
-    private modalCtrl: ModalController
+    private overlayService: OverlayService
   ) { }
 
   ngOnInit() {
@@ -100,6 +98,11 @@ export class SettingsPage implements OnInit {
     ).subscribe(() => {
       this.dirty = true;
     });
+  }
+
+  ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
   /**

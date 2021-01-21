@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IonRouterOutlet } from '@ionic/angular';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
 import { Login } from 'src/app/models/form.model';
@@ -50,9 +51,16 @@ export class LoginPage implements OnInit {
     private socketService: SocketService,
     private fb: FormBuilder,
     private router: Router,
+    private routerOutlet: IonRouterOutlet
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.routerOutlet.swipeGesture = false;
+  }
+
+  ngOnDestroy() {
+    this.routerOutlet.swipeGesture = true;
+  }
 
   login() {
     if (this.loginForm.invalid || this.globalData.navigationLoading) { return; }

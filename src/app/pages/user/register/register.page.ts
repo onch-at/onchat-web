@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IonRouterOutlet } from '@ionic/angular';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
 import { Register } from 'src/app/models/form.model';
@@ -76,11 +77,18 @@ export class RegisterPage implements OnInit {
     private onChatService: OnChatService,
     private overlayService: OverlayService,
     private socketService: SocketService,
+    private routerOutlet: IonRouterOutlet
   ) { }
 
   ngOnInit() {
+    this.routerOutlet.swipeGesture = false;
+
     const username = this.route.snapshot.queryParams.username;
     username && this.registerForm.controls.username.setValue(username);
+  }
+
+  ngOnDestroy() {
+    this.routerOutlet.swipeGesture = true;
   }
 
   register() {

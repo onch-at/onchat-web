@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
 import { ResultCode } from 'src/app/common/enum';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
@@ -35,7 +34,6 @@ export class AvatarPage implements OnInit {
     private feedbackService: FeedbackService,
     private route: ActivatedRoute,
     private router: Router,
-    private modalCtrl: ModalController,
   ) { }
 
   ngOnInit() {
