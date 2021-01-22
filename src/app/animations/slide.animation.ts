@@ -22,16 +22,16 @@ export const horizontalSlideAnimation = trigger('horizontalSlideInAnimation', [
         ], options),
         query(':enter', [
             style({
-                left: '100%'
+                transform: 'translate3d(100%,0,0)'
             })
         ], options),
         query(':leave', animateChild(), options),
         group([
             query(':leave', [
-                animate('250ms ease-out', style({ left: '-100%' }))
+                animate('.3s ease-out', style({ transform: 'translate3d(-100%,0,0)' }))
             ], options),
             query(':enter', [
-                animate('250ms ease-out', style({ left: '0%' }))
+                animate('.3s ease-out', style({ transform: 'translate3d(0,0,0)' }))
             ], options)
         ]),
         query(':enter', animateChild(), options),
@@ -51,16 +51,16 @@ export const horizontalSlideAnimation = trigger('horizontalSlideInAnimation', [
         ], options),
         query(':enter', [
             style({
-                left: '-100%'
+                transform: 'translate3d(-100%,0,0)'
             })
         ], options),
         query(':leave', animateChild(), options),
         group([
             query(':leave', [
-                animate('300ms ease-out', style({ left: '100%' }))
+                animate('.3s ease-out', style({ transform: 'translate3d(100%,0,0)' }))
             ], options),
             query(':enter', [
-                animate('300ms ease-out', style({ left: '0%' }))
+                animate('.3s ease-out', style({ transform: 'translate3d(0,0,0)' }))
             ], options)
         ]),
         query(':enter', animateChild(), options),
