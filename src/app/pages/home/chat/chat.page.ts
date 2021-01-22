@@ -4,7 +4,7 @@ import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { CHAT_SESSIONS_ROWS } from 'src/app/common/constant';
 import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
-import { ChatSession, Result } from 'src/app/models/onchat.model';
+import { ChatSession, IEntity, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { DateUtil } from 'src/app/utils/date.util';
@@ -26,6 +26,10 @@ export class ChatPage implements OnInit {
 
   ngOnInit() { }
 
+  ngOnDestroy() {
+    this.globalData.chatSessionsPage = 1;
+  }
+
   /**
    * 用于提升性能
    * 一般情况下，当数组内有变更时，
@@ -33,7 +37,7 @@ export class ChatPage implements OnInit {
    * 如果加上trackBy方法，Angular将会知道具体的变更元素，
    * 并针对性地对此特定元素进行DOM刷新，提升页面渲染性能。
    */
-  trackByFn(index: number, item: ChatSession): number {
+  trackByFn(index: number, item: IEntity): number {
     return item.id;
   }
 
@@ -43,6 +47,7 @@ export class ChatPage implements OnInit {
    */
   refresh(event: any) {
     this.onChatService.initChatSession().subscribe(() => {
+      this.globalData.chatSessionsPage = 1;
       event.target.complete();
     });
   }

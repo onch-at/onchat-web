@@ -29,8 +29,12 @@ export class GlobalData {
   private _chatSessionsPage: number = 1;
   /** 私聊聊天室列表 */
   private _privateChatrooms: ChatSession[] = [];
+  /** 群聊聊天室列表 */
+  private _groupChatrooms: ChatSession[] = [];
   /** 私聊聊天室列表的分页页码 */
   private _privateChatroomsPage: number = 1;
+  /** 群聊聊天室列表的分页页码 */
+  private _groupChatroomsPage: number = 1;
   /** 导航/路由加载中 */
   private _navigationLoading: boolean = false;
 
@@ -114,8 +118,8 @@ export class GlobalData {
     return this._chatSessionsPage;
   }
 
-  set privateChatrooms(privateChatrooms: ChatSession[]) {
-    this._privateChatrooms = privateChatrooms.sort((a: ChatSession, b: ChatSession) => {
+  set privateChatrooms(chatrooms: ChatSession[]) {
+    this._privateChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => {
       return a.title.localeCompare(b.title);
     });
   }
@@ -124,12 +128,30 @@ export class GlobalData {
     return this._privateChatrooms;
   }
 
+  set groupChatrooms(chatrooms: ChatSession[]) {
+    this._groupChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => {
+      return a.title.localeCompare(b.title);
+    });
+  }
+
+  get groupChatrooms(): ChatSession[] {
+    return this._groupChatrooms;
+  }
+
   set privateChatroomsPage(page: number) {
     this._privateChatroomsPage = page;
   }
 
   get privateChatroomsPage() {
     return this._privateChatroomsPage;
+  }
+
+  set groupChatroomsPage(page: number) {
+    this._groupChatroomsPage = page;
+  }
+
+  get groupChatroomsPage() {
+    return this._groupChatroomsPage;
   }
 
   set navigationLoading(loading: boolean) {

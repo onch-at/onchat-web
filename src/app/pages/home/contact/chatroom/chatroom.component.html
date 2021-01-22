@@ -1,15 +1,20 @@
 <ion-list>
-  <ion-item-sliding mode="md">
-    <ion-item lines="none" [detail]="false">
-      <img slot="start" src="https://blog.hypergo.net/images/cartoon/4_angry_birds_blue.jpg">
+  <ion-item-sliding mode="md" *ngFor="let item of chatrooms(); let i = index;">
+    <ion-item lines="none" [detail]="false" [routerLink]="['/chat', item.data.chatroomId]">
+      <ion-img slot="start" *ngIf="i > 9" [src]="item.avatarThumbnail"></ion-img>
+      <img slot="start" *ngIf="i <= 9" [src]="item.avatarThumbnail">
 
       <ion-label class="item-content">
-        <h2 class="font-weight-bold">Chatroom Name</h2>
-        <p>Chatroom description</p>
+        <h2 class="font-weight-bold">{{ item.title }}</h2>
+        <p>[简介] {{ item.content || '暂无聊天室简介~' }}</p>
       </ion-label>
     </ion-item>
     <ion-item-options side="end">
-      <ion-item-option class="bg-danger">退出房间</ion-item-option>
+      <ion-item-option class="bg-danger">退出聊天室</ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
+
+  <ion-infinite-scroll (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-list>

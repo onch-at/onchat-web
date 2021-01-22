@@ -27,7 +27,11 @@ export class FriendComponent implements OnInit {
     });
   }
 
-  privateChatrooms() {
+  ngOnDestroy() {
+    this.globalData.privateChatroomsPage = 1;
+  }
+
+  chatrooms() {
     const { privateChatroomsPage, privateChatrooms } = this.globalData;
     return privateChatroomsPage ? privateChatrooms.slice(0, privateChatroomsPage * CHAT_SESSIONS_ROWS) : privateChatrooms;
   }

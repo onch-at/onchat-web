@@ -153,6 +153,13 @@ export class OnChatService {
   }
 
   /**
+   * 获取群聊聊天室列表
+   */
+  getGroupChatrooms(): Observable<Result<ChatSession[]>> {
+    return this.http.get<Result<ChatSession[]>>(env.userUrl + 'chatrooms/group');
+  }
+
+  /**
    * 获取聊天室
    * @param id 聊天室ID
    */

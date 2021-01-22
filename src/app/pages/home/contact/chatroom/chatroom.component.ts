@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { filter } from 'rxjs/operators';
+import { CHAT_SESSIONS_ROWS } from 'src/app/common/constant';
+import { ResultCode } from 'src/app/common/enum';
+import { ChatSession, Result } from 'src/app/models/onchat.model';
+import { GlobalData } from 'src/app/services/global-data.service';
+import { OnChatService } from 'src/app/services/onchat.service';
 
 @Component({
   selector: 'app-chatroom',
@@ -7,8 +13,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatroomComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private onChatService: OnChatService,
+    public globalData: GlobalData,
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // 如果为空，就加载
+    !this.globalData.groupChatrooms.length && this.onChatService.getGroupChatrooms().pipe(
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe((result: Result<ChatSession[]>) => {
+      this.globalData.groupChatrooms = result.data;
+    });
+  }
+
+  ngOnDestroy() {
+    this.globalData.groupChatroomsPage = 1;
+  }
+
+  chatrooms() {
+    const { groupChatroomsPage, groupChatrooms } = this.globalData;
+    return groupChatroomsPage ? groupChatrooms.slice(0, groupChatroomsPage * CHAT_SESSIONS_ROWS) : groupChatrooms;
+  }
+
+  /**
+   * 加载更多
+   * @param event
+   */
+  loadData(event: any) {
+    if (!this.globalData.groupChatroomsPage) {
+      return event.target.complete();
+    }
+
+    if (++this.globalData.groupChatroomsPage * CHAT_SESSIONS_ROWS >= this.globalData.groupChatrooms.length) {
+      this.globalData.groupChatroomsPage = null;
+    }
+
+    event.target.complete();
+  }
 
 }

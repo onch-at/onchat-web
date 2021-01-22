@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChatroomType, MessageType } from 'src/app/common/enum';
-import { Message } from 'src/app/models/onchat.model';
+import { IEntity, Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -38,7 +38,7 @@ export class MsgListComponent implements OnInit {
    * 如果加上trackBy方法，Angular将会知道具体的变更元素，
    * 并针对性地对此特定元素进行DOM刷新，提升页面渲染性能。
    */
-  trackByFn(index: number, item: Message): number {
+  trackByFn(index: number, item: IEntity): number {
     return item.id;
   }
 
