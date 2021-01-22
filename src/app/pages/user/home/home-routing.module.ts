@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 import { UserResolve } from 'src/app/resolvers/user.resolver';
 import { HomePage } from './home.page';
 
@@ -10,6 +11,12 @@ const routes: Routes = [
     resolve: {
       user: UserResolve
     },
+    canActivate: [
+      AuthGuard
+    ],
+    canLoad: [
+      AuthGuard
+    ],
   }
 ];
 

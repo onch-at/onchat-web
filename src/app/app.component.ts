@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Event, NavigationCancel, NavigationStart, Router } from '@angular/router';
+import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { filter, mergeMap } from 'rxjs/operators';
 import { ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
@@ -362,7 +362,17 @@ export class AppComponent implements OnInit {
     });
 
     this.router.events.subscribe((event: Event) => {
-      this.globalData.navigationLoading = event instanceof NavigationStart;
+      switch (true) {
+        case event instanceof NavigationStart:
+          this.globalData.navigationLoading = true;
+          break;
+
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationError:
+        case event instanceof NavigationCancel:
+          this.globalData.navigationLoading = false;
+          break;
+      }
 
       // 如果路由返回被取消，就震动一下，表示阻止
       if (event instanceof NavigationCancel) {
