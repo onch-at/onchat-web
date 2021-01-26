@@ -1,128 +1,86 @@
-import { animate, animateChild, group, query, style, transition, trigger } from '@angular/animations';
+import { animate, animateChild, AnimationQueryOptions, group, query, style, transition, trigger } from '@angular/animations';
 
-const options = {
+const options: AnimationQueryOptions = {
     optional: true
 };
 
-/**
- * 水平滑动动画
- */
-export const horizontalSlideAnimation = trigger('horizontalSlideInAnimation', [
-    transition('1 => *, 2 => 3', [
-        style({
-            position: 'relative'
-        }),
+/** 水平滑动路由动画 */
+export const horizontalSlideInRouteAnimation = trigger('horizontalSlideInRouteAnimation', [
+    transition('1 => 2, 1 => 3, 2 => 3', [
+        style({ position: 'relative' }),
         query(':enter, :leave', [
             style({
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 width: '100%'
-            })
+            }),
+            animateChild(),
         ], options),
+
         query(':enter', [
-            style({
-                transform: 'translate3d(100%,0,0)'
-            })
+            style({ transform: 'translate3d(100%,0,0)' })
         ], options),
-        query(':leave', animateChild(), options),
+
         group([
             query(':leave', [
                 animate('.3s ease-out', style({ transform: 'translate3d(-100%,0,0)' }))
             ], options),
             query(':enter', [
-                animate('.3s ease-out', style({ transform: 'translate3d(0,0,0)' }))
+                animate('.3s ease-out', style({ transform: 'none' }))
             ], options)
         ]),
-        query(':enter', animateChild(), options),
     ]),
 
-    transition('2 => 1, 3 => *', [
-        style({
-            position: 'relative'
-        }),
+    transition('2 => 1, 3 => 2, 3 => 1', [
+        style({ position: 'relative' }),
         query(':enter, :leave', [
             style({
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 width: '100%'
-            })
+            }),
+            animateChild(),
         ], options),
+
         query(':enter', [
-            style({
-                transform: 'translate3d(-100%,0,0)'
-            })
+            style({ transform: 'translate3d(-100%,0,0)' })
         ], options),
-        query(':leave', animateChild(), options),
+
         group([
             query(':leave', [
                 animate('.3s ease-out', style({ transform: 'translate3d(100%,0,0)' }))
             ], options),
             query(':enter', [
-                animate('.3s ease-out', style({ transform: 'translate3d(0,0,0)' }))
+                animate('.3s ease-out', style({ transform: 'none' }))
             ], options)
-        ]),
-        query(':enter', animateChild(), options),
-    ]),
+        ])
+    ])
 ]);
 
-// export const verticalSlideInAnimation = trigger('verticalSlideInAnimation', [
-//     transition('1 => 2, 1 => 3, 1 => 4, 2 => 3, 2 => 4, 3 => 4', [
-//         style({
-//             position: 'relative'
-//         }),
-//         query(':enter, :leave', [
-//             style({
-//                 position: 'absolute',
-//                 top: '3rem',
-//                 left: '3rem',
-//                 width: 'calc(100vw - 3rem)'
-//             })
-//         ]),
-//         query(':enter', [
-//             style({
-//                 top: '100vh'
-//             })
-//         ]),
-//         query(':leave', animateChild()),
-//         group([
-//             query(':leave', [
-//                 animate('250ms ease-out', style({ top: '-100vh' }))
-//             ]),
-//             query(':enter', [
-//                 animate('250ms ease-out', style({ top: '3rem' }))
-//             ])
-//         ]),
-//         query(':enter', animateChild()),
-//     ]),
+/** 进入时向下滑动展开 */
+export const slideDownOnEnterAnimation = trigger('slideDownOnEnterAnimation', [
+    transition(':enter', [
+        style({
+            overflow: 'hidden',
+            height: 0,
+            opacity: 0
+        }),
+        animate('.125s ease-out', style({
+            height: '*',
+            opacity: 1
+        }))
+    ])
+]);
 
-//     transition('2 => 1, 3 => 2, 3 => 1, 4 => 3, 4 => 2, 4 => 1', [
-//         style({
-//             position: 'relative'
-//         }),
-//         query(':enter, :leave', [
-//             style({
-//                 position: 'absolute',
-//                 top: '3rem',
-//                 left: '3rem',
-//                 width: 'calc(100vw - 3rem)'
-//             })
-//         ]),
-//         query(':enter', [
-//             style({
-//                 top: '-100vh'
-//             })
-//         ]),
-//         query(':leave', animateChild()),
-//         group([
-//             query(':leave', [
-//                 animate('250ms ease-out', style({ top: '100vh' }))
-//             ]),
-//             query(':enter', [
-//                 animate('250ms ease-out', style({ top: '3rem' }))
-//             ])
-//         ]),
-//         query(':enter', animateChild()),
-//     ]),
-// ]);
+/** 离开时向上滑动收起 */
+export const slideUpOnLeaveAnimation = trigger('slideUpOnLeaveAnimation', [
+    transition(':leave', [
+        style({ overflow: 'hidden' }),
+        animate('.125s ease-out', style({
+            height: 0,
+            opacity: 0
+        }))
+    ])
+]);

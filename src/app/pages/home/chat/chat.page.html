@@ -9,7 +9,7 @@
 
 	<ion-list class="chat-session-list">
 
-		<ion-item-sliding #ionItemSliding mode="md"
+		<ion-item-sliding #ionItemSliding @slideUpOnLeaveAnimation mode="md"
 			*ngFor="let item of chatSessions(); let i = index; trackBy: trackByFn">
 			<ion-item-options side="start">
 				<ion-item-option (tap)="doStickyChatSession(item, ionItemSliding)"

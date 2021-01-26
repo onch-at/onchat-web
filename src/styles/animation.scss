@@ -49,17 +49,6 @@
         transform: scale3d(1.1, 1.1, 1);
     }
 }
-// 缩小入场动画
-@keyframes zoom-out {
-    from {
-        transform: scale3d(1.075, 1.075, 1);
-        opacity: 0.25;
-    }
-    to {
-        transform: scale3d(1, 1, 1);
-        opacity: 1;
-    }
-}
 // 涟漪动画
 @keyframes ripple {
     from {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
+import { slideUpOnLeaveAnimation } from 'src/app/animations/slide.animation';
 import { CHAT_SESSIONS_ROWS } from 'src/app/common/constant';
 import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatSession, IEntity, Result } from 'src/app/models/onchat.model';
@@ -12,7 +13,8 @@ import { DateUtil } from 'src/app/utils/date.util';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
-  styleUrls: ['./chat.page.scss']
+  styleUrls: ['./chat.page.scss'],
+  animations: [slideUpOnLeaveAnimation]
 })
 export class ChatPage implements OnInit {
   msgType = MessageType;
@@ -82,10 +84,7 @@ export class ChatPage implements OnInit {
    * @param index
    */
   removeChatSession(index: number) {
-    // 使用setTimeout解决手指点击后 还未来得及松开 后面的列表项跑上来 触发点击的问题
-    setTimeout(() => {
-      this.globalData.chatSessions.splice(index, 1);
-    }, 50);
+    this.globalData.chatSessions.splice(index, 1);
   }
 
   /**

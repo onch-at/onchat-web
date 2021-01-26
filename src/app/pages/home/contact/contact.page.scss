@@ -83,3 +83,8 @@ aside {
     transition: left 0.25s ease-in-out, width 0.25s ease-in-out;
   }
 }
+
+.router-outlet {
+  margin-top: 5.25rem;
+  z-index: 0;
+}

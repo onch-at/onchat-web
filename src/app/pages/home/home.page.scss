@@ -6,7 +6,6 @@
   background: rgba(var(--oc-color-primary-rgb), 0.75);
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
   overflow: hidden;
-  z-index: 99;
 
   .avatar {
     opacity: 0.9;
@@ -98,12 +97,7 @@ ion-header {
   }
 }
 
-ion-router-outlet {
-  margin: 3rem 0 var(--ion-safe-area-bottom, 0) 3rem;
-
-  /* 路由转场淡入 */
-  &::ng-deep .ion-page > * {
-    opacity: 0.25;
-    animation: zoom-out 0.25s ease-out forwards;
-  }
+.router-outlet {
+  top: 3rem;
+  left: 3rem;
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Scroll } from '@angular/router';
+import { AnimationBuilder, AnimationController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { HomeMenuComponent } from 'src/app/components/popovers/home-menu/home-menu.component';
@@ -15,10 +16,20 @@ export class HomePage implements OnInit {
   private subject: Subject<unknown> = new Subject();
   sharp: boolean = false;
 
+  routerAnimation: AnimationBuilder = (_, opts) => {
+    const { enteringEl, leavingEl } = opts;
+    const animation = this.animationCtrl.create().duration(250).easing('ease-out');
+    const enteringAnimation = this.animationCtrl.create().addElement(enteringEl).fromTo('opacity', 0, 1);
+    const leavingAnimation = this.animationCtrl.create().addElement(leavingEl).fromTo('opacity', 1, 0);
+
+    return animation.addAnimation([enteringAnimation, leavingAnimation]);
+  };
+
   constructor(
     private router: Router,
     private overlayService: OverlayService,
-    public globalData: GlobalData,
+    private animationCtrl: AnimationController,
+    public globalData: GlobalData
   ) { }
 
   ngOnInit() {

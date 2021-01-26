@@ -8,10 +8,12 @@
                 {{ globalData.receiveFriendRequests.length | numLimit }}
             </ion-badge>
         </button>
+
         <button routerLink="/home/contact/friend" routerLinkActive="active" [skipLocationChange]="true">
             <ion-icon name="person-outline"></ion-icon>
             <div>好友</div>
         </button>
+
         <button routerLink="/home/contact/chatroom" routerLinkActive="active" [skipLocationChange]="true">
             <ion-icon name="people-outline"></ion-icon>
             <div>聊天室</div>
@@ -19,7 +21,7 @@
         <span class="slider"></span>
     </aside>
 
-    <div [@horizontalSlideInAnimation]="prepareRoute(outlet)" style="margin-top: 5.25rem;z-index: 0;">
+    <div class="router-outlet" [@horizontalSlideInRouteAnimation]="prepareRoute(outlet)">
         <router-outlet #outlet="outlet"></router-outlet>
     </div>
 </ion-content>

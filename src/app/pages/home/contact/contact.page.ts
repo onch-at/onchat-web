@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { horizontalSlideAnimation } from 'src/app/animations/slide.animation';
+import { horizontalSlideInRouteAnimation } from 'src/app/animations/slide.animation';
 import { GlobalData } from 'src/app/services/global-data.service';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.page.html',
   styleUrls: ['./contact.page.scss'],
-  animations: [
-    horizontalSlideAnimation
-  ]
+  animations: [horizontalSlideInRouteAnimation]
 })
 export class ContactPage implements OnInit {
 
@@ -17,11 +15,10 @@ export class ContactPage implements OnInit {
     public globalData: GlobalData,
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   prepareRoute(outlet: RouterOutlet) {
-    return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
+    return outlet?.activatedRouteData?.animation;
   }
 
 }
