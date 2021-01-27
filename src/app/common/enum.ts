@@ -1,4 +1,6 @@
 export enum ResultCode {
+    /** 访问频率过高 */
+    ErrorHighFrequency = -4,
     /** 权限不足 */
     ErrorNoPermission = -3,
     /** 参数错误 */

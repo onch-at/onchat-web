@@ -117,10 +117,12 @@ export class ChatPage implements OnInit {
 
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.subject),
+
       filter((result: Result<Message>) => {
         const { code, data } = result;
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
       }),
+
       tap((result: Result<Message>) => {
         const { data } = result;
         // 如果不是自己发的消息
@@ -140,6 +142,7 @@ export class ChatPage implements OnInit {
           this.scrollToBottom();
         }
       }),
+
       debounceTime(3000)
     ).subscribe(() => {
       this.onChatService.readedChatSession(this.chatSession.id).subscribe();

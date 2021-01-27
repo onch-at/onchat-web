@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
 import { Observable, Subject } from 'rxjs';
-import { first, timeout } from 'rxjs/operators';
-import { SocketEvent } from '../common/enum';
-import { Message } from '../models/onchat.model';
+import { first, tap, timeout } from 'rxjs/operators';
+import { ResultCode, SocketEvent } from '../common/enum';
+import { Message, Result } from '../models/onchat.model';
+import { OverlayService } from './overlay.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class SocketService {
   constructor(
     private socket: Socket,
     private cookieService: CookieService,
+    private overlayService: OverlayService
   ) { }
 
   onInit(): Observable<void> {
@@ -160,7 +162,7 @@ export class SocketService {
    * @param eventName 事件名
    * @param data 数据
    */
-  emit(eventName: string, data?: any) {
+  emit(eventName: string, data?: unknown) {
     return this.socket.emit(eventName, data);
   }
 
@@ -169,7 +171,10 @@ export class SocketService {
    * @param eventName 事件名
    */
   on(eventName: string): Observable<unknown> {
-    return this.socket.fromEvent(eventName);
+    return this.socket.fromEvent(eventName).pipe(tap((result: Result) => {
+      const { code } = result;
+      code === ResultCode.ErrorHighFrequency && this.overlayService.presentToast('操作失败，原因：请求频率过高');
+    }));
   }
 
   /**
