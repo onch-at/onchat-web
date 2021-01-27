@@ -118,6 +118,10 @@ export class ChatPage implements OnInit {
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.subject),
 
+      tap((result: Result) => {
+        result?.code === ResultCode.ErrorHighFrequency && this.sendMsgMap.clear()
+      }),
+
       filter((result: Result<Message>) => {
         const { code, data } = result;
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
