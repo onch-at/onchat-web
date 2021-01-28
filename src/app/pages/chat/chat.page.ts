@@ -412,28 +412,17 @@ export class ChatPage implements OnInit {
         if (data['alias'] == this.chatroomName) { return; }
 
         this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
-          if (result.code !== ResultCode.Success) {
-            return this.overlayService.presentToast(result.msg);
+          const { code, data, msg } = result;
+          if (code !== ResultCode.Success) {
+            return this.overlayService.presentToast(msg);
           }
 
-          this.chatroomName = result.data;
-
+          this.chatroomName = data;
           this.overlayService.presentToast('成功修改好友别名', 1000);
 
-          let chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId == this.chatroomId);
+          const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId == this.chatroomId);
           if (chatSession) {
-            chatSession.title = result.data;
-          }
-
-          switch (this.chatroomType) {
-            case ChatroomType.Private:
-              chatSession = this.globalData.privateChatrooms.find(o => o.data.chatroomId == this.chatroomId);
-              if (chatSession) {
-                chatSession.title = result.data;
-              }
-              break;
-
-            // TODO 其他群聊
+            chatSession.title = data;
           }
         });
       },

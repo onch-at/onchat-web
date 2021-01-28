@@ -77,21 +77,21 @@ export class CreatePage implements OnInit {
 
     this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.subject)).subscribe((result: Result<ChatSession>) => {
       this.loading = false;
+      const { code, data, msg } = result;
 
-      if (result.code !== ResultCode.Success) {
-        return this.overlayService.presentToast('聊天室创建失败，原因：' + result.msg);
+      if (code !== ResultCode.Success) {
+        return this.overlayService.presentToast('聊天室创建失败，原因：' + msg);
       }
 
-      this.globalData.chatSessions.push(result.data);
+      this.globalData.chatSessions.push(data);
       this.globalData.sortChatSessions();
 
       this.overlayService.presentToast('聊天室创建成功！');
       // 得到邀请的好友的聊天室ID
       const chatroomIdList = this.getCheckedChatSessions().map(o => o.data.chatroomId);
-      this.socketService.inviteJoinChatroom(result.data.data.chatroomId, chatroomIdList);
+      this.socketService.inviteJoinChatroom(data.data.chatroomId, chatroomIdList);
 
-      // TODO 跳到群简介页面
-      this.router.navigateByUrl('/');
+      this.router.navigate(['/chatroom', data.data.chatroomId]);
     });
   }
 

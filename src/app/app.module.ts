@@ -58,9 +58,9 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     })
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'zh-Hans' },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: LOCALE_ID, useValue: 'zh-Hans' },
     CookieService,
   ],
   bootstrap: [AppComponent]

@@ -10,77 +10,38 @@ import { LocalStorage } from './local-storage.service';
 })
 export class GlobalData {
   /** 当前用户 */
-  private _user: User = null;
+  user: User = null;
   /** 记录当前所在的聊天室ID */
-  private _chatroomId: number = null;
+  chatroomId: number = null;
   /** 未读消息总数 */
-  private _unreadMsgCount: number = 0;
+  unreadMsgCount: number = 0;
   /** 是否可以销毁（返回上一页） */
-  private _canDeactivate: boolean = true;
+  canDeactivate: boolean = true;
   /** 我的收到好友申请列表 */
-  private _receiveFriendRequests: FriendRequest[] = [];
+  receiveFriendRequests: FriendRequest[] = [];
   /** 我的发起的好友申请列表 */
-  private _sendFriendRequests: FriendRequest[] = [];
-  /** 我收到的群通知 */
-  private _receiveChatRequests: ChatRequest[] = [];
-  /** 缓存聊天列表 */
-  private _chatSessions: ChatSession[] = [];
+  sendFriendRequests: FriendRequest[] = [];
   /** 缓存聊天列表的分页页码 */
-  private _chatSessionsPage: number = 1;
+  chatSessionsPage: number = 1;
+  /** 私聊聊天室列表的分页页码 */
+  privateChatroomsPage: number = 1;
+  /** 群聊聊天室列表的分页页码 */
+  groupChatroomsPage: number = 1;
+  /** 导航/路由加载中 */
+  navigationLoading: boolean = false;
+
   /** 私聊聊天室列表 */
   private _privateChatrooms: ChatSession[] = [];
   /** 群聊聊天室列表 */
   private _groupChatrooms: ChatSession[] = [];
-  /** 私聊聊天室列表的分页页码 */
-  private _privateChatroomsPage: number = 1;
-  /** 群聊聊天室列表的分页页码 */
-  private _groupChatroomsPage: number = 1;
-  /** 导航/路由加载中 */
-  private _navigationLoading: boolean = false;
+  /** 我收到的群通知 */
+  private _receiveChatRequests: ChatRequest[] = [];
+  /** 缓存聊天列表 */
+  private _chatSessions: ChatSession[] = [];
 
   constructor(
     private localStorage: LocalStorage
   ) { }
-
-  set user(user: User) {
-    this._user = user;
-  }
-
-  get user() {
-    return this._user;
-  }
-
-  set chatroomId(id: number) {
-    this._chatroomId = id;
-  }
-
-  get chatroomId() {
-    return this._chatroomId;
-  }
-
-  set canDeactivate(deactivate: boolean) {
-    this._canDeactivate = deactivate;
-  }
-
-  get canDeactivate() {
-    return this._canDeactivate;
-  }
-
-  set receiveFriendRequests(requests: FriendRequest[]) {
-    this._receiveFriendRequests = requests;
-  }
-
-  get receiveFriendRequests() {
-    return this._receiveFriendRequests;
-  }
-
-  set sendFriendRequests(requests: FriendRequest[]) {
-    this._sendFriendRequests = requests;
-  }
-
-  get sendFriendRequests() {
-    return this._sendFriendRequests;
-  }
 
   set receiveChatRequests(requests: ChatRequest[]) {
     this._receiveChatRequests = requests;
@@ -91,15 +52,6 @@ export class GlobalData {
     return this._receiveChatRequests;
   }
 
-  set unreadMsgCount(num: number) {
-    this._unreadMsgCount = num > 0 ? num : 0;
-    'setAppBadge' in navigator && (navigator as any).setAppBadge(this._unreadMsgCount);
-  }
-
-  get unreadMsgCount() {
-    return this._unreadMsgCount;
-  }
-
   set chatSessions(chatSessions: ChatSession[]) {
     this._chatSessions = chatSessions;
     this.sortChatSessions();
@@ -108,14 +60,6 @@ export class GlobalData {
 
   get chatSessions(): ChatSession[] {
     return this._chatSessions;
-  }
-
-  set chatSessionsPage(page: number) {
-    this._chatSessionsPage = page;
-  }
-
-  get chatSessionsPage() {
-    return this._chatSessionsPage;
   }
 
   set privateChatrooms(chatrooms: ChatSession[]) {
@@ -136,30 +80,6 @@ export class GlobalData {
 
   get groupChatrooms(): ChatSession[] {
     return this._groupChatrooms;
-  }
-
-  set privateChatroomsPage(page: number) {
-    this._privateChatroomsPage = page;
-  }
-
-  get privateChatroomsPage() {
-    return this._privateChatroomsPage;
-  }
-
-  set groupChatroomsPage(page: number) {
-    this._groupChatroomsPage = page;
-  }
-
-  get groupChatroomsPage() {
-    return this._groupChatroomsPage;
-  }
-
-  set navigationLoading(loading: boolean) {
-    this._navigationLoading = loading;
-  }
-
-  get navigationLoading() {
-    return this._navigationLoading;
   }
 
   /**
