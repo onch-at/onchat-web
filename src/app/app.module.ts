@@ -54,7 +54,8 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
       placeholder: '在此处插入文字…'
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: env.production
+      enabled: env.production,
+      registrationStrategy: 'registerImmediately'
     })
   ],
   providers: [

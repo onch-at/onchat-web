@@ -13,8 +13,6 @@ export class GlobalData {
   user: User = null;
   /** 记录当前所在的聊天室ID */
   chatroomId: number = null;
-  /** 未读消息总数 */
-  unreadMsgCount: number = 0;
   /** 是否可以销毁（返回上一页） */
   canDeactivate: boolean = true;
   /** 我的收到好友申请列表 */
@@ -30,6 +28,8 @@ export class GlobalData {
   /** 导航/路由加载中 */
   navigationLoading: boolean = false;
 
+  /** 未读消息总数 */
+  private _unreadMsgCount: number = 0;
   /** 私聊聊天室列表 */
   private _privateChatrooms: ChatSession[] = [];
   /** 群聊聊天室列表 */
@@ -51,6 +51,16 @@ export class GlobalData {
   get receiveChatRequests() {
     return this._receiveChatRequests;
   }
+
+  set unreadMsgCount(num: number) {
+    this._unreadMsgCount = num > 0 ? num : 0;
+    'setAppBadge' in navigator && (navigator as any).setAppBadge(this._unreadMsgCount);
+  }
+
+  get unreadMsgCount() {
+    return this._unreadMsgCount;
+  }
+
 
   set chatSessions(chatSessions: ChatSession[]) {
     this._chatSessions = chatSessions;

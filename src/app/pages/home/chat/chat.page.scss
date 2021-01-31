@@ -25,6 +25,7 @@
     object-fit: cover;
     background: var(--oc-color-secondary);
     overflow: hidden;
+    aspect-ratio: 1 / 1;
   }
 
   .chat-session-list-item-img,

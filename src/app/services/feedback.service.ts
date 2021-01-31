@@ -8,9 +8,9 @@ import { Injectable } from '@angular/core';
 })
 export class FeedbackService {
   /** 提示音：啵 */
-  booAudio: HTMLAudioElement = new Audio('/assets/audio/boo.mp3');
+  booAudio: HTMLAudioElement = new Audio('/assets/audios/boo.mp3');
   /** 提示音：叮噔 */
-  dingDengAudio: HTMLAudioElement = new Audio('/assets/audio/ding-deng.mp3');
+  dingDengAudio: HTMLAudioElement = new Audio('/assets/audios/ding-deng.mp3');
 
   constructor() { }
 
