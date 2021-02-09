@@ -96,7 +96,7 @@ export class NotificationComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.unlistener && this.unlistener();
+    this.unlistener?.();
     this.gesture.destroy();
     this.animation.destroy();
   }
@@ -106,7 +106,7 @@ export class NotificationComponent implements OnInit {
    */
   dismiss(): Observable<void> {
     this.renderer.addClass(this.element, 'hide');
-    this.unlistener && this.unlistener();
+    this.unlistener?.();
     this.unlistener = this.renderer.listen(this.element, 'transitionend', () => {
       this.overlayRef.dispose();
       this.dismiss$.next();
@@ -124,8 +124,7 @@ export class NotificationComponent implements OnInit {
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
-
-    this.unlistener && this.unlistener();
+    this.unlistener?.();
     this.unlistener = this.renderer.listen(this.element, 'transitionend', () => {
       this.dismiss();
       this.handler && this.handler(event);

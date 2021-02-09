@@ -29,7 +29,7 @@ export class ChatPage implements OnInit {
   /** 房间ID */
   chatroomId: number;
   /** 聊天室类型 */
-  chatroomType: ChatroomType = ChatroomType.Group;
+  chatroomType: ChatroomType;
   /** 会话 */
   chatSession: ChatSession;
   /** 消息ID，用于查询指定消息段 */
@@ -264,7 +264,7 @@ export class ChatPage implements OnInit {
    * @param complete
    */
   loadRecords(complete?: () => void) {
-    if (this.end) { return complete && complete(); }
+    if (this.end) { return complete?.(); }
 
     this.onChatService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<Message[]>) => {
       if (result.code === ResultCode.Success) {
@@ -293,7 +293,7 @@ export class ChatPage implements OnInit {
         this.overlayService.presentToast('你还没有权限进入此聊天室！');
         this.router.navigateByUrl('/'); // 没权限还想进来，回首页去吧
       }
-      complete && complete();
+      complete?.();
     });
   }
 
@@ -319,7 +319,7 @@ export class ChatPage implements OnInit {
    */
   scrollToBottom(duration: number = 500, complete?: () => void) {
     this.ionContent.scrollToBottom(duration).then(() => {
-      complete && complete();
+      complete?.();
     });
   }
 

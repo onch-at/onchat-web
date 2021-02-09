@@ -19,9 +19,7 @@ export class RippleDirective {
     position === 'static' && this.renderer.setStyle(nativeElement, 'position', 'relative');
     this.renderer.setStyle(nativeElement, 'overflow', 'hidden');
     this.renderer.setStyle(nativeElement, 'cursor', 'pointer');
-
     this.renderer.addClass(nativeElement, 'ion-activatable');
-
     this.renderer.appendChild(nativeElement, ripple);
   }
 
