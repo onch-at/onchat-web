@@ -10,14 +10,16 @@
   }
 }
 
-img.captcha {
-  height: 3.25rem;
-  object-fit: cover;
-  border-radius: 1.625rem;
-  border: 1.5px solid var(--oc-color-gray);
-  transition: box-shadow 0.125s ease-in-out;
+ion-grid {
+  padding: 0 1.5rem;
+}
 
-  &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
-  }
+.form-group > .btn-primary {
+  position: absolute;
+  height: 2.25rem;
+  width: 30%;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 2.5rem;
 }

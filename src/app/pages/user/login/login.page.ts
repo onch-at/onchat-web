@@ -91,7 +91,7 @@ export class LoginPage implements OnInit {
    * 切换密码输入框的TYPE值
    */
   togglePwdInputType() {
-    this.pwdInputType = this.pwdInputType == 'text' ? 'password' : 'text';
+    this.pwdInputType = this.pwdInputType === 'text' ? 'password' : 'text';
   }
 
   /**

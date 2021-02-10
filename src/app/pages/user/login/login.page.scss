@@ -52,14 +52,14 @@ input {
 }
 
 input,
-button {
+.btn-container > .btn-primary {
   width: 100%;
   font-size: 1.35rem;
   height: 3.25rem;
   border-radius: 1.625rem;
 }
 
-button {
+.btn-container > .btn-primary {
   animation: bounce-in-up 0.9s linear;
 }
 

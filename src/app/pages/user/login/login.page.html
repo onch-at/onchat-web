@@ -10,7 +10,7 @@
 
           <form [formGroup]="loginForm">
             <div class="form-group">
-              <input type="text" class="display-block text-center ipt-primary" id="username" formControlName="username"
+              <input type="text" class="display-block text-center ipt-primary" formControlName="username"
                 (blur)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
 
               <div class="form-control-warning">
@@ -37,16 +37,15 @@
           </form>
         </ion-col>
 
-        <ion-col style="padding-right: .55rem;">
+        <ion-col class="btn-container" style="padding-right: .55rem;">
           <button appRipple appActiveClass class="btn-primary" routerLink="/user/register"
             [queryParams]="{username: loginForm.value.username}">
             注册
           </button>
         </ion-col>
 
-        <ion-col style="padding-left: .55rem;">
-          <button appRipple appActiveClass [disabled]="loginForm.invalid" (tap)="login()"
-            class="ion-activatable btn-primary">
+        <ion-col class="btn-container" style="padding-left: .55rem;">
+          <button appRipple appActiveClass [disabled]="loginForm.invalid" (tap)="login()" class="btn-primary">
             登录
           </button>
         </ion-col>

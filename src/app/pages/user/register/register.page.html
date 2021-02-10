@@ -10,13 +10,25 @@
 
           <form [formGroup]="registerForm">
             <div class="form-group">
-              <input type="text" class="display-block text-center ipt-primary" id="username" formControlName="username"
+              <input type="text" class="display-block text-center ipt-primary" formControlName="username"
                 (blur)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
                 <span *ngIf="registerForm.controls.username.errors">
                   {{ usernameFeedback(registerForm.controls.username.errors) }}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <input type="email" class="display-block text-center ipt-primary" formControlName="email"
+                (blur)="trimAll('email')" placeholder="电子邮箱" [maxlength]="emailMaxLength" required>
+
+              <div class="form-control-warning">
+                <ion-icon name="warning"></ion-icon>
+                <span *ngIf="registerForm.controls.email.errors">
+                  {{ emailFeedback(registerForm.controls.email.errors) }}
                 </span>
               </div>
             </div>
@@ -54,10 +66,14 @@
               </div>
             </div>
 
-            <div class="form-group form-group-row">
-              <input type="text" class="display-block text-center ipt-primary" id="captcha" formControlName="captcha"
-                (blur)="trimAll('captcha')" placeholder="验证码" maxlength="4" required>
-              <img appActiveClass class="captcha" [src]="captchaUrl" (tap)="updateCaptcha()">
+            <div class="form-group">
+              <input type="text" class="display-block text-center ipt-primary" formControlName="captcha"
+                (blur)="trimAll('captcha')" placeholder="验证码" maxlength="4" required style="padding-right: 40%">
+
+              <button appRipple appActiveClass [disabled]="registerForm.controls.email.errors" class="btn-primary"
+                (tap)="register()">
+                邮箱验证
+              </button>
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
@@ -69,13 +85,12 @@
           </form>
         </ion-col>
 
-        <ion-col class="text-center" size="12">
+        <ion-col class="text-center btn-container" size="12">
           <button appRipple appActiveClass [disabled]="registerForm.invalid" class="btn-primary"
             style="margin-bottom: .75rem;" (tap)="register()">
             注册
           </button>
-          <span class="color-dark outline-none cursor-pointer" style="font-size: .9rem;"
-            routerLink="/user/login">已有账号？立即登录！</span>
+          <span class="color-dark cursor-pointer" style="font-size: .9rem;" routerLink="/user/login">已有账号？立即登录！</span>
         </ion-col>
       </ion-row>
     </ion-grid>

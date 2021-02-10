@@ -65,9 +65,9 @@ export class CacheService {
    * 删除过期缓存
    */
   private deleteExpiredCache() {
-    for (const entry of this.cacheMap) {
-      if (Date.now() > entry[1].expire) {
-        this.cacheMap.delete(entry[0]);
+    for (const [key, entry] of this.cacheMap) {
+      if (Date.now() > entry.expire) {
+        this.cacheMap.delete(key);
       }
     }
   }

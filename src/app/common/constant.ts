@@ -10,6 +10,9 @@ export const USERNAME_MIN_LENGTH: number = 5;
 /** 用户名最大长度 */
 export const USERNAME_MAX_LENGTH: number = 15;
 
+/** 邮箱最大长度 */
+export const EMAIL_MAX_LENGTH: number = 50;
+
 /** 用户昵称最小长度 */
 export const NICKNAME_MIN_LENGTH: number = 1;
 /** 用户昵称最大长度 */

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
+import { EMAIL_MAX_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
@@ -26,14 +26,22 @@ export class RegisterPage implements OnInit {
   captchaUrl: string = env.captchaUrl;
   usernameMaxLength: number = USERNAME_MAX_LENGTH;
   passwordMaxLength: number = PASSWORD_MAX_LENGTH;
+  emailMaxLength: number = EMAIL_MAX_LENGTH;
 
   registerForm: FormGroup = this.fb.group({
     username: [
       '', [
         Validators.pattern(USERNAME_PATTERN),
         Validators.required,
-        Validators.minLength(5),
+        Validators.minLength(USERNAME_MIN_LENGTH),
         Validators.maxLength(USERNAME_MAX_LENGTH)
+      ]
+    ],
+    email: [
+      '', [
+        Validators.required,
+        Validators.maxLength(EMAIL_MAX_LENGTH),
+        Validators.email
       ]
     ],
     password: [
@@ -53,19 +61,28 @@ export class RegisterPage implements OnInit {
     captcha: [
       '', [
         Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(4)
+        Validators.minLength(6),
+        Validators.maxLength(6)
       ]
     ],
   }, { validators: equalValidator });
 
   usernameFeedback: (errors: ValidationErrors) => string = usernameFeedback;
   passwordFeedback: (errors: ValidationErrors) => string = passwordFeedback;
+  emailFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
+    if (errors.required) {
+      return '电子邮箱不能为空！';
+    } else if (errors.maxlength) {
+      return `电子邮箱长度不能大于${EMAIL_MAX_LENGTH}位字符！`;
+    } else if (errors.email) {
+      return '非法的电子邮箱格式！';
+    }
+  };
   captchaFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
     if (errors.required) {
       return '验证码不能为空！';
     } else if (errors.minlength || errors.maxlength) {
-      return '验证码长度必须为4位字符！';
+      return '验证码长度必须为6位字符！';
     }
   };
 
@@ -102,7 +119,7 @@ export class RegisterPage implements OnInit {
 
       if (result.code !== ResultCode.Success) { // 如果请求不成功，则刷新验证码
         this.globalData.navigationLoading = false;
-        return this.updateCaptcha();
+        return;
       }
 
       this.globalData.user = result.data;
@@ -115,19 +132,11 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  /***
-   * 更新验证码URL，清空验证码输入框
-   */
-  updateCaptcha() {
-    this.captchaUrl = env.captchaUrl + '?' + Date.now();
-    this.registerForm.setValue({ captcha: '' });
-  }
-
   /**
    * 切换密码输入框的TYPE值
    */
   togglePwdInputType() {
-    this.pwdInputType = this.pwdInputType == 'text' ? 'password' : 'text';
+    this.pwdInputType = this.pwdInputType === 'text' ? 'password' : 'text';
   }
 
   /**
