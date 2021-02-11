@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
-import { ChatSessionCheckbox } from 'src/app/common/interface';
+import { ChatSessionCheckbox, ValidationFeedback } from 'src/app/common/interface';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -49,6 +49,22 @@ export class CreatePage implements OnInit {
       ]
     ]
   });
+
+  nameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+    if (!errors) { return; }
+    if (errors.required) {
+      return '聊天室名称不能为空！';
+    } else if (errors.minlength || errors.maxlength) {
+      return `聊天室名称长度必须在${CHATROOM_NAME_MIN_LENGTH}~${CHATROOM_NAME_MAX_LENGTH}位字符之间！`;
+    }
+  }
+
+  descriptionFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+    if (!errors) { return; }
+    if (errors.minlength || errors.maxlength) {
+      return `聊天室简介长度必须在${CHATROOM_DESCRIPTION_MIN_LENGTH}~${CHATROOM_DESCRIPTION_MAX_LENGTH}位字符之间！`;
+    }
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -180,19 +196,5 @@ export class CreatePage implements OnInit {
     }
 
     event.target.complete();
-  }
-
-  nameFeedback(errors: ValidationErrors) {
-    if (errors.required) {
-      return '聊天室名称不能为空！';
-    } else if (errors.minlength || errors.maxlength) {
-      return `聊天室名称长度必须在${CHATROOM_NAME_MIN_LENGTH}~${CHATROOM_NAME_MAX_LENGTH}位字符之间！`;
-    }
-  }
-
-  descriptionFeedback(errors: ValidationErrors) {
-    if (errors.minlength || errors.maxlength) {
-      return `聊天室简介长度必须在${CHATROOM_DESCRIPTION_MIN_LENGTH}~${CHATROOM_DESCRIPTION_MAX_LENGTH}位字符之间！`;
-    }
   }
 }

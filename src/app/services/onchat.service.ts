@@ -6,7 +6,6 @@ import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
 import { Login, Register, UserInfo } from '../models/form.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
-import { FeedbackService } from './feedback.service';
 import { GlobalData } from './global-data.service';
 
 const HTTP_OPTIONS_JSON = {
@@ -32,7 +31,6 @@ export class OnChatService {
   constructor(
     private http: HttpClient,
     private globalData: GlobalData,
-    private feedbackService: FeedbackService,
   ) { }
 
   init(): void {
@@ -101,6 +99,24 @@ export class OnChatService {
    */
   checkLogin(): Observable<Result<boolean | User>> {
     return this.http.get<Result<boolean | User>>(env.userUrl + 'checklogin', { params: this.getCacheParam(1000) });
+  }
+
+  /**
+   * 检测邮箱是否可用
+   * @param email 邮箱
+   */
+  checkEmail(email: string): Observable<Result<boolean>> {
+    return this.http.get<Result<boolean>>(env.userUrl + 'checkemail', {
+      params: { email, ...this.getCacheParam(3000) }
+    });
+  }
+
+  /**
+   * 发送邮箱验证码
+   * @param email 邮箱
+   */
+  sendEmailCaptcha(email: string): Observable<Result<boolean>> {
+    return this.http.post<Result<boolean>>(env.emailCaptchaUrl, { email });
   }
 
   /**

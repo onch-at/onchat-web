@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
+import { ValidationFeedback } from 'src/app/common/interface';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -41,8 +42,8 @@ export class LoginPage implements OnInit {
     ],
   });
 
-  usernameFeedback: (errors: ValidationErrors) => string = usernameFeedback;
-  passwordFeedback: (errors: ValidationErrors) => string = passwordFeedback;
+  usernameFeedback: ValidationFeedback = usernameFeedback;
+  passwordFeedback: ValidationFeedback = passwordFeedback;
 
   constructor(
     private onChatService: OnChatService,
@@ -105,7 +106,8 @@ export class LoginPage implements OnInit {
 
 }
 
-export function usernameFeedback(errors: ValidationErrors): string {
+export const usernameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+  if (!errors) { return; }
   if (errors.required) {
     return '用户名不能为空！';
   } else if (errors.pattern) {
@@ -115,7 +117,8 @@ export function usernameFeedback(errors: ValidationErrors): string {
   }
 };
 
-export function passwordFeedback(errors: ValidationErrors): string {
+export const passwordFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+  if (!errors) { return; }
   if (errors.required) {
     return '密码不能为空！';
   } else if (errors.minlength || errors.maxlength) {

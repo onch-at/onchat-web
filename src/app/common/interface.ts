@@ -1,12 +1,19 @@
 import { KeyValue } from "@angular/common";
+import { ValidationErrors } from "@angular/forms";
 import { ChatSession } from "../models/onchat.model";
+
+
 
 /** 组件引用 */
 type ComponentRef = Function | HTMLElement | string | null;
 /** 组件参数 */
 type ComponentProps<T = null> = { [key: string]: any };
+
 /** 聊天会话多选框类型 */
 export type ChatSessionCheckbox = ChatSession & { checked: boolean };
+
+/** 验证反馈 */
+export type ValidationFeedback = (errors: ValidationErrors) => string;
 
 /** 浮层通知组件选项 */
 export interface NotificationOptions {

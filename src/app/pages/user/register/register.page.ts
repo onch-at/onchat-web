@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { EMAIL_MAX_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
+import { ValidationFeedback } from 'src/app/common/interface';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -11,7 +12,8 @@ import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
-import { environment as env } from '../../../../environments/environment';
+import { AsyncValidator } from 'src/app/validators/async.validator';
+import { SyncValidator } from 'src/app/validators/sync.validator';
 import { passwordFeedback, usernameFeedback } from '../login/login.page';
 
 @Component({
@@ -22,11 +24,12 @@ import { passwordFeedback, usernameFeedback } from '../login/login.page';
 export class RegisterPage implements OnInit {
   /** 密码框类型 */
   pwdInputType: string = 'password';
-  /** 验证码URL */
-  captchaUrl: string = env.captchaUrl;
   usernameMaxLength: number = USERNAME_MAX_LENGTH;
   passwordMaxLength: number = PASSWORD_MAX_LENGTH;
   emailMaxLength: number = EMAIL_MAX_LENGTH;
+
+  countdown: number = 60;
+  countdownTimer: number;
 
   registerForm: FormGroup = this.fb.group({
     username: [
@@ -42,6 +45,8 @@ export class RegisterPage implements OnInit {
         Validators.required,
         Validators.maxLength(EMAIL_MAX_LENGTH),
         Validators.email
+      ], [
+        this.asyncValidator.legalEmail()
       ]
     ],
     password: [
@@ -65,20 +70,24 @@ export class RegisterPage implements OnInit {
         Validators.maxLength(6)
       ]
     ],
-  }, { validators: equalValidator });
+  }, {
+    validators: SyncValidator.equal('password', 'confirmPassword')
+  });
 
-  usernameFeedback: (errors: ValidationErrors) => string = usernameFeedback;
-  passwordFeedback: (errors: ValidationErrors) => string = passwordFeedback;
-  emailFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
-    if (errors.required) {
-      return '电子邮箱不能为空！';
-    } else if (errors.maxlength) {
+  usernameFeedback: ValidationFeedback = usernameFeedback;
+  passwordFeedback: ValidationFeedback = passwordFeedback;
+  emailFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+    if (!errors) { return; }
+    if (errors.maxlength) {
       return `电子邮箱长度不能大于${EMAIL_MAX_LENGTH}位字符！`;
     } else if (errors.email) {
       return '非法的电子邮箱格式！';
+    } else if (errors.legalmail) {
+      return '该电子邮箱已被占用！';
     }
   };
-  captchaFeedback: (errors: ValidationErrors) => string = (errors: ValidationErrors): string => {
+  captchaFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+    if (!errors) { return; }
     if (errors.required) {
       return '验证码不能为空！';
     } else if (errors.minlength || errors.maxlength) {
@@ -91,6 +100,7 @@ export class RegisterPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
+    private asyncValidator: AsyncValidator,
     private onChatService: OnChatService,
     private overlayService: OverlayService,
     private socketService: SocketService,
@@ -113,8 +123,8 @@ export class RegisterPage implements OnInit {
 
     this.globalData.navigationLoading = true;
 
-    const { username, password, captcha } = this.registerForm.value;
-    this.onChatService.register(new Register(username, password, captcha)).subscribe((result: Result<User>) => {
+    const { username, password, email, captcha } = this.registerForm.value;
+    this.onChatService.register(new Register(username, password, email, captcha)).subscribe((result: Result<User>) => {
       this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
 
       if (result.code !== ResultCode.Success) { // 如果请求不成功，则刷新验证码
@@ -130,6 +140,23 @@ export class RegisterPage implements OnInit {
         this.onChatService.init();
       }, 1000);
     });
+  }
+
+  sendCaptcha() {
+    const ctrl = this.registerForm.get('email');
+    if (ctrl.errors || this.countdownTimer) { return; }
+
+    this.onChatService.sendEmailCaptcha(ctrl.value).subscribe((result: Result<boolean>) => {
+      this.overlayService.presentToast(result.code === ResultCode.Success ? '验证码发送至你的邮箱！' : '验证码发送失败！');
+    });
+
+    this.countdownTimer = window.setInterval(() => {
+      if (--this.countdown <= 0) {
+        window.clearInterval(this.countdownTimer);
+        this.countdownTimer = null;
+        this.countdown = 60;
+      }
+    }, 1000);
   }
 
   /**
@@ -149,14 +176,3 @@ export class RegisterPage implements OnInit {
   }
 
 }
-
-/**
- * 验证器：用于验证密码与确认密码的值是否相等
- * @param control
- */
-export const equalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
-  const password = control.get('password');
-  const confirmPassword = control.get('confirmPassword');
-
-  return password.value !== confirmPassword.value ? { 'equal': true } : null;
-};

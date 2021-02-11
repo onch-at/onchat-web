@@ -118,6 +118,7 @@ form .feedback-form-invalid {
 // 主要输入框的正常模式
 .ipt-primary.ng-valid ~ .form-control-warning,
 .ipt-primary.ng-pristine ~ .form-control-warning,
+.ipt-primary.ng-pending ~ .form-control-warning,
 form.ng-valid .feedback-form-invalid,
 form.ng-pristine .feedback-form-invalid {
   height: 0;

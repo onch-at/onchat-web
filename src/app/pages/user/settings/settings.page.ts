@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { Gender, Mood, ResultCode } from 'src/app/common/enum';
+import { ValidationFeedback } from 'src/app/common/interface';
 import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
@@ -72,11 +73,27 @@ export class SettingsPage implements OnInit {
     ],
   });
 
+  nicknameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+    if (!errors) { return; }
+    if (errors.required) {
+      return '昵称不能为空！';
+    } else if (errors.minlength || errors.maxlength) {
+      return `昵称长度必须在${NICKNAME_MIN_LENGTH}~${NICKNAME_MAX_LENGTH}位字符之间！`;
+    }
+  }
+
+  signatureFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+    if (!errors) { return; }
+    if (errors.minlength || errors.maxlength) {
+      return `个性签名长度必须在${SIGNATURE_MIN_LENGTH}~${SIGNATURE_MAX_LENGTH}位字符之间！`;
+    }
+  }
+
   constructor(
+    public globalData: GlobalData,
     private fb: FormBuilder,
     private router: Router,
     private location: Location,
-    public globalData: GlobalData,
     private onChatService: OnChatService,
     private overlayService: OverlayService
   ) { }
@@ -169,20 +186,6 @@ export class SettingsPage implements OnInit {
     ];
 
     this.overlayService.presentActionSheet(buttons);
-  }
-
-  nicknameFeedback(errors: ValidationErrors): string {
-    if (errors.required) {
-      return '昵称不能为空！';
-    } else if (errors.minlength || errors.maxlength) {
-      return `昵称长度必须在${NICKNAME_MIN_LENGTH}~${NICKNAME_MAX_LENGTH}位字符之间！`;
-    }
-  }
-
-  signatureFeedback(errors: ValidationErrors): string {
-    if (errors.minlength || errors.maxlength) {
-      return `个性签名长度必须在${SIGNATURE_MIN_LENGTH}~${SIGNATURE_MAX_LENGTH}位字符之间！`;
-    }
   }
 
 }

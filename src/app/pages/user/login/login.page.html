@@ -15,9 +15,7 @@
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                <span *ngIf="loginForm.controls.username.errors">
-                  {{ usernameFeedback(loginForm.controls.username.errors) }}
-                </span>
+                {{ usernameFeedback(loginForm.controls.username.errors) }}
               </div>
             </div>
 
@@ -29,9 +27,7 @@
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                <span *ngIf="loginForm.controls.password.errors">
-                  {{ passwordFeedback(loginForm.controls.password.errors) }}
-                </span>
+                {{ passwordFeedback(loginForm.controls.password.errors) }}
               </div>
             </div>
           </form>

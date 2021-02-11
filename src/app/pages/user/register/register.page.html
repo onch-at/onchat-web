@@ -15,9 +15,7 @@
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                <span *ngIf="registerForm.controls.username.errors">
-                  {{ usernameFeedback(registerForm.controls.username.errors) }}
-                </span>
+                {{ usernameFeedback(registerForm.controls.username.errors) }}
               </div>
             </div>
 
@@ -27,9 +25,7 @@
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                <span *ngIf="registerForm.controls.email.errors">
-                  {{ emailFeedback(registerForm.controls.email.errors) }}
-                </span>
+                {{ emailFeedback(registerForm.controls.email.errors) }}
               </div>
             </div>
 
@@ -41,7 +37,7 @@
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                <span *ngIf="registerForm.controls.password.errors">
+                <span>
                   {{ passwordFeedback(registerForm.controls.password.errors) }}
                 </span>
               </div>
@@ -55,31 +51,27 @@
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                <span *ngIf="registerForm.controls.confirmPassword.errors">
-                  {{ passwordFeedback(registerForm.controls.confirmPassword.errors) }}
-                </span>
+                {{ passwordFeedback(registerForm.controls.confirmPassword.errors) }}
               </div>
 
-              <div class="feedback-form-invalid" [hidden]="!registerForm.errors || !registerForm.errors.equal">
+              <div class="feedback-form-invalid" [hidden]="!registerForm.errors?.equal">
                 <ion-icon name="warning"></ion-icon>
-                <span> 确认密码与密码不一致！</span>
+                确认密码与密码不一致！
               </div>
             </div>
 
             <div class="form-group">
               <input type="text" class="display-block text-center ipt-primary" formControlName="captcha"
-                (blur)="trimAll('captcha')" placeholder="验证码" maxlength="4" required style="padding-right: 40%">
+                (blur)="trimAll('captcha')" placeholder="验证码" maxlength="6" required style="padding-right: 40%">
 
-              <button appRipple appActiveClass [disabled]="registerForm.controls.email.errors" class="btn-primary"
-                (tap)="register()">
-                邮箱验证
+              <button appRipple appActiveClass [disabled]="registerForm.controls.email.errors || countdownTimer"
+                class="btn-primary" (tap)="sendCaptcha()">
+                {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
               </button>
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                <span *ngIf="registerForm.controls.captcha.errors">
-                  {{ captchaFeedback(registerForm.controls.captcha.errors) }}
-                </span>
+                {{ captchaFeedback(registerForm.controls.captcha.errors) }}
               </div>
             </div>
           </form>

@@ -17,9 +17,12 @@ export class Login {
 export class Register extends Login {
     /** 验证码 */
     captcha: string;
+    /** 邮箱 */
+    email: string;
 
-    constructor(username: string, password: string, captcha: string) {
+    constructor(username: string, password: string, email: string, captcha: string) {
         super(username, password);
+        this.email = email;
         this.captcha = captcha;
     }
 }

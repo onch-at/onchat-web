@@ -27,9 +27,7 @@
 
         <div class="form-control-warning">
           <ion-icon name="warning"></ion-icon>
-          <span *ngIf="chatroomForm.controls.name.errors">
-            {{ nameFeedback(chatroomForm.controls.name.errors) }}
-          </span>
+          {{ nameFeedback(chatroomForm.controls.name.errors) }}
         </div>
       </div>
 
@@ -41,9 +39,7 @@
 
         <div class="form-control-warning">
           <ion-icon name="warning"></ion-icon>
-          <span *ngIf="chatroomForm.controls.description.errors">
-            {{ descriptionFeedback(chatroomForm.controls.description.errors) }}
-          </span>
+          {{ descriptionFeedback(chatroomForm.controls.description.errors) }}
         </div>
       </div>
 
