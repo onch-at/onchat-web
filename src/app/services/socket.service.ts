@@ -65,39 +65,39 @@ export class SocketService {
 
   /**
    * 好友申请
-   * @param userId 对方的ID
+   * @param targetId 对方的ID
    * @param targetAlias 设置好友别名
-   * @param requestReason 申请原因
+   * @param reason 申请原因
    */
-  friendRequest(userId: number, targetAlias: string = null, requestReason: string = null) {
+  friendRequest(targetId: number, targetAlias: string = null, reason: string = null) {
     this.emit(SocketEvent.FriendRequest, {
-      userId,
+      targetId,
       targetAlias,
-      requestReason
+      reason
     });
   }
 
   /**
    * 同意好友申请
-   * @param friendRequestId 好友申请实体ID
+   * @param requestId 好友申请实体ID
    * @param selfAlias 设置好友别名
    */
-  friendRequestAgree(friendRequestId: number, selfAlias: string = null) {
+  friendRequestAgree(requestId: number, selfAlias: string = null) {
     this.emit(SocketEvent.FriendRequestAgree, {
-      friendRequestId,
+      requestId,
       selfAlias
     });
   }
 
   /**
    * 拒绝好友申请
-   * @param friendRequestId 好友申请实体ID
-   * @param rejectReason 拒绝原因
+   * @param requestId 好友申请实体ID
+   * @param reason 拒绝原因
    */
-  friendRequestReject(friendRequestId: number, rejectReason: string = null) {
+  friendRequestReject(requestId: number, reason: string = null) {
     this.emit(SocketEvent.FriendRequestReject, {
-      friendRequestId,
-      rejectReason
+      requestId,
+      reason
     });
   }
 
@@ -148,12 +148,12 @@ export class SocketService {
   /**
    * 拒绝入群申请
    * @param requestId 申请ID
-   * @param rejectReason 拒绝原因
+   * @param reason 拒绝原因
    */
-  chatRequestReject(requestId: number, rejectReason: string = null) {
+  chatRequestReject(requestId: number, reason: string = null) {
     this.emit(SocketEvent.ChatRequestReject, {
       requestId,
-      rejectReason
+      reason
     });
   }
 
