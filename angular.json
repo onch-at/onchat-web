@@ -41,24 +41,13 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              {
-                "input": "src/styles/themes/original.scss"
-              },
-              {
-                "input": "src/styles/override.scss"
-              },
-              {
-                "input": "src/styles/animation.scss"
-              },
-              {
-                "input": "src/styles/font.scss"
-              },
-              {
-                "input": "src/styles/atom.scss"
-              },
-              {
-                "input": "src/global.scss"
-              }
+              "src/global.scss",
+              "src/styles/base.scss",
+              "src/styles/font.scss",
+              "src/styles/atom.scss",
+              "src/styles/override.scss",
+              "src/styles/animation.scss",
+              "src/styles/themes/original.scss"
             ],
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json"

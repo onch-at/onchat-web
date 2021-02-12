@@ -25,8 +25,8 @@ export class GlobalData {
   privateChatroomsPage: number = 1;
   /** 群聊聊天室列表的分页页码 */
   groupChatroomsPage: number = 1;
-  /** 导航/路由加载中 */
-  navigationLoading: boolean = false;
+  /** 路由导航中 */
+  navigating: boolean = false;
 
   /** 未读消息总数 */
   private _unreadMsgCount: number = 0;

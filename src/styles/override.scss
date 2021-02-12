@@ -72,7 +72,7 @@ ion-picker {
         &.picker-toolbar,
         &.picker-above-highlight,
         &.picker-below-highlight {
-            border: 0;
+            border: none;
         }
 
         &.picker-above-highlight {
@@ -369,7 +369,7 @@ ion-alert {
                 padding-inline-start: 0.5rem;
                 padding-inline-end: 0.5rem;
                 background: var(--oc-color-white);
-                border: 0;
+                border: none;
             }
         }
 
@@ -417,7 +417,7 @@ ion-list.list-ios {
 
 // 滑动列表里面的按钮
 ion-item-options {
-    border: 0;
+    border: none;
     background: var(--oc-color-white);
 
     &.item-options-start > ion-item-option:last-child {

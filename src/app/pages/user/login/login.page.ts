@@ -64,9 +64,9 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    if (this.loginForm.invalid || this.globalData.navigationLoading) { return; }
+    if (this.loginForm.invalid || this.globalData.navigating) { return; }
 
-    this.globalData.navigationLoading = true;
+    this.globalData.navigating = true;
 
     const { username, password } = this.loginForm.value;
 
@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
       this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
 
       if (result.code !== ResultCode.Success) {
-        this.globalData.navigationLoading = false;
+        this.globalData.navigating = false;
         return;
       }
 

@@ -25,7 +25,7 @@ export class ActiveClassDirective {
 
     setTimeout(() => {
       this.renderer.removeClass(nativeElement, className);
-    }, this.appActiveClassDuration || 250);
+    }, this.appActiveClassDuration || 300);
   }
 
 }

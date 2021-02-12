@@ -68,7 +68,7 @@
     blockquote {
       display: inline-block;
       width: 100%;
-      border: 0;
+      border: none;
       background: rgba(#fff, 0.4);
       padding: 0.3rem 0.75rem;
     }
@@ -141,7 +141,7 @@
 }
 
 .ql-container.ql-snow {
-  border: 0;
+  border: none;
 }
 
 // 名片气泡

@@ -119,16 +119,16 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
-    if (this.registerForm.invalid || this.globalData.navigationLoading) { return; }
+    if (this.registerForm.invalid || this.globalData.navigating) { return; }
 
-    this.globalData.navigationLoading = true;
+    this.globalData.navigating = true;
 
     const { username, password, email, captcha } = this.registerForm.value;
     this.onChatService.register(new Register(username, password, email, captcha)).subscribe((result: Result<User>) => {
       this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
 
-      if (result.code !== ResultCode.Success) { // 如果请求不成功，则刷新验证码
-        this.globalData.navigationLoading = false;
+      if (result.code !== ResultCode.Success) {
+        this.globalData.navigating = false;
         return;
       }
 

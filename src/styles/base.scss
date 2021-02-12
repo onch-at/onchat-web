@@ -1,0 +1,29 @@
+// 原生基础样式
+* {
+    outline: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--oc-color-dark-rgb), 0.125) transparent;
+
+    &::selection {
+        color: var(--oc-color-white);
+        background: rgba(var(--oc-color-primary-rgb), 0.75);
+    }
+}
+
+body {
+    background: var(--oc-color-white);
+}
+
+img,
+ion-img {
+    @media (prefers-color-scheme: dark) {
+        filter: brightness(0.75);
+    }
+}
+
+input,
+textarea {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}

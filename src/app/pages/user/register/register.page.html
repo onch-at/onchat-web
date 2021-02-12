@@ -37,9 +37,7 @@
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                <span>
-                  {{ passwordFeedback(registerForm.controls.password.errors) }}
-                </span>
+                {{ passwordFeedback(registerForm.controls.password.errors) }}
               </div>
             </div>
 
@@ -78,8 +76,8 @@
         </ion-col>
 
         <ion-col class="text-center btn-container" size="12">
-          <button appRipple appActiveClass [disabled]="registerForm.invalid" class="btn-primary"
-            style="margin-bottom: .75rem;" (tap)="register()">
+          <button appRipple appActiveClass [disabled]="registerForm.invalid || globalData.navigating"
+            class="btn-primary" style="margin-bottom: .75rem;" (tap)="register()">
             注册
           </button>
           <span class="color-dark cursor-pointer" style="font-size: .9rem;" routerLink="/user/login">已有账号？立即登录！</span>

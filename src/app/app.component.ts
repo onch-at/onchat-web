@@ -360,13 +360,13 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe((event: Event) => {
       switch (true) {
         case event instanceof NavigationStart:
-          this.globalData.navigationLoading = true;
+          this.globalData.navigating = true;
           break;
 
         case event instanceof NavigationEnd:
         case event instanceof NavigationError:
         case event instanceof NavigationCancel:
-          this.globalData.navigationLoading = false;
+          this.globalData.navigating = false;
           break;
       }
 

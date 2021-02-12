@@ -30,45 +30,16 @@
 // @import "~@ionic/angular/css/text-transformation.css";
 // @import "~@ionic/angular/css/flex-utils.css";
 
-* {
-  outline: 0;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(var(--oc-color-dark-rgb), 0.125) transparent;
-
-  &::selection {
-    color: var(--oc-color-white);
-    background: rgba(var(--oc-color-primary-rgb), 0.75);
-  }
-}
-
-body {
-  background: var(--oc-color-white);
-}
-
-.overflow-ellipsis {
+.text-ellipsis {
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-img,
-ion-img {
-  @media (prefers-color-scheme: dark) {
-    filter: brightness(0.75);
-  }
 }
 
 .flex-col-container {
   display: flex;
   min-height: 100%;
   flex-direction: column;
-}
-
-input,
-textarea {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
 }
 
 // LOGO文字标徽定义
@@ -191,5 +162,5 @@ form.ng-pristine .feedback-form-invalid {
 .btn-danger,
 .btn-light {
   box-shadow: none;
-  transition: all 0.15s ease-in-out, box-shadow 0.25s ease-in-out;
+  transition: all 0.15s ease-in-out, box-shadow 0.25s ease-in;
 }

@@ -21,7 +21,7 @@ main {
 quill-editor ::ng-deep {
     .ql-container,
     .ql-toolbar {
-        border: 0;
+        border: none;
     }
 
     .ql-container {
@@ -44,7 +44,7 @@ quill-editor ::ng-deep {
         blockquote {
             display: inline-block;
             width: 100%;
-            border: 0;
+            border: none;
             padding: 0.3rem 0.75rem;
             background: var(--oc-color-gray);
         }
@@ -112,7 +112,7 @@ quill-editor ::ng-deep {
 
         .ql-picker-label,
         .ql-picker-options {
-            border: 0;
+            border: none;
         }
 
         .ql-picker {
@@ -150,7 +150,7 @@ quill-editor ::ng-deep {
                 height: 1.5rem;
                 width: 1.5rem;
                 margin: 0.25rem;
-                border: 0;
+                border: none;
             }
         }
 
