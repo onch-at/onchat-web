@@ -7,8 +7,8 @@ import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATR
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox, ValidationFeedback } from 'src/app/common/interface';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -34,7 +34,7 @@ export class CreatePage implements OnInit {
   /** 搜索关键字 */
   keyword: string = '';
 
-  chatroomForm: FormGroup = this.fb.group({
+  chatroomForm: FormGroup = this.formBuilder.group({
     name: [
       '', [
         Validators.required,
@@ -67,12 +67,12 @@ export class CreatePage implements OnInit {
   }
 
   constructor(
-    private fb: FormBuilder,
+    public globalData: GlobalData,
     private router: Router,
-    private onChatService: OnChatService,
+    private apiService: ApiService,
+    private formBuilder: FormBuilder,
     private socketService: SocketService,
     private overlayService: OverlayService,
-    public globalData: GlobalData,
   ) { }
 
   ngOnInit() {
@@ -83,7 +83,7 @@ export class CreatePage implements OnInit {
     if (this.globalData.privateChatrooms.length) {
       setOriginPrivateChatrooms(this.globalData.privateChatrooms);
     } else {
-      this.onChatService.getPrivateChatrooms().pipe(
+      this.apiService.getPrivateChatrooms().pipe(
         filter((result: Result) => result.code === ResultCode.Success)
       ).subscribe((result: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = result.data;

@@ -3,15 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
+import { EmailBinderComponent } from 'src/app/components/modals/email-binder/email-binder.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { SysUtil } from 'src/app/utils/sys.util';
@@ -42,7 +43,7 @@ export class SettingsPage implements OnInit {
   /** 加载中 */
   loading: boolean = false;
 
-  userInfoForm: FormGroup = this.fb.group({
+  form: FormGroup = this.formBuilder.group({
     nickname: [
       '', [
         Validators.required,
@@ -70,7 +71,7 @@ export class SettingsPage implements OnInit {
       null, [
         Validators.required
       ]
-    ],
+    ]
   });
 
   nicknameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
@@ -81,7 +82,6 @@ export class SettingsPage implements OnInit {
       return `昵称长度必须在${NICKNAME_MIN_LENGTH}~${NICKNAME_MAX_LENGTH}位字符之间！`;
     }
   }
-
   signatureFeedback: ValidationFeedback = (errors: ValidationErrors) => {
     if (!errors) { return; }
     if (errors.minlength || errors.maxlength) {
@@ -91,17 +91,17 @@ export class SettingsPage implements OnInit {
 
   constructor(
     public globalData: GlobalData,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private router: Router,
     private location: Location,
-    private onChatService: OnChatService,
+    private apiService: ApiService,
     private overlayService: OverlayService
   ) { }
 
   ngOnInit() {
     const { user } = this.globalData;
 
-    this.userInfoForm.setValue({
+    this.form.setValue({
       nickname: user.nickname,
       signature: user.signature,
       mood: user.mood ?? Mood.Joy,
@@ -109,10 +109,7 @@ export class SettingsPage implements OnInit {
       gender: user.gender ?? Gender.Secret
     });
 
-    this.userInfoForm.valueChanges.pipe(
-      takeUntil(this.subject),
-      first()
-    ).subscribe(() => {
+    this.form.valueChanges.pipe(takeUntil(this.subject)).subscribe(() => {
       this.dirty = true;
     });
   }
@@ -127,8 +124,8 @@ export class SettingsPage implements OnInit {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    const value = StrUtil.trimAll(this.userInfoForm.get(controlName).value);
-    this.userInfoForm.controls[controlName].setValue(value);
+    const value = StrUtil.trimAll(this.form.get(controlName).value);
+    this.form.controls[controlName].setValue(value);
   }
 
   /**
@@ -138,7 +135,7 @@ export class SettingsPage implements OnInit {
     if (this.loading) { return; }
     this.loading = true;
 
-    const { nickname, signature, mood, birthday, gender } = this.userInfoForm.value;
+    const { nickname, signature, mood, birthday, gender } = this.form.value;
 
     this.userInfo.nickname = nickname;
     this.userInfo.signature = signature ? signature.trim() : null;
@@ -146,7 +143,7 @@ export class SettingsPage implements OnInit {
     this.userInfo.birthday = Date.parse(birthday);
     this.userInfo.gender = +gender;
 
-    this.onChatService.saveUserInfo(this.userInfo).subscribe((result: Result<UserInfo>) => {
+    this.apiService.saveUserInfo(this.userInfo).subscribe((result: Result<UserInfo>) => {
       this.loading = false;
 
       if (result.code !== ResultCode.Success) {
@@ -165,6 +162,12 @@ export class SettingsPage implements OnInit {
     });
   }
 
+  bindEmail() {
+    this.overlayService.presentModal({
+      component: EmailBinderComponent
+    });
+  }
+
   presentActionSheet() {
     const buttons = [
       {
@@ -176,13 +179,8 @@ export class SettingsPage implements OnInit {
           }
         }))
       },
-      {
-        text: '更换背景图'
-      },
-      {
-        text: '取消',
-        role: 'cancel'
-      }
+      { text: '更换背景图' },
+      { text: '取消', role: 'cancel' }
     ];
 
     this.overlayService.presentActionSheet(buttons);

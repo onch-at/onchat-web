@@ -9,8 +9,8 @@ import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { TextMessage } from 'src/app/models/form.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -66,7 +66,7 @@ export class ChatPage implements OnInit {
 
   constructor(
     public globalData: GlobalData,
-    private onChatService: OnChatService,
+    private apiService: ApiService,
     private platform: Platform,
     private socketService: SocketService,
     private route: ActivatedRoute,
@@ -106,7 +106,7 @@ export class ChatPage implements OnInit {
       this.chatroomName = title;
       this.chatroomType = data.chatroomType;
     } else {
-      this.onChatService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
+      this.apiService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
         if (result.code !== ResultCode.Success) { return; }
 
         const { name, type } = result.data
@@ -149,7 +149,7 @@ export class ChatPage implements OnInit {
 
       debounceTime(3000)
     ).subscribe(() => {
-      this.onChatService.readedChatSession(this.chatSession.id).subscribe();
+      this.apiService.readedChatSession(this.chatSession.id).subscribe();
     });
 
     this.socketService.on(SocketEvent.RevokeMsg).pipe(
@@ -266,7 +266,7 @@ export class ChatPage implements OnInit {
   loadRecords(complete?: () => void) {
     if (this.end) { return complete?.(); }
 
-    this.onChatService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<Message[]>) => {
+    this.apiService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<Message[]>) => {
       if (result.code === ResultCode.Success) {
         // 按照ID排序
         // result.data.sort((a: Message, b: Message) => {
@@ -411,7 +411,7 @@ export class ChatPage implements OnInit {
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['alias'] == this.chatroomName) { return; }
 
-        this.onChatService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
+        this.apiService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
           const { code, data, msg } = result;
           if (code !== ResultCode.Success) {
             return this.overlayService.presentToast(msg);

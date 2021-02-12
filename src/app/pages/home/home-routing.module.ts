@@ -32,7 +32,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: '/home/chat',
+        redirectTo: 'chat',
         pathMatch: 'full'
       }
     ]

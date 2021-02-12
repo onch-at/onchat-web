@@ -13,7 +13,6 @@
 }
 
 .form-group {
-  position: relative;
   margin-bottom: 1.25rem;
 }
 
@@ -31,12 +30,6 @@
   }
 }
 
-input {
-  border: none;
-  background: var(--oc-color-secondary);
-  padding: 0 3rem;
-}
-
 #password + ion-icon,
 #confirm-password + ion-icon {
   position: absolute;
@@ -51,7 +44,7 @@ input {
   }
 }
 
-input,
+.ipt-primary,
 .btn-container > .btn-primary {
   width: 100%;
   font-size: 1.35rem;

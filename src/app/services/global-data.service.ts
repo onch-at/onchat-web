@@ -43,6 +43,17 @@ export class GlobalData {
     private localStorage: LocalStorage
   ) { }
 
+  reset() {
+    this.user = null;
+    this.chatSessionsPage = 1;
+    this.privateChatroomsPage = 1;
+    this.chatSessions = [];
+    this.receiveChatRequests = [];
+    this.receiveFriendRequests = [];
+    this.sendFriendRequests = [];
+    this.privateChatrooms = [];
+  }
+
   set receiveChatRequests(requests: ChatRequest[]) {
     this._receiveChatRequests = requests;
     this.sortChatRequests();

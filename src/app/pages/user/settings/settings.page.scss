@@ -39,14 +39,8 @@ form {
 }
 
 .form-group {
-    font-size: 1rem;
-
     &:not(:last-child) {
         margin-bottom: 1rem;
-    }
-
-    > label {
-        margin: 0 0.5rem 0.5rem;
     }
 }
 
@@ -63,15 +57,10 @@ form {
     }
 }
 
-ion-input {
+.ipt-primary {
+    font-size: 1rem;
     height: 2.75rem;
-    padding: 0 1rem;
-
-    ::ng-deep .sc-ion-input-ios {
-        &.native-input {
-            padding: 0 2.5rem;
-        }
-    }
+    border-radius: 1.5rem;
 }
 
 ion-textarea {
@@ -91,11 +80,4 @@ ion-datetime {
     height: 2.75rem;
     line-height: 2.75rem;
     padding: 0 1rem;
-}
-
-.ipt-primary {
-    border: none;
-    background: var(--oc-color-secondary);
-    width: 100%;
-    border-radius: 1.5rem;
 }

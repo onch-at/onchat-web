@@ -6,6 +6,7 @@ import { slideUpOnLeaveAnimation } from 'src/app/animations/slide.animation';
 import { CHAT_SESSIONS_ROWS } from 'src/app/common/constant';
 import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatSession, IEntity, Result } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { DateUtil } from 'src/app/utils/date.util';
@@ -23,6 +24,7 @@ export class ChatPage implements OnInit {
   constructor(
     private router: Router,
     private onChatService: OnChatService,
+    private apiService: ApiService,
     public globalData: GlobalData,
   ) { }
 
@@ -109,7 +111,7 @@ export class ChatPage implements OnInit {
    */
   doReadChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
     if (item.unread == 0) {
-      return this.onChatService.unreadChatSession(item.id).pipe(
+      return this.apiService.unreadChatSession(item.id).pipe(
         filter((result: Result) => result.code === ResultCode.Success)
       ).subscribe(() => {
         item.unread = 1;
@@ -118,7 +120,7 @@ export class ChatPage implements OnInit {
       });
     }
 
-    const observable = item.type === ChatSessionType.ChatroomNotice ? this.onChatService.readedChatRequests() : this.onChatService.readedChatSession(item.id);
+    const observable = item.type === ChatSessionType.ChatroomNotice ? this.apiService.readedChatRequests() : this.apiService.readedChatSession(item.id);
 
     observable.pipe(
       filter((result: Result) => result.code === ResultCode.Success)

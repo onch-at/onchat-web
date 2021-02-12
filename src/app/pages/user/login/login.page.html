@@ -8,26 +8,29 @@
             <h5 class="font-weight-bold">世 界 都 在 聊</h5>
           </div>
 
-          <form [formGroup]="loginForm">
+          <form [formGroup]="form">
             <div class="form-group">
               <input type="text" class="display-block text-center ipt-primary" formControlName="username"
                 (blur)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                {{ usernameFeedback(loginForm.controls.username.errors) }}
+                {{ usernameFeedback(form.controls.username.errors) }}
               </div>
             </div>
 
             <div class="form-group">
-              <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="password"
-                autocomplete="off" formControlName="password" (blur)="trimAll('password')" placeholder="密码"
-                [maxlength]="passwordMaxLength" required>
-              <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
+              <div class="form-control">
+                <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="password"
+                  autocomplete="off" formControlName="password" (blur)="trimAll('password')" placeholder="密码"
+                  [maxlength]="passwordMaxLength" required>
+                <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
+                </ion-icon>
 
-              <div class="form-control-warning">
-                <ion-icon name="warning"></ion-icon>
-                {{ passwordFeedback(loginForm.controls.password.errors) }}
+                <div class="form-control-warning">
+                  <ion-icon name="warning"></ion-icon>
+                  {{ passwordFeedback(form.controls.password.errors) }}
+                </div>
               </div>
             </div>
           </form>
@@ -35,13 +38,13 @@
 
         <ion-col class="btn-container" style="padding-right: .55rem;">
           <button appRipple appActiveClass class="btn-primary" routerLink="/user/register"
-            [queryParams]="{username: loginForm.value.username}">
+            [queryParams]="{username: form.value.username}">
             注册
           </button>
         </ion-col>
 
         <ion-col class="btn-container" style="padding-left: .55rem;">
-          <button appRipple appActiveClass [disabled]="loginForm.invalid" (tap)="login()" class="btn-primary">
+          <button appRipple appActiveClass [disabled]="form.invalid" (tap)="login()" class="btn-primary">
             登录
           </button>
         </ion-col>

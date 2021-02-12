@@ -7,6 +7,7 @@ import { ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent 
 import { NotificationOptions } from './common/interface';
 import { RichTextMessage, TextMessage } from './models/form.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
+import { ApiService } from './services/api.service';
 import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
 import { GlobalData } from './services/global-data.service';
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
     private cacheService: CacheService,
     private socketService: SocketService,
     private onChatService: OnChatService,
+    private apiService: ApiService,
     private overlayService: OverlayService,
     private feedbackService: FeedbackService,
     private localStorage: LocalStorage,
@@ -46,10 +48,11 @@ export class AppComponent implements OnInit {
 
     // 连接打通时
     this.socketService.on(SocketEvent.Connect).pipe(
-      mergeMap(() => this.onChatService.checkLogin())
+      mergeMap(() => this.apiService.checkLogin())
     ).subscribe((result: Result<boolean | User>) => {
       const { data } = result;
       this.globalData.user = data ? data as User : null;
+
       if (!data) {
         // 如果不在用户登录、注册页，就跳转
         const isNotAuthPage = /^(?!(\/user\/(login|register)))/.test(this.location.path());
@@ -130,7 +133,7 @@ export class AppComponent implements OnInit {
 
       // 更新好友列表
       // 如果为空才更新，因为为空时，进入好友列表页会自动查询
-      this.globalData.privateChatrooms.length && this.onChatService.getPrivateChatrooms().pipe(
+      this.globalData.privateChatrooms.length && this.apiService.getPrivateChatrooms().pipe(
         filter((result: Result) => result.code === ResultCode.Success)
       ).subscribe((result: Result<ChatSession[]>) => {
         this.globalData.privateChatroomsPage = 1;

@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Result, User } from '../models/onchat.model';
+import { ApiService } from '../services/api.service';
 import { GlobalData } from '../services/global-data.service';
-import { OnChatService } from '../services/onchat.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
-    private onChatService: OnChatService,
+    private apiService: ApiService,
     private globalData: GlobalData,
     private router: Router
   ) { }
@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (this.globalData.user) { return true; }
 
     return new Observable(observer => {
-      this.onChatService.checkLogin().subscribe((result: Result<boolean | User>) => {
+      this.apiService.checkLogin().subscribe((result: Result<boolean | User>) => {
         if (result.data) {
           this.globalData.user = result.data as User;
         } else {

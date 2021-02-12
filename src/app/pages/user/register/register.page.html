@@ -8,14 +8,14 @@
             <h5 class="font-weight-bold">世 界 都 在 聊</h5>
           </div>
 
-          <form [formGroup]="registerForm">
+          <form [formGroup]="form">
             <div class="form-group">
               <input type="text" class="display-block text-center ipt-primary" formControlName="username"
                 (blur)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                {{ usernameFeedback(registerForm.controls.username.errors) }}
+                {{ usernameFeedback(form.controls.username.errors) }}
               </div>
             </div>
 
@@ -25,59 +25,67 @@
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
-                {{ emailFeedback(registerForm.controls.email.errors) }}
+                {{ emailFeedback(form.controls.email.errors) }}
               </div>
             </div>
 
             <div class="form-group">
-              <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="password"
-                autocomplete="off" formControlName="password" (blur)="trimAll('password')" placeholder="密码"
-                [maxlength]="passwordMaxLength" required>
-              <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
+              <div class="form-control">
+                <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="password"
+                  autocomplete="off" formControlName="password" (blur)="trimAll('password')" placeholder="密码"
+                  [maxlength]="passwordMaxLength" required>
+                <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
+                </ion-icon>
 
-              <div class="form-control-warning">
-                <ion-icon name="warning"></ion-icon>
-                {{ passwordFeedback(registerForm.controls.password.errors) }}
+                <div class="form-control-warning">
+                  <ion-icon name="warning"></ion-icon>
+                  {{ passwordFeedback(form.controls.password.errors) }}
+                </div>
               </div>
             </div>
 
             <div class="form-group">
-              <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="confirm-password"
-                autocomplete="off" formControlName="confirmPassword" (blur)="trimAll('confirmPassword')"
-                placeholder="确认密码" [maxlength]="passwordMaxLength" required>
-              <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()"></ion-icon>
+              <div class="form-control">
+                <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="confirm-password"
+                  autocomplete="off" formControlName="confirmPassword" (blur)="trimAll('confirmPassword')"
+                  placeholder="确认密码" [maxlength]="passwordMaxLength" required>
+                <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
+                </ion-icon>
 
-              <div class="form-control-warning">
-                <ion-icon name="warning"></ion-icon>
-                {{ passwordFeedback(registerForm.controls.confirmPassword.errors) }}
-              </div>
+                <div class="form-control-warning">
+                  <ion-icon name="warning"></ion-icon>
+                  {{ passwordFeedback(form.controls.confirmPassword.errors) }}
+                </div>
 
-              <div class="feedback-form-invalid" [hidden]="!registerForm.errors?.equal">
-                <ion-icon name="warning"></ion-icon>
-                确认密码与密码不一致！
+                <div class="feedback-form-invalid" [hidden]="!form.errors?.equal">
+                  <ion-icon name="warning"></ion-icon>
+                  确认密码与密码不一致！
+                </div>
               </div>
             </div>
 
             <div class="form-group">
-              <input type="text" class="display-block text-center ipt-primary" formControlName="captcha"
-                (blur)="trimAll('captcha')" placeholder="验证码" maxlength="6" required style="padding-right: 40%">
+              <div class="form-control">
+                <input type="text" class="display-block text-center ipt-primary" formControlName="captcha"
+                  (blur)="trimAll('captcha')" placeholder="验证码" maxlength="6" required style="padding-right: 40%">
 
-              <button appRipple appActiveClass [disabled]="registerForm.controls.email.errors || countdownTimer"
-                class="btn-primary" (tap)="sendCaptcha()">
-                {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
-              </button>
+                <button appRipple appActiveClass [disabled]="form.controls.email.errors || countdownTimer"
+                  class="btn-primary" (tap)="sendCaptcha()">
+                  {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
+                </button>
 
-              <div class="form-control-warning">
-                <ion-icon name="warning"></ion-icon>
-                {{ captchaFeedback(registerForm.controls.captcha.errors) }}
+                <div class="form-control-warning">
+                  <ion-icon name="warning"></ion-icon>
+                  {{ captchaFeedback(form.controls.captcha.errors) }}
+                </div>
               </div>
             </div>
           </form>
         </ion-col>
 
         <ion-col class="text-center btn-container" size="12">
-          <button appRipple appActiveClass [disabled]="registerForm.invalid || globalData.navigating"
-            class="btn-primary" style="margin-bottom: .75rem;" (tap)="register()">
+          <button appRipple appActiveClass [disabled]="!form.valid || globalData.navigating" class="btn-primary"
+            style="margin-bottom: .75rem;" (tap)="register()">
             注册
           </button>
           <span class="color-dark cursor-pointer" style="font-size: .9rem;" routerLink="/user/login">已有账号？立即登录！</span>

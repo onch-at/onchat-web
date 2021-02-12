@@ -7,7 +7,7 @@
 
       <ion-title>个人信息</ion-title>
 
-      <ion-buttons slot="end" *ngIf="!userInfoForm.invalid && dirty && !loading" (tap)="submit()">
+      <ion-buttons slot="end" *ngIf="!form.invalid && dirty && !loading" (tap)="submit()">
         <ion-button>
           <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>
@@ -19,15 +19,15 @@
   <main class="flex-col-container align-items-center">
     <img *ngIf="globalData.user" class="avatar" [src]="globalData.user.avatarThumbnail" (tap)="presentActionSheet()">
 
-    <form [formGroup]="userInfoForm">
+    <form [formGroup]="form">
       <div class="form-group">
         <label class="display-block">昵称</label>
-        <ion-input class="ipt-primary text-center" formControlName="nickname" (ionChange)="trimAll('nickname')"
-          placeholder="请输入昵称" [maxlength]="nicknameMaxLength" clearInput required></ion-input>
+        <input type="text" class="ipt-primary text-center display-block" formControlName="nickname"
+          (blur)="trimAll('nickname')" placeholder="请输入昵称" [maxlength]="nicknameMaxLength" required>
 
         <div class="form-control-warning">
           <ion-icon name="warning"></ion-icon>
-          {{ nicknameFeedback(userInfoForm.controls.nickname.errors) }}
+          {{ nicknameFeedback(form.controls.nickname.errors) }}
         </div>
       </div>
 
@@ -38,7 +38,7 @@
 
         <div class="form-control-warning">
           <ion-icon name="warning"></ion-icon>
-          {{ signatureFeedback(userInfoForm.controls.signature.errors) }}
+          {{ signatureFeedback(form.controls.signature.errors) }}
         </div>
       </div>
 
@@ -63,11 +63,12 @@
         </ion-segment>
       </div>
 
-      <!-- <div class="form-group">
+      <div class="form-group">
         <label class="display-block">电子邮箱</label>
-        <ion-input class="ipt-primary text-center" clearInput formControlName="email" (ionChange)="trimAll('email')"
-          placeholder="请输入电子邮箱" [maxlength]="usernameMaxLength" required></ion-input>
-      </div> -->
+        <button class="ipt-primary text-center" (tap)="bindEmail()">
+          {{ globalData.user.email || '立即绑定' }}
+        </button>
+      </div>
     </form>
   </main>
 </ion-content>

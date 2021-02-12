@@ -58,9 +58,36 @@
   }
 }
 
+.form-group {
+  > label {
+    margin: 0 0.5rem 0.5rem;
+  }
+
+  .ipt-primary {
+    width: 100%;
+    padding: 0 2.5rem;
+  }
+
+  .form-control {
+    position: relative;
+
+    > .btn-primary {
+      position: absolute;
+      height: 2.25rem;
+      width: 30%;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 0.9rem;
+      border-radius: 2.5rem;
+    }
+  }
+}
+
 // 主要输入框
 .ipt-primary {
   color: var(--oc-color-dark);
+  border: none;
+  background: var(--oc-color-secondary);
 
   &:focus,
   &:focus-within {

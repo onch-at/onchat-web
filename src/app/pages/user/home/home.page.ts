@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 
 @Component({
@@ -21,11 +21,11 @@ export class HomePage implements OnInit {
   mood: typeof Mood = Mood;
 
   constructor(
-    private onChatService: OnChatService,
     public globalData: GlobalData,
-    private overlayService: OverlayService,
+    private router: Router,
     private route: ActivatedRoute,
-    private router: Router
+    private apiService: ApiService,
+    private overlayService: OverlayService,
   ) { }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class HomePage implements OnInit {
       }
     });
 
-    this.onChatService.isFriend(this.user.id).subscribe((result: Result<number>) => {
+    this.apiService.isFriend(this.user.id).subscribe((result: Result<number>) => {
       if (result.code === ResultCode.Success) {
         this.chatroomId = result.data;
       }

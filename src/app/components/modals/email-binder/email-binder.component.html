@@ -1,0 +1,51 @@
+<ion-content [fullscreen]="true" appHideScrollbar>
+  <ion-header class="display-flex align-items-center">
+    <ion-toolbar>
+      <ion-buttons *ngIf="globalData.user.email" slot="start">
+        <ion-button (tap)="dismiss()">
+          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <ion-title>绑定电子邮箱</ion-title>
+
+      <ion-buttons slot="end" *ngIf="!loading && form.valid" (tap)="submit()">
+        <ion-button>
+          <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-spinner slot="end" *ngIf="loading" name="crescent"></ion-spinner>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label class="display-block">电子邮箱</label>
+      <input type="email" class="display-block text-center ipt-primary" formControlName="email"
+        (blur)="trimAll('email')" placeholder="电子邮箱" [maxlength]="emailMaxLength" required>
+
+      <div class="form-control-warning">
+        <ion-icon name="warning"></ion-icon>
+        {{ emailFeedback(form.controls.email.errors) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="display-block">验证码</label>
+      <div class="form-control">
+        <input type="text" class="display-block text-center ipt-primary" formControlName="captcha"
+          (blur)="trimAll('captcha')" placeholder="验证码" maxlength="6" required style="padding-right: 40%">
+
+        <button appRipple appActiveClass [disabled]="form.controls.email.errors || countdownTimer" class="btn-primary"
+          (tap)="sendCaptcha()">
+          {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
+        </button>
+
+        <div class="form-control-warning">
+          <ion-icon name="warning"></ion-icon>
+          {{ captchaFeedback(form.controls.captcha.errors) }}
+        </div>
+      </div>
+    </div>
+  </form>
+</ion-content>

@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResultCode } from 'src/app/common/enum';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 
@@ -30,7 +30,7 @@ export class AvatarPage implements OnInit {
   constructor(
     public globalData: GlobalData,
     private overlayService: OverlayService,
-    private onChatService: OnChatService,
+    private apiService: ApiService,
     private feedbackService: FeedbackService,
     private route: ActivatedRoute,
     private router: Router,
@@ -67,7 +67,7 @@ export class AvatarPage implements OnInit {
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
-          uploader: (avatar: Blob) => this.onChatService.uploadUserAvatar(avatar),
+          uploader: (avatar: Blob) => this.apiService.uploadUserAvatar(avatar),
           handler: (result: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = result.data;
             this.user.avatar = avatar;

@@ -2,16 +2,16 @@ import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
-import { debounceTime, filter, first, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { ChatSessionSelectorComponent } from 'src/app/components/modals/chat-session-selector/chat-session-selector.component';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, Result } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
 import { CacheService } from 'src/app/services/cache.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OnChatService } from 'src/app/services/onchat.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -41,7 +41,7 @@ export class HomePage implements OnInit {
     private router: Router,
     public globalData: GlobalData,
     private overlayService: OverlayService,
-    private onChatService: OnChatService,
+    private apiService: ApiService,
     private cacheService: CacheService,
     private socketService: SocketService,
   ) { }
@@ -132,7 +132,7 @@ export class HomePage implements OnInit {
   inviteJoinChatroom() {
     // 等待加载出好友会话后的一个可观察对象
     const observable: Observable<ChatSession[] | Result<ChatSession[]>> = this.globalData.privateChatrooms.length ?
-      of(null) : this.onChatService.getPrivateChatrooms().pipe(
+      of(null) : this.apiService.getPrivateChatrooms().pipe(
         filter((result: Result) => result.code === ResultCode.Success),
         tap((result: Result<ChatSession[]>) => {
           this.globalData.privateChatrooms = result.data;
@@ -151,7 +151,6 @@ export class HomePage implements OnInit {
           const list = data.map(o => o.data.chatroomId);
           const observable = new Observable(observer => {
             this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
-              first(),
               takeUntil(this.subject),
             ).subscribe((result: Result<number[]>) => {
               const { code, msg } = result;
@@ -188,7 +187,7 @@ export class HomePage implements OnInit {
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
-          uploader: (avatar: Blob) => this.onChatService.uploadChatroomAvatar(this.chatroom.id, avatar),
+          uploader: (avatar: Blob) => this.apiService.uploadChatroomAvatar(this.chatroom.id, avatar),
           handler: (result: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = result.data;
             const id = this.chatroom.id;

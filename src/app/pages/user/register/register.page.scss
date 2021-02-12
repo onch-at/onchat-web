@@ -1,25 +1,11 @@
 @import "../login/login.page.scss";
+
 .form-group-row {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-
-  > input,
-  > img {
-    width: calc(50% - 0.5rem);
-  }
 }
 
 ion-grid {
   padding: 0 1.5rem;
-}
-
-.form-group > .btn-primary {
-  position: absolute;
-  height: 2.25rem;
-  width: 30%;
-  top: 0.5rem;
-  right: 0.5rem;
-  font-size: 0.9rem;
-  border-radius: 2.5rem;
 }

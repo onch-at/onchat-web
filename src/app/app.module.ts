@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeExtraZhHans from '@angular/common/locales/extra/zh-Hans';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import { LOCALE_ID, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
@@ -36,6 +37,8 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     BrowserAnimationsModule,
     BrowserModule,
     HammerModule,
+    ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     AppRoutingModule,
     IonicModule.forRoot({

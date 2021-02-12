@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
+import { passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -24,7 +26,7 @@ export class LoginPage implements OnInit {
   usernameMaxLength: number = USERNAME_MAX_LENGTH;
   passwordMaxLength: number = PASSWORD_MAX_LENGTH;
 
-  loginForm: FormGroup = this.fb.group({
+  form: FormGroup = this.formBuilder.group({
     username: [
       '', [
         Validators.required,
@@ -46,12 +48,13 @@ export class LoginPage implements OnInit {
   passwordFeedback: ValidationFeedback = passwordFeedback;
 
   constructor(
-    private onChatService: OnChatService,
     public globalData: GlobalData,
+    private router: Router,
+    private onChatService: OnChatService,
+    private apiService: ApiService,
     private overlayService: OverlayService,
     private socketService: SocketService,
-    private fb: FormBuilder,
-    private router: Router,
+    private formBuilder: FormBuilder,
     private routerOutlet: IonRouterOutlet
   ) { }
 
@@ -64,21 +67,22 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    if (this.loginForm.invalid || this.globalData.navigating) { return; }
+    if (!this.form.valid || this.globalData.navigating) { return; }
 
     this.globalData.navigating = true;
 
-    const { username, password } = this.loginForm.value;
+    const { username, password } = this.form.value;
 
-    this.onChatService.login(new Login(username, password)).subscribe((result: Result<User>) => {
-      this.overlayService.presentToast(result.msg, result.code === ResultCode.Success ? 1000 : 2000);
+    this.apiService.login(new Login(username, password)).subscribe((result: Result<User>) => {
+      const { code, data, msg } = result;
+      this.overlayService.presentToast(msg || '登录成功！即将跳转…', code === ResultCode.Success ? 1000 : 2000);
 
-      if (result.code !== ResultCode.Success) {
+      if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
         return;
       }
 
-      this.globalData.user = result.data;
+      this.globalData.user = data;
       this.socketService.init();
 
       setTimeout(() => {
@@ -100,28 +104,8 @@ export class LoginPage implements OnInit {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    const value = StrUtil.trimAll(this.loginForm.get(controlName).value);
-    this.loginForm.controls[controlName].setValue(value);
+    const value = StrUtil.trimAll(this.form.get(controlName).value);
+    this.form.controls[controlName].setValue(value);
   }
 
 }
-
-export const usernameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
-  if (!errors) { return; }
-  if (errors.required) {
-    return '用户名不能为空！';
-  } else if (errors.pattern) {
-    return '用户名只能包含字母/汉字/数字/下划线/横杠！';
-  } else if (errors.minlength || errors.maxlength) {
-    return `用户名长度必须在${USERNAME_MIN_LENGTH}~${USERNAME_MAX_LENGTH}位字符之间！`;
-  }
-};
-
-export const passwordFeedback: ValidationFeedback = (errors: ValidationErrors) => {
-  if (!errors) { return; }
-  if (errors.required) {
-    return '密码不能为空！';
-  } else if (errors.minlength || errors.maxlength) {
-    return `密码长度必须在${PASSWORD_MIN_LENGTH}~${PASSWORD_MAX_LENGTH}位字符之间！`;
-  }
-};
