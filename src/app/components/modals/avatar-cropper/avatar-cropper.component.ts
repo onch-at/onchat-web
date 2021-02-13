@@ -1,14 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ResultCode } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
-import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
+import { ModalComponent } from '../modal.component';
 
 type ImageCropData = { imageBlob: Blob, imageSrc: SafeUrl };
 export type AvatarData = { avatar: string; avatarThumbnail: string };
@@ -18,8 +17,7 @@ export type AvatarData = { avatar: string; avatarThumbnail: string };
   templateUrl: './avatar-cropper.component.html',
   styleUrls: ['./avatar-cropper.component.scss'],
 })
-export class AvatarCropperComponent implements OnInit {
-  private subject: Subject<unknown> = new Subject();
+export class AvatarCropperComponent extends ModalComponent {
   /** 文件变更事件 */
   @Input() imageChangedEvent: Event;
   /** 上传器 */
@@ -36,24 +34,16 @@ export class AvatarCropperComponent implements OnInit {
   error: boolean = false;
 
   constructor(
-    public globalData: GlobalData,
-    private overlayService: OverlayService,
     private sanitizer: DomSanitizer,
-    private router: Router
-  ) { }
-
-  ngOnInit() {
-    this.ionLoading = this.overlayService.presentLoading();
-
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      takeUntil(this.subject)
-    ).subscribe(() => this.dismiss());
+    protected overlayService: OverlayService,
+    protected router: Router
+  ) {
+    super(router, overlayService);
   }
 
-  ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+  ngOnInit() {
+    super.ngOnInit();
+    this.ionLoading = this.overlayService.presentLoading();
   }
 
   /**
@@ -61,8 +51,7 @@ export class AvatarCropperComponent implements OnInit {
    * @param data 需要传回一个image src
    */
   dismiss(data?: SafeUrl) {
-    this.overlayService.dismissModal(data);
-    this.globalData.canDeactivate = true;
+    super.dismiss(data);
   }
 
   /**
@@ -190,32 +179,31 @@ export class AvatarCropperComponent implements OnInit {
 
     // 如果文件大于1MB
     if (size > 1048576) {
-      // 如果质量大于0，可以继续压缩
+      // 如果质量大于等于5，可以继续压缩
       if (this.imageCropper.imageQuality >= 5) {
         this.imageCropper.imageQuality -= 5;
 
-        await this.overlayService.presentToast('图片文件体积过大，尝试进一步压缩…');
+        await this.overlayService.presentToast('图片文件体积过大，正在尝试进一步压缩…');
         return this.submit();
-      } else {
-        return this.overlayService.presentToast('文件体积过大(' + (size / 1048576).toFixed(2) + 'MB)，仅接受体积为1MB以内的文件');
       }
+
+      return this.overlayService.presentToast(`文件体积过大（${(size / 1048576).toFixed(2)} MB），仅接受体积为1MB以内的文件`);
     }
 
-    this.globalData.canDeactivate = false;
     this.ionLoading = this.overlayService.presentLoading('Uploading…');
 
     this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
       (await this.ionLoading).dismiss();
-      this.globalData.canDeactivate = true;
 
-      if (result.code === ResultCode.Success) {
-        this.handler(result);
+      const { code, msg } = result;
 
-        this.dismiss(imageSrc);
-        this.overlayService.presentToast('头像上传成功！');
-      } else {
-        this.overlayService.presentToast(result.msg);
+      if (code !== ResultCode.Success) {
+        return this.overlayService.presentToast(msg);
       }
+
+      this.handler(result);
+      this.dismiss(imageSrc);
+      this.overlayService.presentToast('头像上传成功！');
     });
   }
 

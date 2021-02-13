@@ -1,5 +1,5 @@
 import { KeyValue } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent, Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -20,7 +20,7 @@ import { StrUtil } from 'src/app/utils/str.util';
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
-export class ChatPage implements OnInit {
+export class ChatPage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
   msg: string = '';

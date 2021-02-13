@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, Scroll } from '@angular/router';
 import { AnimationBuilder, AnimationController } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -12,7 +12,7 @@ import { OverlayService } from 'src/app/services/overlay.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss']
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   sharp: boolean = false;
 

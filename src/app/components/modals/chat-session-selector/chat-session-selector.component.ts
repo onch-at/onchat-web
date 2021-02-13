@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
+import { ModalComponent } from '../modal.component';
 
 const ITEM_ROWS: number = 15;
 
@@ -13,8 +13,7 @@ const ITEM_ROWS: number = 15;
   templateUrl: './chat-session-selector.component.html',
   styleUrls: ['./chat-session-selector.component.scss'],
 })
-export class ChatSessionSelectorComponent implements OnInit {
-  private subject: Subject<unknown> = new Subject();
+export class ChatSessionSelectorComponent extends ModalComponent {
   /** 标题 */
   @Input() title: string;
   /** 会话列表 */
@@ -32,27 +31,10 @@ export class ChatSessionSelectorComponent implements OnInit {
 
   constructor(
     public globalData: GlobalData,
-    private overlayService: OverlayService,
-    private router: Router
-  ) { }
-
-  ngOnInit() {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      takeUntil(this.subject)
-    ).subscribe(() => this.dismiss());
-  }
-
-  ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
-  }
-
-  /**
-   * 关闭自己
-   */
-  dismiss() {
-    this.overlayService.dismissModal();
+    protected overlayService: OverlayService,
+    protected router: Router
+  ) {
+    super(router, overlayService);
   }
 
   /**

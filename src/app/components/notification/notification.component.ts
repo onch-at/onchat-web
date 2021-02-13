@@ -1,5 +1,5 @@
 import { OverlayRef } from '@angular/cdk/overlay';
-import { Component, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Animation, AnimationController, Gesture, GestureController, GestureDetail } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
 })
-export class NotificationComponent implements OnInit {
+export class NotificationComponent implements OnInit, OnDestroy {
   /** 标题 */
   @Input() title: string;
   /** 描述 */

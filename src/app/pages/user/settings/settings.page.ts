@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
@@ -22,7 +22,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
 })
-export class SettingsPage implements OnInit {
+export class SettingsPage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   /** 昵称最大长度 */
   nicknameMaxLength: number = USERNAME_MAX_LENGTH;
@@ -93,6 +93,7 @@ export class SettingsPage implements OnInit {
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private location: Location,
     private apiService: ApiService,
     private overlayService: OverlayService

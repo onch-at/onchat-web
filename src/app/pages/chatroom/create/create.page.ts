@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -19,7 +19,7 @@ const ITEM_ROWS: number = 10;
   templateUrl: './create.page.html',
   styleUrls: ['./create.page.scss'],
 })
-export class CreatePage implements OnInit {
+export class CreatePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   /** 群名最大长度 */
   nameMaxLength: number = CHATROOM_NAME_MAX_LENGTH;

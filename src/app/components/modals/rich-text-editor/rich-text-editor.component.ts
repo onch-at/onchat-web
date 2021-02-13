@@ -1,8 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { ContentChange } from 'ngx-quill';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
@@ -14,14 +12,14 @@ import { LocalStorage } from 'src/app/services/local-storage.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
+import { ModalComponent } from '../modal.component';
 
 @Component({
   selector: 'app-rich-text-editor',
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.scss'],
 })
-export class RichTextEditorComponent implements OnInit {
-  private subject: Subject<unknown> = new Subject();
+export class RichTextEditorComponent extends ModalComponent {
   @Input() page: ChatPage;
   html: string;
   text: string = '';
@@ -43,30 +41,20 @@ export class RichTextEditorComponent implements OnInit {
   constructor(
     public globalData: GlobalData,
     private localStorage: LocalStorage,
-    private overlayService: OverlayService,
     private socketService: SocketService,
-    private router: Router
-  ) { }
+    protected overlayService: OverlayService,
+    protected router: Router
+  ) {
+    super(router, overlayService);
+  }
 
   ngOnInit() {
+    super.ngOnInit();
     this.html = this.localStorage.getItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalData.chatroomId);
-
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      takeUntil(this.subject)
-    ).subscribe(() => this.dismiss());
   }
 
-  ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
-  }
-
-  /**
-   * 关闭自己
-   */
   dismiss() {
-    this.overlayService.dismissModal();
+    super.dismiss();
     StrUtil.trimAll(this.text).length && this.cache();
   }
 

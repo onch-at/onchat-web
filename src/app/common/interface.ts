@@ -2,8 +2,6 @@ import { KeyValue } from "@angular/common";
 import { ValidationErrors } from "@angular/forms";
 import { ChatSession } from "../models/onchat.model";
 
-
-
 /** 组件引用 */
 type ComponentRef = Function | HTMLElement | string | null;
 /** 组件参数 */

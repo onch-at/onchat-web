@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { EMAIL_MAX_LENGTH } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
 import { captchaFeedback, emailFeedback } from 'src/app/common/feedback';
@@ -10,13 +11,14 @@ import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { AsyncValidator } from 'src/app/validators/async.validator';
+import { ModalComponent } from '../modal.component';
 
 @Component({
   selector: 'app-email-binder',
   templateUrl: './email-binder.component.html',
   styleUrls: ['./email-binder.component.scss'],
 })
-export class EmailBinderComponent implements OnInit {
+export class EmailBinderComponent extends ModalComponent {
   form: FormGroup = this.formBuilder.group({
     email: [
       '', [
@@ -50,10 +52,11 @@ export class EmailBinderComponent implements OnInit {
     private formBuilder: FormBuilder,
     private asyncValidator: AsyncValidator,
     private apiService: ApiService,
-    private overlayService: OverlayService,
-  ) { }
-
-  ngOnInit() { }
+    protected overlayService: OverlayService,
+    protected router: Router
+  ) {
+    super(router, overlayService);
+  }
 
   sendCaptcha() {
     const ctrl = this.form.get('email');
@@ -91,13 +94,6 @@ export class EmailBinderComponent implements OnInit {
 
       this.form.get('captcha').setValue('');
     });
-  }
-
-  /**
-   * 关闭自己
-   */
-  dismiss() {
-    this.overlayService.dismissModal();
   }
 
   /**

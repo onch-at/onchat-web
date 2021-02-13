@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { CHAT_SESSIONS_ROWS } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
@@ -11,7 +11,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
   templateUrl: './chatroom.component.html',
   styleUrls: ['./chatroom.component.scss'],
 })
-export class ChatroomComponent implements OnInit {
+export class ChatroomComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,

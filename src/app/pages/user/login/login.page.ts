@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
@@ -20,7 +20,7 @@ import { OnChatService } from '../../../services/onchat.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
   /** 密码框类型 */
   pwdInputType: string = 'password';
   usernameMaxLength: number = USERNAME_MAX_LENGTH;

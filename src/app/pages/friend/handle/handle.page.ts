@@ -1,5 +1,5 @@
 import { KeyValue } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { SocketService } from 'src/app/services/socket.service';
   templateUrl: './handle.page.html',
   styleUrls: ['./handle.page.scss'],
 })
-export class HandlePage implements OnInit {
+export class HandlePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   /** 用户 */
   user: User;
