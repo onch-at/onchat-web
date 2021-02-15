@@ -29,6 +29,7 @@ export abstract class ModalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subject.next();
     this.subject.complete();
+    this.router.navigate([]);
   }
 
   dismiss(data?: any, role?: string, id?: string): any {
