@@ -1,7 +1,8 @@
 import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { Result } from '../models/onchat.model';
 import { ApiService } from '../services/api.service';
 import { GlobalData } from '../services/global-data.service';
@@ -17,15 +18,14 @@ export class NotFriendGuard implements CanActivate {
   ) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return new Observable(observer => {
-      this.apiService.isFriend(+next.params.userId).subscribe((result: Result<number>) => {
+    return this.apiService.isFriend(+next.params.userId).pipe(
+      mergeMap((result: Result<number>) => {
         // TODO 写完单聊之后，自己跟自己也是好友，把this.globalData.user.id == next.params.userId删除
         const isFriend = !!result.data || this.globalData.user.id == next.params.userId;
         isFriend && this.location.back();
 
-        observer.next(!isFriend);
-        observer.complete();
-      });
-    });
+        return of(!isFriend);
+      })
+    );
   }
 }

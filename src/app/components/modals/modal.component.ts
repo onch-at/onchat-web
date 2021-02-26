@@ -19,7 +19,9 @@ export abstract class ModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // 在当前路由附加#modal，用来实现返回关闭模态框，而不返回上一页
-    this.router.navigate([], { fragment: 'modal' });
+    Promise.resolve().then(() => {
+      this.router.navigate([], { fragment: 'modal' });
+    });
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       takeUntil(this.subject)

@@ -1,8 +1,8 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
@@ -131,13 +131,12 @@ export class HomePage implements OnInit, OnDestroy {
    */
   inviteJoinChatroom() {
     // 等待加载出好友会话后的一个可观察对象
-    const observable: Observable<ChatSession[] | Result<ChatSession[]>> = this.globalData.privateChatrooms.length ?
-      of(null) : this.apiService.getPrivateChatrooms().pipe(
-        filter((result: Result) => result.code === ResultCode.Success),
-        tap((result: Result<ChatSession[]>) => {
-          this.globalData.privateChatrooms = result.data;
-        })
-      );
+    const observable = this.globalData.privateChatrooms.length ? of(null) : this.apiService.getPrivateChatrooms().pipe(
+      filter((result: Result) => result.code === ResultCode.Success),
+      tap((result: Result<ChatSession[]>) => {
+        this.globalData.privateChatrooms = result.data;
+      })
+    );
 
     observable.subscribe(() => this.overlayService.presentModal({
       component: ChatSessionSelectorComponent,
@@ -149,20 +148,16 @@ export class HomePage implements OnInit, OnDestroy {
         handler: (data: ChatSessionCheckbox[]) => {
           // 得到聊天室ID
           const list = data.map(o => o.data.chatroomId);
-          const observable = new Observable(observer => {
-            this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
-              takeUntil(this.subject),
-            ).subscribe((result: Result<number[]>) => {
-              const { code, msg } = result;
-              this.overlayService.presentToast(code === ResultCode.Success ? '邀请消息已发出！' : '邀请失败，原因：' + msg);
-              observer.next();
-              observer.complete();
-            });
-          });
 
           this.socketService.inviteJoinChatroom(this.chatroom.id, list);
 
-          return observable;
+          return this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
+            switchMap((result: Result<number[]>) => {
+              const { code, msg } = result;
+              this.overlayService.presentToast(code === ResultCode.Success ? '邀请消息已发出！' : '邀请失败，原因：' + msg);
+              return of(null);
+            })
+          );
         }
       }
     }));

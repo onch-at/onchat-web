@@ -58,8 +58,8 @@ export class ApiService {
    * 检测是否已经登录
    * 成功登录,则返回User；否则返回false
    */
-  checkLogin(): Observable<Result<boolean | User>> {
-    return this.http.get<Result<boolean | User>>(env.userUrl + 'checklogin', { params: this.getCacheParam(1000) });
+  checkLogin(): Observable<Result<false | User>> {
+    return this.http.get<Result<false | User>>(env.userUrl + 'checklogin', { params: this.getCacheParam(1000) });
   }
 
   /**

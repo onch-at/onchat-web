@@ -49,9 +49,9 @@ export class AppComponent implements OnInit {
     // 连接打通时
     this.socketService.on(SocketEvent.Connect).pipe(
       mergeMap(() => this.apiService.checkLogin())
-    ).subscribe((result: Result<boolean | User>) => {
+    ).subscribe((result: Result<false | User>) => {
       const { data } = result;
-      this.globalData.user = data ? data as User : null;
+      this.globalData.user = data || null;
 
       if (!data) {
         // 如果不在用户登录、注册页，就跳转
@@ -366,15 +366,13 @@ export class AppComponent implements OnInit {
           this.globalData.navigating = true;
           break;
 
+        case event instanceof NavigationCancel:
+          this.feedbackService.slightVibrate(); // 如果路由返回被取消，就震动一下，表示阻止
         case event instanceof NavigationEnd:
         case event instanceof NavigationError:
-        case event instanceof NavigationCancel:
           this.globalData.navigating = false;
           break;
       }
-
-      // 如果路由返回被取消，就震动一下，表示阻止
-      event instanceof NavigationCancel && this.feedbackService.slightVibrate();
     });
 
     this.checkSocketConnectState();
