@@ -146,18 +146,19 @@ export class HomePage implements OnInit, OnDestroy {
         chatSessions: this.globalData.privateChatrooms.filter(o => !this.chatMembers.some(p => p.userId === o.data.userId)).map(o => ({ ...o, checked: false })),
         limit: MSG_BROADCAST_QUANTITY_LIMIT,
         handler: (data: ChatSessionCheckbox[]) => {
-          // 得到聊天室ID
-          const list = data.map(o => o.data.chatroomId);
-
-          this.socketService.inviteJoinChatroom(this.chatroom.id, list);
-
-          return this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
+          const observable = this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
             switchMap((result: Result<number[]>) => {
               const { code, msg } = result;
               this.overlayService.presentToast(code === ResultCode.Success ? '邀请消息已发出！' : '邀请失败，原因：' + msg);
               return of(null);
             })
           );
+
+          // 得到聊天室ID
+          const list = data.map(o => o.data.chatroomId);
+          this.socketService.inviteJoinChatroom(this.chatroom.id, list);
+
+          return observable;
         }
       }
     }));
