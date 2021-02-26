@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SysUtil } from '../utils/sys.util';
 
@@ -11,7 +11,7 @@ import { SysUtil } from '../utils/sys.util';
 @Directive({
   selector: '[appHideScrollbar]'
 })
-export class HideScrollbarDirective {
+export class HideScrollbarDirective implements AfterViewInit {
 
   constructor(
     private elementRef: ElementRef,

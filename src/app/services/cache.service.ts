@@ -47,8 +47,7 @@ export class CacheService {
   revoke(mark: string | RegExp) {
     for (const key of this.cacheMap.keys()) {
       if (mark instanceof RegExp ? mark.test(key) : key.includes(mark)) {
-        this.cacheMap.delete(key);
-        break;
+        return this.cacheMap.delete(key);
       }
     }
   }

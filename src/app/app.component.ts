@@ -346,7 +346,7 @@ export class AppComponent implements OnInit {
         this.overlayService[document.hidden ? 'presentNativeNotification' : 'presentNotification'](opts);
         return this.feedbackService.booAudio.play();
 
-        // 更新本地数据
+        // TODO 更新本地数据
         // this.globalData.chatSessions.push(chatSession);
         // this.globalData.sortChatSessions();
         // return this.globalData.unreadMsgCount++;

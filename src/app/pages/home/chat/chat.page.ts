@@ -151,11 +151,11 @@ export class ChatPage implements OnInit, OnDestroy {
   target(chatSession: ChatSession) {
     if (chatSession.content.userId == this.globalData.user.id) {
       return '我: ';
-    } else if (chatSession.data.chatroomType == ChatroomType.Private) {
-      return 'Ta: '
-    } else {
-      return (chatSession.content.nickname || chatSession.content.userId) + ': ';
     }
+    if (chatSession.data.chatroomType == ChatroomType.Private) {
+      return 'Ta: '
+    }
+    return (chatSession.content.nickname || chatSession.content.userId) + ': ';
   }
 
 }

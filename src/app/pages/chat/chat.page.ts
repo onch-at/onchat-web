@@ -212,8 +212,9 @@ export class ChatPage implements OnInit, OnDestroy {
    * 滚动结束时
    */
   onIonScrollEnd() {
+    const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
     // 已经有未读消息，且当前位置接近最底部了
-    if (this.hasUnread && this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50) {
+    if (this.hasUnread && scrollHeight - scrollTop - clientHeight <= 50) {
       this.hasUnread = false;
     }
   }
@@ -287,9 +288,9 @@ export class ChatPage implements OnInit, OnDestroy {
 
         // 如果返回的消息里少于10条，则代表这是最后一段消息了
         result.data.length < 15 && (this.end = true);
-      } else if (result.code == 1) { // 如果没有消息
+      } else if (result.code === 1) { // 如果没有消息
         this.end = true;
-      } else if (result.code == -3) { // 如果没有权限
+      } else if (result.code === ResultCode.ErrorNoPermission) { // 如果没有权限
         this.overlayService.presentToast('你还没有权限进入此聊天室！');
         this.router.navigateByUrl('/'); // 没权限还想进来，回首页去吧
       }
@@ -327,7 +328,8 @@ export class ChatPage implements OnInit, OnDestroy {
    * 尝试滚动到底部
    */
   tryToScrollToBottom() {
-    const canScrollToBottom = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight <= 50;
+    const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
+    const canScrollToBottom = scrollHeight - scrollTop - clientHeight <= 50;
 
     if (canScrollToBottom) { // 当前滚动的位置允许滚动
       this.scrollToBottom();
@@ -388,9 +390,7 @@ export class ChatPage implements OnInit, OnDestroy {
    * 隐藏抽屉
    */
   hideDrawer() {
-    if (this.showDrawer) {
-      this.showDrawer = false;
-    }
+    this.showDrawer &&= false;
   }
 
   more() {

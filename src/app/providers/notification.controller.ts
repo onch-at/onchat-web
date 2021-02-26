@@ -31,9 +31,7 @@ export class NotificationController {
   create(opts: NotificationOptions): NotificationController {
     this.option = opts;
 
-    if (!this.overlayRef) {
-      this.overlayRef = this.overlay.create(this.overlayConfig);
-    }
+    this.overlayRef ??= this.overlay.create(this.overlayConfig);
 
     return this;
   }
@@ -46,10 +44,8 @@ export class NotificationController {
     this.dismissTimeout != null && this.clearDismissTimeout();
     this.subscription?.unsubscribe();
 
-    if (!this.componentRef) {
-      this.componentRef = this.overlayRef.attach(new ComponentPortal(NotificationComponent));
-      this.componentRef.instance.overlayRef = this.overlayRef;
-    }
+    this.componentRef ??= this.overlayRef.attach(new ComponentPortal(NotificationComponent));
+    this.componentRef.instance.overlayRef = this.overlayRef;
 
     const { title, description, icon, duration, url, handler } = this.option;
 
@@ -87,7 +83,7 @@ export class NotificationController {
   }
 
   private clearDismissTimeout(): void {
-    clearTimeout(this.dismissTimeout);
+    window.clearTimeout(this.dismissTimeout);
     this.dismissTimeout = null;
   }
 

@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
@@ -78,7 +78,8 @@ export class SettingsPage implements OnInit, OnDestroy {
     if (!errors) { return; }
     if (errors.required) {
       return '昵称不能为空！';
-    } else if (errors.minlength || errors.maxlength) {
+    }
+    if (errors.minlength || errors.maxlength) {
       return `昵称长度必须在${NICKNAME_MIN_LENGTH}~${NICKNAME_MAX_LENGTH}位字符之间！`;
     }
   }
@@ -93,7 +94,6 @@ export class SettingsPage implements OnInit, OnDestroy {
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
     private location: Location,
     private apiService: ApiService,
     private overlayService: OverlayService

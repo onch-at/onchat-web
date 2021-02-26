@@ -107,9 +107,7 @@ export class GlobalData {
    * 计算未读消息数
    */
   totalUnreadMsgCount() {
-    if (this.unreadMsgCount > 0) {
-      this.unreadMsgCount = 0;
-    }
+    this.unreadMsgCount &&= 0;
 
     this.totalUnreadChatRequestCount();
 
@@ -117,7 +115,7 @@ export class GlobalData {
       // 计算未读消息总数，如果有未读消息，
       // 且总未读数大于100，则停止遍历
       if (chatSession.unread > 0 && (this.unreadMsgCount += chatSession.unread) >= 100) {
-        break;
+        return;
       }
     }
   }

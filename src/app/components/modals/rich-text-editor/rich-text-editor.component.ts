@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentChange } from 'ngx-quill';
+import { filter, first } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
@@ -74,25 +75,23 @@ export class RichTextEditorComponent extends ModalComponent {
 
     const message = new Message(+this.globalData.chatroomId, MessageType.RichText);
 
-    const subscription = this.socketService.on(SocketEvent.Message).subscribe((result: Result<Message>) => {
+    this.socketService.on(SocketEvent.Message).pipe(
+      first(),
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe((result: Result<Message>) => {
       const msg = result.data;
-      // 如果请求成功，并且收到的消息是这个房间的
-      if (result.code !== ResultCode.Success || msg.chatroomId != this.globalData.chatroomId) {
-        return subscription.unsubscribe();
-      }
+      const { user, chatroomId } = this.globalData;
 
       // 如果是自己发的消息，并且是刚刚这一条
-      if (msg.userId == this.globalData.user.id && msg.sendTime == message.sendTime) {
+      if (msg.userId === user.id && msg.sendTime === message.sendTime) {
         this.text = '';
-        this.localStorage.removeItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalData.chatroomId);
+        this.localStorage.removeItemFromMap(LocalStorageKey.ChatRichTextMap, chatroomId);
 
         loading.then((loading: HTMLIonLoadingElement) => {
           loading.dismiss()
           this.dismiss();
           this.page.scrollToBottom();
         });
-
-        subscription.unsubscribe();
       }
     });
 
