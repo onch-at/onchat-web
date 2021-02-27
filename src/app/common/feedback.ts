@@ -36,7 +36,7 @@ export const emailFeedback: ValidationFeedback = (errors: ValidationErrors) => {
     if (errors.email) {
         return '非法的电子邮箱格式！';
     }
-    if (errors.legalmail) {
+    if (errors.legalemail) {
         return '该电子邮箱已被占用！';
     }
 };

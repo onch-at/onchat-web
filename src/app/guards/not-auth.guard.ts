@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Result, User } from '../models/onchat.model';
 import { ApiService } from '../services/api.service';
 import { GlobalData } from '../services/global-data.service';
@@ -20,13 +20,13 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     if (this.globalData.user) { return false; }
 
     return this.apiService.checkLogin().pipe(
-      mergeMap((result: Result<false | User>) => {
+      map((result: Result<false | User>) => {
         if (result.data) {
           this.globalData.user = result.data;
           this.router.navigateByUrl('/'); // 如果登录了就返回主页
         }
 
-        return of(!result.data);
+        return !result.data;
       })
     );
   }
