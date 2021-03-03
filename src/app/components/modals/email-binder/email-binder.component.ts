@@ -105,4 +105,8 @@ export class EmailBinderComponent extends ModalComponent {
     this.form.controls[controlName].setValue(value);
   }
 
+  dismiss() {
+    this.globalData.user.email && super.dismiss();
+  }
+
 }
