@@ -44,10 +44,8 @@
         <img class="avatar-list-img cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
       </ng-container>
 
-      <!-- 如果不够6个，就填充一些空元素来维持UI -->
-      <ng-container *ngIf="chatMembers.length < (isMember ? 6 : 7)">
-        <div *ngFor="let item of getArr(6 - chatMembers.length)" class="avatar-list-img"></div>
-      </ng-container>
+      <!-- 如果不够6个，就填充空元素来维持UI -->
+      <div *ngIf="chatMembers.length < (isMember ? 6 : 7)" class="flex-auto"></div>
 
       <button appRipple *ngIf="isMember" class="add-btn" (tap)="inviteJoinChatroom()">
         <ion-icon name="add-outline"></ion-icon>

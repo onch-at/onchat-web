@@ -54,7 +54,8 @@ export class CreatePage implements OnInit, OnDestroy {
     if (!errors) { return; }
     if (errors.required) {
       return '聊天室名称不能为空！';
-    } else if (errors.minlength || errors.maxlength) {
+    }
+    if (errors.minlength || errors.maxlength) {
       return `聊天室名称长度必须在${CHATROOM_NAME_MIN_LENGTH}~${CHATROOM_NAME_MAX_LENGTH}位字符之间！`;
     }
   }
@@ -121,7 +122,7 @@ export class CreatePage implements OnInit, OnDestroy {
     this.loading = true;
 
     const { name, description } = this.chatroomForm.value;
-    this.socketService.createChatroom(name.trim(), description ? description.trim() : null);
+    this.socketService.createChatroom(name.trim(), description?.trim());
   }
 
   /**

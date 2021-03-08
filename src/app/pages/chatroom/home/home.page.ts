@@ -122,10 +122,6 @@ export class HomePage implements OnInit, OnDestroy {
     this.showMask = event.detail.scrollTop > 200;
   }
 
-  getArr(length: number) {
-    return new Array(length).fill('');
-  }
-
   /**
    * 邀请好友入群
    */
