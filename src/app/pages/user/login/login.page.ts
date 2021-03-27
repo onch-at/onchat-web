@@ -74,13 +74,14 @@ export class LoginPage implements OnInit, OnDestroy {
     const { username, password } = this.form.value;
 
     this.apiService.login(new Login(username, password)).subscribe((result: Result<User>) => {
-      const { code, data } = result;
-      this.overlayService.presentToast('登录成功！即将跳转…', code === ResultCode.Success ? 1000 : 2000);
+      const { code, data, msg } = result;
 
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
-        return;
+        return this.overlayService.presentToast('登录失败，原因：' + msg, 2000);
       }
+
+      this.overlayService.presentToast('登录成功！即将跳转…');
 
       this.globalData.user = data;
       this.socketService.init();

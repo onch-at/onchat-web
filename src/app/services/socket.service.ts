@@ -106,7 +106,7 @@ export class SocketService {
    * @param name 聊天室名称
    * @param description 聊天室介绍
    */
-  createChatroom(name: string, description?: string) {
+  createChatroom(name: string, description: string = null) {
     this.emit(SocketEvent.CreateChatroom, {
       name,
       description
