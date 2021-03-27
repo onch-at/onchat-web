@@ -67,15 +67,15 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   login() {
-    if (!this.form.valid || this.globalData.navigating) { return; }
+    if (this.form.invalid || this.globalData.navigating) { return; }
 
     this.globalData.navigating = true;
 
     const { username, password } = this.form.value;
 
     this.apiService.login(new Login(username, password)).subscribe((result: Result<User>) => {
-      const { code, data, msg } = result;
-      this.overlayService.presentToast(msg || '登录成功！即将跳转…', code === ResultCode.Success ? 1000 : 2000);
+      const { code, data } = result;
+      this.overlayService.presentToast('登录成功！即将跳转…', code === ResultCode.Success ? 1000 : 2000);
 
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;

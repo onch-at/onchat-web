@@ -21,6 +21,15 @@ const HTTP_OPTIONS_DEFAULT = {
   withCredentials: true
 };
 
+/**
+ * 获取缓存参数
+ * 附带此参数的请求可被缓存拦截器拦截并缓存
+ * @param cacheTime 缓存时间,默认半小时
+ */
+function cache(cacheTime: number = 1800000): { cache: string } {
+  return { cache: cacheTime + '' };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,15 +38,6 @@ export class ApiService {
   constructor(
     private http: HttpClient
   ) { }
-
-  /**
-   * 获取缓存参数
-   * 附带此参数的请求可被缓存拦截器拦截并缓存
-   * @param cacheTime 缓存时间,默认半小时
-   */
-  private getCacheParam(cacheTime: number = 1800000): { [param: string]: string } {
-    return { cache: cacheTime + '' };
-  }
 
   /**
    * 登录
@@ -59,7 +59,7 @@ export class ApiService {
    * 成功登录,则返回User；否则返回false
    */
   checkLogin(): Observable<Result<false | User>> {
-    return this.http.get<Result<false | User>>(env.userUrl + 'checklogin', { params: this.getCacheParam(1000) });
+    return this.http.get<Result<false | User>>(env.userUrl + 'checklogin', { params: cache(1000) });
   }
 
   /**
@@ -68,7 +68,7 @@ export class ApiService {
    */
   checkEmail(email: string): Observable<Result<boolean>> {
     return this.http.get<Result<boolean>>(env.userUrl + 'checkemail', {
-      params: { email, ...this.getCacheParam(5000) }
+      params: { email, ...cache(5000) }
     });
   }
 
@@ -124,7 +124,7 @@ export class ApiService {
    * @param userId 用户ID
    */
   getUser(userId: number): Observable<Result<User>> {
-    return this.http.get<Result<User>>(env.userUrl + userId, { params: this.getCacheParam() });
+    return this.http.get<Result<User>>(env.userUrl + userId, { params: cache() });
   }
 
   /**
@@ -153,7 +153,7 @@ export class ApiService {
    * @param id 聊天室ID
    */
   getChatroom(id: number): Observable<Result<Chatroom>> {
-    return this.http.get<Result<Chatroom>>(env.chatroomUrl + id, { params: this.getCacheParam() });
+    return this.http.get<Result<Chatroom>>(env.chatroomUrl + id, { params: cache() });
   }
 
   /**
@@ -178,7 +178,7 @@ export class ApiService {
    * @param id 聊天室ID
    */
   getChatMembers(id: number): Observable<Result<ChatMember[]>> {
-    return this.http.get<Result<ChatMember[]>>(env.chatroomUrl + id + '/members', { params: this.getCacheParam() });
+    return this.http.get<Result<ChatMember[]>>(env.chatroomUrl + id + '/members', { params: cache() });
   }
 
   /**

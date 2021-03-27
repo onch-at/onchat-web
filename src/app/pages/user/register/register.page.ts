@@ -106,14 +106,14 @@ export class RegisterPage implements OnInit, OnDestroy {
   }
 
   register() {
-    if (!this.form.valid || this.globalData.navigating) { return; }
+    if (this.form.invalid || this.globalData.navigating) { return; }
 
     this.globalData.navigating = true;
 
     const { username, password, email, captcha } = this.form.value;
     this.apiService.register(new Register(username, password, email, captcha)).subscribe((result: Result<User>) => {
-      const { code, data, msg } = result;
-      this.overlayService.presentToast(msg || '注册成功！即将跳转…', code === ResultCode.Success ? 1000 : 2000);
+      const { code, data } = result;
+      this.overlayService.presentToast('注册成功！即将跳转…', code === ResultCode.Success ? 1000 : 2000);
 
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;

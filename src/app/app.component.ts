@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // 首先加载出缓存数据，保证用户体验
-    const data = this.localStorage.get(LocalStorageKey.ChatSessions);
+    const data = this.localStorage.get<ChatSession[]>(LocalStorageKey.ChatSessions, null);
     if (data) {
       this.globalData.chatSessions = data;
       this.globalData.totalUnreadMsgCount();

@@ -84,9 +84,9 @@ export class GlobalData {
   }
 
   set privateChatrooms(chatrooms: ChatSession[]) {
-    this._privateChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => {
-      return a.title.localeCompare(b.title);
-    });
+    this._privateChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => (
+      a.title.localeCompare(b.title)
+    ));
   }
 
   get privateChatrooms(): ChatSession[] {
@@ -94,9 +94,9 @@ export class GlobalData {
   }
 
   set groupChatrooms(chatrooms: ChatSession[]) {
-    this._groupChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => {
-      return a.title.localeCompare(b.title);
-    });
+    this._groupChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => (
+      a.title.localeCompare(b.title)
+    ));
   }
 
   get groupChatrooms(): ChatSession[] {
@@ -124,9 +124,9 @@ export class GlobalData {
    * 计算未读的聊天室通知消息数量
    */
   private totalUnreadChatRequestCount() {
-    const unreadCount = this.receiveChatRequests.reduce((count, o) => {
-      return count + (o.readedList.includes(this.user.id) ? 0 : 1);
-    }, 0);
+    const unreadCount = this.receiveChatRequests.reduce((count, o) => (
+      o.readedList.includes(this.user.id) ? count : ++count
+    ), 0);
 
     const chatSession = this.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
     if (chatSession) {

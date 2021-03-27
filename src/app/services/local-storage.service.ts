@@ -19,10 +19,11 @@ export class LocalStorage {
   /**
    * 获取数据
    * @param key 键名
+   * @param defaults 默认值
    */
-  get(key: LocalStorageKey): any {
+  get<T = any>(key: LocalStorageKey, defaults: T): T {
     const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : false;
+    return data ? JSON.parse(data) : defaults;
   }
 
   /**
@@ -34,18 +35,18 @@ export class LocalStorage {
   }
 
   setItemToMap<T = any>(storageKey: LocalStorageKey, key: string | number, value: T): void {
-    const map = this.get(storageKey) || {};
+    const map = this.get(storageKey, {});
     map[key] = value;
     this.set(storageKey, map);
   }
 
   getItemFromMap<T = any>(storageKey: LocalStorageKey, key: string | number): T {
-    const map = this.get(storageKey) || {};
+    const map = this.get(storageKey, {});
     return map[key];
   }
 
   removeItemFromMap(storageKey: LocalStorageKey, key: string | number): void {
-    const map = this.get(storageKey) || {};
+    const map = this.get(storageKey, {});
     delete map[key];
     this.set(storageKey, map);
   }
