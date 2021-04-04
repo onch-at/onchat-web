@@ -75,7 +75,9 @@ export enum MessageType {
     /** 文字提示 */
     Tips = 3,
     /** 群聊邀请 */
-    ChatInvitation = 4
+    ChatInvitation = 4,
+    /** 图片 */
+    Image = 5,
 }
 
 /** 枚举聊天会话类型 */

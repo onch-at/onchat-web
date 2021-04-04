@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
+import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
 import { Observable } from 'rxjs';
 import { ResultCode } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
@@ -58,7 +58,7 @@ export class AvatarCropperComponent extends ModalComponent {
    * 上传图片
    */
   uploadImage() {
-    SysUtil.uploadFile('image/*').then((event: any) => {
+    SysUtil.selectFile('image/*').subscribe((event: any) => {
       this.ionLoading = this.overlayService.presentLoading();
       this.error = false;
       this.imageCropper.imageQuality = 90;
@@ -156,8 +156,9 @@ export class AvatarCropperComponent extends ModalComponent {
     }
 
     const event = this.imageCropper.crop();
-    imageBlob = SysUtil.dataURItoBlob(event.base64);
-    imageSrc = imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(imageBlob));
+
+    imageBlob = base64ToFile(event.base64);
+    imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(imageBlob));
 
     return { imageBlob, imageSrc };
   }

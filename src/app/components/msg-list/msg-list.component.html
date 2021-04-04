@@ -2,6 +2,7 @@
   <li class="tip-item" *ngIf="end">
     <span>没有更多消息</span>
   </li>
+
   <ng-container *ngFor="let item of data; let index = index; trackBy: trackByFn">
     <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
       <span>{{ item.createTime | detailDate }} {{ item.createTime | date:'BBBBhh:mm' }}</span>
@@ -16,7 +17,6 @@
         'msg-item-right':  globalData.user?.id == item.userId,
         'msg-item-left':  globalData.user?.id != item.userId
       }">
-
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
@@ -79,6 +79,32 @@
                 </div>
               </div>
             </div>
+          </span>
+        </div>
+      </li>
+
+      <li *ngSwitchCase="msgType.Image" class="msg-item" [ngClass]="{
+        'msg-item-right':  globalData.user?.id == item.userId,
+        'msg-item-left':  globalData.user?.id != item.userId
+      }">
+        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+
+        <div>
+          <div class="username" *ngIf="item.userId != globalData.user.id && chatroomType == chatroomTypes.Group">
+            {{ item.nickname }}
+          </div>
+
+          <span #bubble appRipple class="msg-bubble msg-bubble-img"
+            (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
+            <img [src]="item.data['url']" />
+            <ng-container *ngIf="item.loading">
+              <div class="loading-mask" [ngStyle]="{ height: 100 - item.loading + '%' }"></div>
+              <div class="loading-value">
+                <ion-spinner name="crescent"></ion-spinner>
+                {{ item.loading + '%' }}
+              </div>
+            </ng-container>
           </span>
         </div>
       </li>

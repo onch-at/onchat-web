@@ -61,9 +61,9 @@ export class AvatarPage implements OnInit {
     ];
 
     // 如果是自己的头像
-    (this.user.id == this.globalData.user?.id) && buttons.unshift({
+    (this.user.id === this.globalData.user?.id) && buttons.unshift({
       text: '更换头像',
-      handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.overlayService.presentModal({
+      handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlayService.presentModal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,

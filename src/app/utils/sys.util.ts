@@ -1,4 +1,5 @@
 import { Renderer2 } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export class SysUtil {
 
@@ -21,46 +22,38 @@ export class SysUtil {
     }
 
     /**
-     * 将base64/URLEncoded数据转化为Blob
-     * @param dataURI
-     */
-    static dataURItoBlob(dataURI: string): Blob {
-        // 将base64/URLEncoded数据转换为字符串中保存的原始二进制数据
-        const byteArr = dataURI.split(',');
-        const byteStr = byteArr[0].indexOf('base64') >= 0 ? atob(byteArr[1]) : unescape(byteArr[1]);
-
-        // 将字符串的字节写入Uint8Array
-        const ia = new Uint8Array(byteStr.length);
-        for (let i = 0; i < byteStr.length; i++) {
-            ia[i] = byteStr.charCodeAt(i);
-        }
-
-        return new Blob([ia], {
-            type: byteArr[0].split(':')[1].split(';')[0]
-        });
-    }
-
-    /**
      * 选择文件
      * @param accept 文件类型MINE
+     * @param multiple 多文件上传
      */
-    static uploadFile(accept: string = null) {
-        const input = document.createElement('input')
-        input.setAttribute('type', 'file');
+    static selectFile(accept: string = null, multiple: boolean = false) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = multiple;
         input.setAttribute('style', 'visibility:hidden');
         accept && input.setAttribute('accept', accept);
         document.body.appendChild(input);
         input.click();
 
-        return new Promise((resolve, reject) => {
-            input.onchange = (event: Event) => {
-                resolve(event);
+        return new Observable(observer => {
+            const complete = () => {
+                observer.complete();
                 document.body.removeChild(input);
             };
 
-            const rejector = (event: Event) => reject(event);
-            input.onerror = rejector;
-            input.oncancel = rejector;
+            input.onchange = (event: Event) => {
+                observer.next(event);
+                complete();
+            };
+
+            input.onerror = (event: any) => {
+                observer.error(event);
+                complete();
+            };
+
+            input.oncancel = () => {
+                complete();
+            };
         });
     }
 

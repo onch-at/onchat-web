@@ -66,6 +66,21 @@ export class ChatInvitationMessage {
     }
 }
 
+/** 图片消息 */
+export class ImageMessage {
+    /** 原图URL */
+    url: string;
+    /** 缩略图URL */
+    thumbnailUrl: string;
+    /** 文件名 */
+    filename: string;
+
+    constructor(url?: string, thumbnailUrl?: string) {
+        this.url = url;
+        this.thumbnailUrl = thumbnailUrl;
+    }
+}
+
 /** 用户信息表单数据模型 */
 export class UserInfo {
     /** 昵称 */

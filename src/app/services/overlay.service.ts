@@ -83,11 +83,11 @@ export class OverlayService {
       inputs,
       buttons: [
         {
-          text: '取消',
+          text: opts.cancelText || '取消',
           handler: data => cancelHandler && cancelHandler(data)
         },
         {
-          text: '确认',
+          text: opts.confirmText || '确认',
           handler: data => confirmHandler(data)
         }
       ]

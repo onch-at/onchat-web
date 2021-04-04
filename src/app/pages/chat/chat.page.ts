@@ -7,8 +7,9 @@ import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { Message } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/form.model';
-import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
+import { Chatroom, ChatSession, Message as IMessage, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -35,7 +36,7 @@ export class ChatPage implements OnInit, OnDestroy {
   /** 消息ID，用于查询指定消息段 */
   msgId: number = 0;
   /** 聊天记录 */
-  msgList: Message[] = [];
+  msgList: IMessage[] = [];
   /** 是否是第一次查询 */
   first: boolean = true;
   /** 聊天记录是否查到末尾了 */
@@ -52,17 +53,10 @@ export class ChatPage implements OnInit, OnDestroy {
   contentClientHeight: number;
   /** 是否有未读消息 */
   hasUnread: boolean = false;
-  /**
-   * 用户发送的消息体
-   * sendTime => 在msgList中的index
-   */
-  sendMsgMap: Map<number, number> = new Map();
   /** 是否显示抽屉 */
   showDrawer: boolean = false;
   /** 键盘高度 */
   keyboardHeight: number;
-  /** 解除监听的函数集合 */
-  unlistenFns: (() => void)[] = [];
 
   constructor(
     public globalData: GlobalData,
@@ -118,30 +112,26 @@ export class ChatPage implements OnInit, OnDestroy {
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.subject),
 
-      tap((result: Result) => {
-        result?.code === ResultCode.ErrorHighFrequency && this.sendMsgMap.clear()
-      }),
-
-      filter((result: Result<Message>) => {
+      filter((result: Result<IMessage>) => {
         const { code, data } = result;
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
       }),
 
-      tap((result: Result<Message>) => {
+      tap((result: Result<IMessage>) => {
         const { data } = result;
+
         // 如果不是自己发的消息
         if (data.userId !== this.globalData.user.id) {
           this.msgList.push(data);
           return this.tryToScrollToBottom();
         }
 
-        const index = this.sendMsgMap.get(data.sendTime);
-        data.avatarThumbnail = this.globalData.user.avatarThumbnail;
+        const has = this.msgList.some(o => (
+          o.type === data.type &&
+          o.sendTime === data.sendTime
+        ));
 
-        if (index >= 0) {
-          this.msgList[index] = data;
-          this.sendMsgMap.delete(data.sendTime);
-        } else {
+        if (!has) {
           this.msgList.push(data);
           this.scrollToBottom();
         }
@@ -169,30 +159,12 @@ export class ChatPage implements OnInit, OnDestroy {
         }
       }
     });
-
-    // 重新连接时候检查还有没有未发送的
-    // 重新连接后会重新初始化
-    this.socketService.onInit().pipe(
-      takeUntil(this.subject),
-      filter(() => this.sendMsgMap.size > 0)
-    ).subscribe(() => {
-      let msg: Message;
-      for (const index of this.sendMsgMap.values()) {
-        msg = this.msgList[index];
-        delete msg.loading;
-        this.socketService.message(msg);
-      }
-    });
   }
 
   ngOnDestroy() {
     this.globalData.chatroomId = null;
     this.subject.next();
     this.subject.complete();
-
-    for (const unlistenFn of this.unlistenFns) {
-      unlistenFn();
-    }
   }
 
   ngAfterViewInit() {
@@ -201,11 +173,11 @@ export class ChatPage implements OnInit, OnDestroy {
       this.contentClientHeight = element.clientHeight;
     });
 
-    this.unlistenFns.push(this.renderer.listen(this.drawer.nativeElement, 'transitionend', (e: any) => {
+    this.renderer.listen(this.drawer.nativeElement, 'transitionend', (e: any) => {
       const clientHeight = e.target.clientHeight;
       // 只有当抽屉显示（高度不为零）的时候，做抬升滚动
       clientHeight && this.ionContent.scrollByPoint(0, clientHeight, 0);
-    }));
+    });
   }
 
   /**
@@ -247,8 +219,8 @@ export class ChatPage implements OnInit, OnDestroy {
    */
   loadMoreRecords(event: any) {
     if (this.first) {
-      return this.scrollToBottom(undefined, () => {
-        event.target.complete();
+      return this.scrollToBottom().then(() => {
+        event.target.complete()
       });
     }
     // 暴力兼容苹果内核
@@ -280,7 +252,7 @@ export class ChatPage implements OnInit, OnDestroy {
         }
 
         // 如果是第一次查记录，就执行滚动
-        this.msgId == 0 && this.scrollToBottom(0, () => {
+        this.msgId == 0 && this.scrollToBottom(0).then(() => {
           this.first = false;
         });
 
@@ -318,10 +290,8 @@ export class ChatPage implements OnInit, OnDestroy {
   /**
    * 滚到底部
    */
-  scrollToBottom(duration: number = 500, complete?: () => void) {
-    this.ionContent.scrollToBottom(duration).then(() => {
-      complete?.();
-    });
+  scrollToBottom(duration: number = 500) {
+    return this.ionContent.scrollToBottom(duration);
   }
 
   /**
@@ -344,18 +314,17 @@ export class ChatPage implements OnInit, OnDestroy {
   send() {
     if (!this.showSendBtn() || this.disableSendBtn()) { return; }
 
-    const msg = new Message(+this.chatroomId);
+    const { id, avatarThumbnail } = this.globalData.user;
+
+    const msg = new Message();
+    msg.chatroomId = this.chatroomId;
+    msg.userId = id;
+    msg.avatarThumbnail = avatarThumbnail;
     msg.data = new TextMessage(this.msg);
-    this.socketService.message(msg);
 
-    this.sendMsgMap.set(msg.sendTime, this.msgList.length);
+    msg.send(this.socketService);
 
-    this.msgList.push(Object.assign(msg, {
-      userId: this.globalData.user.id,
-      avatarThumbnail: this.globalData.user.avatarThumbnail,
-      createTime: msg.sendTime,
-      loading: true
-    }));
+    this.msgList.push(msg);
     this.scrollToBottom();
 
     this.msg = '';

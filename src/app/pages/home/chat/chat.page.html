@@ -32,21 +32,9 @@
 
 						<ion-label class="item-content">
 							<h2 class="chat-session-list-item-title">{{ item.title }}</h2>
-
-							<ng-container *ngIf="item.content" [ngSwitch]="item.content.type">
-								<p *ngSwitchCase="msgType.Text" class="chat-session-list-item-desc"
-									[innerHTML]="target(item) + item.content.data['content']"></p>
-
-								<p *ngSwitchCase="msgType.RichText" class="chat-session-list-item-desc"
-									[innerHTML]="target(item) + item.content.data['text']"></p>
-
-								<p *ngSwitchCase="msgType.Tips" class="chat-session-list-item-desc"
-									[innerHTML]="item.content.data['content']"></p>
-
-								<p *ngSwitchCase="msgType.ChatInvitation" class="chat-session-list-item-desc"
-									[innerHTML]="target(item) + '[分享]邀请加入群聊'"></p>
-							</ng-container>
-							<p *ngIf="!item.content" class="chat-session-list-item-desc">进去打个招呼吧？</p>
+							<p class="chat-session-list-item-desc">
+								{{ item.content ? target(item) + (item.content | msgDesc) : '进去打个招呼吧？' }}
+							</p>
 						</ion-label>
 					</ng-container>
 

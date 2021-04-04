@@ -175,7 +175,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     // 如果是群主、管理员
     (this.isHost || this.isManager) && buttons.unshift({
-      text: '更换头像', handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.overlayService.presentModal({
+      text: '更换头像', handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlayService.presentModal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,

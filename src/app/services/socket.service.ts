@@ -170,7 +170,7 @@ export class SocketService {
    * 监听事件
    * @param eventName 事件名
    */
-  on(eventName: string): Observable<unknown> {
+  on(eventName: string | SocketEvent): Observable<unknown> {
     return this.socket.fromEvent(eventName).pipe(tap((data: any) => {
       data?.code === ResultCode.ErrorHighFrequency && this.overlayService.presentToast('操作失败，原因：请求频率过高');
     }));

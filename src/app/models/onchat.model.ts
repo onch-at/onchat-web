@@ -1,5 +1,5 @@
 import { ChatMemberRole, ChatRequestStatus, ChatSessionType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
-import { ChatInvitationMessage, RichTextMessage, TextMessage } from './form.model';
+import { ChatInvitationMessage, ImageMessage, RichTextMessage, TextMessage } from './form.model';
 
 export interface Result<T = null> {
     code: ResultCode | number;
@@ -102,7 +102,7 @@ export interface ChatSession extends IEntity {
 }
 
 /** 消息实体 */
-export class Message extends Entity {
+export interface Message extends IEntity {
     /** 消息对应的聊天室ID */
     chatroomId: number;
     /** 消息发送者ID */
@@ -114,20 +114,13 @@ export class Message extends Entity {
     /** 消息类型 */
     type: MessageType;
     /** 消息内容 */
-    data: TextMessage | RichTextMessage | ChatInvitationMessage;
+    data: TextMessage | RichTextMessage | ChatInvitationMessage | ImageMessage;
     /** 回复消息的消息记录ID */
     replyId?: number;
     /** 消息在客户端发送的时间 */
     sendTime?: number;
     /** 发送中 */
-    loading?: boolean;
-
-    constructor(chatroomId: number, type: MessageType = MessageType.Text) {
-        super();
-        this.chatroomId = chatroomId;
-        this.type = type;
-        this.sendTime = Date.now();
-    }
+    loading?: boolean | number;
 }
 
 /** 好友申请 */

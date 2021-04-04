@@ -173,7 +173,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     const buttons = [
       {
         text: '更换头像',
-        handler: () => SysUtil.uploadFile('image/*').then((event: Event) => this.overlayService.presentModal({
+        handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlayService.presentModal({
           component: AvatarCropperComponent,
           componentProps: {
             imageChangedEvent: event

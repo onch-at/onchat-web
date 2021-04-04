@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentChange } from 'ngx-quill';
-import { filter, first } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { Message } from 'src/app/entities/message.entity';
 import { RichTextMessage } from 'src/app/models/form.model';
-import { Message, Result } from 'src/app/models/onchat.model';
+import { Message as IMessage, Result } from 'src/app/models/onchat.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { LocalStorage } from 'src/app/services/local-storage.service';
@@ -72,31 +73,31 @@ export class RichTextEditorComponent extends ModalComponent {
     }
 
     const loading = this.overlayService.presentLoading('Sending…');
+    const { chatroomId, user } = this.globalData;
 
-    const message = new Message(+this.globalData.chatroomId, MessageType.RichText);
+    const msg = new Message(MessageType.RichText);
+    msg.chatroomId = this.page.chatroomId;
+    msg.userId = user.id;
+    msg.avatarThumbnail = user.avatarThumbnail;
+    msg.data = new RichTextMessage(this.html, this.text);
 
     this.socketService.on(SocketEvent.Message).pipe(
-      first(),
-      filter((result: Result) => result.code === ResultCode.Success)
-    ).subscribe((result: Result<Message>) => {
-      const msg = result.data;
-      const { user, chatroomId } = this.globalData;
+      filter((result: Result<IMessage>) => {
+        const { code, data } = result;
+        return code === ResultCode.Success && msg.isSelf(data)
+      })
+    ).subscribe((result: Result<IMessage>) => {
+      this.text = '';
+      this.localStorage.removeItemFromMap(LocalStorageKey.ChatRichTextMap, chatroomId);
 
-      // 如果是自己发的消息，并且是刚刚这一条
-      if (msg.userId === user.id && msg.sendTime === message.sendTime) {
-        this.text = '';
-        this.localStorage.removeItemFromMap(LocalStorageKey.ChatRichTextMap, chatroomId);
-
-        loading.then((loading: HTMLIonLoadingElement) => {
-          loading.dismiss()
-          this.dismiss();
-          this.page.scrollToBottom();
-        });
-      }
+      loading.then((loading: HTMLIonLoadingElement) => {
+        loading.dismiss()
+        this.dismiss();
+        this.page.scrollToBottom();
+      });
     });
 
-    message.data = new RichTextMessage(this.html, this.text);
-    this.socketService.message(message);
+    msg.send(this.socketService);
   }
 
   /**

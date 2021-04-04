@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
@@ -191,6 +191,23 @@ export class ApiService {
     formData.append('image', avatar);
 
     return this.http.post<Result<AvatarData>>(env.chatroomUrl + id + '/avatar', formData, HTTP_OPTIONS_DEFAULT);
+  }
+
+  /**
+   * 上传图片
+   * @param id 聊天室ID
+   * @param image 图片
+   */
+  uploadImageToChatroom(id: number, image: Blob) {
+    const formData: FormData = new FormData();
+    formData.append('image', image);
+
+    const request = new HttpRequest('POST', env.chatroomUrl + id + '/image', formData, {
+      ...HTTP_OPTIONS_DEFAULT,
+      reportProgress: true
+    });
+
+    return this.http.request(request);
   }
 
   /**
