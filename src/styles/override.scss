@@ -302,6 +302,11 @@ ion-progress-bar {
     }
 }
 
+ion-slides.swiper-container {
+    --bullet-background-active: var(--oc-color-primary);
+    --bullet-background: var(--oc-color-primary);
+}
+
 // 警告框
 ion-alert {
     backdrop-filter: blur(2.5px);

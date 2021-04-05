@@ -1,0 +1,17 @@
+<ion-content [fullscreen]="true" appHideScrollbar>
+  <ion-header class="display-flex align-items-center" slot="fixed">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (tap)="dismiss()">
+          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-slides [options]="slideOpts">
+    <ion-slide *ngFor="let item of data; trackBy: trackByFn" (click)="dismiss()">
+      <img [src]="item.data['url']" (press)="onPress(item)" (click)="$event.stopPropagation();">
+    </ion-slide>
+  </ion-slides>
+</ion-content>

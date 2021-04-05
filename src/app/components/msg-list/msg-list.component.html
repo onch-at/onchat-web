@@ -94,7 +94,7 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble appRipple class="msg-bubble msg-bubble-img"
+          <span #bubble appRipple class="msg-bubble msg-bubble-img" (tap)="previewImage(item.id)"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <img [src]="item.data['url']" />

@@ -1,0 +1,20 @@
+ion-header {
+    height: 3rem;
+    background: transparent;
+
+    ion-buttons ion-back-button,
+    ion-buttons ion-button {
+        --color: #fff;
+        filter: drop-shadow(0 0 0.5rem #000);
+    }
+}
+
+ion-content {
+    --background: #000;
+    height: 100vh;
+}
+
+ion-slides {
+    height: 100%;
+    width: 100%;
+}

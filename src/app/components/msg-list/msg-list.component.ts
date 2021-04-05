@@ -4,6 +4,7 @@ import { IEntity, Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
+import { ImagePreviewerComponent } from '../modals/image-previewer/image-previewer.component';
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
 @Component({
@@ -78,6 +79,19 @@ export class MsgListComponent implements OnInit {
    */
   canShowTime(time: number, otherTime: number): boolean {
     return (time - otherTime) > 60000; // 一分钟
+  }
+
+  previewImage(id: number) {
+    const data = this.data.filter(o => o.type === MessageType.Image);
+    const index = data.findIndex(o => o.id === id);
+
+    this.overlayService.presentModal({
+      component: ImagePreviewerComponent,
+      componentProps: {
+        data: data,
+        index: index
+      }
+    });
   }
 
 }

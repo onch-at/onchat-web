@@ -26,10 +26,6 @@ export class Message implements IMessage {
     }
 
     send(service: SocketService) {
-        if (this.type === MessageType.Image && this.loading > 0.01) {
-            this.loading = 0.01;
-        }
-
         const subscription = service.on(SocketEvent.Message).pipe(
             filter((result: Result<IMessage>) => {
                 const { data } = result;

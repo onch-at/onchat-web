@@ -21,12 +21,7 @@ export class ImageService {
 
     return new Observable<Blob>((observer) => {
       img.onload = () => {
-        const resolution = 720;
-        if (img.width > resolution || img.height > resolution) {
-          const divisor = (img.width > resolution ? img.width : img.height) / resolution;
-          img.width /= divisor;
-          img.height /= divisor;
-        }
+        this.resize(img);
 
         // 如果支持WebWorker
         if ('OffscreenCanvas' in window) {
@@ -49,6 +44,15 @@ export class ImageService {
     });
   }
 
+  private resize(img: HTMLImageElement) {
+    const resolution = 720;
+    if (img.width > resolution || img.height > resolution) {
+      const divisor = (img.width > resolution ? img.width : img.height) / resolution;
+      img.width /= divisor;
+      img.height /= divisor;
+    }
+  }
+
   /**
    * 在主线程中绘制
    * @param img 图像
@@ -61,7 +65,7 @@ export class ImageService {
     canvas.height = img.height;
 
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, 0, img.width, img.height);
 
     return canvas.toDataURL('image/' + format, quality);
   }
@@ -81,7 +85,10 @@ export class ImageService {
         observer.complete();
       };
 
-      createImageBitmap(img).then(bitmap => {
+      createImageBitmap(img, {
+        resizeWidth: img.width,
+        resizeHeight: img.height
+      }).then(bitmap => {
         const imageBitmap = bitmap;
 
         worker.onmessage = ({ data }) => {

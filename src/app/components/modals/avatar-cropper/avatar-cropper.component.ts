@@ -114,7 +114,10 @@ export class AvatarCropperComponent extends ModalComponent {
 
       let imageBitmap: ImageBitmap;
       try {
-        imageBitmap = await createImageBitmap(transformedImage);
+        imageBitmap = await createImageBitmap(transformedImage, {
+          resizeWidth: transformedImage.width,
+          resizeHeight: transformedImage.height,
+        });
       } catch (e) {
         worker.terminate();
         return { imageBlob, imageSrc };
