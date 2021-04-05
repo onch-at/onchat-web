@@ -82,17 +82,16 @@ export class DrawerComponent implements OnInit {
     msg.data = new ImageMessage(safeUrl, safeUrl);
     msg.loading = 0.01;
 
+    this.page.msgList.push(msg);
+    this.page.scrollToBottom().then(() => this.page.scrollToBottom());
+
     if (!original && !this.imageService.isAnimation(file)) {
-      file = await this.imageService.compress(url, 0.9, this.format).toPromise();
+      file = await this.imageService.compress(url, 0.75, this.format).toPromise();
     }
 
     this.apiService.uploadImageToChatroom(chatroomId, file).subscribe((event: HttpEvent<Result<string>>) => {
       switch (event.type) {
         case HttpEventType.Sent:
-          this.page.msgList.push(msg);
-          this.page.scrollToBottom().then(() => {
-            this.page.scrollToBottom();
-          });
           break;
 
         case HttpEventType.UploadProgress:
@@ -105,7 +104,7 @@ export class DrawerComponent implements OnInit {
         case HttpEventType.Response:
           const { code, data } = event.body;
           if (code !== ResultCode.Success) {
-            this.overlayService.presentToast('图片上传失败，原因：' + event.body.msg);
+            return this.overlayService.presentToast('图片上传失败，原因：' + event.body.msg);
           }
 
           msg.loading = 100.00;

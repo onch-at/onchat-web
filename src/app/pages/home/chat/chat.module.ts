@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
-import { MessageDescPipe } from 'src/app/pipes/msg-desc.pipe';
+import { MsgDescPipe } from 'src/app/pipes/msg-desc.pipe';
 import { ChatPageRoutingModule } from './chat-routing.module';
 import { ChatPage } from './chat.page';
 
@@ -17,6 +17,6 @@ import { ChatPage } from './chat.page';
     SharedModule,
     HideScrollbarModule
   ],
-  declarations: [ChatPage, MessageDescPipe]
+  declarations: [ChatPage, MsgDescPipe]
 })
 export class ChatPageModule { }

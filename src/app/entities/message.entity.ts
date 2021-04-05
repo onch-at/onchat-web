@@ -1,4 +1,4 @@
-import { filter, first } from "rxjs/operators";
+import { filter } from "rxjs/operators";
 import { MessageType, ResultCode, SocketEvent } from "../common/enum";
 import { ChatInvitationMessage, ImageMessage, RichTextMessage, TextMessage } from "../models/form.model";
 import { Message as IMessage, Result } from "../models/onchat.model";
@@ -26,6 +26,10 @@ export class Message implements IMessage {
     }
 
     send(service: SocketService) {
+        if (this.type === MessageType.Image && this.loading > 0.01) {
+            this.loading = 0.01;
+        }
+
         const subscription = service.on(SocketEvent.Message).pipe(
             filter((result: Result<IMessage>) => {
                 const { data } = result;
@@ -38,14 +42,6 @@ export class Message implements IMessage {
             this.loading = false;
 
             subscription.unsubscribe();
-        });
-
-        // 重连时，自动重发
-        service.onInit().pipe(
-            first(),
-            filter(() => !!this.loading)
-        ).subscribe(() => {
-            this.send(service);
         });
 
         service.message(this);

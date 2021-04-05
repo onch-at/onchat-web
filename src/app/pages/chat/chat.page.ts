@@ -159,6 +159,16 @@ export class ChatPage implements OnInit, OnDestroy {
         }
       }
     });
+
+    // 重连时，自动重发
+    this.socketService.onInit().pipe(
+      takeUntil(this.subject),
+      filter(() => this.msgList.some(o => o.loading))
+    ).subscribe(() => {
+      this.msgList.filter(o => o.loading).forEach(o => {
+        (o as Message).send(this.socketService);
+      });
+    });
   }
 
   ngOnDestroy() {

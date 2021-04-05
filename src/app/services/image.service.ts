@@ -21,6 +21,13 @@ export class ImageService {
 
     return new Observable<Blob>((observer) => {
       img.onload = () => {
+        const resolution = 720;
+        if (img.width > resolution || img.height > resolution) {
+          const divisor = (img.width > resolution ? img.width : img.height) / resolution;
+          img.width /= divisor;
+          img.height /= divisor;
+        }
+
         // 如果支持WebWorker
         if ('OffscreenCanvas' in window) {
           return this.drawInWebWorker(img, quality, format).subscribe(blob => {

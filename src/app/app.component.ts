@@ -6,7 +6,7 @@ import { filter, mergeMap } from 'rxjs/operators';
 import { ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
-import { MessageDescPipe } from './pipes/msg-desc.pipe';
+import { MsgDescPipe } from './pipes/msg-desc.pipe';
 import { ApiService } from './services/api.service';
 import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
@@ -24,7 +24,7 @@ import { SocketService } from './services/socket.service';
 export class AppComponent implements OnInit {
 
   constructor(
-    private messageDescPipe: MessageDescPipe,
+    private msgDescPipe: MsgDescPipe,
     private router: Router,
     private swPush: SwPush,
     private swUpdate: SwUpdate,
@@ -186,7 +186,7 @@ export class AppComponent implements OnInit {
       // 如果消息不是自己的话，就播放提示音
       if (msg.userId != user.id) {
         const chatroomName = chatSession ? chatSession.title : '收到新消息';
-        const content = this.messageDescPipe.transform(msg);
+        const content = this.msgDescPipe.transform(msg);
 
         const opts: NotificationOptions = {
           icon: chatSession ? chatSession.avatarThumbnail : msg.avatarThumbnail,

@@ -12,7 +12,7 @@ import { Message } from '../models/onchat.model';
 @Pipe({
   name: 'msgDesc'
 })
-export class MessageDescPipe implements PipeTransform {
+export class MsgDescPipe implements PipeTransform {
 
   transform(value: Message): string {
     switch (value.type) {

@@ -206,6 +206,8 @@
 .msg-bubble-img {
   padding: 0;
   line-height: 0;
+  max-height: 75vh;
+  max-width: 45vw;
   background: transparent !important;
 
   .loading-mask {
