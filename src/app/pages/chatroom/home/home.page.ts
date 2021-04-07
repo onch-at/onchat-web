@@ -1,6 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IonRouterOutlet } from '@ionic/angular';
 import { of, Subject } from 'rxjs';
 import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
@@ -44,6 +45,7 @@ export class HomePage implements OnInit, OnDestroy {
     private apiService: ApiService,
     private cacheService: CacheService,
     private socketService: SocketService,
+    private routerOutlet: IonRouterOutlet
   ) { }
 
   ngOnInit() {
@@ -156,7 +158,9 @@ export class HomePage implements OnInit, OnDestroy {
 
           return observable;
         }
-      }
+      },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl
     }));
   }
 

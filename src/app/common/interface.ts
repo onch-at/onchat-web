@@ -76,6 +76,8 @@ export interface ModalOptions<T extends ComponentRef = ComponentRef> {
   backdropDismiss?: boolean;
   /** CSS Class */
   cssClass?: string | string[];
+  swipeToClose?: boolean;
+  presentingElement?: HTMLElement;
 }
 
 /** 弹出框组件选项 */

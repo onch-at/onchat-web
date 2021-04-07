@@ -1,5 +1,6 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { IonRouterOutlet } from '@ionic/angular';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { ImageMessage } from 'src/app/models/form.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
@@ -27,6 +28,7 @@ export class DrawerComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private overlayService: OverlayService,
     private imageService: ImageService,
+    private routerOutlet: IonRouterOutlet,
     private injector: Injector
   ) { }
 
@@ -37,7 +39,9 @@ export class DrawerComponent implements OnInit {
       component: RichTextEditorComponent,
       componentProps: {
         page: this.page
-      }
+      },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl
     });
   }
 

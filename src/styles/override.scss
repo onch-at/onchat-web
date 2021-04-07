@@ -486,8 +486,10 @@ ion-toast {
     }
 }
 
-ion-modal .sc-ion-modal-ios {
-    @media only screen and (min-height: 600px) and (min-width: 768px) {
-        --border-radius: 1.5rem;
+ion-modal {
+    .modal-wrapper {
+        @media only screen and (min-height: 600px) and (min-width: 768px) {
+            --border-radius: 1.5rem;
+        }
     }
 }

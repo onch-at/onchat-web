@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IonRouterOutlet } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
@@ -96,7 +97,8 @@ export class SettingsPage implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     private apiService: ApiService,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
+    private routerOutlet: IonRouterOutlet
   ) { }
 
   ngOnInit() {
@@ -165,7 +167,9 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   bindEmail() {
     this.overlayService.presentModal({
-      component: EmailBinderComponent
+      component: EmailBinderComponent,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl
     });
   }
 
