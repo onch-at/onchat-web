@@ -13,6 +13,7 @@ import { ActiveClassModule } from 'src/app/modules/active-class.module';
 import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
 import { SharedModule } from 'src/app/modules/shared.module';
+import { SwiperModule } from 'swiper/angular';
 import { MsgListComponent } from '../../components/msg-list/msg-list.component';
 import { ChatPageRoutingModule } from './chat-routing.module';
 import { ChatPage } from './chat.page';
@@ -28,7 +29,8 @@ import { ChatPage } from './chat.page';
     HideScrollbarModule,
     QuillModule,
     ClipboardModule,
-    RippleModule
+    RippleModule,
+    SwiperModule
   ],
   declarations: [
     ChatPage,

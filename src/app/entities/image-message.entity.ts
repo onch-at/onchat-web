@@ -57,7 +57,7 @@ export class ImageMessageEntity extends MessageEntity {
             const { code, data, msg } = event.body;
 
             if (code !== ResultCode.Success) {
-              this.injector.get(OverlayService).presentToast('图片上传失败，原因：' + msg);
+              return this.injector.get(OverlayService).presentToast('图片上传失败，原因：' + msg);
             }
 
             Object.assign(this.data, data);

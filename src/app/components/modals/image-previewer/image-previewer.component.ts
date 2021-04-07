@@ -1,29 +1,33 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageMessage } from 'src/app/models/form.model';
 import { IEntity, Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
+import { SwiperComponent } from 'swiper/angular';
+import SwiperCore, { Lazy, Virtual, Zoom } from 'swiper/core';
+import { ZoomOptions } from 'swiper/types';
 import { ModalComponent } from '../modal.component';
+
+SwiperCore.use([Lazy, Virtual, Zoom]);
 
 @Component({
   selector: 'app-image-previewer',
   templateUrl: './image-previewer.component.html',
   styleUrls: ['./image-previewer.component.scss'],
 })
-export class ImagePreviewerComponent extends ModalComponent {
+export class ImagePreviewerComponent extends ModalComponent implements AfterViewInit {
   @Input() data: Message[] = [];
   @Input() index: number;
-  /** swiperjs options: https://swiperjs.com/api/ */
-  slideOpts = {
-    initialSlide: null,
-    zoom: {
-      maxRatio: 3,
-      minRatio: 0.75,
-      toggle: true
-    }
-  };
+
+  zoom: ZoomOptions = {
+    maxRatio: 5,
+    minRatio: 0.75,
+    toggle: true
+  }
+
+  @ViewChild(SwiperComponent) swiper: SwiperComponent;
 
   constructor(
     private feedbackService: FeedbackService,
@@ -33,9 +37,11 @@ export class ImagePreviewerComponent extends ModalComponent {
     super(router, overlayService);
   }
 
-  ngOnInit() {
-    super.ngOnInit();
-    this.slideOpts.initialSlide = this.index;
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.swiper.setIndex(this.index, 0, true);
+      this.swiper.swiperRef.update();
+    }, 500);
   }
 
   onPress(item: Message) {
