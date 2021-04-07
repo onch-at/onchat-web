@@ -6,15 +6,15 @@ import { Result } from "../models/onchat.model";
 import { ApiService } from "../services/api.service";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AsyncValidator {
-    constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) { }
 
-    legalEmail(): AsyncValidatorFn {
-        return (ctrl: AbstractControl) => this.apiService.checkEmail(ctrl.value).pipe(
-            map((result: Result<boolean>) => (result.data ? null : { legalemail: true })),
-            catchError(() => of(null))
-        );
-    }
+  legalEmail(): AsyncValidatorFn {
+    return (ctrl: AbstractControl) => this.apiService.checkEmail(ctrl.value).pipe(
+      map((result: Result<boolean>) => (result.data ? null : { legalemail: true })),
+      catchError(() => of(null))
+    );
+  }
 }

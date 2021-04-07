@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
-import { Login, Register, UserInfo } from '../models/form.model';
+import { ImageMessage, Login, Register, UserInfo } from '../models/form.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
 
 const HTTP_OPTIONS_JSON = {
@@ -207,7 +207,7 @@ export class ApiService {
       reportProgress: true
     });
 
-    return this.http.request(request);
+    return this.http.request<Result<ImageMessage>>(request);
   }
 
   /**

@@ -97,12 +97,13 @@
           <span #bubble appRipple class="msg-bubble msg-bubble-img" (tap)="previewImage(item.id)"
             (press)="presentBubbleToolbarPopover(item, bubble, $event)"
             (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
-            <img [src]="item.data['url']" />
+            <img [appImageSize]="[item.data['width'],item.data['height']]" [src]="item.data['url']" />
             <ng-container *ngIf="item.loading">
-              <div class="loading-mask" [ngStyle]="{ height: 100 - item.loading + '%' }"></div>
-              <div class="loading-value">
-                <ion-spinner name="crescent"></ion-spinner>
-                {{ item.loading + '%' }}
+              <div class="loading-mask" [ngStyle]="{ height: 100 - item.percent + '%' }"></div>
+              <div class="loading-container">
+                <ion-spinner [hidden]="!item.percent" name="crescent"></ion-spinner>
+                <ion-spinner [hidden]="item.percent" name="dots"></ion-spinner>
+                <div class="loading-value" [hidden]="!item.percent">{{ item.percent + '%' }}</div>
               </div>
             </ng-container>
           </span>

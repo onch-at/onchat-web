@@ -206,7 +206,9 @@
 .msg-bubble-img {
   padding: 0;
   line-height: 0;
-  max-height: 75vh;
+  min-height: 3rem;
+  min-width: 3rem;
+  max-height: 50vh;
   max-width: 45vw;
   background: transparent !important;
 
@@ -216,25 +218,28 @@
     left: 0;
     width: 100%;
     background: rgba(0, 0, 0, 0.25);
-    transition: height ease-out 0.125s;
+    transition: height ease-out 0.25s;
+    backdrop-filter: blur(1.5px);
   }
 
-  .loading-value {
+  .loading-container {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 0.75rem;
-    text-shadow: 0 0 0.25rem #000;
+    font-size: 0.7rem;
+    text-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5);
 
     > ion-spinner {
       --color: #fff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       display: block;
-      margin: 0 auto 0.75rem;
-      width: 1.75rem;
-      height: 1.75rem;
-      filter: drop-shadow(0 0 0.25rem #000);
+      width: 3rem;
+      height: 3rem;
     }
   }
 }

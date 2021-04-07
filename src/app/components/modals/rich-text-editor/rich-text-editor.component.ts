@@ -1,13 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, Injector, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentChange } from 'ngx-quill';
 import { filter } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
-import { Message } from 'src/app/entities/message.entity';
+import { MessageEntity } from 'src/app/entities/message.entity';
 import { RichTextMessage } from 'src/app/models/form.model';
-import { Message as IMessage, Result } from 'src/app/models/onchat.model';
+import { Message, Result } from 'src/app/models/onchat.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { LocalStorage } from 'src/app/services/local-storage.service';
@@ -42,10 +42,11 @@ export class RichTextEditorComponent extends ModalComponent {
 
   constructor(
     public globalData: GlobalData,
+    private injector: Injector,
     private localStorage: LocalStorage,
     private socketService: SocketService,
     protected overlayService: OverlayService,
-    protected router: Router
+    protected router: Router,
   ) {
     super(router, overlayService);
   }
@@ -75,18 +76,18 @@ export class RichTextEditorComponent extends ModalComponent {
     const loading = this.overlayService.presentLoading('Sending…');
     const { chatroomId, user } = this.globalData;
 
-    const msg = new Message(MessageType.RichText);
+    const msg = new MessageEntity(MessageType.RichText).inject(this.injector);
     msg.chatroomId = this.page.chatroomId;
     msg.userId = user.id;
     msg.avatarThumbnail = user.avatarThumbnail;
     msg.data = new RichTextMessage(this.html, this.text);
 
     this.socketService.on(SocketEvent.Message).pipe(
-      filter((result: Result<IMessage>) => {
+      filter((result: Result<Message>) => {
         const { code, data } = result;
         return code === ResultCode.Success && msg.isSelf(data)
       })
-    ).subscribe((result: Result<IMessage>) => {
+    ).subscribe((result: Result<Message>) => {
       this.text = '';
       this.localStorage.removeItemFromMap(LocalStorageKey.ChatRichTextMap, chatroomId);
 
@@ -97,7 +98,7 @@ export class RichTextEditorComponent extends ModalComponent {
       });
     });
 
-    msg.send(this.socketService);
+    msg.send();
   }
 
   /**

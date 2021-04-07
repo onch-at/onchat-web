@@ -1,5 +1,5 @@
 import { KeyValue } from '@angular/common';
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Injector, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent, Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -7,9 +7,9 @@ import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
-import { Message } from 'src/app/entities/message.entity';
+import { MessageEntity } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/form.model';
-import { Chatroom, ChatSession, Message as IMessage, Result } from 'src/app/models/onchat.model';
+import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
@@ -36,7 +36,7 @@ export class ChatPage implements OnInit, OnDestroy {
   /** 消息ID，用于查询指定消息段 */
   msgId: number = 0;
   /** 聊天记录 */
-  msgList: IMessage[] = [];
+  msgList: Message[] = [];
   /** 是否是第一次查询 */
   first: boolean = true;
   /** 聊天记录是否查到末尾了 */
@@ -66,7 +66,8 @@ export class ChatPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private renderer: Renderer2,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
+    private injector: Injector
   ) { }
 
   ngOnInit() {
@@ -112,12 +113,12 @@ export class ChatPage implements OnInit, OnDestroy {
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.subject),
 
-      filter((result: Result<IMessage>) => {
+      filter((result: Result<Message>) => {
         const { code, data } = result;
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
       }),
 
-      tap((result: Result<IMessage>) => {
+      tap((result: Result<Message>) => {
         const { data } = result;
 
         // 如果不是自己发的消息
@@ -166,7 +167,7 @@ export class ChatPage implements OnInit, OnDestroy {
       filter(() => this.msgList.some(o => o.loading))
     ).subscribe(() => {
       this.msgList.filter(o => o.loading).forEach(o => {
-        (o as Message).send(this.socketService);
+        (o as MessageEntity).send();
       });
     });
   }
@@ -326,13 +327,13 @@ export class ChatPage implements OnInit, OnDestroy {
 
     const { id, avatarThumbnail } = this.globalData.user;
 
-    const msg = new Message();
+    const msg = new MessageEntity().inject(this.injector);
     msg.chatroomId = this.chatroomId;
     msg.userId = id;
     msg.avatarThumbnail = avatarThumbnail;
     msg.data = new TextMessage(this.msg);
 
-    msg.send(this.socketService);
+    msg.send();
 
     this.msgList.push(msg);
     this.scrollToBottom();

@@ -1,4 +1,4 @@
-<ul class="bubble-toolbar" (touchend)="$event.preventDefault()">
+<ul *ngIf="msgItem.id" class="bubble-toolbar" (touchend)="$event.preventDefault()">
   <li *ngIf="msgItem.type === msgType.Text || msgItem.type === msgType.RichText" appRipple class="bubble-toolbar-item"
     (tap)="copyText()">
     <ion-icon name="copy-outline"></ion-icon>
