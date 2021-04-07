@@ -44,6 +44,10 @@ export class ImageService {
     });
   }
 
+  /**
+   * 调整图像尺寸
+   * @param img
+   */
   private resize(img: HTMLImageElement) {
     const resolution = 720;
     if (img.width > resolution || img.height > resolution) {

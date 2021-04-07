@@ -9,9 +9,9 @@
     </ion-toolbar>
   </ion-header>
 
-  <swiper #swiper class="swiper" [initialSlide]="index" [lazy]="true" [zoom]="zoom" [virtual]="true">
+  <swiper #swiper class="swiper" [initialSlide]="index" [lazy]="true" [zoom]="zoom">
     <ng-template swiperSlide *ngFor="let item of data; trackBy: trackByFn">
-      <div class="swiper-item-background display-flex align-items-center justify-content-center" (click)="dismiss()">
+      <div class="swiper-zoom-container display-flex align-items-center justify-content-center" (click)="dismiss()">
         <img class="swiper-lazy" [attr.data-src]="item.data['url'] | sanitize: 'resolve'" (press)="onPress(item)"
           (click)="$event.stopPropagation()">
       </div>

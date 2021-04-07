@@ -10,10 +10,15 @@ import { OverlayService } from "../services/overlay.service";
 import { MessageEntity } from "./message.entity";
 
 export class ImageMessageEntity extends MessageEntity {
+  /** 图像文件 */
   file: Blob;
+  /** 是否为原图 */
   original: boolean;
+  /** 图像原URL */
   url: string;
+  /** 图像格式 */
   format: string;
+  /** 上传进度 */
   percent: number;
 
   data: ImageMessage;
@@ -27,6 +32,9 @@ export class ImageMessageEntity extends MessageEntity {
     this.percent = 0;
   }
 
+  /**
+   * 压缩图像
+   */
   compress() {
     return this.injector.get(ImageService).compress(this.url, 0.75, this.format).pipe(
       tap((file: Blob) => {

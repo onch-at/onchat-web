@@ -28,11 +28,18 @@ export class MessageEntity implements Message {
     this.loading = true;
   }
 
+  /**
+   * 设置注入器
+   * @param injector 注入器
+   */
   inject(injector: Injector) {
     this.injector = injector;
     return this;
   }
 
+  /**
+   * 发送消息
+   */
   send() {
     const socketService = this.injector.get(SocketService);
 
@@ -62,6 +69,9 @@ export class MessageEntity implements Message {
     });
   }
 
+  /**
+   * 目标消息是否为本身
+   */
   isSelf(msg: Message) {
     return msg.chatroomId === this.chatroomId &&
       msg.sendTime === this.sendTime &&
