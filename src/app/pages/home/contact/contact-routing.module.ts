@@ -27,7 +27,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: '/home/contact/friend',
+        redirectTo: 'friend',
         pathMatch: 'full'
       }
     ]

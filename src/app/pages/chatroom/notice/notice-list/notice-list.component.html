@@ -1,0 +1,28 @@
+<ion-list class="chat-request-list">
+  <ion-item-sliding mode="md" *ngFor="let item of globalData.receiveChatRequests; let i = index;">
+    <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/request/handle', item.id]">
+      <ion-img slot="start" *ngIf="i > 9" [src]="item.applicantAvatarThumbnail"></ion-img>
+      <img slot="start" *ngIf="i <= 9" [src]="item.applicantAvatarThumbnail">
+
+      <ion-label class="item-content">
+        <h2 class="font-weight-bold">{{ item.applicantNickname }}</h2>
+        <p>{{ '申请加入 ' + item.chatroomName }}</p>
+      </ion-label>
+
+      <button *ngIf="!item.handlerId" appRipple appActiveClass class="btn-primary"
+        (click)="agreeChatRequest(item.id, $event)">
+        同意
+      </button>
+
+      <span *ngIf="item.handlerId" class="status" [ngSwitch]="item.status">
+        <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
+        <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
+        <ng-container *ngSwitchDefault>未知状态</ng-container>
+      </span>
+    </ion-item>
+
+    <ion-item-options *ngIf="!item.handlerId" side="end">
+      <ion-item-option (tap)="rejectChatRequest(item.id)" class="bg-danger">拒绝</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>

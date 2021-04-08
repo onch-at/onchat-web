@@ -1,14 +1,8 @@
 ion-header {
-    height: 3rem;
-
     ion-buttons ion-back-button,
     ion-buttons ion-button,
     ion-title {
         --color: var(--oc-color-black);
-    }
-
-    ion-title {
-        font-size: 1rem;
     }
 
     ion-spinner {

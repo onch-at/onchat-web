@@ -1,5 +1,27 @@
 /* 覆盖Ionic的样式 */
 
+ion-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    > ion-toolbar {
+        height: 3rem;
+    }
+
+    ion-title {
+        font-size: 1rem;
+    }
+
+    ion-segment {
+        min-width: 50vw;
+    }
+
+    ion-segment-button {
+        font-size: 0.8rem;
+    }
+}
+
 ion-searchbar.sc-ion-searchbar-ios-h {
     --color: var(--oc-color-dark);
     --background: var(--oc-color-secondary);
@@ -40,7 +62,6 @@ ion-searchbar.sc-ion-searchbar-ios-h {
 
 ion-segment {
     --background: var(--oc-color-secondary);
-    height: 2.75rem;
     border-radius: 1.5rem;
 }
 

@@ -1,5 +1,4 @@
 ion-header {
-    height: 3rem;
     background: transparent;
 
     ion-buttons ion-back-button,
@@ -7,10 +6,6 @@ ion-header {
     ion-title {
         --color: var(--oc-color-white);
         filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));
-    }
-
-    ion-title {
-        font-size: 1rem;
     }
 }
 

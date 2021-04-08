@@ -1,47 +1,26 @@
 <ion-content appHideScrollbar [fullscreen]="true">
-  <ion-header class="display-flex align-items-center" slot="fixed">
+  <ion-header slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
       </ion-buttons>
 
       <ion-title>聊天室通知</ion-title>
+    </ion-toolbar>
 
-      <ion-buttons slot="end">
-        <ion-button>
-          <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
-        </ion-button>
-      </ion-buttons>
+    <ion-toolbar>
+      <ion-segment [(ngModel)]="route" (ionChange)="segmentChange($event)">
+        <ion-segment-button value="notice-list" routerLink="/chatroom/notice/notice-list">
+          <ion-label>我的通知</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="application-list" routerLink="/chatroom/notice/application-list">
+          <ion-label>我的申请</ion-label>
+        </ion-segment-button>
+      </ion-segment>
     </ion-toolbar>
   </ion-header>
 
-  <ion-list class="chat-request-list">
-    <ion-item-sliding mode="md" *ngFor="let item of globalData.receiveChatRequests; let i = index;">
-      <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/request/handle', item.id]">
-        <ion-img slot="start" *ngIf="i > 9" [src]="item.applicantAvatarThumbnail"></ion-img>
-        <img slot="start" *ngIf="i <= 9" [src]="item.applicantAvatarThumbnail">
-
-        <ion-label class="item-content">
-          <h2 class="font-weight-bold">{{ item.applicantNickname }}</h2>
-          <p>{{ '申请加入 ' + item.chatroomName }}</p>
-        </ion-label>
-
-        <button *ngIf="!item.handlerId" appRipple appActiveClass class="btn-primary"
-          (click)="agreeChatRequest(item.id, $event)">
-          同意
-        </button>
-
-        <span *ngIf="item.handlerId" class="status" [ngSwitch]="item.status">
-          <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
-          <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
-          <ng-container *ngSwitchDefault>未知状态</ng-container>
-        </span>
-      </ion-item>
-
-      <ion-item-options *ngIf="!item.handlerId" side="end">
-        <ion-item-option (tap)="rejectChatRequest(item.id)" class="bg-danger">拒绝</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
-
+  <div class="router-outlet" [@horizontalSlideInRouteAnimation]="prepareRoute(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
+  </div>
 </ion-content>

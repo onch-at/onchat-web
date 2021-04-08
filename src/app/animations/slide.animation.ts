@@ -6,7 +6,7 @@ const options: AnimationQueryOptions = {
 
 /** 水平滑动路由动画 */
 export const horizontalSlideInRouteAnimation = trigger('horizontalSlideInRouteAnimation', [
-    transition('1 => 2, 1 => 3, 2 => 3', [
+    transition(':increment', [
         style({ position: 'relative' }),
         query(':enter, :leave', [
             style({
@@ -32,7 +32,7 @@ export const horizontalSlideInRouteAnimation = trigger('horizontalSlideInRouteAn
         ]),
     ]),
 
-    transition('2 => 1, 3 => 2, 3 => 1', [
+    transition(':decrement', [
         style({ position: 'relative' }),
         query(':enter, :leave', [
             style({
