@@ -25,7 +25,7 @@ export class ImageSizeDirective implements AfterViewInit {
   private resize() {
     const { nativeElement } = this.elementRef;
     const [width, height] = this.appImageSize;
-    const maxWidth = window.innerWidth * 0.45;
+    const maxWidth = window.innerWidth * 0.4;
 
     let divisor = 1;
 

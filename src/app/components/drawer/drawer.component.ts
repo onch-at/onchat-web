@@ -48,7 +48,7 @@ export class DrawerComponent implements OnInit {
   selectImage() {
     SysUtil.selectFile('image/*', true).subscribe((event: any) => {
       const files: FileList = event.target.files;
-      const length = files.length > 15 ? 15 : files.length;
+      const length = files.length > 10 ? 10 : files.length;
 
       const handle = (original?: boolean) => {
         for (let index = 0; index < length; index++) {
@@ -59,7 +59,7 @@ export class DrawerComponent implements OnInit {
 
       this.overlayService.presentAlert({
         header: '发送图片',
-        message: '温馨提示：每次最多发送15张图片',
+        message: '温馨提示：每次最多发送10张图片',
         cancelText: '原图发送',
         confirmText: '发送',
         cancelHandler: () => handle(true),

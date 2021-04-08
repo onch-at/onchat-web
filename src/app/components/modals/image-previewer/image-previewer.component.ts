@@ -9,7 +9,7 @@ import { StrUtil } from 'src/app/utils/str.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Lazy, Zoom } from 'swiper/core';
-import { ZoomOptions } from 'swiper/types';
+import { LazyOptions, ZoomOptions } from 'swiper/types';
 import { ModalComponent } from '../modal.component';
 
 SwiperCore.use([Lazy, Zoom]);
@@ -27,6 +27,10 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
     maxRatio: 5,
     minRatio: 0.75,
     toggle: true
+  }
+
+  lazy: LazyOptions = {
+    preloaderClass: 'swiper-lazy-spinner'
   }
 
   @ViewChild(SwiperComponent) swiper: SwiperComponent;
