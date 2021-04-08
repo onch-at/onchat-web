@@ -45,7 +45,7 @@
       </ng-container>
 
       <!-- 如果不够6个，就填充空元素来维持UI -->
-      <div *ngIf="chatMembers.length < (isMember ? 6 : 7)" class="flex-auto"></div>
+      <div *ngFor="let item of (null | fill: 6 - chatMembers.length)" class="avatar-list-img"></div>
 
       <button appRipple *ngIf="isMember" class="add-btn" (tap)="inviteJoinChatroom()">
         <ion-icon name="add-outline"></ion-icon>

@@ -15,17 +15,12 @@ import { Message } from '../models/onchat.model';
 export class MsgDescPipe implements PipeTransform {
 
   transform(value: Message): string {
-    switch (value.type) {
-      case MessageType.Text: return (value.data as TextMessage).content;
-
-      case MessageType.RichText: return (value.data as RichTextMessage).text;
-
-      case MessageType.ChatInvitation: return '[分享]邀请加入群聊';
-
-      case MessageType.Image: return '[图片]';
-
-      default: return '[收到新消息]';
-    }
+    return {
+      [MessageType.Text]: (value.data as TextMessage).content,
+      [MessageType.RichText]: (value.data as RichTextMessage).text,
+      [MessageType.ChatInvitation]: '[分享]邀请加入群聊',
+      [MessageType.Image]: '[图片]',
+    }[value.type] || '[收到新消息]';
   }
 
 }

@@ -73,7 +73,7 @@ export class SysUtil {
    */
   static isSupportWEBP(): boolean {
     try {
-      return document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0;
+      return document.createElement('canvas').toDataURL('image/webp').startsWith('data:image/webp');
     } catch (e) {
       return false;
     }
@@ -84,7 +84,7 @@ export class SysUtil {
    */
   static isSupportJPEG(): boolean {
     try {
-      return document.createElement('canvas').toDataURL('image/jpeg').indexOf('data:image/jpeg') === 0;
+      return document.createElement('canvas').toDataURL('image/jpeg').startsWith('data:image/jpeg');
     } catch (e) {
       return false;
     }

@@ -7,6 +7,7 @@ import { AvatarCropperModule } from 'src/app/modules/avatar-cropper.module';
 import { ChatSessionSelectorModule } from 'src/app/modules/chat-session-selector.module';
 import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
+import { FillPipe } from 'src/app/pipes/fill.pipe';
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 
@@ -23,7 +24,8 @@ import { HomePage } from './home.page';
     RippleModule
   ],
   declarations: [
-    HomePage
+    HomePage,
+    FillPipe
   ]
 })
 export class HomePageModule { }

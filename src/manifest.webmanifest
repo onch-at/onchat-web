@@ -6,7 +6,7 @@
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/index.html",
   "prefer_related_applications": false,
   "shortcuts": [
     {
