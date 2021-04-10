@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
-import { ChatRequestResolve } from 'src/app/resolvers/chat-request.resolver';
+import { ReceiveChatRequestResolve } from 'src/app/resolvers/chat-request.resolver';
 import { HandlePage } from './handle.page';
 
 const routes: Routes = [
@@ -15,7 +15,7 @@ const routes: Routes = [
       AuthGuard
     ],
     resolve: {
-      chatRequest: ChatRequestResolve
+      chatRequest: ReceiveChatRequestResolve
     }
   }
 ];

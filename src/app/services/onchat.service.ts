@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { EmailBinderComponent } from '../components/modals/email-binder/email-binder.component';
 import { ChatRequest, ChatSession, FriendRequest, Result } from '../models/onchat.model';
 import { ApiService } from './api.service';
@@ -60,20 +60,17 @@ export class OnChatService {
   initChatSession() {
     this.globalData.chatSessionsPage = 1;
 
-    return this.apiService.getChatSession().pipe(
-      mergeMap((result: Result<ChatSession[]>) => {
+    return forkJoin([
+      this.apiService.getChatSession().pipe(tap((result: Result<ChatSession[]>) => {
         this.globalData.chatSessions = result.data;
-        return this.apiService.getReceiveChatRequests();
-      }),
-
-      mergeMap((result: Result<ChatRequest[]>) => {
-        if (result.data?.length) {
-          this.globalData.receiveChatRequests = result.data;
-        }
+      })),
+      this.apiService.getReceiveChatRequests().pipe(tap((result: Result<ChatRequest[]>) => {
+        this.globalData.receiveChatRequests = result.data;
+      })),
+      this.apiService.getSendChatRequests().pipe(tap((result: Result<ChatRequest[]>) => {
+        this.globalData.sendChatRequests = result.data;
         this.globalData.totalUnreadMsgCount();
-
-        return of(null);
-      })
-    );
+      }))
+    ]);
   }
 }

@@ -126,7 +126,7 @@ export interface Message extends IEntity {
 }
 
 /** 好友申请 */
-export class FriendRequest extends Entity {
+export interface FriendRequest extends IEntity {
   /** 申请人ID */
   selfId: number;
   /** 被申请人ID */
@@ -136,9 +136,9 @@ export class FriendRequest extends Entity {
   /** 拒绝理由 */
   rejectReason: string;
   /** 申请人的状态 */
-  selfStatus: FriendRequestStatus = FriendRequestStatus.Wait;
+  selfStatus: FriendRequestStatus;
   /** 被申请人的状态 */
-  targetStatus: FriendRequestStatus = FriendRequestStatus.Wait;
+  targetStatus: FriendRequestStatus;
   /** 申请人的别名 */
   selfAlias: string;
   /** 被申请人的别名 */
@@ -175,7 +175,7 @@ export interface AgreeFriendRequest {
  */
 export interface ChatRequest extends IEntity {
   /** 申请人ID */
-  applicantId: number;
+  requesterId: number;
   /** 处理人ID */
   handlerId: number;
   /** 聊天室ID */
@@ -190,13 +190,15 @@ export interface ChatRequest extends IEntity {
   status: ChatRequestStatus;
 
   /** 申请人的头像 */
-  applicantAvatarThumbnail?: string;
+  requesterAvatarThumbnail?: string;
   /** 申请人的昵称 */
-  applicantNickname?: string;
+  requesterNickname?: string;
   /** 处理人的昵称 */
   handlerNickname?: string;
   /** 聊天室的名字 */
   chatroomName?: string;
   /** 聊天室头像 */
   chatroomAvatarThumbnail?: string;
+  /** 聊天室头像 */
+  chatroomAvatar?: string;
 }

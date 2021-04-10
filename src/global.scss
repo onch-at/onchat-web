@@ -34,7 +34,7 @@
 // @import "~@ionic/angular/css/flex-utils.css";
 
 .text-ellipsis {
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

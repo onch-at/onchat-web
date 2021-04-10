@@ -1,0 +1,19 @@
+<ion-list class="chat-request-list">
+  <ion-item *ngFor="let item of globalData.sendChatRequests; let i = index;" lines="none" [detail]="false"
+    [routerLink]="['/chatroom/request', item.id]">
+    <ion-img slot="start" *ngIf="i > 9" [src]="item.chatroomAvatarThumbnail"></ion-img>
+    <img slot="start" *ngIf="i <= 9" [src]="item.chatroomAvatarThumbnail">
+
+    <ion-label class="item-content">
+      <h2 class="font-weight-bold">{{ item.chatroomName }}</h2>
+      <p>{{ 'ROOM-ID: ' + item.chatroomId }}</p>
+    </ion-label>
+
+    <span class="status" [ngSwitch]="item.status">
+      <ng-container *ngSwitchCase="chatRequestStatus.Wait">待处理</ng-container>
+      <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
+      <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
+      <ng-container *ngSwitchDefault>未知状态</ng-container>
+    </span>
+  </ion-item>
+</ion-list>

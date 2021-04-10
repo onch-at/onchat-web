@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
-import { ApplicationListComponent } from './application-list/application-list.component';
 import { NoticeListComponent } from './notice-list/notice-list.component';
 import { NoticePage } from './notice.page';
+import { RequestListComponent } from './request-list/request-list.component';
 
 const routes: Routes = [
   {
@@ -16,8 +16,8 @@ const routes: Routes = [
         data: { animation: 1 }
       },
       {
-        path: 'application-list',
-        component: ApplicationListComponent,
+        path: 'request-list',
+        component: RequestListComponent,
         data: { animation: 2 }
       },
       {

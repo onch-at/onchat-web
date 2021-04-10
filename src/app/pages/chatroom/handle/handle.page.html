@@ -9,15 +9,15 @@
     </ion-toolbar>
   </ion-header>
 
-  <img class="bg-img" [src]="chatRequest.applicantAvatarThumbnail">
+  <img class="bg-img" [src]="chatRequest.requesterAvatarThumbnail">
 
   <main class="flex-col-container align-items-center">
-    <img class="avatar" [src]="chatRequest.applicantAvatarThumbnail" [routerLink]="['/user', chatRequest.applicantId]">
-    <h1>{{ chatRequest.applicantNickname }}</h1>
+    <img class="avatar" [src]="chatRequest.requesterAvatarThumbnail" [routerLink]="['/user', chatRequest.requesterId]">
+    <h1>{{ chatRequest.requesterNickname }}</h1>
 
     <ion-item lines="none">
       <ion-label position="stacked">申请原因</ion-label>
-      <p>{{ chatRequest.requestReason || (chatRequest.applicantNickname + ' 申请加入 ' + chatRequest.chatroomName) }}</p>
+      <p>{{ chatRequest.requestReason || (chatRequest.requesterNickname + ' 申请加入 ' + chatRequest.chatroomName) }}</p>
     </ion-item>
 
     <ion-item lines="none">

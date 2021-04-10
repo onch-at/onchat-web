@@ -69,8 +69,12 @@ const routes: Routes = [
         loadChildren: () => import('./pages/chatroom/notice/notice.module').then(m => m.NoticePageModule)
       },
       {
-        path: 'request/handle',
-        loadChildren: () => import('./pages/chatroom/request/handle/handle.module').then(m => m.HandlePageModule)
+        path: 'handle',
+        loadChildren: () => import('./pages/chatroom/handle/handle.module').then(m => m.HandlePageModule)
+      },
+      {
+        path: 'request',
+        loadChildren: () => import('./pages/chatroom/request/request.module').then(m => m.RequestPageModule)
       },
       {
         path: '',

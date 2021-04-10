@@ -1,8 +1,7 @@
-import { KeyValue } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ChatRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -10,14 +9,15 @@ import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
-  selector: 'app-handle',
-  templateUrl: './handle.page.html',
-  styleUrls: ['./handle.page.scss'],
+  selector: 'app-request',
+  templateUrl: './request.page.html',
+  styleUrls: ['./request.page.scss'],
 })
-export class HandlePage implements OnInit, OnDestroy {
+export class RequestPage implements OnInit {
   private subject: Subject<unknown> = new Subject();
   chatRequest: ChatRequest;
   chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
+  requestReason: string = null;
 
   constructor(
     private socketService: SocketService,
@@ -35,19 +35,36 @@ export class HandlePage implements OnInit, OnDestroy {
         this.chatRequest = (data.chatRequest as Result<ChatRequest>).data;
       } else {
         this.overlayService.presentToast('参数错误！');
-        this.router.navigateByUrl('/');
+        return this.router.navigateByUrl('/');
+      }
+
+      if (this.chatRequest) {
+        this.requestReason = this.chatRequest.requestReason;
       }
     });
 
-    this.socketService.on(SocketEvent.ChatRequestReject).pipe(
+    this.socketService.on(SocketEvent.ChatRequest).pipe(
       takeUntil(this.subject),
-      filter((result: Result<ChatRequest>) => {
-        const { code, data } = result;
-        // 操作成功,并且处理人是我
-        return code === ResultCode.Success && data.handlerId === this.globalData.user.id
-      })
+      debounceTime(100)
     ).subscribe((result: Result<ChatRequest>) => {
-      this.chatRequest = result.data;
+      const { code, data, msg } = result;
+
+      if (code !== ResultCode.Success) {
+        return this.overlayService.presentToast('申请失败，原因：' + msg);
+      }
+
+      if (data.requesterId === this.globalData.user.id) {
+        this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
+
+        const index = this.globalData.sendChatRequests.findIndex(o => o.id === data.id);
+        if (index >= 0) {
+          this.globalData.sendChatRequests[index] = data;
+        } else {
+          this.globalData.sendChatRequests.unshift(data);
+        }
+
+        this.router.navigateByUrl('/');
+      }
     });
   }
 
@@ -56,33 +73,11 @@ export class HandlePage implements OnInit, OnDestroy {
     this.subject.complete();
   }
 
-  agree() {
-    this.overlayService.presentAlert({
-      header: '同意申请',
-      message: '你确定同意该请求吗？',
-      confirmHandler: () => this.socketService.chatRequsetAgree(this.chatRequest.id)
-    });
-  }
-
-  reject() {
-    this.overlayService.presentAlert({
-      header: '拒绝申请',
-      confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.chatRequestReject(this.chatRequest.id, data['rejectReason']);
-      },
-      inputs: [
-        {
-          name: 'rejectReason',
-          type: 'textarea',
-          placeholder: '或许可以告诉对方你拒绝的原因',
-          cssClass: 'ipt-primary',
-          attributes: {
-            rows: 4,
-            maxlength: 50
-          }
-        }
-      ]
-    });
+  /**
+   * 申请加入群聊
+   */
+  request() {
+    this.socketService.chatRequset(this.chatRequest.chatroomId, this.requestReason);
   }
 
 }

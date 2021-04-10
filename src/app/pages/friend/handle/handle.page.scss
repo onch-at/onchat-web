@@ -53,7 +53,7 @@ ion-item {
     --padding-start: 1rem;
     --inner-padding-end: 1rem;
     margin-bottom: 1rem;
-    border-radius: 1rem;
+    border-radius: 1.25rem;
     overflow: hidden;
 
     > ion-label {
@@ -68,6 +68,7 @@ ion-item {
         margin: 0 0 0.4rem;
         padding: 0.25rem 0;
         color: var(--oc-color-medium);
+        word-break: break-word;
     }
 }
 

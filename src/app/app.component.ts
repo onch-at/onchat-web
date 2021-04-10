@@ -245,7 +245,7 @@ export class AppComponent implements OnInit {
       filter((result: Result<ChatRequest>) => {
         const { code, data } = result;
         // 如果申请人不是自己
-        return code === ResultCode.Success && data?.applicantId !== this.globalData.user.id;
+        return code === ResultCode.Success && data?.requesterId !== this.globalData.user.id;
       })
     ).subscribe((result: Result<ChatRequest>) => {
       const { data } = result;
@@ -259,7 +259,7 @@ export class AppComponent implements OnInit {
 
       if (index >= 0) {
         this.globalData.receiveChatRequests[index] = data;
-        this.globalData.sortChatRequests();
+        this.globalData.sortReceiveChatRequests();
       } else {
         this.globalData.receiveChatRequests.unshift(data);
         this.feedbackService.booAudio.play();
@@ -296,6 +296,11 @@ export class AppComponent implements OnInit {
         this.overlayService[document.hidden ? 'presentNativeNotification' : 'presentNotification'](opts);
         this.feedbackService.booAudio.play();
 
+        const index = this.globalData.sendChatRequests.findIndex(o => o.id === request.id);
+        if (index >= 0) {
+          this.globalData.sendChatRequests[index] = request;
+        }
+
         this.globalData.chatSessions.push(chatSession);
         this.globalData.sortChatSessions();
         return this.globalData.unreadMsgCount++;
@@ -310,6 +315,7 @@ export class AppComponent implements OnInit {
 
       // 如果我是处理人
       request.handlerId === user.id && this.overlayService.presentToast('操作成功，已同意该申请！');
+      this.router.navigateByUrl('/chatroom/notice/notice-list');
     });
 
     // 拒绝别人的入群申请/入群申请被拒绝
@@ -322,21 +328,22 @@ export class AppComponent implements OnInit {
       }
 
       // 如果我是申请人，我被拒绝了
-      if (data.applicantId === user.id) {
+      if (data.requesterId === user.id) {
         const opts: NotificationOptions = {
           icon: data.chatroomAvatarThumbnail,
           title: '聊天室申请加入失败',
           description: data.handlerNickname + ' 拒绝让你加入 ' + data.chatroomName,
-          url: '/chatroom/' + data.chatroomId //TODO 跳到详情页
+          url: '/chatroom/request/' + data.id
         };
+
+        const index = this.globalData.sendChatRequests.findIndex(o => o.id === data.id);
+        if (index >= 0) {
+          this.globalData.sendChatRequests[index] = data;
+          this.globalData.totalUnreadMsgCount();
+        }
 
         this.overlayService[document.hidden ? 'presentNativeNotification' : 'presentNotification'](opts);
         return this.feedbackService.booAudio.play();
-
-        // TODO 更新本地数据
-        // this.globalData.chatSessions.push(chatSession);
-        // this.globalData.sortChatSessions();
-        // return this.globalData.unreadMsgCount++;
       }
 
       // 如果处理人是我自己

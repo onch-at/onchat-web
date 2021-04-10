@@ -3,25 +3,21 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActiveClassModule } from 'src/app/modules/active-class.module';
+import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
-import { NoticeListComponent } from './notice-list/notice-list.component';
-import { NoticePageRoutingModule } from './notice-routing.module';
-import { NoticePage } from './notice.page';
-import { RequestListComponent } from './request-list/request-list.component';
+import { RequestPageRoutingModule } from './request-routing.module';
+import { RequestPage } from './request.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    RequestPageRoutingModule,
     ActiveClassModule,
-    NoticePageRoutingModule,
+    HideScrollbarModule,
     RippleModule
   ],
-  declarations: [
-    NoticePage,
-    NoticeListComponent,
-    RequestListComponent
-  ]
+  declarations: [RequestPage]
 })
-export class NoticePageModule { }
+export class RequestPageModule { }

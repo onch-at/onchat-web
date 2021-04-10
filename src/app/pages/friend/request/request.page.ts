@@ -43,9 +43,9 @@ export class RequestPage implements OnInit, OnDestroy {
       const resultFriendRequest = data.friendRequest;
       // 如果之前有申请过，就把之前填过的信息补全上去
       if (resultFriendRequest.code === ResultCode.Success) {
-        this.targetAlias = resultFriendRequest.data.targetAlias || '';
-        this.requestReason = resultFriendRequest.data.requestReason || '';
-        this.rejectReason = resultFriendRequest.data.rejectReason || null;
+        this.targetAlias = resultFriendRequest.data.targetAlias;
+        this.requestReason = resultFriendRequest.data.requestReason;
+        this.rejectReason = resultFriendRequest.data.rejectReason;
       }
     });
 

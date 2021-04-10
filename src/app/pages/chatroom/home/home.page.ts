@@ -85,8 +85,15 @@ export class HomePage implements OnInit, OnDestroy {
         return this.overlayService.presentToast('申请失败，原因：' + msg);
       }
 
-      if (data.applicantId === this.globalData.user.id) {
+      if (data.requesterId === this.globalData.user.id) {
         this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
+
+        const index = this.globalData.sendChatRequests.findIndex(o => o.id === data.id);
+        if (index >= 0) {
+          this.globalData.sendChatRequests[index] = data;
+        } else {
+          this.globalData.sendChatRequests.unshift(data);
+        }
       }
     });
   }

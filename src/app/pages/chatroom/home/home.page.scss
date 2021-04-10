@@ -62,7 +62,7 @@ ion-content {
     left: 1rem;
     bottom: 0.75rem;
     color: #fff;
-    filter: drop-shadow(0 0 0.5rem rgba(#000, 0.75));
+    text-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.75);
     transition: opacity ease-in-out 0.125s;
 }
 

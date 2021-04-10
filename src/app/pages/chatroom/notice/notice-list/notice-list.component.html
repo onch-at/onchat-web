@@ -1,11 +1,11 @@
 <ion-list class="chat-request-list">
   <ion-item-sliding mode="md" *ngFor="let item of globalData.receiveChatRequests; let i = index;">
-    <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/request/handle', item.id]">
-      <ion-img slot="start" *ngIf="i > 9" [src]="item.applicantAvatarThumbnail"></ion-img>
-      <img slot="start" *ngIf="i <= 9" [src]="item.applicantAvatarThumbnail">
+    <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/handle', item.id]">
+      <ion-img slot="start" *ngIf="i > 9" [src]="item.requesterAvatarThumbnail"></ion-img>
+      <img slot="start" *ngIf="i <= 9" [src]="item.requesterAvatarThumbnail">
 
       <ion-label class="item-content">
-        <h2 class="font-weight-bold">{{ item.applicantNickname }}</h2>
+        <h2 class="font-weight-bold">{{ item.requesterNickname }}</h2>
         <p>{{ '申请加入 ' + item.chatroomName }}</p>
       </ion-label>
 

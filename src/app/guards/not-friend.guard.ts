@@ -21,7 +21,7 @@ export class NotFriendGuard implements CanActivate {
     return this.apiService.isFriend(+next.params.userId).pipe(
       map((result: Result<number>) => {
         // TODO 写完单聊之后，自己跟自己也是好友，把this.globalData.user.id == next.params.userId删除
-        const isFriend = !!result.data || this.globalData.user.id == next.params.userId;
+        const isFriend = !!result.data || this.globalData.user?.id == next.params.userId;
         isFriend && this.location.back();
 
         return !isFriend;

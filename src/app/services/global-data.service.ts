@@ -34,8 +34,10 @@ export class GlobalData {
   private _privateChatrooms: ChatSession[] = [];
   /** 群聊聊天室列表 */
   private _groupChatrooms: ChatSession[] = [];
-  /** 我收到的群通知 */
+  /** 我收到的入群申请 */
   private _receiveChatRequests: ChatRequest[] = [];
+  /** 我发送的入群申请 */
+  private _sendChatRequests: ChatRequest[] = [];
   /** 缓存聊天列表 */
   private _chatSessions: ChatSession[] = [];
 
@@ -49,6 +51,7 @@ export class GlobalData {
     this.privateChatroomsPage = 1;
     this.chatSessions = [];
     this.receiveChatRequests = [];
+    this.sendChatRequests = [];
     this.receiveFriendRequests = [];
     this.sendFriendRequests = [];
     this.privateChatrooms = [];
@@ -56,11 +59,20 @@ export class GlobalData {
 
   set receiveChatRequests(requests: ChatRequest[]) {
     this._receiveChatRequests = requests;
-    this.sortChatRequests();
+    this.sortReceiveChatRequests();
   }
 
   get receiveChatRequests() {
     return this._receiveChatRequests;
+  }
+
+  set sendChatRequests(requests: ChatRequest[]) {
+    this._sendChatRequests = requests;
+    this.sortSendChatRequests();
+  }
+
+  get sendChatRequests() {
+    return this._sendChatRequests;
   }
 
   set unreadMsgCount(num: number) {
@@ -124,7 +136,7 @@ export class GlobalData {
    * 计算未读的聊天室通知消息数量
    */
   private totalUnreadChatRequestCount() {
-    const unreadCount = this.receiveChatRequests.reduce((count, o) => (
+    const unreadCount = this.receiveChatRequests.concat(this.sendChatRequests).reduce((count, o) => (
       o.readedList.includes(this.user.id) ? count : ++count
     ), 0);
 
@@ -142,9 +154,16 @@ export class GlobalData {
   }
 
   /**
-   * 排序聊天室通知
+   * 排序收到的入群申请
    */
-  sortChatRequests() {
+  sortReceiveChatRequests() {
     this.receiveChatRequests.sort(EntityUtil.sortByUpdateTime);
+  }
+
+  /**
+   * 排序发送的入群申请
+   */
+  sortSendChatRequests() {
+    this.sendChatRequests.sort(EntityUtil.sortByUpdateTime);
   }
 }

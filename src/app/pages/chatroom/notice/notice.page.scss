@@ -1,5 +1,5 @@
 ion-header {
-    background: rgba(var(--oc-color-white-rgb), 0.75);
+    background: transparent;
     backdrop-filter: blur(15px);
     border-radius: 0 0 1.5rem 1.5rem;
 
@@ -12,6 +12,10 @@ ion-header {
     ion-spinner {
         --color: var(--oc-color-black);
         margin-right: 0.25rem;
+    }
+
+    > ion-toolbar {
+        --background: rgba(var(--oc-color-white-rgb), 0.75);
     }
 }
 

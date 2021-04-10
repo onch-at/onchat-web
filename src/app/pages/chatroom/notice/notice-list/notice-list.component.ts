@@ -1,7 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ChatRequestStatus, ChatSessionType } from 'src/app/common/enum';
-import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OverlayService } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -15,14 +14,12 @@ export class NoticeListComponent implements OnInit {
   chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
 
   constructor(
-    private apiService: ApiService,
     private socketService: SocketService,
     private overlayService: OverlayService,
     public globalData: GlobalData,
   ) { }
 
   ngOnInit() {
-    this.apiService.readedChatRequests().subscribe();
     const chatSession = this.globalData.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
     if (chatSession) {
       this.globalData.unreadMsgCount -= chatSession.unread;

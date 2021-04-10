@@ -308,7 +308,6 @@ export class ApiService {
   /**
    * 通过请求id来获取我收到的入群申请
    * @param id 入群申请ID
-   * @returns
    */
   getReceiveChatRequestById(id: number): Observable<Result<ChatRequest>> {
     return this.http.get<Result<ChatRequest>>(env.chatUrl + 'requests/receive/' + id);
@@ -319,5 +318,20 @@ export class ApiService {
    */
   readedChatRequests(): Observable<Result> {
     return this.http.put<Result>(env.chatUrl + 'requests/readed', null);
+  }
+
+  /**
+   * 通过请求id来获取我发送的入群申请
+   * @param id 入群申请ID
+   */
+  getSendChatRequestById(id: number): Observable<Result<ChatRequest>> {
+    return this.http.get<Result<ChatRequest>>(env.chatUrl + 'requests/send/' + id);
+  }
+
+  /**
+   * 获取我发送的所有入群申请
+   */
+  getSendChatRequests(): Observable<Result<ChatRequest[]>> {
+    return this.http.get<Result<ChatRequest[]>>(env.chatUrl + 'requests/send');
   }
 }
