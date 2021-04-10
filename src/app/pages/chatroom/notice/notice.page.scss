@@ -19,8 +19,8 @@ ion-header {
     }
 }
 
-ion-content {
-    --padding-top: 6rem;
+.router-outlet {
+    margin-top: 6rem;
 }
 
 :host ::ng-deep {

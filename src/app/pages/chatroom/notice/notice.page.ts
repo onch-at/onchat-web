@@ -1,28 +1,50 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { horizontalSlideInRouteAnimation } from 'src/app/animations/slide.animation';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { AnimationBuilder, AnimationController, IonRouterOutlet } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 
 @Component({
   selector: 'app-notice',
   templateUrl: './notice.page.html',
-  styleUrls: ['./notice.page.scss'],
-  animations: [horizontalSlideInRouteAnimation]
+  styleUrls: ['./notice.page.scss']
 })
 export class NoticePage implements OnInit {
-  route: 'notice-list' | 'request-list';
+  url: 'notice-list' | 'request-list';
+  animation: number = 0;
+
+  @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
+
+  routerAnimation: AnimationBuilder = (_, opts) => {
+    const { activatedRouteData } = this.routerOutlet;
+    const { enteringEl, leavingEl } = opts;
+    const animation = this.animationCtrl.create().duration(300).easing('ease-out');
+    const enteringAnimation = this.animationCtrl.create().addElement(enteringEl).beforeRemoveClass('ion-page-invisible');
+    const leavingAnimation = this.animationCtrl.create().addElement(leavingEl).beforeRemoveClass('ion-page-invisible');
+
+    if (this.animation > activatedRouteData.animation) {
+      enteringAnimation.fromTo('transform', 'translateX(-100%)', 'translateX(0%)');
+      leavingAnimation.fromTo('transform', 'translateX(0%)', 'translateX(100%)');
+    } else {
+      enteringAnimation.fromTo('transform', 'translateX(100%)', 'translateX(0%)');
+      leavingAnimation.fromTo('transform', 'translateX(0%)', 'translateX(-100%)');
+    }
+
+    this.animation = activatedRouteData.animation;
+    return animation.addAnimation([enteringAnimation, leavingAnimation]);
+  };
 
   constructor(
     private apiService: ApiService,
     private globalData: GlobalData,
     private location: Location,
+    private animationCtrl: AnimationController,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.route = this.location.path().includes('notice-list') ? 'notice-list' : 'request-list';
+    this.url = this.location.path().includes('notice-list') ? 'notice-list' : 'request-list';
 
     const { receiveChatRequests, sendChatRequests, user } = this.globalData;
     receiveChatRequests.concat(sendChatRequests).some(o => (
@@ -30,13 +52,13 @@ export class NoticePage implements OnInit {
     )) && this.apiService.readedChatRequests().subscribe();
   }
 
-  segmentChange(event: any) {
-    this.route = event.detail.value;
-    this.router.navigateByUrl('/chatroom/notice/' + this.route);
+  ionViewWillEnter() {
+    this.animation = this.routerOutlet.activatedRouteData.animation;
   }
 
-  prepareRoute(outlet: RouterOutlet) {
-    return outlet?.activatedRouteData?.animation;
+  segmentChange(event: any) {
+    this.url = event.detail.value;
+    this.router.navigateByUrl('/chatroom/notice/' + this.url);
   }
 
 }
