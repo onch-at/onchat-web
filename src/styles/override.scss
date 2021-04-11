@@ -1,11 +1,10 @@
 /* 覆盖Ionic的样式 */
 
 ion-header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
     > ion-toolbar {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         height: 3rem;
     }
 

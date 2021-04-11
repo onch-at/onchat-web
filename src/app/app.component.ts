@@ -102,15 +102,13 @@ export class AppComponent implements OnInit {
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<AgreeFriendRequest>) => {
       const { data } = result;
-      const { user } = this.globalData;
+      const { user, sendFriendRequests, receiveFriendRequests } = this.globalData;
       // 如果申请人是自己（我的好友申请被同意了）
       if (data.selfId === user.id) {
         // 去我发出的申请列表里面找这条FriendRequest，并删除
-        let index = this.globalData.sendFriendRequests.findIndex(o => o.id == data.friendRequestId);
-        index >= 0 && this.globalData.sendFriendRequests.splice(index, 1);
+        this.globalData.sendFriendRequests = sendFriendRequests.filter(o => o.id !== data.friendRequestId);
         // 去我收到的申请列表里面通过找这条FriendRequest，并删除
-        index = this.globalData.receiveFriendRequests.findIndex(o => o.selfId == data.targetId);
-        index >= 0 && this.globalData.receiveFriendRequests.splice(index, 1);
+        this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.selfId !== data.targetId);
 
         this.overlayService.presentNotification({
           icon: data.targetAvatarThumbnail,
@@ -120,9 +118,7 @@ export class AppComponent implements OnInit {
         });
         this.feedbackService.playAudio(AudioName.Boo);
       } else if (data.targetId === user.id) { // 如果自己是被申请人
-        const index = this.globalData.receiveFriendRequests.findIndex(o => o.id == data.friendRequestId);
-        index >= 0 && this.globalData.receiveFriendRequests.splice(index, 1);
-
+        this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.id !== data.friendRequestId);
         this.overlayService.presentToast('成功添加新好友');
       }
 
@@ -143,7 +139,7 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.FriendRequestReject).pipe(
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<FriendRequest>) => {
-      const { user } = this.globalData;
+      const { user, receiveFriendRequests } = this.globalData;
       const { data } = result;
       // 如果申请人是自己
       if (data.selfId === user.id) {
@@ -162,8 +158,7 @@ export class AppComponent implements OnInit {
         });
         this.feedbackService.playAudio(AudioName.DingDeng);
       } else if (data.targetId === user.id) { // 如果自己是被申请人
-        const index = this.globalData.receiveFriendRequests.findIndex(o => o.id === data.id);
-        index >= 0 && this.globalData.receiveFriendRequests.splice(index, 1);
+        this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.id !== data.id);
 
         this.overlayService.presentToast('已拒绝该好友申请');
       }
@@ -221,7 +216,7 @@ export class AppComponent implements OnInit {
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
-      const index = this.globalData.chatSessions.findIndex(o => o.data.chatroomId == result.data.chatroomId);
+      const index = this.globalData.chatSessions.findIndex(o => o.data.chatroomId === result.data.chatroomId);
       if (index >= 0) {
         const chatSession = this.globalData.chatSessions[index];
         chatSession.unread > 0 && chatSession.unread--;

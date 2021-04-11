@@ -42,6 +42,6 @@ export class DateUtil {
    * @param date
    */
   static isThisYear(date: Date): boolean {
-    return date.getFullYear() == new Date().getFullYear();
+    return date.getFullYear() === new Date().getFullYear();
   }
 }
