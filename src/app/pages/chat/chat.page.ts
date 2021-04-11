@@ -86,7 +86,7 @@ export class ChatPage implements OnInit, OnDestroy {
     });
 
     // 记录当前房间ID，用于处理聊天列表
-    this.globalData.chatroomId = this.route.snapshot.params.id;
+    this.globalData.chatroomId = +this.route.snapshot.params.id;
     this.chatroomId = +this.route.snapshot.params.id;
 
     this.loadRecords();

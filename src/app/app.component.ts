@@ -199,7 +199,7 @@ export class AppComponent implements OnInit {
         // 如果用户已经进入消息所属房间
         if (chatroomId === data.chatroomId) {
           chatSession.unread = 0;
-        } else if (data.userId !== this.globalData.user.id) {
+        } else if (data.userId !== user.id) {
           chatSession.unread++;
         }
 
@@ -242,7 +242,9 @@ export class AppComponent implements OnInit {
       const chatSession = this.globalData.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
       // 如果列表里没有聊天室通知会话,就需要重新拉取
       if (!chatSession) {
-        return this.onChatService.initChatSession().subscribe();
+        return this.onChatService.initChatSession().subscribe(() => {
+          this.feedbackService.playAudio(AudioName.Boo);
+        });
       }
 
       const index = this.globalData.receiveChatRequests.findIndex(o => o.id === data.id);
