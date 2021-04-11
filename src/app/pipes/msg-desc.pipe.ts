@@ -1,14 +1,8 @@
-import { Injectable, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { MessageType } from '../common/enum';
 import { RichTextMessage, TextMessage } from '../models/form.model';
 import { Message } from '../models/onchat.model';
 
-/**
- * 获取聊天消息的描述
- */
-@Injectable({
-  providedIn: 'root'
-})
 @Pipe({
   name: 'msgDesc'
 })

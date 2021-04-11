@@ -12,16 +12,18 @@
   <img class="bg-img" [src]="chatRequest.chatroomAvatar">
 
   <main>
-    <h2 class="header-title text-ellipsis">{{ chatRequest.chatroomName }}</h2>
-    <div class="header-subtitle">ROOM-ID：{{ chatRequest.chatroomId }}</div>
+    <div>
+      <h2 class="header-title text-ellipsis">{{ chatRequest.chatroomName }}</h2>
+      <div class="header-subtitle">ROOM-ID：{{ chatRequest.chatroomId }}</div>
+    </div>
 
     <ion-item *ngIf="chatRequest.handlerId" lines="none">
       <ion-label position="stacked">处理人：{{ chatRequest.handlerNickname }}</ion-label>
       <ul>
         <li>
           处理结果：<ng-container [ngSwitch]="chatRequest.status">
-            <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
-            <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
+            <ng-container *ngSwitchCase="chatRequestStatus.Agree">管理员已同意你的申请</ng-container>
+            <ng-container *ngSwitchCase="chatRequestStatus.Reject">管理员已拒绝你的申请</ng-container>
             <ng-container *ngSwitchDefault>未知状态</ng-container>
           </ng-container>
         </li>
@@ -31,16 +33,17 @@
       </ul>
     </ion-item>
 
-    <ion-item lines="none">
-      <ion-label position="stacked">申请原因</ion-label>
-      <ion-textarea [(ngModel)]="requestReason" clearInput maxlength="50" rows="4" autoGrow placeholder="可以告诉他们你的申请原因">
-      </ion-textarea>
-    </ion-item>
+    <ng-container *ngIf="chatRequest.status !== chatRequestStatus.Agree">
+      <ion-item lines="none">
+        <ion-label position="stacked">申请原因</ion-label>
+        <ion-textarea [(ngModel)]="requestReason" clearInput maxlength="50" rows="4" autoGrow
+          placeholder="可以告诉他们你的申请原因">
+        </ion-textarea>
+      </ion-item>
 
-    <aside *ngIf="chatRequest.status !== chatRequestStatus.Agree" class="bottom-bar">
-      <button appRipple appActiveClass (tap)="request()" class="btn-primary btn-block">
+      <button appRipple appActiveClass (tap)="request()" class="btn-primary btn-block submit-btn">
         申请加入
       </button>
-    </aside>
+    </ng-container>
   </main>
 </ion-content>

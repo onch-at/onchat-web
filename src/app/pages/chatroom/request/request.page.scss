@@ -5,7 +5,7 @@ ion-header {
     ion-buttons ion-button,
     ion-title {
         --color: #fff;
-        filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));
+        filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.75));
     }
 }
 
@@ -15,6 +15,14 @@ main {
     justify-content: flex-end;
     height: 100vh;
     padding: 1rem;
+
+    > *:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    > *:last-child {
+        margin-bottom: var(--ion-safe-area-bottom, 0);
+    }
 }
 
 .bg-img {
@@ -24,7 +32,6 @@ main {
     z-index: -1;
     height: 100vh;
     width: 100vw;
-    border-radius: 0 0 1.5rem 1.5rem;
     object-fit: cover;
 }
 
@@ -41,24 +48,18 @@ main {
     margin: 0.25rem 0;
 }
 
-.header-subtitle,
-.header-descrption {
+.header-subtitle {
     font-size: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-.header-descrption {
-    margin-bottom: 1rem;
 }
 
 ion-item {
-    --background: rgba(255, 255, 255, 0.75);
+    --background: rgba(var(--oc-color-white-rgb), 0.75);
     --padding-start: 1rem;
     --inner-padding-end: 1rem;
     margin-bottom: 1rem;
     border-radius: 1.25rem;
     overflow: hidden;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px) saturate(175%);
 
     &:focus-within {
         box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
@@ -71,7 +72,7 @@ ion-item {
         font-size: 1rem;
         margin: 0 0 0.4rem;
         padding: 0.25rem 0;
-        color: #616161;
+        color: var(--oc-color-medium);
         word-break: break-word;
     }
 
@@ -86,7 +87,7 @@ ion-item {
     > ion-label {
         font-size: 0.95rem;
         margin: 0.6rem 0 0;
-        --color: #424242;
+        --color: var(--oc-color-dark);
     }
 
     > ion-input,
@@ -96,14 +97,10 @@ ion-item {
         --padding-top: 0.25rem;
         --padding-bottom: 0.25rem;
         --padding-end: 0;
-        --color: #616161;
+        --color: var(--oc-color-medium);
     }
 
     ::ng-deep ion-input .input-clear-icon {
         right: 0;
     }
-}
-
-.bottom-bar {
-    margin-bottom: var(--ion-safe-area-bottom, 0);
 }

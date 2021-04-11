@@ -33,7 +33,11 @@ export class OverlayService {
    * @param opts
    */
   presentNotification(opts: NotificationOptions) {
-    return this.notificationCtrl.create(opts).present();
+    if (document.hidden) {
+      this.presentNativeNotification(opts);
+    } else {
+      this.notificationCtrl.create(opts).present();
+    }
   }
 
   /**

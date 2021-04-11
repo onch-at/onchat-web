@@ -22,7 +22,7 @@ ion-header {
   top: 35.75vh;
   left: 0;
   background: rgba(var(--oc-color-white-rgb), 0.5);
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px) saturate(175%);
   border-radius: 0 1.5rem 0 0;
   width: 100%;
   min-height: calc(100% - 35.75vh);

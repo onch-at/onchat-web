@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { DateUtil } from 'src/app/utils/date.util';
   styleUrls: ['./chat.page.scss'],
   animations: [slideUpOnLeaveAnimation]
 })
-export class ChatPage implements OnInit, OnDestroy {
+export class ChatPage implements OnInit {
   msgType = MessageType;
   chatSessionType = ChatSessionType;
 
@@ -30,7 +30,7 @@ export class ChatPage implements OnInit, OnDestroy {
 
   ngOnInit() { }
 
-  ngOnDestroy() {
+  ionViewDidLeave() {
     this.globalData.chatSessionsPage = 1;
   }
 

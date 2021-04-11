@@ -165,3 +165,9 @@ export enum Gender {
   /** 保密 */
   Secret = 2
 }
+
+/** 枚举音频 */
+export enum AudioName {
+  Boo = 0,
+  DingDeng = 1
+}

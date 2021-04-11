@@ -1,6 +1,6 @@
 ion-header {
     background: rgba(var(--oc-color-white-rgb), 0.75);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px) saturate(175%);
     border-radius: 0 0 1.5rem 1.5rem;
 
     ion-buttons ion-back-button,
@@ -71,8 +71,12 @@ ion-textarea {
     }
 }
 
+ion-segment,
 ion-datetime {
     height: 2.75rem;
+}
+
+ion-datetime {
     line-height: 2.75rem;
     padding: 0 1rem;
 }

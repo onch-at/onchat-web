@@ -1,6 +1,6 @@
 ion-header {
     background: transparent;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px) saturate(175%);
     border-radius: 0 0 1.5rem 1.5rem;
 
     ion-buttons ion-back-button,

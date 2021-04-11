@@ -37,7 +37,7 @@
     padding: 0.15rem;
     border-radius: 50%;
     background: rgba(#fff, 0.75);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(15px) saturate(175%);
   }
 
   .profile-card-info {

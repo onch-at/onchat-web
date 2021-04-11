@@ -54,7 +54,7 @@ ion-content {
 }
 
 .show-mask .home-header-mask {
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px) saturate(175%);
 }
 
 .home-header-info {
