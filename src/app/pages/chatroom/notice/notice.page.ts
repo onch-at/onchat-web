@@ -58,7 +58,7 @@ export class NoticePage implements OnInit {
 
   segmentChange(event: any) {
     this.url = event.detail.value;
-    this.router.navigateByUrl('/chatroom/notice/' + this.url);
+    this.router.navigateByUrl('/chatroom/notice/' + this.url, { skipLocationChange: true });
   }
 
 }

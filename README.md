@@ -1,6 +1,7 @@
 # OnChat
 
 A Simple Instant Messaging Website Built with Angular and Ionic.
+You can [click here](https://github.com/HyperLife1119/OnChat) to view the OnChat back-end code repository.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.0.
 
