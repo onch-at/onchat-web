@@ -55,7 +55,21 @@
     </div>
   </div>
 
-  <div style="height: 100vh;">TEST</div>
+  <ion-item-group *ngIf="isMember">
+    <ion-item *ngIf="isManager || isHost" (tap)="changeChatroomName()" detail lines="none" button mode="md">
+      <ion-label>聊天室名称</ion-label>
+      <div class="value" slot="end">{{ chatroom.name }}</div>
+    </ion-item>
+
+    <ion-item (tap)="changeNickname()" detail lines="none" button mode="md">
+      <ion-label>我的昵称</ion-label>
+      <div class="value" slot="end">{{ member.nickname }}</div>
+    </ion-item>
+  </ion-item-group>
+
+  <button appRipple appActiveClass class="btn-danger btn-block">
+    退出聊天室
+  </button>
 
   <aside class="bottom-bar">
     <button *ngIf="isMember" appRipple appActiveClass [routerLink]="['/chat', chatroom.id]"

@@ -174,7 +174,7 @@ export class AppComponent implements OnInit {
       const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === data.chatroomId);
 
       // 如果消息不是自己的话，就播放提示音
-      if (data.userId != user.id) {
+      if (data.userId !== user.id) {
         const chatroomName = chatSession ? chatSession.title : '收到新消息';
         const content = this.msgDescPipe.transform(data);
 
@@ -186,10 +186,8 @@ export class AppComponent implements OnInit {
         };
 
         // 并且不在同一个房间，就弹出通知
-        if (data.chatroomId != chatroomId) {
+        if (data.chatroomId !== chatroomId || document.hidden) {
           this.overlayService.presentNotification(opts);
-        } else if (document.hidden) {
-          this.overlayService.presentNativeNotification(opts);
         }
 
         this.feedbackService.playAudio(AudioName.Boo);
@@ -273,8 +271,8 @@ export class AppComponent implements OnInit {
 
       const [request, chatSession] = data;
 
-      // 清除这个聊天室的缓存
-      this.cacheService.revoke('/chatroom/' + request.chatroomId + '?');
+      // 清除这个聊天室成员的缓存
+      this.cacheService.revoke('/chatroom/' + request.chatroomId + '/members?');
 
       // 如果是同意我入群
       if (chatSession.userId === user.id) {

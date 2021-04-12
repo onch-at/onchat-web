@@ -167,7 +167,7 @@ form.ng-pristine .feedback-form-invalid {
   background-color: var(--oc-color-white);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-danger-rgb), 0.75);
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-danger-rgb), 0.25);
   }
 }
 

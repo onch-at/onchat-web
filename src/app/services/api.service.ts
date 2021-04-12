@@ -24,9 +24,9 @@ const HTTP_OPTIONS_DEFAULT = {
 /**
  * 获取缓存参数
  * 附带此参数的请求可被缓存拦截器拦截并缓存
- * @param cacheTime 缓存时间,默认半小时
+ * @param cacheTime 缓存时间,默认十分钟
  */
-function cache(cacheTime: number = 1800000): { cache: string } {
+function cache(cacheTime: number = 600000): { cache: string } {
   return { cache: cacheTime + '' };
 }
 
@@ -333,5 +333,23 @@ export class ApiService {
    */
   getSendChatRequests(): Observable<Result<ChatRequest[]>> {
     return this.http.get<Result<ChatRequest[]>>(env.chatUrl + 'requests/send');
+  }
+
+  /**
+   * 设置聊天室名称
+   * @param id 聊天室ID
+   * @param name 名称
+   */
+  setChatroomName(id: number, name: string): Observable<Result> {
+    return this.http.put<Result>(`${env.chatroomUrl}${id}/name`, { name });
+  }
+
+  /**
+   * 设置我在聊天室中的昵称
+   * @param id 聊天室ID
+   * @param nickname 昵称
+   */
+  setMemberNickname(id: number, nickname: string): Observable<Result<string>> {
+    return this.http.put<Result<string>>(`${env.chatroomUrl}${id}/member/nickname`, { nickname });
   }
 }

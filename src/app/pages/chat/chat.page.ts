@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent, Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
-import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
+import { NICKNAME_MAX_LENGTH, TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { MessageEntity } from 'src/app/entities/message.entity';
@@ -389,7 +389,7 @@ export class ChatPage implements OnInit, OnDestroy {
     this.overlayService.presentAlert({
       header: '好友别名',
       confirmHandler: (data: KeyValue<string, any>) => {
-        if (data['alias'] == this.chatroomName) { return; }
+        if (data['alias'] === this.chatroomName) { return; }
 
         this.apiService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
           const { code, data, msg } = result;
@@ -398,9 +398,9 @@ export class ChatPage implements OnInit, OnDestroy {
           }
 
           this.chatroomName = data;
-          this.overlayService.presentToast('成功修改好友别名', 1000);
+          this.overlayService.presentToast('成功修改好友别名！', 1000);
 
-          const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId == this.chatroomId);
+          const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === this.chatroomId);
           if (chatSession) {
             chatSession.title = data;
           }
@@ -413,7 +413,7 @@ export class ChatPage implements OnInit, OnDestroy {
         placeholder: '给对方起个好听的别名吧',
         cssClass: 'ipt-primary',
         attributes: {
-          maxlength: 30
+          maxlength: NICKNAME_MAX_LENGTH
         }
       }]
     });

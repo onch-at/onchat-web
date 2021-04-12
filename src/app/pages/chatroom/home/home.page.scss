@@ -54,7 +54,7 @@ ion-content {
 }
 
 .show-mask .home-header-mask {
-    backdrop-filter: blur(15px) saturate(175%);
+    backdrop-filter: blur(15px);
 }
 
 .home-header-info {
@@ -86,12 +86,47 @@ ion-content {
     font-size: 0.8rem;
     border-radius: 1.25rem;
     margin: 0.75rem;
+    color: var(--oc-color-dark);
 }
 
 .home-item {
     background: var(--oc-color-light);
     padding: 0.5rem 0.75rem;
     margin-bottom: 0.75rem;
+    color: var(--oc-color-dark);
+}
+
+ion-item-group {
+    margin-bottom: 0.75rem;
+}
+
+ion-item {
+    --padding-start: 0.75rem;
+    --padding-end: 0.75rem;
+    --padding-top: 0.5rem;
+    --padding-bottom: 0.5rem;
+    --inner-padding-end: 0;
+    --background: var(--oc-color-light);
+    --color: var(--oc-color-dark);
+    --detail-icon-font-size: 1.25rem;
+    --detail-icon-color: var(--oc-color-muted);
+    --detail-icon-opacity: 0.75;
+    --min-height: 2rem;
+
+    > ion-label {
+        margin: 0 1rem 0 0;
+    }
+
+    > .value {
+        margin-inline: 0.5rem;
+        color: var(--oc-color-muted);
+    }
+}
+
+.btn-danger {
+    height: 2.75rem;
+    border-radius: 0;
+    background-color: var(--oc-color-light);
 }
 
 .home-info-item {
@@ -102,7 +137,7 @@ ion-content {
 
 .home-info-label {
     font-size: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .avatar-list-track {

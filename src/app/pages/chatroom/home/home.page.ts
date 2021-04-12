@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { of, Subject } from 'rxjs';
 import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
+import { CHATROOM_NAME_MAX_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT, NICKNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
@@ -27,6 +27,8 @@ export class HomePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   chatroom: Chatroom;
   chatMembers: ChatMember[];
+  /** 在群成员中的我 */
+  member: ChatMember;
   /** 是否是聊天室主人 */
   isHost: boolean;
   /** 是否是聊天室管理者 */
@@ -65,13 +67,13 @@ export class HomePage implements OnInit, OnDestroy {
       this.memberCount = chatMembers.length;
 
       // 从群成员里面找自己
-      const member = chatMembers.find(o => o.userId === this.globalData.user.id);
+      this.member = chatMembers.find(o => o.userId === this.globalData.user.id);
 
-      this.isMember = !!member;
+      this.isMember = !!this.member;
 
-      if (member) {
-        this.isHost = member.role === ChatMemberRole.Host;
-        this.isManager = member.role === ChatMemberRole.Manage;
+      if (this.member) {
+        this.isHost = this.member.role === ChatMemberRole.Host;
+        this.isManager = this.member.role === ChatMemberRole.Manage;
       }
     });
 
@@ -101,6 +103,76 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subject.next();
     this.subject.complete();
+  }
+
+  changeChatroomName() {
+    this.overlayService.presentAlert({
+      header: '聊天室名称',
+      confirmHandler: (data: KeyValue<string, any>) => {
+        const { id, name } = this.chatroom;
+        if (!StrUtil.trimAll(data['name']).length || data['name'] === name) { return; }
+
+        this.apiService.setChatroomName(id, data['name']).subscribe((result: Result) => {
+          const { code, msg } = result;
+          if (code !== ResultCode.Success) {
+            return this.overlayService.presentToast(msg);
+          }
+
+          this.chatroom.name = data['name'];
+          this.overlayService.presentToast('成功修改聊天室名称！', 1000);
+          this.cacheService.revoke('/chatroom/' + id + '?');
+
+          const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === id);
+          if (chatSession) {
+            chatSession.title = data['name'];
+          }
+        });
+      },
+      inputs: [{
+        name: 'name',
+        type: 'text',
+        value: this.chatroom.name,
+        placeholder: '聊天室名称',
+        cssClass: 'ipt-primary',
+        attributes: {
+          maxlength: CHATROOM_NAME_MAX_LENGTH,
+          required: true
+        }
+      }]
+    });
+  }
+
+  changeNickname() {
+    this.overlayService.presentAlert({
+      header: '我的昵称',
+      confirmHandler: (data: KeyValue<string, any>) => {
+        if (data['nickname'] === this.member.nickname) { return; }
+
+        this.apiService.setMemberNickname(this.chatroom.id, data['nickname']).subscribe((result: Result<string>) => {
+          const { code, data, msg } = result;
+          if (code !== ResultCode.Success) {
+            return this.overlayService.presentToast(msg);
+          }
+
+          const member = this.chatMembers.find(o => o.userId === this.globalData.user.id);
+          member.nickname = data;
+          this.member.nickname = data;
+          this.overlayService.presentToast('成功修改我的昵称！', 1000);
+          this.cacheService.revoke('/chatroom/' + this.chatroom.id + '/members?');
+        });
+      },
+      inputs: [{
+        name: 'nickname',
+        type: 'text',
+        value: this.member.nickname,
+        placeholder: '我的昵称',
+        cssClass: 'ipt-primary',
+        attributes: {
+          maxlength: NICKNAME_MAX_LENGTH,
+          required: true
+        }
+      }]
+    });
   }
 
   /**

@@ -329,7 +329,7 @@ ion-slides.swiper-container {
 
 // 警告框
 ion-alert {
-    backdrop-filter: blur(2.5px) saturate(175%);
+    backdrop-filter: blur(2.5px);
 
     .sc-ion-alert-ios {
         &.alert-wrapper {

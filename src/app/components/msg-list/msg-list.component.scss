@@ -166,7 +166,7 @@
     height: 100%;
     padding: 0.4rem 0.75rem;
     background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(1.5px) saturate(175%);
+    backdrop-filter: blur(1.5px);
     border-radius: 1rem;
   }
 
@@ -219,7 +219,7 @@
     width: 100%;
     background: rgba(0, 0, 0, 0.25);
     transition: height ease-out 0.25s;
-    backdrop-filter: blur(1.5px) saturate(175%);
+    backdrop-filter: blur(1.5px);
   }
 
   .loading-container {
