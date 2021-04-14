@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { slideUpOnLeaveAnimation } from 'src/app/animations/slide.animation';
-import { CHAT_SESSIONS_ROWS } from 'src/app/common/constant';
 import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatSession, IEntity, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { DateUtil } from 'src/app/utils/date.util';
+import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
   selector: 'app-chat',
@@ -20,6 +20,7 @@ import { DateUtil } from 'src/app/utils/date.util';
 export class ChatPage implements OnInit {
   msgType = MessageType;
   chatSessionType = ChatSessionType;
+  itemHeight: number;
 
   constructor(
     private router: Router,
@@ -28,10 +29,8 @@ export class ChatPage implements OnInit {
     public globalData: GlobalData,
   ) { }
 
-  ngOnInit() { }
-
-  ionViewDidLeave() {
-    this.globalData.chatSessionsPage = 1;
+  ngOnInit() {
+    this.itemHeight = SysUtil.rem2px(4.425);
   }
 
   /**
@@ -51,30 +50,8 @@ export class ChatPage implements OnInit {
    */
   refresh(event: any) {
     this.onChatService.initChatSession().subscribe(() => {
-      this.globalData.chatSessionsPage = 1;
       event.target.complete();
     });
-  }
-
-  chatSessions() {
-    const { chatSessionsPage, chatSessions } = this.globalData;
-    return chatSessionsPage ? chatSessions.slice(0, chatSessionsPage * CHAT_SESSIONS_ROWS) : chatSessions;
-  }
-
-  /**
-   * 加载更多
-   * @param event
-   */
-  loadData(event: any) {
-    if (!this.globalData.chatSessionsPage) {
-      return event.target.complete();
-    }
-
-    if (++this.globalData.chatSessionsPage * CHAT_SESSIONS_ROWS >= this.globalData.chatSessions.length) {
-      this.globalData.chatSessionsPage = null;
-    }
-
-    event.target.complete();
   }
 
   canShowTime(date: number) {
@@ -85,8 +62,9 @@ export class ChatPage implements OnInit {
    * 移除聊天列表子项
    * @param index
    */
-  removeChatSession(index: number) {
-    this.globalData.chatSessions.splice(index, 1);
+  removeChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
+    this.globalData.chatSessions = this.globalData.chatSessions.filter(o => o.id !== item.id);
+    ionItemSliding.close();
   }
 
   /**
@@ -145,14 +123,14 @@ export class ChatPage implements OnInit {
 
   // TODO 改成管道，但我还没想好名字
   /**
-   * 解析会话项的消息的发送者名称
+   * 解析消息会话项的的发送者名称
    * @param chatSession
    */
   target(chatSession: ChatSession) {
-    if (chatSession.content.userId == this.globalData.user.id) {
+    if (chatSession.content.userId === this.globalData.user.id) {
       return '我: ';
     }
-    if (chatSession.data.chatroomType == ChatroomType.Private) {
+    if (chatSession.data.chatroomType === ChatroomType.Private) {
       return 'Ta: '
     }
     return (chatSession.content.nickname || chatSession.content.userId) + ': ';

@@ -58,8 +58,6 @@ export class OnChatService {
    * 初始化聊天会话列表
    */
   initChatSession() {
-    this.globalData.chatSessionsPage = 1;
-
     return forkJoin([
       this.apiService.getChatSession().pipe(tap((result: Result<ChatSession[]>) => {
         this.globalData.chatSessions = result.data;

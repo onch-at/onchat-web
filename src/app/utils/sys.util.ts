@@ -110,6 +110,14 @@ export class SysUtil {
     }
   }
 
+  /**
+   * rem转px
+   * @param rem
+   */
+  static rem2px(rem: number): number {
+    return rem * parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
+  }
+
   // /**
   //  * 压缩图片并返回base64
   //  * @param imgSrc 图片URL/URI
