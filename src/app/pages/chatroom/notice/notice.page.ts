@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AnimationBuilder, AnimationController, IonRouterOutlet } from '@ionic/angular';
+import { AnimationBuilder, AnimationController, IonRouterOutlet, ViewWillEnter } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 
@@ -10,7 +10,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
   templateUrl: './notice.page.html',
   styleUrls: ['./notice.page.scss']
 })
-export class NoticePage implements OnInit {
+export class NoticePage implements OnInit, ViewWillEnter {
   url: 'notice-list' | 'request-list';
   animation: number = 0;
 

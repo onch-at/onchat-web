@@ -86,5 +86,8 @@ aside {
 
 .router-outlet {
   margin-top: 5.25rem;
-  z-index: 0;
+
+  &::ng-deep > * {
+    background: var(--oc-color-white);
+  }
 }

@@ -16,10 +16,10 @@ export class FeedbackService {
   constructor() { }
 
   playAudio(audio: AudioName) {
-    switch (audio) {
-      case AudioName.Boo: return this.booAudio.play();
-      case AudioName.DingDeng: return this.dingDengAudio.play();
-    }
+    return {
+      [AudioName.Boo]: this.booAudio,
+      [AudioName.DingDeng]: this.dingDengAudio,
+    }[audio].play();
   }
 
   /**

@@ -21,7 +21,5 @@
         <span class="slider"></span>
     </aside>
 
-    <div class="router-outlet" [@horizontalSlideInRouteAnimation]="prepareRoute(outlet)">
-        <router-outlet #outlet="outlet"></router-outlet>
-    </div>
+    <ion-router-outlet class="router-outlet" [animation]="routerAnimation"></ion-router-outlet>
 </ion-content>
