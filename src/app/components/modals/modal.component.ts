@@ -23,8 +23,8 @@ export abstract class ModalComponent implements OnInit, OnDestroy {
       this.router.navigate([], { fragment: 'modal' });
     });
     this.router.events.pipe(
+      takeUntil(this.subject),
       filter(event => event instanceof NavigationEnd),
-      takeUntil(this.subject)
     ).subscribe(() => this.dismiss());
   }
 
