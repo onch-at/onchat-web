@@ -14,7 +14,7 @@ import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 
@@ -97,7 +97,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     private apiService: ApiService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private routerOutlet: IonRouterOutlet
   ) { }
 
@@ -150,7 +150,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       this.loading = false;
 
       if (result.code !== ResultCode.Success) {
-        return this.overlayService.presentToast('用户信息修改失败！', 2000);
+        return this.overlay.presentToast('用户信息修改失败！', 2000);
       }
 
       const { user } = this.globalData;
@@ -159,14 +159,14 @@ export class SettingsPage implements OnInit, OnDestroy {
 
       // TODO
       this.location.back();
-      this.overlayService.presentToast('用户信息修改成功！', 1000).then(() => {
+      this.overlay.presentToast('用户信息修改成功！', 1000).then(() => {
         this.router.navigate(['/user', user.id]);
       });
     });
   }
 
   bindEmail() {
-    this.overlayService.presentModal({
+    this.overlay.presentModal({
       component: EmailBinderComponent,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl
@@ -177,7 +177,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     const buttons = [
       {
         text: '更换头像',
-        handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlayService.presentModal({
+        handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.presentModal({
           component: AvatarCropperComponent,
           componentProps: {
             imageChangedEvent: event
@@ -188,7 +188,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { text: '取消', role: 'cancel' }
     ];
 
-    this.overlayService.presentActionSheet(buttons);
+    this.overlay.presentActionSheet(buttons);
   }
 
 }

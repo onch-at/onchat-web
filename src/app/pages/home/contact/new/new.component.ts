@@ -2,7 +2,7 @@ import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FriendRequestStatus } from 'src/app/common/enum';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class NewComponent implements OnInit {
   constructor(
     public globalData: GlobalData,
     private socketService: SocketService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
   ) { }
 
   ngOnInit() { }
@@ -25,7 +25,7 @@ export class NewComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestAgree(friendRequestId, data['selfAlias']);
@@ -43,7 +43,7 @@ export class NewComponent implements OnInit {
   }
 
   friendRequestReject(friendRequestId: number) {
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestReject(friendRequestId, data['rejectReason']);

@@ -4,7 +4,7 @@ import { ActionSheetButton } from 'src/app/common/interface';
 import { ImageMessage } from 'src/app/models/form.model';
 import { IEntity, Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 import { SwiperComponent } from 'swiper/angular';
@@ -37,10 +37,10 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
 
   constructor(
     private feedbackService: FeedbackService,
-    protected overlayService: OverlayService,
+    protected overlay: Overlay,
     protected router: Router
   ) {
-    super(router, overlayService);
+    super(router, overlay);
   }
 
   ngAfterViewInit(): void {
@@ -62,7 +62,7 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
       buttons.unshift({ text: '保存图片', handler: () => SysUtil.downLoadFile((item.data as ImageMessage).url) })
     }
 
-    this.overlayService.presentActionSheet(buttons);
+    this.overlay.presentActionSheet(buttons);
   }
 
   /**

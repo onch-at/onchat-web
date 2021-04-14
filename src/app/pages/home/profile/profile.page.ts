@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class ProfilePage implements OnInit {
     public globalData: GlobalData,
     private router: Router,
     private apiService: ApiService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private socketService: SocketService,
   ) { }
 
@@ -28,7 +28,7 @@ export class ProfilePage implements OnInit {
   }
 
   logout() {
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '退出登录',
       message: ' 你确定要退出登录吗？',
       confirmHandler: () => this.apiService.logout().subscribe(() => {

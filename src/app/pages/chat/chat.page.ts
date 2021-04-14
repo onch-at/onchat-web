@@ -12,7 +12,7 @@ import { TextMessage } from 'src/app/models/form.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
 
@@ -66,7 +66,7 @@ export class ChatPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private renderer: Renderer2,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private injector: Injector
   ) { }
 
@@ -274,7 +274,7 @@ export class ChatPage implements OnInit, OnDestroy {
       } else if (result.code === 1) { // 如果没有消息
         this.end = true;
       } else if (result.code === ResultCode.ErrorNoPermission) { // 如果没有权限
-        this.overlayService.presentToast('你还没有权限进入此聊天室！');
+        this.overlay.presentToast('你还没有权限进入此聊天室！');
         this.router.navigateByUrl('/'); // 没权限还想进来，回首页去吧
       }
       complete?.();
@@ -386,7 +386,7 @@ export class ChatPage implements OnInit, OnDestroy {
     // 只有私聊才可改好友别名
     if (this.chatroomType != ChatroomType.Private) { return; }
 
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '好友别名',
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['alias'] === this.chatroomName) { return; }
@@ -394,11 +394,11 @@ export class ChatPage implements OnInit, OnDestroy {
         this.apiService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
           const { code, data, msg } = result;
           if (code !== ResultCode.Success) {
-            return this.overlayService.presentToast(msg);
+            return this.overlay.presentToast(msg);
           }
 
           this.chatroomName = data;
-          this.overlayService.presentToast('成功修改好友别名！', 1000);
+          this.overlay.presentToast('成功修改好友别名！', 1000);
 
           const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === this.chatroomId);
           if (chatSession) {

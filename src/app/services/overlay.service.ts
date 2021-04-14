@@ -11,7 +11,7 @@ import { GlobalData } from './global-data.service';
 @Injectable({
   providedIn: 'root'
 })
-export class OverlayService {
+export class Overlay {
 
   constructor(
     private globalData: GlobalData,

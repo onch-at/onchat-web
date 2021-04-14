@@ -2,7 +2,7 @@ import { Directive, OnDestroy, OnInit } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { filter, takeUntil } from "rxjs/operators";
-import { OverlayService } from "src/app/services/overlay.service";
+import { Overlay } from "src/app/services/overlay.service";
 
 /**
  * 基础模态框组件类
@@ -14,7 +14,7 @@ export abstract class ModalComponent implements OnInit, OnDestroy {
 
   constructor(
     protected router: Router,
-    protected overlayService: OverlayService,
+    protected overlay: Overlay,
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +35,6 @@ export abstract class ModalComponent implements OnInit, OnDestroy {
   }
 
   dismiss(data?: any, role?: string, id?: string): any {
-    this.overlayService.dismissModal(data, role, id);
+    this.overlay.dismissModal(data, role, id);
   }
 }

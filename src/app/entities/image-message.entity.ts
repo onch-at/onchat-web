@@ -6,7 +6,7 @@ import { ImageMessage } from "../models/form.model";
 import { Result } from "../models/onchat.model";
 import { ApiService } from "../services/api.service";
 import { ImageService } from "../services/image.service";
-import { OverlayService } from "../services/overlay.service";
+import { Overlay } from "../services/overlay.service";
 import { MessageEntity } from "./message.entity";
 
 export class ImageMessageEntity extends MessageEntity {
@@ -65,7 +65,7 @@ export class ImageMessageEntity extends MessageEntity {
             const { code, data, msg } = event.body;
 
             if (code !== ResultCode.Success) {
-              return this.injector.get(OverlayService).presentToast('图片上传失败，原因：' + msg);
+              return this.injector.get(Overlay).presentToast('图片上传失败，原因：' + msg);
             }
 
             Object.assign(this.data, data);

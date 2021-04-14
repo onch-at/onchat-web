@@ -10,7 +10,7 @@ import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { OnChatService } from '../../../services/onchat.service';
@@ -52,7 +52,7 @@ export class LoginPage implements OnInit, OnDestroy {
     private router: Router,
     private onChatService: OnChatService,
     private apiService: ApiService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private socketService: SocketService,
     private formBuilder: FormBuilder,
     private routerOutlet: IonRouterOutlet
@@ -78,10 +78,10 @@ export class LoginPage implements OnInit, OnDestroy {
 
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
-        return this.overlayService.presentToast('登录失败，原因：' + msg, 2000);
+        return this.overlay.presentToast('登录失败，原因：' + msg, 2000);
       }
 
-      this.overlayService.presentToast('登录成功！即将跳转…');
+      this.overlay.presentToast('登录成功！即将跳转…');
 
       this.globalData.user = data;
       this.socketService.init();

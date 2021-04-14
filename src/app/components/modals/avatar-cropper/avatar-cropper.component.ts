@@ -5,7 +5,7 @@ import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cro
 import { Observable } from 'rxjs';
 import { ResultCode } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 import { ModalComponent } from '../modal.component';
 
@@ -35,15 +35,15 @@ export class AvatarCropperComponent extends ModalComponent {
 
   constructor(
     private sanitizer: DomSanitizer,
-    protected overlayService: OverlayService,
+    protected overlay: Overlay,
     protected router: Router
   ) {
-    super(router, overlayService);
+    super(router, overlay);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.ionLoading = this.overlayService.presentLoading();
+    this.ionLoading = this.overlay.presentLoading();
   }
 
   /**
@@ -59,7 +59,7 @@ export class AvatarCropperComponent extends ModalComponent {
    */
   uploadImage() {
     SysUtil.selectFile('image/*').subscribe((event: any) => {
-      this.ionLoading = this.overlayService.presentLoading();
+      this.ionLoading = this.overlay.presentLoading();
       this.error = false;
       this.imageCropper.imageQuality = 90;
       this.imageChangedEvent = event;
@@ -79,7 +79,7 @@ export class AvatarCropperComponent extends ModalComponent {
   async onLoadImageFailed() {
     this.error = true;
     (await this.ionLoading).dismiss();
-    this.overlayService.presentToast('图像加载失败！');
+    this.overlay.presentToast('图像加载失败！');
   }
 
   async crop(): Promise<ImageCropData> {
@@ -170,7 +170,7 @@ export class AvatarCropperComponent extends ModalComponent {
    * 提交
    */
   async submit() {
-    const loading = await this.overlayService.presentLoading('Parsing…');
+    const loading = await this.overlay.presentLoading('Parsing…');
 
     const { imageBlob, imageSrc } = await this.crop();
 
@@ -187,14 +187,14 @@ export class AvatarCropperComponent extends ModalComponent {
       if (this.imageCropper.imageQuality >= 5) {
         this.imageCropper.imageQuality -= 5;
 
-        await this.overlayService.presentToast('图片文件体积过大，正在尝试进一步压缩…');
+        await this.overlay.presentToast('图片文件体积过大，正在尝试进一步压缩…');
         return this.submit();
       }
 
-      return this.overlayService.presentToast(`文件体积过大（${(size / 1048576).toFixed(2)} MB），仅接受体积为1MB以内的文件`);
+      return this.overlay.presentToast(`文件体积过大（${(size / 1048576).toFixed(2)} MB），仅接受体积为1MB以内的文件`);
     }
 
-    this.ionLoading = this.overlayService.presentLoading('Uploading…');
+    this.ionLoading = this.overlay.presentLoading('Uploading…');
 
     this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
       (await this.ionLoading).dismiss();
@@ -202,12 +202,12 @@ export class AvatarCropperComponent extends ModalComponent {
       const { code, msg } = result;
 
       if (code !== ResultCode.Success) {
-        return this.overlayService.presentToast(msg);
+        return this.overlay.presentToast(msg);
       }
 
       this.handler(result);
       this.dismiss(imageSrc);
-      this.overlayService.presentToast('头像上传成功！');
+      this.overlay.presentToast('头像上传成功！');
     });
   }
 

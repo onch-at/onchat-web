@@ -2,7 +2,7 @@ import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ChatRequestStatus, ChatSessionType } from 'src/app/common/enum';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class NoticeListComponent implements OnInit {
 
   constructor(
     private socketService: SocketService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     public globalData: GlobalData,
   ) { }
 
@@ -31,7 +31,7 @@ export class NoticeListComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '同意申请',
       message: '你确定同意该请求吗？',
       confirmHandler: () => this.socketService.chatRequsetAgree(requestId)
@@ -39,7 +39,7 @@ export class NoticeListComponent implements OnInit {
   }
 
   rejectChatRequest(requestId: number) {
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.chatRequestReject(requestId, data['rejectReason']);

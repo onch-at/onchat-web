@@ -6,7 +6,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { ChatRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class HandlePage implements OnInit, OnDestroy {
 
   constructor(
     private socketService: SocketService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private globalData: GlobalData,
     private route: ActivatedRoute,
     private router: Router,
@@ -34,7 +34,7 @@ export class HandlePage implements OnInit, OnDestroy {
       } else if ((data.chatRequest as Result<ChatRequest>).code === ResultCode.Success) {
         this.chatRequest = (data.chatRequest as Result<ChatRequest>).data;
       } else {
-        this.overlayService.presentToast('参数错误！');
+        this.overlay.presentToast('参数错误！');
         this.router.navigateByUrl('/');
       }
     });
@@ -57,7 +57,7 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   agree() {
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '同意申请',
       message: '你确定同意该请求吗？',
       confirmHandler: () => this.socketService.chatRequsetAgree(this.chatRequest.id)
@@ -65,7 +65,7 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   reject() {
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.chatRequestReject(this.chatRequest.id, data['rejectReason'] || null);

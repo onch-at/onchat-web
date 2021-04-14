@@ -13,7 +13,7 @@ import { FeedbackService } from './services/feedback.service';
 import { GlobalData } from './services/global-data.service';
 import { LocalStorage } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
-import { OverlayService } from './services/overlay.service';
+import { Overlay } from './services/overlay.service';
 import { SocketService } from './services/socket.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     private socketService: SocketService,
     private onChatService: OnChatService,
     private apiService: ApiService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private feedbackService: FeedbackService,
     private localStorage: LocalStorage,
     public globalData: GlobalData,
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
           this.globalData.receiveFriendRequests.unshift(data);
         }
 
-        this.overlayService.presentNotification({
+        this.overlay.presentNotification({
           icon: data.selfAvatarThumbnail,
           title: '收到好友申请',
           description: '用户 ' + data.selfUsername + ' 申请添加你为好友',
@@ -110,7 +110,7 @@ export class AppComponent implements OnInit {
         // 去我收到的申请列表里面通过找这条FriendRequest，并删除
         this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.selfId !== data.targetId);
 
-        this.overlayService.presentNotification({
+        this.overlay.presentNotification({
           icon: data.targetAvatarThumbnail,
           title: '好友申请已同意',
           description: '已和 ' + data.targetUsername + ' 成为好友',
@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
         this.feedbackService.playAudio(AudioName.Boo);
       } else if (data.targetId === user.id) { // 如果自己是被申请人
         this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.id !== data.friendRequestId);
-        this.overlayService.presentToast('成功添加新好友');
+        this.overlay.presentToast('成功添加新好友');
       }
 
       // 更新一下聊天列表
@@ -150,7 +150,7 @@ export class AppComponent implements OnInit {
           this.globalData.sendFriendRequests.unshift(data);
         }
 
-        this.overlayService.presentNotification({
+        this.overlay.presentNotification({
           icon: data.targetAvatarThumbnail,
           title: '好友申请被拒绝',
           description: '用户 ' + data.targetUsername + ' 拒绝了你的好友申请',
@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
       } else if (data.targetId === user.id) { // 如果自己是被申请人
         this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.id !== data.id);
 
-        this.overlayService.presentToast('已拒绝该好友申请');
+        this.overlay.presentToast('已拒绝该好友申请');
       }
     });
 
@@ -187,7 +187,7 @@ export class AppComponent implements OnInit {
 
         // 并且不在同一个房间，就弹出通知
         if (data.chatroomId !== chatroomId || document.hidden) {
-          this.overlayService.presentNotification(opts);
+          this.overlay.presentNotification(opts);
         }
 
         this.feedbackService.playAudio(AudioName.Boo);
@@ -266,7 +266,7 @@ export class AppComponent implements OnInit {
       const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
-        return this.overlayService.presentToast('操作失败，原因：' + msg);
+        return this.overlay.presentToast('操作失败，原因：' + msg);
       }
 
       const [request, chatSession] = data;
@@ -276,7 +276,7 @@ export class AppComponent implements OnInit {
 
       // 如果是同意我入群
       if (chatSession.userId === user.id) {
-        this.overlayService.presentNotification({
+        this.overlay.presentNotification({
           icon: chatSession.avatarThumbnail,
           title: '聊天室申请加入成功',
           description: '你已加入 ' + chatSession.title,
@@ -303,7 +303,7 @@ export class AppComponent implements OnInit {
       }
 
       // 如果我是处理人
-      request.handlerId === user.id && this.overlayService.presentToast('操作成功，已同意该申请！');
+      request.handlerId === user.id && this.overlay.presentToast('操作成功，已同意该申请！');
       this.router.navigateByUrl('/chatroom/notice/notice-list');
     });
 
@@ -313,7 +313,7 @@ export class AppComponent implements OnInit {
       const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
-        return this.overlayService.presentToast('操作失败，原因：' + msg);
+        return this.overlay.presentToast('操作失败，原因：' + msg);
       }
 
       // 如果我是申请人，我被拒绝了
@@ -324,7 +324,7 @@ export class AppComponent implements OnInit {
           this.globalData.totalUnreadMsgCount();
         }
 
-        this.overlayService.presentNotification({
+        this.overlay.presentNotification({
           icon: data.chatroomAvatarThumbnail,
           title: '聊天室申请加入失败',
           description: data.handlerNickname + ' 拒绝让你加入 ' + data.chatroomName,
@@ -338,7 +338,7 @@ export class AppComponent implements OnInit {
       if (index >= 0) {
         this.globalData.receiveChatRequests[index] = data;
       }
-      this.overlayService.presentToast('操作成功，已拒绝该申请！');
+      this.overlay.presentToast('操作成功，已拒绝该申请！');
     });
 
     this.detectRouteNavigation();
@@ -376,17 +376,17 @@ export class AppComponent implements OnInit {
   detectSocketConnect() {
     // 连接断开时
     this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
-      this.overlayService.presentToast('OnChat: 与服务器断开连接！');
+      this.overlay.presentToast('OnChat: 与服务器断开连接！');
     });
 
     // 连接失败时
     this.socketService.on(SocketEvent.ReconnectError).subscribe(() => {
-      this.overlayService.presentToast('OnChat: 服务器连接失败！');
+      this.overlay.presentToast('OnChat: 服务器连接失败！');
     });
 
     // 重连成功时
     this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
-      this.overlayService.presentToast('OnChat: 与服务器重连成功！');
+      this.overlay.presentToast('OnChat: 与服务器重连成功！');
     });
   }
 
@@ -395,7 +395,7 @@ export class AppComponent implements OnInit {
    */
   detectAppUpdate() {
     this.swUpdate.available.subscribe(() => this.swUpdate.activateUpdate().then(() => {
-      this.overlayService.presentAlert({
+      this.overlay.presentAlert({
         header: '发现新版本',
         message: '是否立即重启以更新到新版本？',
         backdropDismiss: false,
@@ -411,7 +411,7 @@ export class AppComponent implements OnInit {
     if ('Notification' in window) {
       const granted = 'granted';
       Notification.permission !== granted && Notification.requestPermission().then((permission: string) => {
-        permission === granted && this.overlayService.presentToast('OnChat: 通知权限授权成功！');
+        permission === granted && this.overlay.presentToast('OnChat: 通知权限授权成功！');
       });
 
       this.swPush.notificationClicks.subscribe(event => {

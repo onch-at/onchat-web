@@ -11,7 +11,7 @@ import { Message, Result } from 'src/app/models/onchat.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { LocalStorage } from 'src/app/services/local-storage.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { ModalComponent } from '../modal.component';
@@ -45,10 +45,10 @@ export class RichTextEditorComponent extends ModalComponent {
     private injector: Injector,
     private localStorage: LocalStorage,
     private socketService: SocketService,
-    protected overlayService: OverlayService,
+    protected overlay: Overlay,
     protected router: Router,
   ) {
-    super(router, overlayService);
+    super(router, overlay);
   }
 
   ngOnInit() {
@@ -70,10 +70,10 @@ export class RichTextEditorComponent extends ModalComponent {
    */
   send() {
     if (this.text.length > TEXT_MSG_MAX_LENGTH) {
-      return this.overlayService.presentToast('字数超出上限！');
+      return this.overlay.presentToast('字数超出上限！');
     }
 
-    const loading = this.overlayService.presentLoading('Sending…');
+    const loading = this.overlay.presentLoading('Sending…');
     const { chatroomId, user } = this.globalData;
 
     const msg = new MessageEntity(MessageType.RichText).inject(this.injector);

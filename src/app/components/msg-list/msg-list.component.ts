@@ -3,7 +3,7 @@ import { ChatroomType, MessageType } from 'src/app/common/enum';
 import { IEntity, Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { ImagePreviewerComponent } from '../modals/image-previewer/image-previewer.component';
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
@@ -25,7 +25,7 @@ export class MsgListComponent implements OnInit {
   @Input() chatroomType: ChatroomType;
 
   constructor(
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private feedbackService: FeedbackService,
     public globalData: GlobalData,
   ) { }
@@ -54,7 +54,7 @@ export class MsgListComponent implements OnInit {
 
     if (!msgItem.id) { return; }
 
-    const popover = await this.overlayService.presentPopover({
+    const popover = await this.overlay.presentPopover({
       component: BubbleToolbarComponent,
       componentProps: {
         element,
@@ -87,7 +87,7 @@ export class MsgListComponent implements OnInit {
     const data = this.data.filter(o => o.type === MessageType.Image);
     const index = data.findIndex(o => o.id === id);
 
-    this.overlayService.presentModal({
+    this.overlay.presentModal({
       component: ImagePreviewerComponent,
       componentProps: {
         data: data,

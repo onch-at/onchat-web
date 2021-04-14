@@ -9,7 +9,7 @@ import { ChatSessionCheckbox, ValidationFeedback } from 'src/app/common/interfac
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 const ITEM_ROWS: number = 10;
@@ -73,7 +73,7 @@ export class CreatePage implements OnInit, OnDestroy {
     private apiService: ApiService,
     private formBuilder: FormBuilder,
     private socketService: SocketService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
   ) { }
 
   ngOnInit() {
@@ -97,13 +97,13 @@ export class CreatePage implements OnInit, OnDestroy {
       const { code, data, msg } = result;
 
       if (code !== ResultCode.Success) {
-        return this.overlayService.presentToast('聊天室创建失败，原因：' + msg);
+        return this.overlay.presentToast('聊天室创建失败，原因：' + msg);
       }
 
       this.globalData.chatSessions.push(data);
       this.globalData.sortChatSessions();
 
-      this.overlayService.presentToast('聊天室创建成功！');
+      this.overlay.presentToast('聊天室创建成功！');
       // 得到邀请的好友的聊天室ID
       const chatroomIdList = this.getCheckedChatSessions().map(o => o.data.chatroomId);
       this.socketService.inviteJoinChatroom(data.data.chatroomId, chatroomIdList);

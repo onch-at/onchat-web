@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class HandlePage implements OnInit, OnDestroy {
 
   constructor(
     private socketService: SocketService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -35,7 +35,7 @@ export class HandlePage implements OnInit, OnDestroy {
       }
 
       if (data.friendRequest.code !== ResultCode.Success) {
-        this.overlayService.presentToast(data.friendRequest.msg);
+        this.overlay.presentToast(data.friendRequest.msg);
         return this.router.navigateByUrl('/');
       }
 
@@ -65,7 +65,7 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   agree() {
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias']);
@@ -85,7 +85,7 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   reject() {
-    this.overlayService.presentAlert({
+    this.overlay.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason']);

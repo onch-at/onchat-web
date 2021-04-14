@@ -4,7 +4,7 @@ import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 
 @Component({
   selector: 'app-user-home',
@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private apiService: ApiService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
   ) { }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class HomePage implements OnInit {
       } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
       } else {
-        this.overlayService.presentToast('用户不存在！');
+        this.overlay.presentToast('用户不存在！');
         this.router.navigateByUrl('/');
       }
     });

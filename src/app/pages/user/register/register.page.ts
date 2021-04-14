@@ -11,7 +11,7 @@ import { Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { AsyncValidator } from 'src/app/validators/async.validator';
@@ -89,7 +89,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     private asyncValidator: AsyncValidator,
     private onChatService: OnChatService,
     private apiService: ApiService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private socketService: SocketService,
     private routerOutlet: IonRouterOutlet
   ) { }
@@ -116,10 +116,10 @@ export class RegisterPage implements OnInit, OnDestroy {
 
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
-        return this.overlayService.presentToast('注册失败，原因：' + msg, 2000);
+        return this.overlay.presentToast('注册失败，原因：' + msg, 2000);
       }
 
-      this.overlayService.presentToast('注册成功！即将跳转…');
+      this.overlay.presentToast('注册成功！即将跳转…');
       this.globalData.user = data;
       this.socketService.init();
 
@@ -135,7 +135,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     if (ctrl.errors || this.countdownTimer) { return; }
 
     this.apiService.sendEmailCaptcha(ctrl.value).subscribe((result: Result<boolean>) => {
-      this.overlayService.presentToast(result.code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
+      this.overlay.presentToast(result.code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
     this.countdownTimer = window.setInterval(() => {

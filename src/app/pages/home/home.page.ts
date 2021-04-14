@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { HomeMenuComponent } from 'src/app/components/popovers/home-menu/home-menu.component';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +27,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private animationCtrl: AnimationController,
     public globalData: GlobalData
   ) { }
@@ -48,7 +48,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   presenHomeMenutPopover(event: Event) {
-    this.overlayService.presentPopover({
+    this.overlay.presentPopover({
       component: HomeMenuComponent,
       event: event,
       cssClass: 'home-menu-popover'

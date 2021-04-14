@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { first, tap, timeout } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enum';
 import { Message } from '../models/onchat.model';
-import { OverlayService } from './overlay.service';
+import { Overlay } from './overlay.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class SocketService {
   constructor(
     private socket: Socket,
     private cookieService: CookieService,
-    private overlayService: OverlayService
+    private overlay: Overlay
   ) { }
 
   onInit(): Observable<void> {
@@ -172,7 +172,7 @@ export class SocketService {
    */
   on(eventName: string | SocketEvent): Observable<unknown> {
     return this.socket.fromEvent(eventName).pipe(tap((data: any) => {
-      data?.code === ResultCode.ErrorHighFrequency && this.overlayService.presentToast('操作失败，原因：请求频率过高');
+      data?.code === ResultCode.ErrorHighFrequency && this.overlay.presentToast('操作失败，原因：请求频率过高');
     }));
   }
 

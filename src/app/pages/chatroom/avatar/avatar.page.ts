@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResultCode } from 'src/app/common/enum';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
@@ -25,7 +25,7 @@ export class AvatarPage implements OnInit {
   };
 
   constructor(
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private feedbackService: FeedbackService,
     private route: ActivatedRoute,
     private router: Router,
@@ -34,7 +34,7 @@ export class AvatarPage implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: { chatroom: Result<Chatroom> }) => {
       if (data.chatroom.code !== ResultCode.Success) {
-        this.overlayService.presentToast('聊天室不存在！');
+        this.overlay.presentToast('聊天室不存在！');
         return this.router.navigateByUrl('/');
       }
 
@@ -53,7 +53,7 @@ export class AvatarPage implements OnInit {
       { text: '取消', role: 'cancel' }
     ];
 
-    this.overlayService.presentActionSheet(buttons);
+    this.overlay.presentActionSheet(buttons);
   }
 
 }

@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { Overlay } from './overlay.service';
 
-import { OverlayService } from './overlay.service';
 
-describe('OverlayService', () => {
+describe('Overlay', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: OverlayService = TestBed.get(OverlayService);
+    const service: Overlay = TestBed.get(Overlay);
     expect(service).toBeTruthy();
   });
 });

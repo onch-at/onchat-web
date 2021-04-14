@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class BubbleToolbarComponent implements OnInit {
   constructor(
     public globalData: GlobalData,
     private socketService: SocketService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private clipboard: Clipboard
   ) { }
 
@@ -50,7 +50,7 @@ export class BubbleToolbarComponent implements OnInit {
    * 关闭气泡消息工具条
    */
   dismiss() {
-    this.overlayService.dismissPopover();
+    this.overlay.dismissPopover();
   }
 
 }

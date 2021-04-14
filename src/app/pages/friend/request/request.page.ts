@@ -5,7 +5,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class RequestPage implements OnInit, OnDestroy {
   constructor(
     public globalData: GlobalData,
     private socketService: SocketService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -60,7 +60,7 @@ export class RequestPage implements OnInit, OnDestroy {
 
       result.code === ResultCode.Success && (result.msg = '好友申请已发出，等待对方验证…');
 
-      this.overlayService.presentToast(result.msg);
+      this.overlay.presentToast(result.msg);
 
       result.code === ResultCode.Success && setTimeout(() => {
         this.router.navigateByUrl('/');

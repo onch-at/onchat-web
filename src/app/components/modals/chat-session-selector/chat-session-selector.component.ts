@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { ModalComponent } from '../modal.component';
 
 const ITEM_ROWS: number = 15;
@@ -31,10 +31,10 @@ export class ChatSessionSelectorComponent extends ModalComponent {
 
   constructor(
     public globalData: GlobalData,
-    protected overlayService: OverlayService,
+    protected overlay: Overlay,
     protected router: Router
   ) {
-    super(router, overlayService);
+    super(router, overlay);
   }
 
   /**
@@ -48,9 +48,9 @@ export class ChatSessionSelectorComponent extends ModalComponent {
    * 提交
    */
   async submit() {
-    const loading = await this.overlayService.presentLoading();
+    const loading = await this.overlay.presentLoading();
     this.handler(this.getCheckedChatSessions()).subscribe(() => {
-      this.overlayService.dismissModal();
+      this.overlay.dismissModal();
       loading.dismiss();
     });
   }

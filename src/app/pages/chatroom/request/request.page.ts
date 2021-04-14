@@ -5,7 +5,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ChatRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class RequestPage implements OnInit {
 
   constructor(
     private socketService: SocketService,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private globalData: GlobalData,
     private route: ActivatedRoute,
     private router: Router,
@@ -34,7 +34,7 @@ export class RequestPage implements OnInit {
       } else if ((data.chatRequest as Result<ChatRequest>).code === ResultCode.Success) {
         this.chatRequest = (data.chatRequest as Result<ChatRequest>).data;
       } else {
-        this.overlayService.presentToast('参数错误！');
+        this.overlay.presentToast('参数错误！');
         return this.router.navigateByUrl('/');
       }
 
@@ -50,11 +50,11 @@ export class RequestPage implements OnInit {
       const { code, data, msg } = result;
 
       if (code !== ResultCode.Success) {
-        return this.overlayService.presentToast('申请失败，原因：' + msg);
+        return this.overlay.presentToast('申请失败，原因：' + msg);
       }
 
       if (data.requesterId === this.globalData.user.id) {
-        this.overlayService.presentToast('入群申请已发出，等待管理员处理…');
+        this.overlay.presentToast('入群申请已发出，等待管理员处理…');
 
         const index = this.globalData.sendChatRequests.findIndex(o => o.id === data.id);
         if (index >= 0) {

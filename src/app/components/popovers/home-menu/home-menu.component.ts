@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 
 @Component({
   selector: 'app-home-menu',
@@ -11,7 +11,7 @@ export class HomeMenuComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
   ) { }
 
   ngOnInit() {
@@ -23,7 +23,7 @@ export class HomeMenuComponent implements OnInit {
   }
 
   dismiss() {
-    this.overlayService.dismissPopover();
+    this.overlay.dismissPopover();
   }
 
 }

@@ -6,7 +6,7 @@ import { ImageMessage } from 'src/app/models/form.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-editor.component';
 
@@ -26,7 +26,7 @@ export class DrawerComponent implements OnInit {
   constructor(
     private globalData: GlobalData,
     private sanitizer: DomSanitizer,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private imageService: ImageService,
     private routerOutlet: IonRouterOutlet,
     private injector: Injector
@@ -35,7 +35,7 @@ export class DrawerComponent implements OnInit {
   ngOnInit() { }
 
   editRichText() {
-    this.overlayService.presentModal({
+    this.overlay.presentModal({
       component: RichTextEditorComponent,
       componentProps: {
         page: this.page
@@ -57,7 +57,7 @@ export class DrawerComponent implements OnInit {
         this.sendImageMessage();
       }
 
-      this.overlayService.presentAlert({
+      this.overlay.presentAlert({
         header: '发送图片',
         message: '温馨提示：每次最多发送10张图片',
         cancelText: '原图发送',

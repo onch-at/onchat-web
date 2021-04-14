@@ -6,7 +6,7 @@ import { EmailBinderComponent } from '../components/modals/email-binder/email-bi
 import { ChatRequest, ChatSession, FriendRequest, Result } from '../models/onchat.model';
 import { ApiService } from './api.service';
 import { GlobalData } from './global-data.service';
-import { OverlayService } from './overlay.service';
+import { Overlay } from './overlay.service';
 import { SocketService } from './socket.service';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class OnChatService {
   constructor(
     private router: Router,
     private globalData: GlobalData,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private apiService: ApiService,
     private socketService: SocketService,
   ) { }
@@ -39,11 +39,11 @@ export class OnChatService {
 
     // 如果还没绑定邮箱
     // 因为之前有一批用户不需要绑定邮箱即可注册账号
-    !this.globalData.user.email && this.overlayService.presentAlert({
+    !this.globalData.user.email && this.overlay.presentAlert({
       header: '绑定电子邮箱',
       message: '绑定电子邮箱后方可继续使用',
       backdropDismiss: false,
-      confirmHandler: () => this.overlayService.presentModal({
+      confirmHandler: () => this.overlay.presentModal({
         component: EmailBinderComponent
       }),
       cancelHandler: () => this.apiService.logout().subscribe(() => {

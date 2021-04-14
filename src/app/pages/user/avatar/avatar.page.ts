@@ -6,7 +6,7 @@ import { Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { OverlayService } from 'src/app/services/overlay.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
@@ -29,7 +29,7 @@ export class AvatarPage implements OnInit {
 
   constructor(
     public globalData: GlobalData,
-    private overlayService: OverlayService,
+    private overlay: Overlay,
     private apiService: ApiService,
     private feedbackService: FeedbackService,
     private route: ActivatedRoute,
@@ -43,7 +43,7 @@ export class AvatarPage implements OnInit {
       } else if ((data.user as Result<User>).code === ResultCode.Success) {
         this.user = (data.user as Result<User>).data;
       } else {
-        this.overlayService.presentToast('用户不存在！');
+        this.overlay.presentToast('用户不存在！');
         this.router.navigateByUrl('/');
       }
     });
@@ -63,7 +63,7 @@ export class AvatarPage implements OnInit {
     // 如果是自己的头像
     (this.user.id === this.globalData.user?.id) && buttons.unshift({
       text: '更换头像',
-      handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlayService.presentModal({
+      handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.presentModal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
@@ -78,7 +78,7 @@ export class AvatarPage implements OnInit {
       }))
     });
 
-    this.overlayService.presentActionSheet(buttons);
+    this.overlay.presentActionSheet(buttons);
   }
 
 }
