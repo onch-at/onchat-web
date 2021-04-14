@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { slideUpOnLeaveAnimation } from 'src/app/animations/slide.animation';
-import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
+import { ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -110,21 +110,6 @@ export class ChatPage implements OnInit {
         this.router.navigateByUrl('/chatroom/notice');
         break;
     }
-  }
-
-  // TODO 改成管道，但我还没想好名字
-  /**
-   * 解析消息会话项的的发送者名称
-   * @param chatSession
-   */
-  target(chatSession: ChatSession) {
-    if (chatSession.content.userId === this.globalData.user.id) {
-      return '我: ';
-    }
-    if (chatSession.data.chatroomType === ChatroomType.Private) {
-      return 'Ta: '
-    }
-    return (chatSession.content.nickname || chatSession.content.userId) + ': ';
   }
 
 }
