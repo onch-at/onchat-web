@@ -29,15 +29,11 @@
                 "output": "assets"
               },
               {
-                "glob": "favicon.ico",
-                "input": "src/",
-                "output": "/"
-              },
-              {
                 "glob": "**/*.svg",
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
               },
+              "src/favicon.ico",
               "src/manifest.webmanifest"
             ],
             "styles": [
@@ -63,7 +59,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,

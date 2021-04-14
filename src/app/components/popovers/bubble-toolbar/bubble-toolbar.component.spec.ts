@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { BubbleToolbarComponent } from './bubble-toolbar.component';
@@ -7,7 +7,7 @@ describe('BubbleToolbarComponent', () => {
   let component: BubbleToolbarComponent;
   let fixture: ComponentFixture<BubbleToolbarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BubbleToolbarComponent ],
       imports: [IonicModule.forRoot()]

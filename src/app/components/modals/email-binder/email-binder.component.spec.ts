@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { EmailBinderComponent } from './email-binder.component';
@@ -7,7 +7,7 @@ describe('EmailBinderComponent', () => {
   let component: EmailBinderComponent;
   let fixture: ComponentFixture<EmailBinderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EmailBinderComponent ],
       imports: [IonicModule.forRoot()]

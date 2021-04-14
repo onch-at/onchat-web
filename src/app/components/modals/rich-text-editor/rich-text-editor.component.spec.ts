@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { RichTextEditorComponent } from './rich-text-editor.component';
@@ -7,7 +7,7 @@ describe('RichTextEditorComponent', () => {
   let component: RichTextEditorComponent;
   let fixture: ComponentFixture<RichTextEditorComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RichTextEditorComponent ],
       imports: [IonicModule.forRoot()]

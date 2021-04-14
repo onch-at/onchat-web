@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { MoodRadioComponent } from './mood-radio.component';
@@ -7,7 +7,7 @@ describe('MoodRadioComponent', () => {
   let component: MoodRadioComponent;
   let fixture: ComponentFixture<MoodRadioComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MoodRadioComponent ],
       imports: [IonicModule.forRoot()]

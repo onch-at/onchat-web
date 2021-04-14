@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { MsgListComponent } from './msg-list.component';
@@ -7,7 +7,7 @@ describe('MsgListComponent', () => {
   let component: MsgListComponent;
   let fixture: ComponentFixture<MsgListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MsgListComponent ],
       imports: [IonicModule.forRoot()]

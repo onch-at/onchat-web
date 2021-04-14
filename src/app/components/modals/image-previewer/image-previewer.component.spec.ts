@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ImagePreviewerComponent } from './image-previewer.component';
@@ -7,7 +7,7 @@ describe('ImagePreviewerComponent', () => {
   let component: ImagePreviewerComponent;
   let fixture: ComponentFixture<ImagePreviewerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ImagePreviewerComponent ],
       imports: [IonicModule.forRoot()]

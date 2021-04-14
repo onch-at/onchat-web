@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ConstellationIconComponent } from './constellation-icon.component';
@@ -7,7 +7,7 @@ describe('ConstellationIconComponent', () => {
   let component: ConstellationIconComponent;
   let fixture: ComponentFixture<ConstellationIconComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ConstellationIconComponent ],
       imports: [IonicModule.forRoot()]
