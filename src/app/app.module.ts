@@ -19,7 +19,7 @@ import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { CacheInterceptor } from "./interceptors/cache.interceptor";
 import { ActiveClassModule } from "./modules/active-class.module";
-import { HideScrollbarModule } from "./modules/hide-scrollbar.module";
+import { ScrollbarModule } from "./modules/scrollbar.module";
 import { SharedModule } from "./modules/shared.module";
 
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
@@ -32,7 +32,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
   imports: [
     SharedModule,
     ActiveClassModule,
-    HideScrollbarModule,
+    ScrollbarModule,
     OverlayModule,
     BrowserAnimationsModule,
     BrowserModule,

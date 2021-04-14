@@ -1,5 +1,6 @@
 ion-item {
   position: relative;
+  height: 4.425rem;
   touch-action: auto !important;
   --padding-start: 1rem;
   --padding-end: 0;
@@ -7,8 +8,7 @@ ion-item {
   --padding-bottom: 0.25rem;
   --min-height: auto;
 
-  ion-img,
-  img {
+  ion-img {
     margin: 0 0.75rem 0 0;
     width: 3.25rem;
     height: 3.25rem;

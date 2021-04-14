@@ -4,11 +4,12 @@ import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { slideUpOnLeaveAnimation } from 'src/app/animations/slide.animation';
 import { ChatroomType, ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
-import { ChatSession, IEntity, Result } from 'src/app/models/onchat.model';
+import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { DateUtil } from 'src/app/utils/date.util';
+import { EntityUtil } from 'src/app/utils/entity.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
@@ -20,7 +21,10 @@ import { SysUtil } from 'src/app/utils/sys.util';
 export class ChatPage implements OnInit {
   msgType = MessageType;
   chatSessionType = ChatSessionType;
-  itemHeight: number;
+  /** 虚拟列表项目高度 */
+  itemHeight: number = SysUtil.rem2px(4.425);
+  getItemHeight: () => number = () => this.itemHeight;
+  trackByFn = EntityUtil.trackBy;
 
   constructor(
     private router: Router,
@@ -29,20 +33,7 @@ export class ChatPage implements OnInit {
     public globalData: GlobalData,
   ) { }
 
-  ngOnInit() {
-    this.itemHeight = SysUtil.rem2px(4.425);
-  }
-
-  /**
-   * 用于提升性能
-   * 一般情况下，当数组内有变更时，
-   * Angular将会对整个DOM树加以重新渲染。
-   * 如果加上trackBy方法，Angular将会知道具体的变更元素，
-   * 并针对性地对此特定元素进行DOM刷新，提升页面渲染性能。
-   */
-  trackByFn(index: number, item: IEntity): number {
-    return item.id;
-  }
+  ngOnInit() { }
 
   /**
    * 刷新
@@ -73,7 +64,7 @@ export class ChatPage implements OnInit {
    * @param i
    */
   doStickyChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
-    this.onChatService[item.sticky ? 'unstickyChatSession' : 'stickyChatSession'](item.id).pipe(
+    (item.sticky ? this.apiService.unstickyChatSession(item.id) : this.apiService.stickyChatSession(item.id)).pipe(
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe(() => {
       item.sticky = !item.sticky;

@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" appHideScrollbar>
+<ion-content [fullscreen]="true" appScrollbar>
   <ion-header slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -18,23 +18,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-searchbar animated placeholder="搜索" (ionChange)="search()" [(ngModel)]="keyword"></ion-searchbar>
+  <ion-searchbar animated placeholder="搜索" (ngModelChange)="search($event)" [(ngModel)]="keyword"></ion-searchbar>
 
   <ion-list class="chat-session-list">
-    <ion-item mode="md" lines="none" [detail]="false" *ngFor="let item of list(); let i = index;">
+    <ion-virtual-scroll [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
+      [trackBy]="trackByFn">
+      <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false">
+        <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
 
-      <ion-img slot="start" *ngIf="i > 9" [src]="item.avatarThumbnail"></ion-img>
-      <img slot="start" *ngIf="i <= 9" [src]="item.avatarThumbnail">
+        <ion-label>{{ item.title }}</ion-label>
 
-      <ion-label>{{ item.title }}</ion-label>
-
-      <ion-checkbox slot="end" mode="ios" [(ngModel)]="item.checked" (ionChange)="onChange(item)"
-        [disabled]="!item.checked && disabled()">
-      </ion-checkbox>
-    </ion-item>
+        <ion-checkbox slot="end" mode="ios" [(ngModel)]="item.checked" (ionChange)="onChange(item)"
+          [disabled]="!item.checked && disabled()">
+        </ion-checkbox>
+      </ion-item>
+    </ion-virtual-scroll>
   </ion-list>
-
-  <ion-infinite-scroll (ionInfinite)="loadData($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
 </ion-content>

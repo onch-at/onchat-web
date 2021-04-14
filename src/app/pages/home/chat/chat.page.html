@@ -1,4 +1,4 @@
-<ion-content appHideScrollbar>
+<ion-content appScrollbar>
 	<ion-refresher slot="fixed" [pullFactor]="0.5" (ionRefresh)="refresh($event)">
 		<ion-refresher-content pullingIcon="arrow-down" pullingText="下拉刷新" refreshingSpinner="dots" refreshingText=" 正在刷新…">
 		</ion-refresher-content>
@@ -6,7 +6,8 @@
 
 	<!-- <ion-searchbar animated placeholder="搜索"></ion-searchbar> -->
 
-	<ion-virtual-scroll [items]="globalData.chatSessions" [approxItemHeight]="itemHeight" [trackBy]="trackByFn">
+	<ion-virtual-scroll [items]="globalData.chatSessions" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
+		[trackBy]="trackByFn">
 		<ion-item-sliding #ionItemSliding mode="md" *virtualItem="let item; let i = index;">
 			<ion-item-options side="start">
 				<ion-item-option (tap)="doStickyChatSession(item, ionItemSliding)"

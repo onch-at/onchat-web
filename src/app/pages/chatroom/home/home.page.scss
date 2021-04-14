@@ -178,4 +178,5 @@ ion-item {
     width: calc(100vw - 2rem);
     transform: translateY(100%);
     animation: slide-in-up 0.25s ease 0.1s forwards;
+    z-index: 1;
 }

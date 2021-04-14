@@ -19,10 +19,6 @@ export class GlobalData {
   receiveFriendRequests: FriendRequest[] = [];
   /** 我的发起的好友申请列表 */
   sendFriendRequests: FriendRequest[] = [];
-  /** 私聊聊天室列表的分页页码 */
-  privateChatroomsPage: number = 1;
-  /** 群聊聊天室列表的分页页码 */
-  groupChatroomsPage: number = 1;
   /** 路由导航中 */
   navigating: boolean = false;
 
@@ -45,7 +41,6 @@ export class GlobalData {
 
   reset() {
     this.user = null;
-    this.privateChatroomsPage = 1;
     this.chatSessions = [];
     this.receiveChatRequests = [];
     this.sendChatRequests = [];

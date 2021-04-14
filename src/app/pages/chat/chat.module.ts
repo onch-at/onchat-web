@@ -10,8 +10,8 @@ import { RichTextEditorComponent } from 'src/app/components/modals/rich-text-edi
 import { BubbleToolbarComponent } from 'src/app/components/popovers/bubble-toolbar/bubble-toolbar.component';
 import { ImageSizeDirective } from 'src/app/directives/image-size.directive';
 import { ActiveClassModule } from 'src/app/modules/active-class.module';
-import { HideScrollbarModule } from 'src/app/modules/hide-scrollbar.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
+import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
 import { SwiperModule } from 'swiper/angular';
 import { MsgListComponent } from '../../components/msg-list/msg-list.component';
@@ -26,7 +26,7 @@ import { ChatPage } from './chat.page';
     ChatPageRoutingModule,
     SharedModule,
     ActiveClassModule,
-    HideScrollbarModule,
+    ScrollbarModule,
     QuillModule,
     ClipboardModule,
     RippleModule,

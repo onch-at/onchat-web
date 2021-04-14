@@ -9,9 +9,9 @@ import { SysUtil } from '../utils/sys.util';
  * https://github.com/ionic-team/ionic-framework/issues/17685
  */
 @Directive({
-  selector: '[appHideScrollbar]'
+  selector: '[appScrollbar]'
 })
-export class HideScrollbarDirective implements AfterViewInit {
+export class ScrollbarDirective implements AfterViewInit {
 
   constructor(
     private elementRef: ElementRef,

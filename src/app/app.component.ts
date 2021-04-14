@@ -130,7 +130,6 @@ export class AppComponent implements OnInit {
       this.globalData.privateChatrooms.length && this.apiService.getPrivateChatrooms().pipe(
         filter((result: Result) => result.code === ResultCode.Success)
       ).subscribe((result: Result<ChatSession[]>) => {
-        this.globalData.privateChatroomsPage = 1;
         this.globalData.privateChatrooms = result.data;
       });
     });

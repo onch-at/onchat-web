@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
+import { EntityUtil } from 'src/app/utils/entity.util';
+import { SysUtil } from 'src/app/utils/sys.util';
 import { ModalComponent } from '../modal.component';
-
-const ITEM_ROWS: number = 15;
 
 @Component({
   selector: 'app-chat-session-selector',
@@ -24,10 +24,14 @@ export class ChatSessionSelectorComponent extends ModalComponent {
   @Input() handler: (data: ChatSessionCheckbox[]) => Observable<unknown>;
   /** 搜索关键字 */
   keyword: string = '';
-  /** 分页页码 */
-  chatSessionsPage: number = 1;
   /** 加载中 */
   loading: boolean = false;
+  /** 展示的列表 */
+  list: ChatSessionCheckbox[];
+  /** 虚拟列表项目高度 */
+  itemHeight: number = SysUtil.rem2px(3.55);
+  getItemHeight: () => number = () => this.itemHeight;
+  trackByFn = EntityUtil.trackBy;
 
   constructor(
     public globalData: GlobalData,
@@ -37,11 +41,19 @@ export class ChatSessionSelectorComponent extends ModalComponent {
     super(router, overlay);
   }
 
-  /**
-   * 搜索框变化时
-   */
-  search() {
-    this.chatSessionsPage = 1;
+  ngOnInit() {
+    super.ngOnInit();
+    this.list = this.chatSessions;
+  }
+
+  search(keyword: string) {
+    if (keyword.length) {
+      this.list = this.chatSessions.filter(o => (
+        o.title.toLowerCase().includes(keyword) || (o.data.userId + '').includes(keyword)
+      ));
+    } else {
+      this.list = this.chatSessions;
+    }
   }
 
   /**
@@ -83,35 +95,6 @@ export class ChatSessionSelectorComponent extends ModalComponent {
    */
   disabled() {
     return this.getCheckedChatSessions().length >= this.limit;
-  }
-
-  /**
-   * 分页后的会话列表
-   */
-  list() {
-    let { chatSessions, keyword } = this;
-    if (keyword.length) {
-      keyword = keyword.toLowerCase();
-      // 模糊搜索：别名和用户ID
-      chatSessions = chatSessions.filter(o => o.title.toLowerCase().includes(keyword) || (o.data.userId + '').includes(keyword));
-    }
-    return this.chatSessionsPage ? chatSessions.slice(0, this.chatSessionsPage * ITEM_ROWS) : chatSessions;
-  }
-
-  /**
-   * 加载更多
-   * @param event
-   */
-  loadData(event: any) {
-    if (!this.chatSessionsPage) {
-      return event.target.complete();
-    }
-
-    if (++this.chatSessionsPage * ITEM_ROWS >= this.globalData.privateChatrooms.length) {
-      this.chatSessionsPage = null;
-    }
-
-    event.target.complete();
   }
 
 }
