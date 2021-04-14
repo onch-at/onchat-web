@@ -35,8 +35,8 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnInit() {
     // 在去到个人中心tab的时候变为直角头部
     this.router.events.pipe(
-      filter(event => event instanceof Scroll),
-      takeUntil(this.subject)
+      takeUntil(this.subject),
+      filter(event => event instanceof Scroll)
     ).subscribe((event: Scroll) => {
       this.sharp = event.routerEvent.url === '/home/profile';
     });

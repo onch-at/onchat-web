@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnimationBuilder, AnimationController, IonRouterOutlet, ViewWillEnter } from '@ionic/angular';
@@ -38,13 +37,12 @@ export class NoticePage implements OnInit, ViewWillEnter {
   constructor(
     private apiService: ApiService,
     private globalData: GlobalData,
-    private location: Location,
     private animationCtrl: AnimationController,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.url = this.location.path().includes('notice-list') ? 'notice-list' : 'request-list';
+    this.url = this.router.routerState.snapshot.url.includes('notice-list') ? 'notice-list' : 'request-list';
 
     const { receiveChatRequests, sendChatRequests, user } = this.globalData;
     receiveChatRequests.concat(sendChatRequests).some(o => (

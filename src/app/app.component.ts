@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
@@ -28,7 +27,6 @@ export class AppComponent implements OnInit {
     private router: Router,
     private swPush: SwPush,
     private swUpdate: SwUpdate,
-    private location: Location,
     private cacheService: CacheService,
     private socketService: SocketService,
     private onChatService: OnChatService,
@@ -56,7 +54,7 @@ export class AppComponent implements OnInit {
 
       if (!data) {
         // 如果不在用户登录、注册页，就跳转
-        const isNotAuthPage = /^(?!(\/user\/(login|register)))/.test(this.location.path());
+        const isNotAuthPage = /^(?!(\/user\/(login|register)))/.test(this.router.routerState.snapshot.url);
         return isNotAuthPage && this.router.navigateByUrl('/user/login');
       }
 

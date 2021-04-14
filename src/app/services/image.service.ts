@@ -49,7 +49,7 @@ export class ImageService {
    * @param img
    */
   private resize(img: HTMLImageElement) {
-    const resolution = 720;
+    const resolution = 480;
     if (img.width > resolution || img.height > resolution) {
       const divisor = (img.width > resolution ? img.width : img.height) / resolution;
       img.width /= divisor;
