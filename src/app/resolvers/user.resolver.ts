@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/r
 import { Observable } from "rxjs";
 import { Result, User } from "../models/onchat.model";
 import { ApiService } from "../services/api.service";
-import { GlobalData } from "../services/global-data.service";
+import { GlobalData } from '../services/global-data.service';
 
 /**
  * 用户Resolve，根据路由参数中的userId来获得user

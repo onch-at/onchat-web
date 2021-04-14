@@ -20,6 +20,10 @@ ion-header {
 
 ion-content {
     --background: var(--oc-color-gray);
+
+    @media (prefers-color-scheme: dark) {
+        --background: var(--oc-color-white);
+    }
 }
 
 .home-header {
@@ -110,22 +114,24 @@ ion-item {
     --color: var(--oc-color-dark);
     --detail-icon-font-size: 1.25rem;
     --detail-icon-color: var(--oc-color-muted);
-    --detail-icon-opacity: 0.75;
+    --detail-icon-opacity: 0.85;
     --min-height: 2rem;
 
     > ion-label {
+        font-size: 1rem;
         margin: 0 1rem 0 0;
     }
 
     > .value {
-        margin-inline: 0.5rem;
+        margin: 0 0.5rem;
         color: var(--oc-color-muted);
+        font-size: 0.9rem;
     }
 }
 
 .btn-danger {
-    height: 2.75rem;
-    border-radius: 0;
+    margin: 0 0.75rem;
+    width: calc(100% - 1.5rem);
     background-color: var(--oc-color-light);
 }
 

@@ -9,7 +9,7 @@
     "start": "ng serve --host=0.0.0.0",
     "https": "ng serve --host=0.0.0.0 --ssl true --ssl-cert localhost.pem --ssl-key localhost-key.pem",
     "build": "ionic build --prod --aot --build-optimizer --engine=browser",
-    "bundle-report": "ng build --prod --stats-json && webpack-bundle-analyzer --port=9111 www/stats.json",
+    "bundle-report": "ng build --prod --aot --build-optimizer --stats-json && webpack-bundle-analyzer --port=9111 www/stats.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
