@@ -18,7 +18,7 @@ import { RippleModule } from './ripple.module';
     RippleModule
   ],
   exports: [
-    AvatarCropperComponent,
+    AvatarCropperComponent
   ]
 })
 export class AvatarCropperModule { }

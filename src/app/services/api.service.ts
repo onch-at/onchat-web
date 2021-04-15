@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
-import { ChangePassword, ImageMessage, Login, Register, UserInfo } from '../models/form.model';
+import { ChangePassword, ImageMessage, Login, Register, ResetPassword, UserInfo } from '../models/form.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
 
 const HTTP_OPTIONS_JSON = {
@@ -94,6 +94,22 @@ export class ApiService {
    */
   changePassword(o: ChangePassword): Observable<Result> {
     return this.http.put<Result>(env.userUrl + 'password', o, HTTP_OPTIONS_JSON);
+  }
+
+  /**
+   * 通过用户名发送邮件
+   * @param username 用户名
+   */
+  sendEmailCaptchaByUsername(username: string): Observable<Result<boolean>> {
+    return this.http.post<Result<boolean>>(env.userUrl + 'emailcaptcha', { username });
+  }
+
+  /**
+   * 重置密码
+   * @param o
+   */
+  resetPassword(o: ResetPassword): Observable<Result> {
+    return this.http.put<Result>(env.userUrl + 'password/reset', o, HTTP_OPTIONS_JSON);
   }
 
   /**

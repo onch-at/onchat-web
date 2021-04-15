@@ -36,6 +36,18 @@ export class ChangePassword {
   ) { }
 }
 
+/** 重置密码数据模型 */
+export class ResetPassword {
+  constructor(
+    /** 用户名 */
+    public username: string,
+    /** 密码 */
+    public password: string,
+    /** 验证码 */
+    public captcha: string
+  ) { }
+}
+
 /** 纯文本消息 */
 export class TextMessage {
   constructor(

@@ -21,7 +21,7 @@
 
             <div class="form-group">
               <div class="form-control">
-                <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="password"
+                <input [type]="pwdInputType" class="display-block text-center ipt-primary ipt-password"
                   autocomplete="current-password" formControlName="password" (blur)="trimAll('password')"
                   placeholder="密码" [maxlength]="passwordMaxLength" required>
                 <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
@@ -47,6 +47,13 @@
           <button appRipple appActiveClass [disabled]="form.invalid" (tap)="login()" class="btn-primary">
             登录
           </button>
+        </ion-col>
+
+        <ion-col size="12" class="link-container text-right color-dark cursor-pointer">
+          <span routerLink="/user/password/reset">
+            <ion-icon name="help-circle-outline" style="font-size: 1.25rem;"></ion-icon>
+            忘记密码
+          </span>
         </ion-col>
       </ion-row>
     </ion-grid>

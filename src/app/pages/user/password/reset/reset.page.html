@@ -20,19 +20,9 @@
             </div>
 
             <div class="form-group">
-              <input type="email" class="display-block text-center ipt-primary" formControlName="email"
-                (blur)="trimAll('email')" placeholder="电子邮箱" [maxlength]="emailMaxLength" required>
-
-              <div class="form-control-warning">
-                <ion-icon name="warning"></ion-icon>
-                {{ emailFeedback(form.controls.email.errors) }}
-              </div>
-            </div>
-
-            <div class="form-group">
               <div class="form-control">
                 <input [type]="pwdInputType" class="display-block text-center ipt-primary ipt-password"
-                  autocomplete="new-password" formControlName="password" (blur)="trimAll('password')" placeholder="密码"
+                  formControlName="password" autocomplete="new-password" (blur)="trimAll('password')" placeholder="新密码"
                   [maxlength]="passwordMaxLength" required>
                 <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
                 </ion-icon>
@@ -47,8 +37,8 @@
             <div class="form-group">
               <div class="form-control">
                 <input [type]="pwdInputType" class="display-block text-center ipt-primary ipt-password"
-                  autocomplete="new-password" formControlName="confirmPassword" (blur)="trimAll('confirmPassword')"
-                  placeholder="确认密码" [maxlength]="passwordMaxLength" required>
+                  formControlName="confirmPassword" autocomplete="new-password" (blur)="trimAll('confirmPassword')"
+                  placeholder="确认新密码" [maxlength]="passwordMaxLength" required>
                 <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
                 </ion-icon>
 
@@ -69,7 +59,7 @@
                 <input type="text" class="display-block text-center ipt-primary" formControlName="captcha"
                   (blur)="trimAll('captcha')" placeholder="验证码" maxlength="6" required style="padding-right: 40%">
 
-                <button appRipple appActiveClass [disabled]="form.controls.email.errors || countdownTimer"
+                <button appRipple appActiveClass [disabled]="form.controls.username.errors || countdownTimer"
                   class="btn-primary" (tap)="sendCaptcha()">
                   {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
                 </button>
@@ -85,13 +75,13 @@
 
         <ion-col class="text-center btn-container" size="12">
           <button appRipple appActiveClass [disabled]="!form.valid || globalData.navigating" class="btn-primary"
-            (tap)="register()">
-            注册
+            (tap)="submit()">
+            重置密码
           </button>
         </ion-col>
 
         <ion-col size="12" class="link-container text-center color-dark cursor-pointer">
-          <span routerLink="/user/login">已有账号？立即登录！</span>
+          <span routerLink="/user/login">记起来了？立即登录！</span>
         </ion-col>
       </ion-row>
     </ion-grid>

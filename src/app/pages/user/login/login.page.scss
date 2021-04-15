@@ -30,8 +30,7 @@
   }
 }
 
-#password + ion-icon,
-#confirm-password + ion-icon {
+.ipt-password + ion-icon {
   position: absolute;
   top: 1.625rem;
   right: 1rem;
@@ -56,8 +55,25 @@
   animation: bounce-in-up 0.9s linear;
 }
 
+.link-container {
+  margin-top: 0.75rem;
+  padding: 0 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0;
+  animation: fade-in 0.25s ease-out 0.85s forwards;
+
+  > span {
+    display: inline-flex;
+    align-items: center;
+
+    > ion-icon {
+      margin-right: 0.125rem;
+    }
+  }
+}
+
 ion-grid {
-  padding: 0 1.5rem 10vh;
+  padding: 0 1.5rem 5vh;
   flex: auto;
 
   &:focus-within + footer {

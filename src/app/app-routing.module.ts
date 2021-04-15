@@ -37,6 +37,10 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'password/reset',
+        loadChildren: () => import('./pages/user/password/reset/reset.module').then(m => m.ResetPageModule)
+      },
+      {
         path: '',
         loadChildren: () => import('./pages/user/home/home.module').then(m => m.HomePageModule)
       }
