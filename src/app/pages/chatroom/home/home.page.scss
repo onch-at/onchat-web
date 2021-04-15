@@ -104,31 +104,6 @@ ion-item-group {
     margin-bottom: 0.75rem;
 }
 
-ion-item {
-    --padding-start: 0.75rem;
-    --padding-end: 0.75rem;
-    --padding-top: 0.5rem;
-    --padding-bottom: 0.5rem;
-    --inner-padding-end: 0;
-    --background: var(--oc-color-light);
-    --color: var(--oc-color-dark);
-    --detail-icon-font-size: 1.25rem;
-    --detail-icon-color: var(--oc-color-muted);
-    --detail-icon-opacity: 0.85;
-    --min-height: 2rem;
-
-    > ion-label {
-        font-size: 1rem;
-        margin: 0 1rem 0 0;
-    }
-
-    > .value {
-        margin: 0 0.5rem;
-        color: var(--oc-color-muted);
-        font-size: 0.9rem;
-    }
-}
-
 .btn-danger {
     margin: 0 0.75rem;
     width: calc(100% - 1.5rem);
@@ -142,8 +117,8 @@ ion-item {
 }
 
 .home-info-label {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
 }
 
 .avatar-list-track {
@@ -169,6 +144,10 @@ ion-item {
         background: transparent;
         border: 0.1rem dashed var(--oc-color-muted);
     }
+}
+
+ion-item[detail] {
+    --background: var(--oc-color-light);
 }
 
 .bottom-bar {

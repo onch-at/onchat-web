@@ -25,7 +25,16 @@ const routes: Routes = [
       },
       {
         path: 'settings',
-        loadChildren: () => import('./pages/user/settings/settings.module').then(m => m.SettingsPageModule)
+        children: [
+          {
+            path: 'info',
+            loadChildren: () => import('./pages/user/settings/info/info.module').then(m => m.InfoPageModule)
+          },
+          {
+            path: 'safety',
+            loadChildren: () => import('./pages/user/settings/safety/safety.module').then(m => m.SafetyPageModule)
+          }
+        ]
       },
       {
         path: '',
@@ -87,7 +96,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
-  }
+  },
 ];
 
 @NgModule({

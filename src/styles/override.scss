@@ -21,6 +21,41 @@ ion-header {
     }
 }
 
+ion-item[detail] {
+    --padding-start: 0.75rem;
+    --padding-end: 0.75rem;
+    --padding-top: 0.5rem;
+    --padding-bottom: 0.5rem;
+    --inner-padding-end: 0;
+    --background: var(--oc-color-white);
+    --color: var(--oc-color-dark);
+    --detail-icon-font-size: 1.25rem;
+    --detail-icon-color: var(--oc-color-muted);
+    --detail-icon-opacity: 0.85;
+    --min-height: 2rem;
+    font-size: 0.9rem;
+
+    > ion-icon[slot="start"] {
+        margin: 0 0.25rem 0 0;
+        font-size: 1.25rem;
+        color: rgba(var(--oc-color-primary-rgb), 0.75);
+
+        &[name$="-outline"] {
+            --ionicon-stroke-width: 45px;
+        }
+    }
+
+    > ion-label {
+        margin: 0 1rem 0 0.25rem;
+    }
+
+    > .value {
+        margin: 0 0.5rem;
+        color: var(--oc-color-muted);
+        font-size: 0.85rem;
+    }
+}
+
 ion-searchbar.sc-ion-searchbar-ios-h {
     --color: var(--oc-color-dark);
     --background: var(--oc-color-secondary);

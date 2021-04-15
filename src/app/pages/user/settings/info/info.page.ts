@@ -2,14 +2,12 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonRouterOutlet } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
-import { EmailBinderComponent } from 'src/app/components/modals/email-binder/email-binder.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -20,10 +18,10 @@ import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
   selector: 'app-settings',
-  templateUrl: './settings.page.html',
-  styleUrls: ['./settings.page.scss'],
+  templateUrl: './info.page.html',
+  styleUrls: ['./info.page.scss'],
 })
-export class SettingsPage implements OnInit, OnDestroy {
+export class InfoPage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   /** 昵称最大长度 */
   nicknameMaxLength: number = USERNAME_MAX_LENGTH;
@@ -97,8 +95,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     private apiService: ApiService,
-    private overlay: Overlay,
-    private routerOutlet: IonRouterOutlet
+    private overlay: Overlay
   ) { }
 
   ngOnInit() {
@@ -162,14 +159,6 @@ export class SettingsPage implements OnInit, OnDestroy {
       this.overlay.presentToast('用户信息修改成功！', 1000).then(() => {
         this.router.navigate(['/user', user.id]);
       });
-    });
-  }
-
-  bindEmail() {
-    this.overlay.presentModal({
-      component: EmailBinderComponent,
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl
     });
   }
 

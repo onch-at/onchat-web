@@ -1,0 +1,25 @@
+<ion-content appScrollbar [fullscreen]="true">
+  <ion-header slot="fixed">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
+      </ion-buttons>
+
+      <ion-title>安全设置</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <main>
+    <ion-item-group>
+      <ion-item detail lines="none" button mode="md" (tap)="bindEmail()">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label>电子邮箱</ion-label>
+        <div class="value">{{ globalData.user.email || '立即绑定' }}</div>
+      </ion-item>
+      <ion-item detail lines="none" button mode="md" routerLink="/user/settings/safety">
+        <ion-icon name="key-outline" slot="start"></ion-icon>
+        <ion-label>修改密码</ion-label>
+      </ion-item>
+    </ion-item-group>
+  </main>
+</ion-content>

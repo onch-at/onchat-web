@@ -143,9 +143,19 @@ form.ng-pristine .feedback-form-invalid {
 }
 
 // 白色按钮
-.btn-light {
+.btn-white {
   color: var(--oc-color-dark);
   background-color: var(--oc-color-white);
+
+  &.active {
+    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-white-rgb), 0.5);
+  }
+}
+
+// 白色按钮
+.btn-light {
+  color: var(--oc-color-dark);
+  background-color: var(--oc-color-light);
 
   &.active {
     box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-white-rgb), 0.5);
@@ -172,6 +182,7 @@ form.ng-pristine .feedback-form-invalid {
 }
 
 .btn-primary,
+.btn-white,
 .btn-light,
 .btn-secondary,
 .btn-danger {

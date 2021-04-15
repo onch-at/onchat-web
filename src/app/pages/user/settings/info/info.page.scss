@@ -26,11 +26,11 @@ main {
     border-radius: 50%;
     object-fit: cover;
     background: var(--oc-color-secondary);
+    margin: 0 auto;
 }
 
 form {
     padding: 0.5rem 0;
-    width: 100%;
 }
 
 .form-group {
