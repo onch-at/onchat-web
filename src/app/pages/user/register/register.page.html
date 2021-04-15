@@ -34,7 +34,7 @@
                 <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="password"
                   autocomplete="new-password" formControlName="password" (blur)="trimAll('password')" placeholder="密码"
                   [maxlength]="passwordMaxLength" required>
-                <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
+                <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
                 </ion-icon>
 
                 <div class="form-control-warning">
@@ -49,7 +49,7 @@
                 <input [type]="pwdInputType" class="display-block text-center ipt-primary" id="confirm-password"
                   autocomplete="new-password" formControlName="confirmPassword" (blur)="trimAll('confirmPassword')"
                   placeholder="确认密码" [maxlength]="passwordMaxLength" required>
-                <ion-icon [name]="pwdInputType == 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
+                <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
                 </ion-icon>
 
                 <div class="form-control-warning">

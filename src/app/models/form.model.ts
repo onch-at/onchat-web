@@ -2,58 +2,60 @@ import { Gender, Mood } from "../common/enum";
 
 /** 登录表单数据模型  */
 export class Login {
-  /** 用户名 */
-  username: string;
-  /** 密码 */
-  password: string;
-
-  constructor(username: string, password: string) {
-    this.username = username;
-    this.password = password;
-  }
+  constructor(
+    /** 用户名 */
+    public username: string,
+    /** 密码 */
+    public password: string
+  ) { }
 }
 
 /** 注册表单数据模型 */
 export class Register extends Login {
-  /** 验证码 */
-  captcha: string;
-  /** 邮箱 */
-  email: string;
-
-  constructor(username: string, password: string, email: string, captcha: string) {
+  constructor(
+    /** 用户名 */
+    username: string,
+    /** 密码 */
+    password: string,
+    /** 邮箱 */
+    public email: string,
+    /** 验证码 */
+    public captcha: string
+  ) {
     super(username, password);
-    this.email = email;
-    this.captcha = captcha;
   }
+}
+
+/** 修改密码数据模型 */
+export class ChangePassword {
+  constructor(
+    /** 原密码 */
+    public oldPassword: string,
+    /** 新密码 */
+    public newPassword: string
+  ) { }
 }
 
 /** 纯文本消息 */
 export class TextMessage {
-  /** 内容 */
-  content: string;
-
-  constructor(content: string) {
-    this.content = content;
-  }
+  constructor(
+    /** 内容 */
+    public content: string
+  ) { }
 }
 
 /** 富文本消息 */
 export class RichTextMessage {
-  /** HTML */
-  html: string;
-  /** 文本 */
-  text: string;
-
-  constructor(html: string, text: string) {
-    this.html = html;
-    this.text = text;
-  }
+  constructor(
+    /** HTML */
+    public html: string,
+    /** 文本 */
+    public text: string
+  ) { }
 }
 
 /** 群聊邀请消息 */
 export class ChatInvitationMessage {
-  /** 聊天室ID */
-  chatroomId: number;
   /** 聊天室名称 */
   name?: string;
   /** 聊天室描述 */
@@ -61,17 +63,14 @@ export class ChatInvitationMessage {
   /** 聊天室头像 */
   avatarThumbnail?: string;
 
-  constructor(chatroomId: number) {
-    this.chatroomId = chatroomId;
-  }
+  constructor(
+    /** 聊天室ID */
+    public chatroomId: number
+  ) { }
 }
 
 /** 图片消息 */
 export class ImageMessage {
-  /** 原图URL */
-  url: string;
-  /** 缩略图URL */
-  thumbnailUrl: string;
   /** 文件名 */
   filename: string;
   /** 宽度 */
@@ -79,10 +78,12 @@ export class ImageMessage {
   /** 高度 */
   height: number;
 
-  constructor(url?: string, thumbnailUrl?: string) {
-    this.url = url;
-    this.thumbnailUrl = thumbnailUrl;
-  }
+  constructor(
+    /** 原图URL */
+    public url: string,
+    /** 缩略图URL */
+    public thumbnailUrl: string
+  ) { }
 }
 
 /** 用户信息表单数据模型 */

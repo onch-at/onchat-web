@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
-import { ImageMessage, Login, Register, UserInfo } from '../models/form.model';
+import { ChangePassword, ImageMessage, Login, Register, UserInfo } from '../models/form.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
 
 const HTTP_OPTIONS_JSON = {
@@ -86,6 +86,14 @@ export class ApiService {
    */
   register(o: Register): Observable<Result<User>> {
     return this.http.post<Result<User>>(env.userUrl + 'register', o, HTTP_OPTIONS_JSON);
+  }
+
+  /**
+   * 修改密码
+   * @param o
+   */
+  changePassword(o: ChangePassword): Observable<Result> {
+    return this.http.put<Result>(env.userUrl + 'password', o, HTTP_OPTIONS_JSON);
   }
 
   /**
