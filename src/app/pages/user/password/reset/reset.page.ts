@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonRouterOutlet } from '@ionic/angular';
+import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
 import { captchaFeedback, passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
@@ -19,7 +19,7 @@ import { SyncValidator } from 'src/app/validators/sync.validator';
   templateUrl: './reset.page.html',
   styleUrls: ['./reset.page.scss'],
 })
-export class ResetPage implements OnInit {
+export class ResetPage implements OnInit, ViewWillLeave, ViewWillEnter {
   form: FormGroup = this.formBuilder.group({
     username: [
       '', [
@@ -75,10 +75,13 @@ export class ResetPage implements OnInit {
     private routerOutlet: IonRouterOutlet
   ) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    this.routerOutlet.swipeGesture = false;
   }
 
-  ngOnDestroy() {
+  ionViewWillLeave() {
     this.routerOutlet.swipeGesture = true;
   }
 

@@ -2,8 +2,7 @@
   <ion-header slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button [text]="(globalData.unreadMsgCount == 0 ? '' : globalData.unreadMsgCount) | numLimit"
-          defaultHref="home">
+        <ion-back-button [text]="(globalData.unreadMsgCount() | numLimit) || ''" defaultHref="home">
         </ion-back-button>
       </ion-buttons>
 

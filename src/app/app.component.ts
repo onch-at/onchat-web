@@ -42,7 +42,6 @@ export class AppComponent implements OnInit {
     const data = this.localStorage.get<ChatSession[]>(LocalStorageKey.ChatSessions, null);
     if (data) {
       this.globalData.chatSessions = data;
-      this.globalData.totalUnreadMsgCount();
     }
 
     // 连接打通时
@@ -254,7 +253,6 @@ export class AppComponent implements OnInit {
 
       chatSession.updateTime = Date.now();
       this.globalData.sortChatSessions();
-      this.globalData.totalUnreadMsgCount();
     });
 
     // 同意别人入群/同意我入群
@@ -289,19 +287,19 @@ export class AppComponent implements OnInit {
 
         this.globalData.chatSessions.push(chatSession);
         this.globalData.sortChatSessions();
-        return this.globalData.unreadMsgCount++;
       }
 
       // 同意别人入群
       const index = this.globalData.receiveChatRequests.findIndex(o => o.id === request.id);
       if (index >= 0) {
         this.globalData.receiveChatRequests[index] = request;
-        this.globalData.totalUnreadMsgCount();
       }
 
       // 如果我是处理人
-      request.handlerId === user.id && this.overlay.presentToast('操作成功，已同意该申请！');
-      this.router.navigateByUrl('/chatroom/notice/notice-list');
+      if (request.handlerId === user.id) {
+        this.overlay.presentToast('操作成功，已同意该申请！');
+        this.router.navigateByUrl('/chatroom/notice/notice-list');
+      }
     });
 
     // 拒绝别人的入群申请/入群申请被拒绝
@@ -318,7 +316,6 @@ export class AppComponent implements OnInit {
         const index = this.globalData.sendChatRequests.findIndex(o => o.id === data.id);
         if (index >= 0) {
           this.globalData.sendChatRequests[index] = data;
-          this.globalData.totalUnreadMsgCount();
         }
 
         this.overlay.presentNotification({

@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonRouterOutlet } from '@ionic/angular';
+import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
 import { passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
@@ -20,7 +20,7 @@ import { OnChatService } from '../../../services/onchat.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit, OnDestroy {
+export class LoginPage implements OnInit, ViewWillLeave, ViewWillEnter {
   /** 密码框类型 */
   pwdInputType: string = 'password';
   usernameMaxLength: number = USERNAME_MAX_LENGTH;
@@ -58,11 +58,13 @@ export class LoginPage implements OnInit, OnDestroy {
     private routerOutlet: IonRouterOutlet
   ) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ionViewWillEnter() {
     this.routerOutlet.swipeGesture = false;
   }
 
-  ngOnDestroy() {
+  ionViewWillLeave() {
     this.routerOutlet.swipeGesture = true;
   }
 

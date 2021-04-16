@@ -95,15 +95,14 @@ export class ChatPage implements OnInit, OnDestroy {
     this.chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === this.chatroomId);
 
     if (this.chatSession) {
-      const { unread, title, data } = this.chatSession;
+      const { title, data } = this.chatSession;
       this.chatSession.unread = 0;
-      this.globalData.unreadMsgCount -= unread;
       this.chatroomName = title;
       this.chatroomType = data.chatroomType;
     } else {
-      this.apiService.getChatroom(this.chatroomId).subscribe((result: Result<Chatroom>) => {
-        if (result.code !== ResultCode.Success) { return; }
-
+      this.apiService.getChatroom(this.chatroomId).pipe(
+        filter((result: Result) => result.code === ResultCode.Success)
+      ).subscribe((result: Result<Chatroom>) => {
         const { name, type } = result.data
         this.chatroomName = name;
         this.chatroomType = type;

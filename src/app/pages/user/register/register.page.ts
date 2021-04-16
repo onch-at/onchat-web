@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonRouterOutlet } from '@ionic/angular';
+import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
 import { EMAIL_MAX_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
 import { captchaFeedback, emailFeedback, passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
@@ -22,7 +22,7 @@ import { SyncValidator } from 'src/app/validators/sync.validator';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
-export class RegisterPage implements OnInit, OnDestroy {
+export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
   /** 密码框类型 */
   pwdInputType: string = 'password';
   usernameMaxLength: number = USERNAME_MAX_LENGTH;
@@ -95,13 +95,15 @@ export class RegisterPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.routerOutlet.swipeGesture = false;
-
     const username = this.route.snapshot.queryParams.username;
     username && this.form.controls.username.setValue(username);
   }
 
-  ngOnDestroy() {
+  ionViewWillEnter() {
+    this.routerOutlet.swipeGesture = false;
+  }
+
+  ionViewWillLeave() {
     this.routerOutlet.swipeGesture = true;
   }
 

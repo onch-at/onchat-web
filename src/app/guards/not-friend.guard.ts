@@ -1,6 +1,6 @@
-import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Result } from '../models/onchat.model';
@@ -14,7 +14,7 @@ export class NotFriendGuard implements CanActivate {
   constructor(
     private apiService: ApiService,
     private globalData: GlobalData,
-    private location: Location,
+    private navCtrl: NavController,
   ) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -22,7 +22,7 @@ export class NotFriendGuard implements CanActivate {
       map((result: Result<number>) => {
         // TODO 写完单聊之后，自己跟自己也是好友，把this.globalData.user.id == next.params.userId删除
         const isFriend = !!result.data || this.globalData.user?.id == next.params.userId;
-        isFriend && this.location.back();
+        isFriend && this.navCtrl.back();
 
         return !isFriend;
       })

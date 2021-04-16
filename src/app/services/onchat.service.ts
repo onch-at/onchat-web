@@ -68,8 +68,6 @@ export class OnChatService {
       this.apiService.getSendChatRequests().pipe(tap((result: Result<ChatRequest[]>) => {
         this.globalData.sendChatRequests = result.data;
       }))
-    ]).pipe(tap(() => {
-      this.globalData.totalUnreadMsgCount();
-    }));
+    ]);
   }
 }

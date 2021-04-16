@@ -4,7 +4,7 @@
 
     <div class="profile-card-content">
       <div class="display-flex">
-        <img class="profile-card-avatar" [src]="globalData.user.avatarThumbnail" (click)="navigateToAvatarPage($event)">
+        <img class="profile-card-avatar" [src]="globalData.user.avatarThumbnail">
 
         <div class="profile-card-info">
           <h1 class="font-bold">{{ globalData.user.username }}</h1>
@@ -17,11 +17,11 @@
 
   <ion-item-group>
     <ion-item detail lines="none" button mode="md" routerLink="/user/settings/info">
-      <ion-icon name="reader-outline" slot="start"></ion-icon>
+      <ion-icon name="reader" slot="start"></ion-icon>
       <ion-label>个人信息</ion-label>
     </ion-item>
     <ion-item detail lines="none" button mode="md" routerLink="/user/settings/safety">
-      <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon>
+      <ion-icon name="shield-checkmark" slot="start"></ion-icon>
       <ion-label>安全设置</ion-label>
     </ion-item>
   </ion-item-group>

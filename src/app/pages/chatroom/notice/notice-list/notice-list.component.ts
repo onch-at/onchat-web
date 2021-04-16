@@ -22,7 +22,6 @@ export class NoticeListComponent implements OnInit {
   ngOnInit() {
     const chatSession = this.globalData.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
     if (chatSession) {
-      this.globalData.unreadMsgCount -= chatSession.unread;
       chatSession.unread = 0;
     }
   }

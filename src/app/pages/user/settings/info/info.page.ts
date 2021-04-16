@@ -1,7 +1,7 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
@@ -93,7 +93,7 @@ export class InfoPage implements OnInit, OnDestroy {
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
     private router: Router,
-    private location: Location,
+    private navCtrl: NavController,
     private apiService: ApiService,
     private overlay: Overlay
   ) { }
@@ -154,10 +154,8 @@ export class InfoPage implements OnInit, OnDestroy {
 
       this.globalData.user = { ...user, ...result.data };
 
-      // TODO
-      this.location.back();
       this.overlay.presentToast('用户信息修改成功！', 1000).then(() => {
-        this.router.navigate(['/user', user.id]);
+        this.navCtrl.back();
       });
     });
   }

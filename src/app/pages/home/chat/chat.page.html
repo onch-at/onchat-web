@@ -16,33 +16,31 @@
 				</ion-item-option>
 			</ion-item-options>
 
-			<ion-item class="chat-session-item" [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
-				[button]="true" (tap)="onTap(item)">
+			<ion-item [ngSwitch]="item.type" class="chat-session-item" [ngClass]="{'sticky': item.sticky}" lines="none"
+				[detail]="false" [button]="true" (tap)="onTap(item)">
 
-				<ng-container [ngSwitch]="item.type">
-					<!-- 聊天室类型 -->
-					<ng-container *ngSwitchCase="chatSessionType.Chatroom">
-						<ion-img slot="start" [src]="item.avatarThumbnail" class="chat-session-item-img"></ion-img>
+				<!-- 聊天室类型 -->
+				<ng-container *ngSwitchCase="chatSessionType.Chatroom">
+					<ion-img slot="start" [src]="item.avatarThumbnail" class="chat-session-item-img"></ion-img>
 
-						<ion-label class="item-content">
-							<h2 class="chat-session-item-title">{{ item.title }}</h2>
-							<p class="chat-session-item-desc">
-								{{ item.content ? (item | sender) + (item.content | msgDesc) : '进去打个招呼吧？' }}
-							</p>
-						</ion-label>
-					</ng-container>
+					<ion-label class="item-content">
+						<h2 class="chat-session-item-title">{{ item.title }}</h2>
+						<p class="chat-session-item-desc">
+							{{ item.content ? (item | sender) + (item.content | msgDesc) : '进去打个招呼吧？' }}
+						</p>
+					</ion-label>
+				</ng-container>
 
-					<!-- 聊天室通知 -->
-					<ng-container *ngSwitchCase="chatSessionType.ChatroomNotice">
-						<div slot="start" class="chat-session-item-icon">
-							<ion-icon name="notifications"></ion-icon>
-						</div>
+				<!-- 聊天室通知 -->
+				<ng-container *ngSwitchCase="chatSessionType.ChatroomNotice">
+					<div slot="start" class="chat-session-item-icon">
+						<ion-icon name="notifications"></ion-icon>
+					</div>
 
-						<ion-label class="item-content">
-							<h2 class="chat-session-item-title">聊天室通知</h2>
-							<p class="chat-session-item-desc">{{ item.unread ? '你有' : '暂无'}}新的聊天室通知</p>
-						</ion-label>
-					</ng-container>
+					<ion-label class="item-content">
+						<h2 class="chat-session-item-title">聊天室通知</h2>
+						<p class="chat-session-item-desc">{{ item.unread ? '你有' : '暂无'}}新的聊天室通知</p>
+					</ion-label>
 				</ng-container>
 
 				<div class="info">
@@ -52,15 +50,16 @@
 							{{ item.updateTime | date:'BBBBhh:mm' }}
 						</ng-container>
 					</time>
-					<ion-badge [ngClass]="{'visibility-hidden': item.unread <= 0}" class="bg-danger" mode="ios">
+					<ion-badge [hidden]="!item.unread" class="bg-danger" mode="ios">
 						{{ item.unread | numLimit }}
 					</ion-badge>
 				</div>
 			</ion-item>
 
 			<ion-item-options side="end">
-				<ion-item-option class="chat-session-item-option bg-primary" (tap)="doReadChatSession(item, ionItemSliding)">
-					{{ item.unread == 0 ? '设为未读' : '设为已读' }}
+				<ion-item-option *ngIf="item.unread ||item.type === chatSessionType.Chatroom"
+					class="chat-session-item-option bg-primary" (tap)="doReadChatSession(item, ionItemSliding)">
+					{{ item.unread ? '设为已读' : '设为未读' }}
 				</ion-item-option>
 				<ion-item-option class="chat-session-item-option bg-danger" (tap)="removeChatSession(item,ionItemSliding)">
 					移除

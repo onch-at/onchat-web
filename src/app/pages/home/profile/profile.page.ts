@@ -22,11 +22,6 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() { }
 
-  navigateToAvatarPage(event: Event) {
-    event.stopPropagation();
-    this.router.navigate(['/user/avatar', this.globalData.user.id]);
-  }
-
   logout() {
     this.overlay.presentAlert({
       header: '退出登录',

@@ -48,6 +48,8 @@ export class NoticePage implements OnInit, ViewWillEnter {
     receiveChatRequests.concat(sendChatRequests).some(o => (
       !o.readedList.includes(user.id)
     )) && this.apiService.readedChatRequests().subscribe();
+
+    this.globalData.readedChatRequest();
   }
 
   ionViewWillEnter() {

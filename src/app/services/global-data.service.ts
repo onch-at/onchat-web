@@ -22,8 +22,19 @@ export class GlobalData {
   /** 路由导航中 */
   navigating: boolean = false;
 
-  /** 未读消息总数 */
-  private _unreadMsgCount: number = 0;
+  /** 计算未读消息总数 */
+  unreadMsgCount = () => {
+    this.totalUnreadChatRequestCount();
+
+    const count = this.chatSessions.reduce((count, o) => (
+      count + (o.unread || 0)
+    ), 0);
+
+    (navigator as any).setAppBadge?.(count);
+
+    return count;
+  };
+
   /** 私聊聊天室列表 */
   private _privateChatrooms: ChatSession[] = [];
   /** 群聊聊天室列表 */
@@ -67,16 +78,6 @@ export class GlobalData {
     return this._sendChatRequests;
   }
 
-  set unreadMsgCount(num: number) {
-    this._unreadMsgCount = num > 0 ? num : 0;
-    'setAppBadge' in navigator && (navigator as any).setAppBadge(this._unreadMsgCount);
-  }
-
-  get unreadMsgCount() {
-    return this._unreadMsgCount;
-  }
-
-
   set chatSessions(chatSessions: ChatSession[]) {
     this._chatSessions = chatSessions;
     this.sortChatSessions();
@@ -108,34 +109,24 @@ export class GlobalData {
   }
 
   /**
-   * 计算未读消息数
+   * 计算未读的聊天室通知消息数量
    */
-  totalUnreadMsgCount() {
-    this.unreadMsgCount &&= 0;
+  private totalUnreadChatRequestCount() {
+    const chatSession = this.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
 
-    this.totalUnreadChatRequestCount();
-
-    for (const chatSession of this.chatSessions) {
-      // 计算未读消息总数，如果有未读消息，
-      // 且总未读数大于100，则停止遍历
-      if (chatSession.unread > 0 && (this.unreadMsgCount += chatSession.unread) >= 100) {
-        return;
-      }
+    if (chatSession) {
+      chatSession.unread = this.receiveChatRequests.concat(this.sendChatRequests).reduce((count, o) => (
+        o.readedList.includes(this.user.id) ? count : ++count
+      ), 0);
     }
   }
 
   /**
-   * 计算未读的聊天室通知消息数量
+   * 已读所有聊天室通知
    */
-  private totalUnreadChatRequestCount() {
-    const unreadCount = this.receiveChatRequests.concat(this.sendChatRequests).reduce((count, o) => (
-      o.readedList.includes(this.user.id) ? count : ++count
-    ), 0);
-
-    const chatSession = this.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
-    if (chatSession) {
-      chatSession.unread = unreadCount;
-    }
+  readedChatRequest() {
+    this.receiveChatRequests.forEach(o => o.readedList.push(this.user.id));
+    this.sendChatRequests.forEach(o => o.readedList.push(this.user.id));
   }
 
   /**

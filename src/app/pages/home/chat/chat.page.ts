@@ -79,24 +79,24 @@ export class ChatPage implements OnInit {
    * @param i
    */
   doReadChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
-    if (item.unread == 0) {
+    if (!item.unread) {
       return this.apiService.unreadChatSession(item.id).pipe(
         filter((result: Result) => result.code === ResultCode.Success)
       ).subscribe(() => {
-        item.unread = 1;
-        this.globalData.unreadMsgCount++;
         ionItemSliding.close();
+        item.unread = 1;
       });
     }
 
-    const observable = item.type === ChatSessionType.ChatroomNotice ? this.apiService.readedChatRequests() : this.apiService.readedChatSession(item.id);
-
-    observable.pipe(
+    (item.type === ChatSessionType.ChatroomNotice ? this.apiService.readedChatRequests() : this.apiService.readedChatSession(item.id)).pipe(
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe(() => {
-      item.unread = 0;
-      this.globalData.unreadMsgCount--;
       ionItemSliding.close();
+      item.unread = 0;
+
+      if (item.type === this.chatSessionType.ChatroomNotice) {
+        this.globalData.readedChatRequest();
+      }
     });
   }
 
