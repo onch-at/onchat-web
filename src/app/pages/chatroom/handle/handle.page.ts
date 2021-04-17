@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -78,7 +79,7 @@ export class HandlePage implements OnInit, OnDestroy {
           cssClass: 'ipt-primary',
           attributes: {
             rows: 4,
-            maxlength: 50
+            maxlength: REASON_MAX_LENGTH
           }
         }
       ]

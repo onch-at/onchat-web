@@ -55,7 +55,7 @@ export class EmailBinderComponent extends ModalComponent {
     protected overlay: Overlay,
     protected router: Router
   ) {
-    super(router, overlay);
+    super();
   }
 
   sendCaptcha() {

@@ -42,3 +42,6 @@ export const TEXT_MSG_MAX_LENGTH: number = 3000;
 
 /** 消息广播数量限制（群发消息） */
 export const MSG_BROADCAST_QUANTITY_LIMIT: number = 30;
+
+/** 申请/拒绝原因最长长度 */
+export const REASON_MAX_LENGTH: number = 50;

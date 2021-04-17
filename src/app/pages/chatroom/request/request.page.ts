@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -18,6 +19,8 @@ export class RequestPage implements OnInit {
   chatRequest: ChatRequest;
   chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
   requestReason: string = null;
+
+  reasonMaxLength = REASON_MAX_LENGTH;
 
   constructor(
     private socketService: SocketService,

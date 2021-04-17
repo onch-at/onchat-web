@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { of, Subject } from 'rxjs';
 import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { CHATROOM_NAME_MAX_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT, NICKNAME_MAX_LENGTH } from 'src/app/common/constant';
+import { CHATROOM_NAME_MAX_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT, NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
@@ -40,9 +40,9 @@ export class HomePage implements OnInit, OnDestroy {
   showMask: boolean;
 
   constructor(
+    public globalData: GlobalData,
     private route: ActivatedRoute,
     private router: Router,
-    public globalData: GlobalData,
     private overlay: Overlay,
     private apiService: ApiService,
     private cacheService: CacheService,
@@ -192,7 +192,7 @@ export class HomePage implements OnInit, OnDestroy {
           cssClass: 'ipt-primary',
           attributes: {
             rows: 4,
-            maxlength: 50
+            maxlength: REASON_MAX_LENGTH
           }
         }
       ]

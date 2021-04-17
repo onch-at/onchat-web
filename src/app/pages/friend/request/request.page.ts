@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -23,6 +24,9 @@ export class RequestPage implements OnInit, OnDestroy {
   requestReason: string = null;
   /** 对方的拒绝原因 */
   rejectReason: string = null;
+
+  nicknameMaxLength = NICKNAME_MAX_LENGTH;
+  reasonMaxLength = REASON_MAX_LENGTH;
 
   constructor(
     public globalData: GlobalData,

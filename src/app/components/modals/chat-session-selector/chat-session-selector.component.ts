@@ -38,7 +38,7 @@ export class ChatSessionSelectorComponent extends ModalComponent {
     protected overlay: Overlay,
     protected router: Router
   ) {
-    super(router, overlay);
+    super();
   }
 
   ngOnInit() {

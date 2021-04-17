@@ -12,10 +12,8 @@ import { Overlay } from "src/app/services/overlay.service";
 export abstract class ModalComponent implements OnInit, OnDestroy {
   protected subject: Subject<unknown> = new Subject();
 
-  constructor(
-    protected router: Router,
-    protected overlay: Overlay,
-  ) { }
+  protected router: Router;
+  protected overlay: Overlay;
 
   ngOnInit(): void {
     // 在当前路由附加#modal，用来实现返回关闭模态框，而不返回上一页

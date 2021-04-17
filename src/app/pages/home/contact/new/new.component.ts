@@ -1,5 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { FriendRequestStatus } from 'src/app/common/enum';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -36,7 +37,7 @@ export class NewComponent implements OnInit {
         placeholder: '顺便给对方起个好听的别名吧',
         cssClass: 'ipt-primary',
         attributes: {
-          maxlength: 30
+          maxlength: NICKNAME_MAX_LENGTH
         }
       }]
     });
@@ -55,7 +56,7 @@ export class NewComponent implements OnInit {
         cssClass: 'ipt-primary',
         attributes: {
           rows: 4,
-          maxlength: 50
+          maxlength: REASON_MAX_LENGTH
         }
       }]
     });

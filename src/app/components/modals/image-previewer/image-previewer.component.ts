@@ -43,7 +43,7 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
     protected overlay: Overlay,
     protected router: Router
   ) {
-    super(router, overlay);
+    super();
   }
 
   ngAfterViewInit(): void {

@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -77,7 +78,7 @@ export class HandlePage implements OnInit, OnDestroy {
           placeholder: '顺便给对方起个好听的别名吧',
           cssClass: 'ipt-primary',
           attributes: {
-            maxlength: 30
+            maxlength: NICKNAME_MAX_LENGTH
           }
         }
       ]
@@ -98,7 +99,7 @@ export class HandlePage implements OnInit, OnDestroy {
           cssClass: 'ipt-primary',
           attributes: {
             rows: 4,
-            maxlength: 50
+            maxlength: REASON_MAX_LENGTH
           }
         }
       ]
