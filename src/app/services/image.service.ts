@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { base64ToFile } from 'ngx-image-cropper';
 import { Observable } from 'rxjs';
+import { SysUtil } from '../utils/sys.util';
 
 @Injectable({
   providedIn: 'root'
@@ -49,9 +50,17 @@ export class ImageService {
    * @param img
    */
   private resize(img: HTMLImageElement) {
-    const resolution = 480;
-    if (img.width > resolution || img.height > resolution) {
-      const divisor = (img.width > resolution ? img.width : img.height) / resolution;
+    const maxWidth = 1280;
+    const maxHeight = 720;
+
+    if (img.width > maxWidth) {
+      const divisor = img.width / maxWidth;
+      img.width /= divisor;
+      img.height /= divisor;
+    }
+
+    if (img.height > maxHeight) {
+      const divisor = img.height / maxHeight;
       img.width /= divisor;
       img.height /= divisor;
     }
@@ -89,12 +98,7 @@ export class ImageService {
         observer.complete();
       };
 
-      createImageBitmap(img, {
-        resizeWidth: img.width,
-        resizeHeight: img.height
-      }).then(bitmap => {
-        const imageBitmap = bitmap;
-
+      SysUtil.createImageBitmap(img).subscribe(imageBitmap => {
         worker.onmessage = ({ data }) => {
           observer.next(data);
           complete();
@@ -105,12 +109,8 @@ export class ImageService {
           complete();
         }
 
-        worker.postMessage({
-          quality,
-          format,
-          imageBitmap
-        }, [imageBitmap]);
-      }).catch(error => {
+        worker.postMessage({ quality, format, imageBitmap }, [imageBitmap]);
+      }, error => {
         observer.error(error);
         complete();
       });

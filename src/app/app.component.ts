@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
+import { NavController } from '@ionic/angular';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit {
     private overlay: Overlay,
     private feedbackService: FeedbackService,
     private localStorage: LocalStorage,
+    private navCtrl: NavController,
     public globalData: GlobalData,
   ) { }
 
@@ -286,7 +288,7 @@ export class AppComponent implements OnInit {
         }
 
         this.globalData.chatSessions.push(chatSession);
-        this.globalData.sortChatSessions();
+        return this.globalData.sortChatSessions();
       }
 
       // 同意别人入群
@@ -298,7 +300,7 @@ export class AppComponent implements OnInit {
       // 如果我是处理人
       if (request.handlerId === user.id) {
         this.overlay.presentToast('操作成功，已同意该申请！');
-        this.router.navigateByUrl('/chatroom/notice/notice-list');
+        this.navCtrl.back();
       }
     });
 

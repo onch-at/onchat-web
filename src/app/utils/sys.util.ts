@@ -1,5 +1,5 @@
 import { Renderer2 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
 export class SysUtil {
 
@@ -116,6 +116,27 @@ export class SysUtil {
    */
   static rem2px(rem: number): number {
     return rem * parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
+  }
+
+  /**
+   * 创建图像位图
+   * @param img 图像源
+   */
+  static createImageBitmap(img: HTMLImageElement): Observable<ImageBitmap> {
+    return from(window.createImageBitmap(img, {
+      resizeWidth: img.width,
+      resizeHeight: img.height
+    }).then(bitmap => {
+      // 某些情况下，图片宽度与高度会调换，因此这里要做一个判断
+      if (bitmap.width !== img.width) {
+        return window.createImageBitmap(img, {
+          resizeWidth: img.height,
+          resizeHeight: img.width
+        });
+      }
+
+      return bitmap;
+    }));
   }
 
   // /**

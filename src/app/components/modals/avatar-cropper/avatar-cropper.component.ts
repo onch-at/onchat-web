@@ -86,7 +86,7 @@ export class AvatarCropperComponent extends ModalComponent {
     let imageBlob: Blob, imageSrc: string | SafeUrl;
 
     // 此处需要调用imageCropper的一些私有方法，使用 any 绕过编译器检查
-    const imageCropper: any = this.imageCropper;
+    const imageCropper = this.imageCropper as any;
     // 如果支持离屏画布，并且当前允许裁剪
     if (
       'OffscreenCanvas' in window &&
@@ -114,16 +114,13 @@ export class AvatarCropperComponent extends ModalComponent {
 
       let imageBitmap: ImageBitmap;
       try {
-        imageBitmap = await createImageBitmap(transformedImage, {
-          resizeWidth: transformedImage.width,
-          resizeHeight: transformedImage.height,
-        });
+        imageBitmap = await SysUtil.createImageBitmap(transformedImage).toPromise();
       } catch (e) {
         worker.terminate();
         return { imageBlob, imageSrc };
       }
 
-      return await new Promise<ImageCropData>((resolve, reject) => {
+      return new Promise<ImageCropData>((resolve, reject) => {
         worker.onmessage = ({ data }) => {
           imageBlob = data.blob;
           imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(imageBlob));
