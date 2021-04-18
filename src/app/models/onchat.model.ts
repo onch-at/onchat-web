@@ -94,7 +94,7 @@ export interface ChatSession extends IEntity {
   /** 会话类型 */
   type: ChatSessionType;
   /** 最新消息 */
-  content?: Message
+  content?: Message;
   /** 未读消息数 */
   unread?: number;
   /** 是否置顶 */

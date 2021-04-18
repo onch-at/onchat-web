@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ChatroomType } from '../common/enum';
-import { ChatSession } from '../models/onchat.model';
+import { Message } from '../models/onchat.model';
 import { GlobalData } from '../services/global-data.service';
 
 /**
@@ -13,17 +12,8 @@ export class SenderPipe implements PipeTransform {
 
   constructor(private globalData: GlobalData) { }
 
-  transform(value: ChatSession): unknown {
-    const { content, data } = value;
-    if (content.userId === this.globalData.user.id) {
-      return '';
-    }
-
-    if (data.chatroomType === ChatroomType.Private) {
-      return 'Ta: '
-    }
-
-    return (content.nickname || content.userId) + ': ';
+  transform(value: Message): string {
+    return (value.userId === this.globalData.user.id) ? '' : (value.nickname || value.userId) + ': ';
   }
 
 }
