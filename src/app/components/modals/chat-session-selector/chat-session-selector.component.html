@@ -3,7 +3,7 @@
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-button (tap)="dismiss()">
-          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
+          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
 
@@ -21,15 +21,14 @@
   <ion-searchbar animated placeholder="搜索" (ngModelChange)="search($event)" [(ngModel)]="keyword"></ion-searchbar>
 
   <ion-list class="chat-session-list">
-    <ion-virtual-scroll [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
-      [trackBy]="trackByFn">
+    <ion-virtual-scroll [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight" [trackBy]="trackByFn">
       <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false">
         <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label>{{ item.title }}</ion-label>
 
         <ion-checkbox slot="end" mode="ios" [(ngModel)]="item.checked" (ionChange)="onChange(item)"
-          [disabled]="!item.checked && disabled()">
+                      [disabled]="!item.checked && disabled()">
         </ion-checkbox>
       </ion-item>
     </ion-virtual-scroll>

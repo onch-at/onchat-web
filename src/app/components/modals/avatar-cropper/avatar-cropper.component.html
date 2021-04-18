@@ -3,7 +3,7 @@
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-button (tap)="dismiss()">
-          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
+          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
 
@@ -18,9 +18,9 @@
   </ion-header>
 
   <image-cropper [hidden]="error" [format]="format" [roundCropper]="true" [imageChangedEvent]="imageChangedEvent"
-    [maintainAspectRatio]="true" [autoCrop]="false" [aspectRatio]="1" [resizeToWidth]="512" [imageQuality]="90"
-    backgroundColor="#f0f0f0" [cropperMinWidth]="256" (imageLoaded)="onImageLoaded()"
-    (loadImageFailed)="onLoadImageFailed()">
+                 [maintainAspectRatio]="true" [autoCrop]="false" [aspectRatio]="1" [resizeToWidth]="512" [imageQuality]="90"
+                 backgroundColor="#f0f0f0" [cropperMinWidth]="256" (imageLoaded)="onImageLoaded()"
+                 (loadImageFailed)="onLoadImageFailed()">
   </image-cropper>
 
   <div class="warning-tips" *ngIf="error">

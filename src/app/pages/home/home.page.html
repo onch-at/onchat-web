@@ -1,10 +1,10 @@
 <ion-content appScrollbar>
   <aside class="sidebar" slot="fixed">
     <img *ngIf="globalData.user" class="avatar cursor-pointer" [src]="globalData.user.avatarThumbnail"
-      [routerLink]="['/user', globalData.user.id]">
+         [routerLink]="['/user', globalData.user.id]">
 
     <div class="button-group display-flex">
-      <ion-button expand="block" fill="clear" routerLink="/home/chat" routerLinkActive="active">
+      <ion-button expand="block" fill="clear" routerLink="/home/session" routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
         <ion-badge [hidden]="!globalData.unreadMsgCount()" class="bg-danger">
           {{ globalData.unreadMsgCount() | numLimit }}
@@ -42,7 +42,5 @@
     </ion-toolbar>
   </ion-header>
 
-  <div style="margin: 3rem 0 0 3rem;">
-    <ion-router-outlet class="router-outlet" [animation]="routerAnimation"></ion-router-outlet>
-  </div>
+  <ion-router-outlet class="router-outlet" [animation]="routerAnimation"></ion-router-outlet>
 </ion-content>

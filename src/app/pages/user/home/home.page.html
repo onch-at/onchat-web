@@ -13,81 +13,75 @@
     </ion-toolbar>
   </ion-header>
 
-  <!-- <img class="bg-img" [src]="user.backgroundImage"> -->
-  <img class="bg-img" src="https://blog.hypergo.net/api/bing/image.php">
+  <main>
+    <!-- <img class="bg-img" [src]="user.backgroundImage"> -->
+    <img class="bg-img" src="https://blog.hypergo.net/api/bing/image.php">
 
-  <div class="card">
-    <div class="card-header">
+    <div class="banner-container">
+      <div>
+        <h1 class="username font-bold text-ellipsis">{{ user.username }}</h1>
+        <div>USER-ID：{{ user.id }}</div>
+      </div>
       <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/avatar', user.id]">
-      <div class="info">
-        <h4>{{ user.username }}</h4>
-        <div class="account">
-          <div>USER-ID：{{ user.id }}</div>
-          <div>昵称：{{ user.nickname || user.username }}</div>
-        </div>
+
+    </div>
+
+    <article appRipple class="cloud-block signature display-flex align-items-center">
+      <ion-icon name="sparkles"></ion-icon>
+      {{ user.signature || '这个人很懒，什么都没写~' }}
+    </article>
+
+    <div appRipple class="cloud-block last-online display-flex align-items-center">
+      <ion-icon name="time"></ion-icon>
+      最近一次上线时间：{{ user.loginTime | date:'yyyy年M月d日' }}
+    </div>
+
+    <div class="cloud-block">
+      <div class="cloud-block-item">
+        <span>昵 称</span>
+        <span>{{ user.nickname || user.username }}</span>
+      </div>
+
+      <div class="cloud-block-item">
+        <span>心情</span>
+        <span class="display-flex align-items-center">
+          <app-mood-icon [value]="(user.mood != null ? user.mood : mood.Joy)"></app-mood-icon>
+          <span>{{ (user.mood !== null ? user.mood : mood.Joy) | mood }}</span>
+        </span>
+      </div>
+
+      <div class="cloud-block-item">
+        <span>生 日</span>
+        <span>{{ user.birthday ? (user.birthday | date:'yyyy-M-d') : '未设置' }}</span>
+      </div>
+
+      <div class="cloud-block-item">
+        <span>性 别</span>
+        <span>{{ (user.gender != null ? user.gender : gender.Secret) | gender }}</span>
+      </div>
+
+      <div class="cloud-block-item">
+        <span>年 龄</span>
+        <span>{{ user.age || 0 }}岁</span>
+      </div>
+
+      <div class="cloud-block-item">
+        <span>十二星座</span>
+        <span>
+          <app-constellation-icon *ngIf="user.constellation" [value]="user.constellation"></app-constellation-icon>
+          {{ user.constellation ? (user.constellation | constellation) : '未设置' }}
+        </span>
       </div>
     </div>
 
-    <div class="card-content">
-      <article appRipple class="signature">
-        {{ user.signature || '这个人很懒，什么都没写~' }}
-      </article>
-
-      <div appRipple class="last-online">
-        <ion-icon name="time"></ion-icon>
-        最近一次上线时间：{{ user.loginTime | date:'yyyy年M月d日' }}
-      </div>
-
-      <ul class="details-list">
-        <li class="details-item">
-          <label>心 情</label>
-          <span class="display-flex align-items-center justify-content-end">
-            <app-mood-icon [value]="(user.mood != null ? user.mood : mood.Joy)"></app-mood-icon>
-            <span>{{ (user.mood != null ? user.mood : mood.Joy) | mood }}</span>
-          </span>
-        </li>
-
-        <li class="details-item">
-          <label>生 日</label>
-          <span>{{ user.birthday ? (user.birthday | date:'yyyy-M-d') : '未设置' }}</span>
-        </li>
-
-        <li class="details-item">
-          <label>性 别</label>
-          <span>{{ (user.gender != null ? user.gender : gender.Secret) | gender }}</span>
-        </li>
-
-        <li class="details-item">
-          <label>年 龄</label>
-          <span>{{ user.age || 0 }}岁</span>
-        </li>
-
-        <li class="details-item">
-          <label>十二星座</label>
-          <span>
-            <app-constellation-icon *ngIf="user.constellation" [value]="user.constellation"></app-constellation-icon>
-            {{ user.constellation ? (user.constellation | constellation) : '未设置' }}
-          </span>
-        </li>
-
-        <li class="details-item">
-          <label>电子邮箱</label>
-          <span>{{ user.email || '未绑定' }}</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <aside class="bottom-bar">
-    <button *ngIf="chatroomId" appRipple appActiveClass [routerLink]="['/chat', chatroomId]"
-      class="btn-primary btn-block">
+    <button *ngIf="chatroomId" appRipple appActiveClass [routerLink]="['/chat', chatroomId]" class="btn-primary btn-block">
       跟Ta聊聊
     </button>
 
     <!-- TODO 这边以后可以和自己聊天 -->
-    <button *ngIf="!chatroomId && globalData.user?.id != user.id" appRipple appActiveClass
-      [routerLink]="['/friend/request', user.id]" class="btn-primary btn-block">
+    <button *ngIf="!chatroomId && globalData.user?.id !== user.id" appRipple appActiveClass
+            [routerLink]="['/friend/request', user.id]" class="btn-primary btn-block">
       加Ta好友
     </button>
-  </aside>
+  </main>
 </ion-content>

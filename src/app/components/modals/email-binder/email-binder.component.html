@@ -3,7 +3,7 @@
     <ion-toolbar>
       <ion-buttons *ngIf="globalData.user.email" slot="start">
         <ion-button (tap)="dismiss()">
-          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
+          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
 
@@ -21,8 +21,8 @@
   <form [formGroup]="form">
     <div class="form-group">
       <label class="display-block">电子邮箱</label>
-      <input type="email" class="display-block text-center ipt-primary" formControlName="email"
-        (blur)="trimAll('email')" placeholder="请输入你的邮箱地址" [maxlength]="emailMaxLength" required>
+      <input type="email" class="display-block text-center ipt-primary" formControlName="email" (blur)="trimAll('email')"
+             placeholder="请输入你的邮箱地址" [maxlength]="emailMaxLength" required>
 
       <div class="form-control-warning">
         <ion-icon name="warning"></ion-icon>
@@ -33,11 +33,11 @@
     <div class="form-group">
       <label class="display-block">验证码</label>
       <div class="form-control">
-        <input type="text" class="display-block text-center ipt-primary" formControlName="captcha"
-          (blur)="trimAll('captcha')" placeholder="请输入验证码" maxlength="6" required style="padding-right: 40%">
+        <input type="text" class="display-block text-center ipt-primary" formControlName="captcha" (blur)="trimAll('captcha')"
+               placeholder="请输入验证码" maxlength="6" required style="padding-right: 40%">
 
         <button appRipple appActiveClass [disabled]="form.controls.email.errors || countdownTimer" class="btn-primary"
-          (tap)="sendCaptcha()">
+                (tap)="sendCaptcha()">
           {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
         </button>
 

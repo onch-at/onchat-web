@@ -3,7 +3,7 @@
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-button (tap)="dismiss()">
-          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;"></ion-icon>
+          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
 
@@ -19,7 +19,7 @@
 
   <main>
     <quill-editor class="flex-col-container" [(ngModel)]="html" [modules]="modules"
-      (onContentChanged)="onContentChanged($event); cache()">
+                  (onContentChanged)="onContentChanged($event); cache()">
     </quill-editor>
   </main>
 

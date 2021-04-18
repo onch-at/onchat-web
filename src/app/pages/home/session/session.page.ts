@@ -13,12 +13,12 @@ import { EntityUtil } from 'src/app/utils/entity.util';
 import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.page.html',
-  styleUrls: ['./chat.page.scss'],
+  selector: 'app-session',
+  templateUrl: './session.page.html',
+  styleUrls: ['./session.page.scss'],
   animations: [slideUpOnLeaveAnimation]
 })
-export class ChatPage implements OnInit {
+export class SessionPage implements OnInit {
   msgType = MessageType;
   chatSessionType = ChatSessionType;
   /** 虚拟列表项目高度 */

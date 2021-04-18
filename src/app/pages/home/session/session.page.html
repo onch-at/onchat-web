@@ -7,17 +7,16 @@
 	<!-- <ion-searchbar animated placeholder="搜索"></ion-searchbar> -->
 
 	<ion-virtual-scroll [items]="globalData.chatSessions" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
-		[trackBy]="trackByFn">
+											[trackBy]="trackByFn">
 		<ion-item-sliding #ionItemSliding mode="md" *virtualItem="let item; let i = index;">
 			<ion-item-options side="start">
-				<ion-item-option (tap)="doStickyChatSession(item, ionItemSliding)"
-					class="chat-session-item-option bg-gray color-medium">
+				<ion-item-option (tap)="doStickyChatSession(item, ionItemSliding)" class="chat-session-item-option bg-gray color-medium">
 					{{ item.sticky ? '取消置顶' : '置顶' }}
 				</ion-item-option>
 			</ion-item-options>
 
-			<ion-item [ngSwitch]="item.type" class="chat-session-item" [ngClass]="{'sticky': item.sticky}" lines="none"
-				[detail]="false" [button]="true" (tap)="onTap(item)">
+			<ion-item [ngSwitch]="item.type" class="chat-session-item" [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
+								[button]="true" (tap)="onTap(item)">
 
 				<!-- 聊天室类型 -->
 				<ng-container *ngSwitchCase="chatSessionType.Chatroom">
@@ -26,7 +25,7 @@
 					<ion-label class="item-content">
 						<h2 class="chat-session-item-title">{{ item.title }}</h2>
 						<p class="chat-session-item-desc">
-							{{ item.content ? (item.content | sender) + (item.content | msgDesc) : '进去打个招呼吧？' }}
+							{{ item.content ? (item.content | sender: item.data.chatroomType) + (item.content | msgDesc) : '进去打个招呼吧？' }}
 						</p>
 					</ion-label>
 				</ng-container>
@@ -57,8 +56,8 @@
 			</ion-item>
 
 			<ion-item-options side="end">
-				<ion-item-option *ngIf="item.unread ||item.type === chatSessionType.Chatroom"
-					class="chat-session-item-option bg-primary" (tap)="doReadChatSession(item, ionItemSliding)">
+				<ion-item-option *ngIf="item.unread ||item.type === chatSessionType.Chatroom" class="chat-session-item-option bg-primary"
+												 (tap)="doReadChatSession(item, ionItemSliding)">
 					{{ item.unread ? '设为已读' : '设为未读' }}
 				</ion-item-option>
 				<ion-item-option class="chat-session-item-option bg-danger" (tap)="removeChatSession(item,ionItemSliding)">

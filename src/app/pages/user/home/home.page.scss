@@ -8,6 +8,19 @@ ion-header {
   }
 }
 
+ion-content {
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100vh;
+  padding-bottom: calc(var(--ion-safe-area-bottom, 0) + 1rem);
+}
+
 .bg-img {
   position: fixed;
   top: 0;
@@ -15,138 +28,79 @@ ion-header {
   height: 100vh;
   width: 100vw;
   object-fit: cover;
+  z-index: -1;
 }
 
-.card {
-  position: absolute;
-  top: 35.75vh;
-  left: 0;
-  background: rgba(var(--oc-color-white-rgb), 0.5);
+.banner-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 0.5rem;
+  font-size: 0.9rem;
+  color: #fff;
+  text-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.75);
+  margin-bottom: 0.75rem;
+}
+
+.avatar {
+  width: 5.5rem;
+  height: 5.5rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(15px) saturate(175%);
-  border-radius: 0 1.5rem 0 0;
-  width: 100%;
-  min-height: calc(100% - 35.75vh);
-  transform: translateX(-100%);
-  animation: slide-in-right 0.4s ease 0.025s forwards;
+}
 
-  .card-header {
-    height: 6rem;
-    margin-top: -3rem;
-    padding: 0 0.75rem;
-    display: flex;
+.username {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+  max-width: 65vw;
+}
+
+.cloud-block {
+  padding: 0.75rem;
+  background: rgba(var(--oc-color-white-rgb), 0.75);
+  backdrop-filter: blur(15px) saturate(175%);
+  border-radius: 1.25rem;
+
+  &.signature,
+  &.last-online {
+    color: #fff;
   }
 
-  .avatar {
-    width: 6rem;
-    height: 6rem;
-    border-radius: 50%;
-    border: 0.25rem solid rgba(var(--oc-color-white-rgb), 0.25);
+  &.signature {
+    background: rgba(var(--oc-color-primary-rgb), 0.75);
+    border-radius: 1.25rem 1.25rem 0.5rem 0.5rem;
+  }
+
+  &.last-online {
+    background: rgba(#3880ff, 0.75);
+    border-radius: 0.5rem 0.5rem 1.25rem 1.25rem;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 0.75rem;
+  }
+
+  > ion-icon {
     flex-shrink: 0;
+    font-size: 1.25rem;
+    margin-right: 0.4rem;
+  }
+}
+
+.cloud-block-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+
+  &:first-child {
+    padding-top: 0;
   }
 
-  .info {
-    padding-right: 0.5rem;
-    flex: auto;
-
-    > * {
-      width: calc(100vw - 8rem);
-    }
-
-    h4 {
-      margin: 0;
-      padding-left: 0.75rem;
-      height: 3rem;
-      line-height: 3.5rem;
-      color: var(--oc-color-white);
-      font-weight: bold;
-      font-size: 1.25rem;
-      text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
-  .account {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    height: 3rem;
-    padding: 0.3rem 0 0.1rem 0.75rem;
-
-    > * {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-
-  .card-content {
-    padding: 0 1rem calc(var(--ion-safe-area-bottom, 0) + 4.5rem);
-
-    > *:first-child {
-      margin-top: 0.75rem;
-    }
-
-    > *:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-  }
-
-  .last-online {
-    display: flex;
-    align-items: center;
-    color: #3880ff;
-    height: 2.5rem;
-    line-height: 2.5rem;
-    padding: 0 0.75rem;
-    border-radius: 1.25rem;
-    background: rgba(#3880ff, 0.25);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    ion-icon {
-      font-size: 1.25rem;
-      margin-right: 0.4rem;
-    }
-  }
-
-  .signature {
-    padding: 0.5rem 1rem 0.75rem;
-    font-size: 0.9rem;
-    background: rgba(var(--oc-color-primary-rgb), 0.25);
-    border-left: 0.25rem solid rgba(var(--oc-color-primary-rgb), 0.5);
-    border-radius: 0.35rem 0.5rem 0.5rem 0.35rem;
-
-    &::first-letter {
-      font-size: 1.25rem;
-    }
-  }
-
-  .details-list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    background: rgba(var(--oc-color-white-rgb), 0.5);
-    border-radius: 1.25rem;
-    overflow: hidden;
-
-    .details-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-
-      > span {
-        width: 50vw;
-        font-size: 0.9rem;
-        text-align: right;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-    }
+  &:last-child {
+    padding-bottom: 0;
   }
 }
 

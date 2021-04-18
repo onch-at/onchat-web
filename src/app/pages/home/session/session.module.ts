@@ -7,23 +7,23 @@ import { SharedModule } from 'src/app/modules/shared.module';
 import { VirtualScrollPatchModule } from 'src/app/modules/virtual-scroll-patch.module';
 import { MsgDescPipe } from 'src/app/pipes/msg-desc.pipe';
 import { SenderPipe } from 'src/app/pipes/sender.pipe';
-import { ChatPageRoutingModule } from './chat-routing.module';
-import { ChatPage } from './chat.page';
+import { SessionPageRoutingModule } from './session-routing.module';
+import { SessionPage } from './session.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ChatPageRoutingModule,
+    SessionPageRoutingModule,
     SharedModule,
     ScrollbarModule,
     VirtualScrollPatchModule
   ],
   declarations: [
-    ChatPage,
+    SessionPage,
     MsgDescPipe,
     SenderPipe
   ]
 })
-export class ChatPageModule { }
+export class SessionPageModule { }

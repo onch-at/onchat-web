@@ -15,8 +15,8 @@ const routes: Routes = [
     ],
     children: [
       {
-        path: 'chat',
-        loadChildren: () => import('./chat/chat.module').then(m => m.ChatPageModule)
+        path: 'session',
+        loadChildren: () => import('./session/session.module').then(m => m.SessionPageModule)
       },
       {
         path: 'contact',
@@ -32,14 +32,14 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'chat',
+        redirectTo: 'session',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '**',
-    redirectTo: '/home/chat',
+    redirectTo: '/home/session',
     pathMatch: 'full'
   }
 ];
