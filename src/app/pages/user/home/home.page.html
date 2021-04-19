@@ -7,7 +7,7 @@
 
       <ion-buttons slot="end" *ngIf="user.id == globalData.user?.id" routerLink="/user/settings/info">
         <ion-button>
-          <ion-icon slot="icon-only" name="create-outline" style="font-size: 1.5rem;"></ion-icon>
+          <ion-icon slot="icon-only" name="create-outline" style="font-size: 1.5rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -26,12 +26,12 @@
 
     </div>
 
-    <article appRipple class="cloud-block signature display-flex align-items-center">
+    <article appRipple class="cloud-block signature dp-flex align-center">
       <ion-icon name="sparkles"></ion-icon>
       {{ user.signature || '这个人很懒，什么都没写~' }}
     </article>
 
-    <div appRipple class="cloud-block last-online display-flex align-items-center">
+    <div appRipple class="cloud-block last-online dp-flex align-center">
       <ion-icon name="time"></ion-icon>
       最近一次上线时间：{{ user.loginTime | date:'yyyy年M月d日' }}
     </div>
@@ -44,7 +44,7 @@
 
       <div class="cloud-block-item">
         <span>心情</span>
-        <span class="display-flex align-items-center">
+        <span class="dp-flex align-center">
           <app-mood-icon [value]="(user.mood != null ? user.mood : mood.Joy)"></app-mood-icon>
           <span>{{ (user.mood !== null ? user.mood : mood.Joy) | mood }}</span>
         </span>

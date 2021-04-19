@@ -36,13 +36,13 @@
     <div class="bottom-bar-header">
       <!-- 这里的ID将附加上房间号来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
       <textarea #textarea [id]="'message-' + chatroomId" name="message" rows="1"
-        [ngClass]="{'invalid': msg.length > textMsgMaxLength}" (keyup)="onKeyup($event)" (focus)="hideDrawer()"
-        placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
+                [ngClass]="{'invalid': msg.length > textMsgMaxLength}" (keyup)="onKeyup($event)" (focus)="hideDrawer()"
+                placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
 
       <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
       <button appRipple appActiveClass class="btn-primary send-btn" (click)="send()" [hidden]="!showSendBtn()"
-        [disabled]="disableSendBtn()">
-        <label [for]="'message-' + chatroomId" class="display-flex align-items-center justify-content-center">
+              [disabled]="disableSendBtn()">
+        <label [for]="'message-' + chatroomId" class="dp-flex align-center justify-center">
           <ion-icon name="arrow-up"></ion-icon>
         </label>
       </button>
@@ -52,8 +52,7 @@
       </button>
     </div>
 
-    <div #drawer class="drawer"
-      [ngStyle]="{'height': showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0}">
+    <div #drawer class="drawer" [ngStyle]="{'height': showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0}">
       <app-drawer [page]="this"></app-drawer>
     </div>
   </div>

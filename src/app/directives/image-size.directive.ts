@@ -23,17 +23,26 @@ export class ImageSizeDirective implements AfterViewInit {
   }
 
   private resize() {
-    const { nativeElement } = this.elementRef;
-    const [width, height] = this.appImageSize;
-    const maxWidth = window.innerWidth * 0.4;
-
     let divisor = 1;
+    let [width, height] = this.appImageSize;
+    const { nativeElement } = this.elementRef;
+    const maxWidth = window.innerWidth * 0.4;
+    const maxHeight = window.innerHeight * 0.5;
 
     if (width > maxWidth) {
       divisor = width / maxWidth;
+      width /= divisor;
+      height /= divisor;
     }
 
-    this.renderer.setStyle(nativeElement, 'height', (height / divisor) + 'px');
+    if (height > maxHeight) {
+      divisor = height / maxHeight;
+      width /= divisor;
+      height /= divisor;
+    }
+
+    this.renderer.setStyle(nativeElement, 'width', width + 'px');
+    this.renderer.setStyle(nativeElement, 'height', height + 'px');
   }
 
 }

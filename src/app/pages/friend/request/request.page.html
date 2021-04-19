@@ -17,7 +17,7 @@
 
   <img class="bg-img" [src]="user.avatarThumbnail">
 
-  <main class="flex-col-container align-items-center">
+  <main class="flex-col-container align-center">
     <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user', user.id]">
     <h1>{{ user.username }}</h1>
 
@@ -35,7 +35,7 @@
     <ion-item lines="none">
       <ion-label position="stacked">申请原因</ion-label>
       <ion-textarea [(ngModel)]="requestReason" clearInput [maxlength]="reasonMaxLength" rows="4" autoGrow
-        placeholder="告诉对方你的好友申请原因">
+                    placeholder="告诉对方你的好友申请原因">
       </ion-textarea>
     </ion-item>
 

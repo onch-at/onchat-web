@@ -25,12 +25,12 @@
           </div>
 
           <span #bubble appRipple class="msg-bubble" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
-            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-            [innerHTML]="item.data['content'] | hyperlink | sanitize: 'html'">
+                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
+                [innerHTML]="item.data['content'] | hyperlink | sanitize: 'html'">
           </span>
 
           <ion-spinner *ngIf="globalData.user?.id == item.userId && item.loading" class="send-spinner" name="dots"
-            [duration]="1000"></ion-spinner>
+                       [duration]="1000"></ion-spinner>
         </div>
       </li>
 
@@ -45,10 +45,9 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble appRipple class="msg-bubble ql-editor"
-            (press)="presentBubbleToolbarPopover(item, bubble, $event)"
-            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-            [innerHTML]=" item.data['html'] | hyperlink | sanitize: 'html'"></span>
+          <span #bubble appRipple class="msg-bubble ql-editor" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
+                [innerHTML]=" item.data['html'] | hyperlink | sanitize: 'html'"></span>
         </div>
       </li>
 
@@ -63,14 +62,13 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble appRipple class="msg-bubble msg-bubble-card"
-            (press)="presentBubbleToolbarPopover(item, bubble, $event)"
-            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-            [routerLink]="['/chatroom', item.data['chatroomId']]">
+          <span #bubble appRipple class="msg-bubble msg-bubble-card" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
+                [routerLink]="['/chatroom', item.data['chatroomId']]">
             <ion-img class="bg-img" [src]="item.data['avatarThumbnail']"></ion-img>
             <div class="msg-bubble-card-body cursor-pointer">
               <div class="msg-bubble-card-label">邀请加入群聊</div>
-              <div class="display-flex">
+              <div class="dp-flex">
                 <ion-img class="msg-bubble-card-avatar" [src]="item.data['avatarThumbnail']"></ion-img>
                 <div>
                   <div class="msg-bubble-card-title text-ellipsis">{{ item.data['name'] }}</div>
@@ -95,8 +93,8 @@
           </div>
 
           <span #bubble appRipple class="msg-bubble msg-bubble-img" (tap)="previewImage(item.id)"
-            (press)="presentBubbleToolbarPopover(item, bubble, $event)"
-            (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
+                (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <img [appImageSize]="[item.data['width'],item.data['height']]" [src]="item.data['url']" />
             <ng-container *ngIf="item.loading">
               <div class="loading-mask" [ngStyle]="{ height: 100 - item.percent + '%' }"></div>

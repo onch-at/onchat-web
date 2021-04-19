@@ -3,7 +3,7 @@
     <img *ngIf="globalData.user" class="avatar cursor-pointer" [src]="globalData.user.avatarThumbnail"
          [routerLink]="['/user', globalData.user.id]">
 
-    <div class="button-group display-flex">
+    <div class="button-group dp-flex">
       <ion-button expand="block" fill="clear" routerLink="/home/session" routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
         <ion-badge [hidden]="!globalData.unreadMsgCount()" class="bg-danger">

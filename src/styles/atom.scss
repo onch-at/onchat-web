@@ -1,4 +1,4 @@
-.font-family-primary {
+.font-primary {
     font-family: "Alibaba-Sans-Black" !important;
 }
 .color-primary {
@@ -52,28 +52,28 @@
 .bg-medium {
     background-color: var(--oc-color-medium) !important;
 }
-.display-block {
+.dp-block {
     display: block !important;
 }
-.display-inline {
+.dp-inline {
     display: inline !important;
 }
-.display-inline-block {
+.dp-inline-block {
     display: inline-block !important;
 }
-.display-flex {
+.dp-flex {
     display: flex !important;
 }
-.justify-content-center {
+.justify-center {
     justify-content: center !important;
 }
-.justify-content-space-between {
+.justify-space-between {
     justify-content: space-between !important;
 }
-.justify-content-end {
+.justify-end {
     justify-content: flex-end !important;
 }
-.align-items-center {
+.align-center {
     align-items: center !important;
 }
 .flex-auto {
@@ -94,10 +94,10 @@
 .font-bold {
     font-weight: bold !important;
 }
-.m-0 {
+.mg-0 {
     margin: 0 !important;
 }
-.p-0 {
+.pd-0 {
     padding: 0 !important;
 }
 .outline-none {

@@ -3,8 +3,8 @@ ion-header {
 
   ion-buttons ion-back-button,
   ion-buttons ion-button {
-    --color: var(--oc-color-white);
-    filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));
+    --color: #fff;
+    filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.75));
   }
 }
 
@@ -45,9 +45,9 @@ main {
 .avatar {
   width: 5.5rem;
   height: 5.5rem;
-  padding: 0.2rem;
+  padding: 0.25rem;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.125);
   backdrop-filter: blur(15px) saturate(175%);
 }
 
@@ -93,7 +93,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 0.5rem 0.25rem;
 
   &:first-child {
     padding-top: 0;

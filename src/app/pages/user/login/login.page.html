@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true">
   <div class="flex-col-container overflow-hidden">
-    <ion-grid class="display-flex align-items-center">
+    <ion-grid class="dp-flex align-center">
       <ion-row>
         <ion-col size="12">
           <div class="logo text-center">
@@ -10,8 +10,8 @@
 
           <form [formGroup]="form">
             <div class="form-group">
-              <input type="text" class="display-block text-center ipt-primary" formControlName="username"
-                (blur)="trimAll('username')" placeholder="用户名" [maxlength]="usernameMaxLength" required>
+              <input type="text" class="dp-block text-center ipt-primary" formControlName="username" (blur)="trimAll('username')"
+                     placeholder="用户名" [maxlength]="usernameMaxLength" required>
 
               <div class="form-control-warning">
                 <ion-icon name="warning"></ion-icon>
@@ -21,9 +21,9 @@
 
             <div class="form-group">
               <div class="form-control">
-                <input [type]="pwdInputType" class="display-block text-center ipt-primary ipt-password"
-                  autocomplete="current-password" formControlName="password" (blur)="trimAll('password')"
-                  placeholder="密码" [maxlength]="passwordMaxLength" required>
+                <input [type]="pwdInputType" class="dp-block text-center ipt-primary ipt-password" autocomplete="current-password"
+                       formControlName="password" (blur)="trimAll('password')" placeholder="密码" [maxlength]="passwordMaxLength"
+                       required>
                 <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
                 </ion-icon>
 
@@ -38,7 +38,7 @@
 
         <ion-col class="btn-container" style="padding-right: .55rem;">
           <button appRipple appActiveClass class="btn-primary" routerLink="/user/register"
-            [queryParams]="{username: form.value.username}">
+                  [queryParams]="{username: form.value.username}">
             注册
           </button>
         </ion-col>
@@ -58,7 +58,7 @@
       </ion-row>
     </ion-grid>
 
-    <footer class="font-family-primary text-center">
+    <footer class="font-primary text-center">
       <div>
         Copyright © 2018~2021 HyperGo!
         <span style="padding: 0 .125rem;">|</span>
