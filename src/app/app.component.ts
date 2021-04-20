@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { NavController } from '@ionic/angular';
+import { from } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
@@ -390,14 +391,24 @@ export class AppComponent implements OnInit {
    * 检测更新
    */
   detectAppUpdate() {
-    this.swUpdate.available.subscribe(() => this.swUpdate.activateUpdate().then(() => {
+    this.swUpdate.available.pipe(
+      mergeMap(() => {
+        this.overlay.presentNotification({
+          title: '发现新版本',
+          description: 'OnChat：检测到有可用更新，后台自动下载中…',
+          icon: 'arrow-down-circle'
+        });
+
+        return from(this.swUpdate.activateUpdate());
+      })
+    ).subscribe(() => {
       this.overlay.presentAlert({
-        header: '发现新版本',
+        header: '新版本已就绪',
         message: '是否立即重启以更新到新版本？',
         backdropDismiss: false,
         confirmHandler: () => location.reload()
       });
-    }));
+    });
   }
 
   /**

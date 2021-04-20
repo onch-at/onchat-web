@@ -1,5 +1,8 @@
 <aside class="notification cursor-pointer" appActiveClass [routerLink]="url">
-  <img class="notification-icon" [src]="icon">
+  <img *ngIf="isLink()" class="notification-icon" [src]="icon">
+  <div *ngIf="!isLink()" class="notification-icon">
+    <ion-icon [name]="icon"></ion-icon>
+  </div>
   <div class="notification-body">
     <h1 class="notification-title text-ellipsis">{{ title }}</h1>
     <p class="notification-description">{{ description }}</p>

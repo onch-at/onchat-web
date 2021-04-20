@@ -1,10 +1,10 @@
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Renderer2 } from '@angular/core';
 
 /** 为宿主元素添加涟漪效果 */
 @Directive({
   selector: '[appRipple]'
 })
-export class RippleDirective {
+export class RippleDirective implements AfterViewInit {
 
   constructor(
     private elementRef: ElementRef,

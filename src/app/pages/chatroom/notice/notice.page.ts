@@ -23,11 +23,11 @@ export class NoticePage implements OnInit, ViewWillEnter {
     const leavingAnimation = this.animationCtrl.create().addElement(leavingEl).beforeRemoveClass('ion-page-invisible');
 
     if (this.animation > activatedRouteData.animation) {
-      enteringAnimation.fromTo('transform', 'translateX(-100%)', 'translateX(0%)');
-      leavingAnimation.fromTo('transform', 'translateX(0%)', 'translateX(100%)');
+      enteringAnimation.fromTo('transform', 'translate3d(-100%,0,0)', 'translate3d(0,0,0)');
+      leavingAnimation.fromTo('transform', 'translate3d(0,0,0)', 'translate3d(100%,0,0)');
     } else {
-      enteringAnimation.fromTo('transform', 'translateX(100%)', 'translateX(0%)');
-      leavingAnimation.fromTo('transform', 'translateX(0%)', 'translateX(-100%)');
+      enteringAnimation.fromTo('transform', 'translate3d(100%,0,0)', 'translate3d(0,0,0)');
+      leavingAnimation.fromTo('transform', 'translate3d(0,0,0)', 'translate3d(-100%,0,0)');
     }
 
     this.animation = activatedRouteData.animation;

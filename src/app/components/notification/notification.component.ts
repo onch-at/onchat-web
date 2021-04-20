@@ -25,8 +25,9 @@ export class NotificationComponent implements OnInit, OnDestroy {
   @Input() handler: (e: Event) => void;
   /** 当前Notification的元素 */
   element: HTMLElement;
-  /** 取消监听事件函数 */
-  unlistener: () => void;
+
+  /** 判断是否为链接 */
+  isLink = () => /^(\/|http:\/\/|https:\/\/)/i.test(this.icon);
 
   private dismiss$: Subject<void> = new Subject();
   /** 动画 */
@@ -96,7 +97,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unlistener?.();
     this.gesture.destroy();
     this.animation.destroy();
   }
@@ -106,8 +106,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
    */
   dismiss(): Observable<void> {
     this.renderer.addClass(this.element, 'hide');
-    this.unlistener?.();
-    this.unlistener = this.renderer.listen(this.element, 'transitionend', () => {
+    this.renderer.listen(this.element, 'transitionend', () => {
       this.overlayRef.dispose();
       this.dismiss$.next();
     });
@@ -124,8 +123,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
-    this.unlistener?.();
-    this.unlistener = this.renderer.listen(this.element, 'transitionend', () => {
+    this.renderer.listen(this.element, 'transitionend', () => {
       this.dismiss();
       this.handler && this.handler(event);
     });

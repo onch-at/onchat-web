@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { SocketService } from 'src/app/services/socket.service';
   templateUrl: './request.page.html',
   styleUrls: ['./request.page.scss'],
 })
-export class RequestPage implements OnInit {
+export class RequestPage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   chatRequest: ChatRequest;
   chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;

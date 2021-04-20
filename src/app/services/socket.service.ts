@@ -29,7 +29,7 @@ export class SocketService {
    */
   init() {
     this.on(SocketEvent.Init).pipe(
-      timeout(5000),
+      timeout(10000),
       first()
     ).subscribe(() => this.init$.next());
 

@@ -34,4 +34,9 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  viewAvatar(event: Event) {
+    event.stopPropagation();
+    this.router.navigate(['/user/avatar', this.globalData.user.id]);
+  }
+
 }

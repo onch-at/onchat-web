@@ -28,7 +28,7 @@
 
     <article appRipple class="cloud-block signature dp-flex align-center">
       <ion-icon name="sparkles"></ion-icon>
-      {{ user.signature || '这个人很懒，什么都没写~' }}
+      <div class="text-ellipsis">{{ user.signature || '这个人很懒，什么都没写~' }}</div>
     </article>
 
     <div appRipple class="cloud-block last-online dp-flex align-center">

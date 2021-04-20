@@ -47,7 +47,7 @@ main {
   height: 5.5rem;
   padding: 0.25rem;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.125);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(15px) saturate(175%);
 }
 
@@ -71,6 +71,10 @@ main {
   &.signature {
     background: rgba(var(--oc-color-primary-rgb), 0.75);
     border-radius: 1.25rem 1.25rem 0.5rem 0.5rem;
+
+    > .text-ellipsis {
+      max-width: 85vw;
+    }
   }
 
   &.last-online {

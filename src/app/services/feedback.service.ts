@@ -26,7 +26,7 @@ export class FeedbackService {
    * 轻微震动：50ms
    */
   slightVibrate() {
-    'vibrate' in navigator && navigator.vibrate(25);
+    navigator.vibrate?.(25);
   }
 
 }

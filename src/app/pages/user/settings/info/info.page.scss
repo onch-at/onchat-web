@@ -58,6 +58,10 @@ form {
     border-radius: 1.5rem;
 }
 
+ion-textarea.ipt-primary {
+    height: auto;
+}
+
 ion-textarea {
     ::ng-deep .sc-ion-textarea-ios {
         &.textarea-wrapper {

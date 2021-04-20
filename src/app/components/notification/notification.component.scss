@@ -27,8 +27,20 @@
     height: 3rem;
     width: 3rem;
     border-radius: 50%;
-    object-fit: cover;
     flex-shrink: 0;
+}
+
+div.notification-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.65rem;
+    color: var(--oc-color-white);
+    background: rgba(var(--oc-color-primary-rgb), 0.75);
+}
+
+img.notification-icon {
+    object-fit: cover;
 }
 
 .notification-body {
