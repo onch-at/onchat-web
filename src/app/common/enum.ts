@@ -96,24 +96,24 @@ export enum FriendRequestStatus {
   Agree = 1,
   /** 拒绝 */
   Reject = 2,
-  /** 删除 */
-  Delete = 3,
   /** 忽略 */
-  Ignore = 4
+  Ignore = 3,
+  /** 删除 */
+  Delete = 4,
 }
 
 /** 聊天申请的状态 */
 export enum ChatRequestStatus {
-  /** 等待处理 */
+  /** 等待验证 */
   Wait = 0,
   /** 同意 */
   Agree = 1,
   /** 拒绝 */
   Reject = 2,
-  /** 删除 */
-  Delete = 3,
   /** 忽略 */
-  Ignore = 4
+  Ignore = 3,
+  /** 删除 */
+  Delete = 4,
 }
 
 /** 聊天室类型 */

@@ -44,7 +44,7 @@ export class HandlePage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.subject)).subscribe((result: Result<any>) => {
-      if (result.code === ResultCode.Success && result.data.selfId == this.user.id) {
+      if (result.code === ResultCode.Success && result.data.requesterId == this.user.id) {
         setTimeout(() => {
           this.router.navigateByUrl('/');
         }, 250);
@@ -52,7 +52,7 @@ export class HandlePage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest>) => {
-      if (result.code === ResultCode.Success && result.data.selfId == this.user.id) {
+      if (result.code === ResultCode.Success && result.data.requesterId == this.user.id) {
         setTimeout(() => {
           this.router.navigateByUrl('/');
         }, 250);
@@ -69,11 +69,11 @@ export class HandlePage implements OnInit, OnDestroy {
     this.overlay.presentAlert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestAgree(this.friendRequest.id, data['selfAlias']);
+        this.socketService.friendRequestAgree(this.friendRequest.id, data['requesterAlias']);
       },
       inputs: [
         {
-          name: 'selfAlias',
+          name: 'requesterAlias',
           type: 'text',
           placeholder: '顺便给对方起个好听的别名吧',
           cssClass: 'ipt-primary',

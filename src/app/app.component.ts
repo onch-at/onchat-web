@@ -80,13 +80,13 @@ export class AppComponent implements OnInit {
         }
 
         this.overlay.presentNotification({
-          icon: data.selfAvatarThumbnail,
+          icon: data.requesterAvatarThumbnail,
           title: '收到好友申请',
-          description: '用户 ' + data.selfUsername + ' 申请添加你为好友',
-          url: '/friend/handle/' + data.selfId
+          description: '用户 ' + data.requesterUsername + ' 申请添加你为好友',
+          url: '/friend/handle/' + data.requesterId
         });
         this.feedbackService.playAudio(AudioName.DingDeng);
-      } else if (data.selfId === user.id) {
+      } else if (data.requesterId === user.id) {
         const index = this.globalData.sendFriendRequests.findIndex(o => o.id === data.id);
         // 如果这条好友申请已经在列表里
         if (index >= 0) {
@@ -104,11 +104,11 @@ export class AppComponent implements OnInit {
       const { data } = result;
       const { user, sendFriendRequests, receiveFriendRequests } = this.globalData;
       // 如果申请人是自己（我的好友申请被同意了）
-      if (data.selfId === user.id) {
+      if (data.requesterId === user.id) {
         // 去我发出的申请列表里面找这条FriendRequest，并删除
         this.globalData.sendFriendRequests = sendFriendRequests.filter(o => o.id !== data.friendRequestId);
         // 去我收到的申请列表里面通过找这条FriendRequest，并删除
-        this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.selfId !== data.targetId);
+        this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.requesterId !== data.targetId);
 
         this.overlay.presentNotification({
           icon: data.targetAvatarThumbnail,
@@ -141,7 +141,7 @@ export class AppComponent implements OnInit {
       const { user, receiveFriendRequests } = this.globalData;
       const { data } = result;
       // 如果申请人是自己
-      if (data.selfId === user.id) {
+      if (data.requesterId === user.id) {
         const index = this.globalData.sendFriendRequests.findIndex(o => o.id === data.id);
         if (index >= 0) {
           this.globalData.sendFriendRequests[index] = data;

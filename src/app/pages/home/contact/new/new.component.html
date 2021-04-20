@@ -4,12 +4,12 @@
 			<ion-item-option class="bg-gray color-medium">忽略</ion-item-option>
 		</ion-item-options>
 
-		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/handle', item.selfId]">
-			<ion-img slot="start" *ngIf="i > 9" [src]="item.selfAvatarThumbnail"></ion-img>
-			<img slot="start" *ngIf="i <= 9" [src]="item.selfAvatarThumbnail">
+		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/handle', item.requesterId]">
+			<ion-img slot="start" *ngIf="i > 9" [src]="item.requesterAvatarThumbnail"></ion-img>
+			<img slot="start" *ngIf="i <= 9" [src]="item.requesterAvatarThumbnail">
 
 			<ion-label class="item-content">
-				<h2 class="font-bold">{{ item.selfUsername }}</h2>
+				<h2 class="font-bold">{{ item.requesterUsername }}</h2>
 				<p>{{ item.requestReason || '申请添加你为好友' }}</p>
 			</ion-label>
 
@@ -32,7 +32,7 @@
 			<ion-label>
 				<h2 class="font-bold">{{ item.targetUsername }}</h2>
 
-				<ng-container [ngSwitch]="item.selfStatus || friendRequestStatus.Wait">
+				<ng-container [ngSwitch]="item.requesterStatus || friendRequestStatus.Wait">
 					<p *ngSwitchCase="friendRequestStatus.Wait">
 						{{ item.requestReason ? '申请原因：' + item.requestReason : '申请添加对方为好友' }}
 					</p>
@@ -43,7 +43,7 @@
 				</ng-container>
 			</ion-label>
 
-			<span class="status" [ngSwitch]="item.selfStatus || friendRequestStatus.Wait">
+			<span class="status" [ngSwitch]="item.requesterStatus || friendRequestStatus.Wait">
 				<ng-container *ngSwitchCase="friendRequestStatus.Wait">待验证</ng-container>
 				<ng-container *ngSwitchCase="friendRequestStatus.Reject">已拒绝</ng-container>
 				<ng-container *ngSwitchDefault>未知状态</ng-container>

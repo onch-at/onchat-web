@@ -29,10 +29,10 @@ export class NewComponent implements OnInit {
     this.overlay.presentAlert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestAgree(friendRequestId, data['selfAlias']);
+        this.socketService.friendRequestAgree(friendRequestId, data['requesterAlias']);
       },
       inputs: [{
-        name: 'selfAlias',
+        name: 'requesterAlias',
         type: 'text',
         placeholder: '顺便给对方起个好听的别名吧',
         cssClass: 'ipt-primary',

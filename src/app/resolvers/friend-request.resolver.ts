@@ -32,7 +32,7 @@ export class FriendRequestBySelfIdResolve implements Resolve<Result<FriendReques
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<FriendRequest>> {
         const userId = +route.params.userId;
 
-        return this.apiService.getFriendRequestBySelfId(userId);
+        return this.apiService.getFriendRequestByRequesterId(userId);
     }
 }
 

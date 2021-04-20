@@ -290,10 +290,10 @@ export class ApiService {
 
   /**
    * 根据申请人的UID来获取FriendRequest
-   * @param selfId 申请人的UID
+   * @param requesterId 申请人的UID
    */
-  getFriendRequestBySelfId(selfId: number): Observable<Result<FriendRequest>> {
-    return this.http.get<Result<FriendRequest>>(env.friendUrl + 'request/self/' + selfId);
+  getFriendRequestByRequesterId(requesterId: number): Observable<Result<FriendRequest>> {
+    return this.http.get<Result<FriendRequest>>(env.friendUrl + 'request/requester/' + requesterId);
   }
 
   /**

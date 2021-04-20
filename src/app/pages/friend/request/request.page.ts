@@ -58,7 +58,7 @@ export class RequestPage implements OnInit, OnDestroy {
       debounceTime(100)
     ).subscribe((result: Result<FriendRequest | FriendRequest[]>) => {
       const friendRequest = result.data;
-      if (Array.isArray(friendRequest) || friendRequest.selfId != this.globalData.user.id || friendRequest.targetId != this.user.id) {
+      if (Array.isArray(friendRequest) || friendRequest.requesterId != this.globalData.user.id || friendRequest.targetId != this.user.id) {
         return;
       }
 

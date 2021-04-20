@@ -80,12 +80,12 @@ export class SocketService {
   /**
    * 同意好友申请
    * @param requestId 好友申请实体ID
-   * @param selfAlias 设置好友别名
+   * @param requesterAlias 设置好友别名
    */
-  friendRequestAgree(requestId: number, selfAlias: string = null) {
+  friendRequestAgree(requestId: number, requesterAlias: string = null) {
     this.emit(SocketEvent.FriendRequestAgree, {
       requestId,
-      selfAlias
+      requesterAlias
     });
   }
 
