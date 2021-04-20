@@ -13,8 +13,8 @@
 
       <ion-button expand="block" fill="clear" routerLink="/home/contact" routerLinkActive="active">
         <ion-icon slot="icon-only" name="people"></ion-icon>
-        <ion-badge [hidden]="!globalData.receiveFriendRequests.length" class="bg-danger">
-          {{ globalData.receiveFriendRequests.length | numLimit }}
+        <ion-badge [hidden]="!globalData.unreadFriendRequestCount()" class="bg-danger">
+          {{ globalData.unreadFriendRequestCount() | numLimit }}
         </ion-badge>
       </ion-button>
 

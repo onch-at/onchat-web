@@ -1,11 +1,14 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
+import { ApiService } from 'src/app/services/api.service';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -21,10 +24,12 @@ export class HandlePage implements OnInit, OnDestroy {
   friendRequest: FriendRequest;
 
   constructor(
+    private apiService: ApiService,
     private socketService: SocketService,
     private overlay: Overlay,
     private route: ActivatedRoute,
-    private router: Router
+    private navCtrl: NavController,
+    public globalData: GlobalData,
   ) { }
 
   ngOnInit() {
@@ -37,7 +42,7 @@ export class HandlePage implements OnInit, OnDestroy {
 
       if (data.friendRequest.code !== ResultCode.Success) {
         this.overlay.presentToast(data.friendRequest.msg);
-        return this.router.navigateByUrl('/');
+        return this.navCtrl.back();
       }
 
       this.friendRequest = data.friendRequest.data;
@@ -46,18 +51,28 @@ export class HandlePage implements OnInit, OnDestroy {
     this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.subject)).subscribe((result: Result<any>) => {
       if (result.code === ResultCode.Success && result.data.requesterId == this.user.id) {
         setTimeout(() => {
-          this.router.navigateByUrl('/');
+          this.navCtrl.back();
         }, 250);
       }
     });
 
     this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest>) => {
-      if (result.code === ResultCode.Success && result.data.requesterId == this.user.id) {
+      if (result.code === ResultCode.Success && result.data.requesterId === this.user.id) {
         setTimeout(() => {
-          this.router.navigateByUrl('/');
+          this.navCtrl.back();
         }, 250);
       }
     });
+
+    // 如果未读，则设置为已读
+    const { id, targetReaded } = this.friendRequest;
+    if (!targetReaded) {
+      this.apiService.readedReceiveFriendRequest(id).subscribe();
+      const request = this.globalData.receiveFriendRequests.find(o => o.id === id);
+      if (request) {
+        request.targetReaded = true;
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -71,17 +86,15 @@ export class HandlePage implements OnInit, OnDestroy {
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestAgree(this.friendRequest.id, data['requesterAlias']);
       },
-      inputs: [
-        {
-          name: 'requesterAlias',
-          type: 'text',
-          placeholder: '顺便给对方起个好听的别名吧',
-          cssClass: 'ipt-primary',
-          attributes: {
-            maxlength: NICKNAME_MAX_LENGTH
-          }
+      inputs: [{
+        name: 'requesterAlias',
+        type: 'text',
+        placeholder: '顺便给对方起个好听的别名吧',
+        cssClass: 'ipt-primary',
+        attributes: {
+          maxlength: NICKNAME_MAX_LENGTH
         }
-      ]
+      }]
     });
   }
 
@@ -91,18 +104,16 @@ export class HandlePage implements OnInit, OnDestroy {
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason']);
       },
-      inputs: [
-        {
-          name: 'rejectReason',
-          type: 'textarea',
-          placeholder: '或许可以告诉对方你拒绝的原因',
-          cssClass: 'ipt-primary',
-          attributes: {
-            rows: 4,
-            maxlength: REASON_MAX_LENGTH
-          }
+      inputs: [{
+        name: 'rejectReason',
+        type: 'textarea',
+        placeholder: '或许可以告诉对方你拒绝的原因',
+        cssClass: 'ipt-primary',
+        attributes: {
+          rows: 4,
+          maxlength: REASON_MAX_LENGTH
         }
-      ]
+      }]
     });
   }
 

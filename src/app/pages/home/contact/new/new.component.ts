@@ -1,7 +1,9 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { IonItemSliding } from '@ionic/angular';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { FriendRequestStatus } from 'src/app/common/enum';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -16,20 +18,21 @@ export class NewComponent implements OnInit {
 
   constructor(
     public globalData: GlobalData,
+    private apiService: ApiService,
     private socketService: SocketService,
     private overlay: Overlay,
   ) { }
 
   ngOnInit() { }
 
-  friendRequestAgree(friendRequestId: number, event: Event) {
+  agree(id: number, event: Event) {
     event.preventDefault();
     event.stopPropagation();
 
     this.overlay.presentAlert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestAgree(friendRequestId, data['requesterAlias']);
+        this.socketService.friendRequestAgree(id, data['requesterAlias']);
       },
       inputs: [{
         name: 'requesterAlias',
@@ -43,11 +46,11 @@ export class NewComponent implements OnInit {
     });
   }
 
-  friendRequestReject(friendRequestId: number) {
+  reject(id: number) {
     this.overlay.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestReject(friendRequestId, data['rejectReason']);
+        this.socketService.friendRequestReject(id, data['rejectReason']);
       },
       inputs: [{
         name: 'rejectReason',
@@ -60,6 +63,16 @@ export class NewComponent implements OnInit {
         }
       }]
     });
+  }
+
+  // 已读收到的请求
+  readedReceiveRequest(id: number, ionItemSliding: IonItemSliding) {
+    this.apiService.readedReceiveFriendRequest(id).subscribe();
+    const request = this.globalData.receiveFriendRequests.find(o => o.id === id);
+    if (request) {
+      request.targetReaded = true;
+    }
+    ionItemSliding.close();
   }
 
 }

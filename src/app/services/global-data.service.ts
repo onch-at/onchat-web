@@ -35,6 +35,13 @@ export class GlobalData {
     return count;
   };
 
+  /** 未读的好友请求 */
+  unreadFriendRequestCount = () => this.receiveFriendRequests.reduce((count, o) => (
+    o.targetReaded ? count : count + 1
+  ), 0) + this.sendFriendRequests.reduce((count, o) => (
+    o.requesterReaded ? count : count + 1
+  ), 0);
+
   /** 私聊聊天室列表 */
   private _privateChatrooms: ChatSession[] = [];
   /** 群聊聊天室列表 */

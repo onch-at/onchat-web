@@ -109,11 +109,7 @@ export enum ChatRequestStatus {
   /** 同意 */
   Agree = 1,
   /** 拒绝 */
-  Reject = 2,
-  /** 忽略 */
-  Ignore = 3,
-  /** 删除 */
-  Delete = 4,
+  Reject = 2
 }
 
 /** 聊天室类型 */

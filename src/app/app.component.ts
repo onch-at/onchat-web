@@ -4,7 +4,7 @@ import { SwPush, SwUpdate } from '@angular/service-worker';
 import { NavController } from '@ionic/angular';
 import { from } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
-import { AudioName, ChatSessionType, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
+import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { MsgDescPipe } from './pipes/msg-desc.pipe';
@@ -102,11 +102,15 @@ export class AppComponent implements OnInit {
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<AgreeFriendRequest>) => {
       const { data } = result;
-      const { user, sendFriendRequests, receiveFriendRequests } = this.globalData;
-      // 如果申请人是自己（我的好友申请被同意了）
+      const { user, receiveFriendRequests } = this.globalData;
+      // 如果申请人是自己（我发的好友申请被同意了）
       if (data.requesterId === user.id) {
         // 去我发出的申请列表里面找这条FriendRequest，并删除
-        this.globalData.sendFriendRequests = sendFriendRequests.filter(o => o.id !== data.friendRequestId);
+        const request = this.globalData.sendFriendRequests.find(o => o.id === data.friendRequestId);
+        if (request) {
+          request.status = FriendRequestStatus.Agree;
+          request.requesterReaded = true;
+        }
         // 去我收到的申请列表里面通过找这条FriendRequest，并删除
         this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.requesterId !== data.targetId);
 
@@ -118,8 +122,12 @@ export class AppComponent implements OnInit {
         });
         this.feedbackService.playAudio(AudioName.Boo);
       } else if (data.targetId === user.id) { // 如果自己是被申请人
-        this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.id !== data.friendRequestId);
-        this.overlay.presentToast('成功添加新好友');
+        const request = this.globalData.receiveFriendRequests.find(o => o.id === data.friendRequestId);
+        if (request) {
+          request.status = FriendRequestStatus.Agree;
+          request.targetReaded = true;
+        }
+        this.overlay.presentToast('成功添加新好友！');
       }
 
       // 更新一下聊天列表
@@ -138,7 +146,7 @@ export class AppComponent implements OnInit {
     this.socketService.on(SocketEvent.FriendRequestReject).pipe(
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<FriendRequest>) => {
-      const { user, receiveFriendRequests } = this.globalData;
+      const { user } = this.globalData;
       const { data } = result;
       // 如果申请人是自己
       if (data.requesterId === user.id) {
@@ -157,9 +165,14 @@ export class AppComponent implements OnInit {
         });
         this.feedbackService.playAudio(AudioName.DingDeng);
       } else if (data.targetId === user.id) { // 如果自己是被申请人
-        this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.id !== data.id);
+        const index = this.globalData.receiveFriendRequests.findIndex(o => o.id === data.id);
+        if (index >= 0) {
+          this.globalData.receiveFriendRequests[index] = data;
+        } else {
+          this.globalData.receiveFriendRequests.unshift(data);
+        }
 
-        this.overlay.presentToast('已拒绝该好友申请');
+        this.overlay.presentToast('已拒绝该好友申请！');
       }
     });
 

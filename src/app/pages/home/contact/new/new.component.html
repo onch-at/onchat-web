@@ -1,57 +1,56 @@
 <ion-content appScrollbar>
-	<ion-item-sliding mode="md" *ngFor="let item of globalData.receiveFriendRequests; let i = index;">
-		<ion-item-options side="start">
-			<ion-item-option class="bg-gray color-medium">忽略</ion-item-option>
+	<ion-item-sliding #ionItemSliding mode="md" *ngFor="let item of globalData.receiveFriendRequests;">
+		<ion-item-options *ngIf="!item.targetReaded" side="start">
+			<ion-item-option class="bg-gray color-medium" (tap)="readedReceiveRequest(item.id, ionItemSliding)">
+				忽略
+			</ion-item-option>
 		</ion-item-options>
 
 		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/handle', item.requesterId]">
-			<ion-img slot="start" *ngIf="i > 9" [src]="item.requesterAvatarThumbnail"></ion-img>
-			<img slot="start" *ngIf="i <= 9" [src]="item.requesterAvatarThumbnail">
+			<ion-img slot="start" [src]="item.requesterAvatarThumbnail"></ion-img>
 
 			<ion-label class="item-content">
 				<h2 class="font-bold">{{ item.requesterUsername }}</h2>
 				<p>{{ item.requestReason || '申请添加你为好友' }}</p>
 			</ion-label>
 
-			<button appRipple appActiveClass (click)="friendRequestAgree(item.id, $event)" class="btn-primary">
-				同意
-			</button>
+			<ng-container [ngSwitch]="item.status">
+				<span class="status" *ngSwitchCase="friendRequestStatus.Reject">已拒绝</span>
+				<span class="status" *ngSwitchCase="friendRequestStatus.Agree">已同意</span>
+				<button *ngSwitchDefault appRipple appActiveClass (click)="agree(item.id, $event)" class="btn-primary">
+					同意
+				</button>
+			</ng-container>
 		</ion-item>
 
-		<ion-item-options side="end">
-			<ion-item-option class="bg-danger" (tap)="friendRequestReject(item.id)">拒绝</ion-item-option>
+		<ion-item-options *ngIf="item.status === friendRequestStatus.Wait" side="end">
+			<ion-item-option class="bg-danger" (tap)="reject(item.id)">拒绝</ion-item-option>
 		</ion-item-options>
 	</ion-item-sliding>
 
-	<ion-item-sliding mode="md" *ngFor="let item of globalData.sendFriendRequests; let i = index;">
-
+	<ion-item-sliding mode="md" *ngFor="let item of globalData.sendFriendRequests;">
 		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/request', item.targetId]">
-			<ion-img slot="start" *ngIf="i > 9" [src]="item.targetAvatarThumbnail"></ion-img>
-			<img slot="start" *ngIf="i <= 9" [src]="item.targetAvatarThumbnail">
+			<ion-img slot="start" [src]="item.targetAvatarThumbnail"></ion-img>
 
 			<ion-label>
 				<h2 class="font-bold">{{ item.targetUsername }}</h2>
 
-				<ng-container [ngSwitch]="item.requesterStatus || friendRequestStatus.Wait">
-					<p *ngSwitchCase="friendRequestStatus.Wait">
+				<p [ngSwitch]="item.status">
+					<ng-container *ngSwitchCase="friendRequestStatus.Wait">
 						{{ item.requestReason ? '申请原因：' + item.requestReason : '申请添加对方为好友' }}
-					</p>
-					<p *ngSwitchCase="friendRequestStatus.Reject">
+					</ng-container>
+					<ng-container *ngSwitchCase="friendRequestStatus.Reject">
 						{{ item.rejectReason ? '拒绝原因：' + item.rejectReason : '对方拒绝了你的好友申请' }}
-					</p>
-					<p *ngSwitchDefault>申请添加对方为好友</p>
-				</ng-container>
+					</ng-container>
+					<ng-container *ngSwitchDefault>申请添加对方为好友</ng-container>
+				</p>
 			</ion-label>
 
-			<span class="status" [ngSwitch]="item.requesterStatus || friendRequestStatus.Wait">
-				<ng-container *ngSwitchCase="friendRequestStatus.Wait">待验证</ng-container>
-				<ng-container *ngSwitchCase="friendRequestStatus.Reject">已拒绝</ng-container>
-				<ng-container *ngSwitchDefault>未知状态</ng-container>
+			<span class="status" [ngSwitch]="item.status">
+				<ng-container *ngSwitchCase="friendRequestStatus.Reject">被拒绝</ng-container>
+				<ng-container *ngSwitchCase="friendRequestStatus.Agree">已同意</ng-container>
+				<ng-container *ngSwitchDefault>待验证</ng-container>
 			</span>
 		</ion-item>
-
-		<ion-item-options side="end">
-			<ion-item-option class="bg-danger">删除</ion-item-option>
-		</ion-item-options>
 	</ion-item-sliding>
 </ion-content>

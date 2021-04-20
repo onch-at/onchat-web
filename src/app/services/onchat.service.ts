@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { EmailBinderComponent } from '../components/modals/email-binder/email-binder.component';
 import { ChatRequest, ChatSession, FriendRequest, Result } from '../models/onchat.model';
 import { ApiService } from './api.service';
@@ -39,7 +40,7 @@ export class OnChatService {
 
     // 如果还没绑定邮箱
     // 因为之前有一批用户不需要绑定邮箱即可注册账号
-    !this.globalData.user.email && this.overlay.presentAlert({
+    !this.globalData.user.email && environment.production && this.overlay.presentAlert({
       header: '绑定电子邮箱',
       message: '绑定电子邮箱后方可继续使用',
       backdropDismiss: false,

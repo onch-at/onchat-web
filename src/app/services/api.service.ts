@@ -376,4 +376,20 @@ export class ApiService {
   setMemberNickname(id: number, nickname: string): Observable<Result<string>> {
     return this.http.put<Result<string>>(`${env.chatroomUrl}${id}/member/nickname`, { nickname });
   }
+
+  /**
+   * 已读收到的所有好友请求
+   * @param id 好友请求ID
+   */
+  readedReceiveFriendRequest(id?: number): Observable<Result> {
+    return this.http.put<Result>(`${env.friendUrl}request/receive/readed/${id}`, null);
+  }
+
+  /**
+   * 已读发送的所有好友请求
+   * @param id 好友请求ID
+   */
+  readedSendFriendRequest(id?: number): Observable<Result> {
+    return this.http.put<Result>(`${env.friendUrl}request/send/readed/${id}`, null);
+  }
 }

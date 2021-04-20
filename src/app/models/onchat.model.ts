@@ -135,14 +135,16 @@ export interface FriendRequest extends IEntity {
   requestReason: string;
   /** 拒绝理由 */
   rejectReason: string;
-  /** 申请人的状态 */
-  requesterStatus: FriendRequestStatus;
-  /** 被申请人的状态 */
-  targetStatus: FriendRequestStatus;
+  /** 申请状态 */
+  status: FriendRequestStatus;
   /** 申请人的别名 */
   requesterAlias: string;
   /** 被申请人的别名 */
   targetAlias: string;
+  /** 申请人已读 */
+  requesterReaded: boolean;
+  /** 被申请人已读 */
+  targetReaded: boolean;
 
   /** 申请人的用户名 */
   requesterUsername: string;
