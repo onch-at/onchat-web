@@ -42,7 +42,7 @@ export interface AlertOptions {
   /** 取消按钮的文字 */
   cancelText?: string;
   /** 确认时的回调函数 */
-  confirmHandler: (data?: KeyValue<string, any>) => any;
+  confirmHandler?: (data?: KeyValue<string, any>) => any;
   /** 取消时的回调函数 */
   cancelHandler?: (data?: KeyValue<string, any>) => any
   /** 输入组 */

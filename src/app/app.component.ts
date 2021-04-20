@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { NavController } from '@ionic/angular';
+import { setTimeout } from 'node:timers';
 import { from } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
@@ -404,6 +405,12 @@ export class AppComponent implements OnInit {
    * 检测更新
    */
   detectAppUpdate() {
+    this.swUpdate.unrecoverable.subscribe(() => this.overlay.presentAlert({
+      header: '应用程序已损坏',
+      message: '即将重启以更新到新版本！',
+      backdropDismiss: false,
+    }).then(() => setTimeout(() => location.reload(), 2000)));
+
     this.swUpdate.available.pipe(
       mergeMap(() => {
         this.overlay.presentNotification({
@@ -414,14 +421,12 @@ export class AppComponent implements OnInit {
 
         return from(this.swUpdate.activateUpdate());
       })
-    ).subscribe(() => {
-      this.overlay.presentAlert({
-        header: '新版本已就绪',
-        message: '是否立即重启以更新到新版本？',
-        backdropDismiss: false,
-        confirmHandler: () => location.reload()
-      });
-    });
+    ).subscribe(() => this.overlay.presentAlert({
+      header: '新版本已就绪',
+      message: '是否立即重启以更新到新版本？',
+      backdropDismiss: false,
+      confirmHandler: () => location.reload()
+    }));
   }
 
   /**
