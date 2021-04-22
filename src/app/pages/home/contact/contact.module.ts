@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActiveClassModule } from 'src/app/modules/active-class.module';
+import { EmptyModule } from 'src/app/modules/empty.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
 import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
@@ -23,7 +24,8 @@ import { NewComponent } from './new/new.component';
     ScrollbarModule,
     ActiveClassModule,
     RippleModule,
-    VirtualScrollPatchModule
+    VirtualScrollPatchModule,
+    EmptyModule
   ],
   declarations: [
     NewComponent,

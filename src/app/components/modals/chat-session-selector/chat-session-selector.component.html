@@ -20,7 +20,10 @@
 
   <ion-searchbar animated placeholder="搜索" (ngModelChange)="search($event)" [(ngModel)]="keyword"></ion-searchbar>
 
+  <app-empty *ngIf="!list.length"></app-empty>
+
   <ion-list class="chat-session-list">
+
     <ion-virtual-scroll [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight" [trackBy]="trackByFn">
       <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false">
         <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>

@@ -19,7 +19,7 @@ import { SanitizePipe } from '../pipes/sanitize.pipe';
     NumLimitPipe,
     SanitizePipe,
     HyperlinkPipe,
-    GenderPipe
+    GenderPipe,
   ]
 })
 export class SharedModule { }

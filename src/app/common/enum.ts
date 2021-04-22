@@ -83,7 +83,9 @@ export enum MessageType {
 /** 枚举文字提示类型 */
 export enum TipsType {
   /** 撤回消息 */
-  RevokeMsg = 0
+  RevokeMsg = 0,
+  /** 加入房间 */
+  JoinRoom = 1
 }
 
 /** 枚举聊天会话类型 */

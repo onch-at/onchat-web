@@ -6,6 +6,8 @@
 
 	<!-- <ion-searchbar animated placeholder="搜索"></ion-searchbar> -->
 
+	<app-empty *ngIf="!globalData.chatSessions.length"></app-empty>
+
 	<ion-virtual-scroll [items]="globalData.chatSessions" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
 											[trackBy]="trackByFn">
 		<ion-item-sliding #ionItemSliding mode="md" *virtualItem="let item; let i = index;">

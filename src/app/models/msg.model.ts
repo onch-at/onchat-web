@@ -66,3 +66,15 @@ export class RevokeMsgTipsMessage implements TipsMessage {
     public nickname: string
   ) { }
 }
+
+/** 加入聊天室文字提示消息 */
+export class JoinRoomTipsMessage implements TipsMessage {
+  type: TipsType = TipsType.JoinRoom;
+
+  constructor(
+    /** 用户的ID */
+    public userId: number,
+    /** 用户的昵称 */
+    public nickname: string
+  ) { }
+}

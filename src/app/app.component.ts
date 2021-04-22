@@ -5,7 +5,6 @@ import { NavController } from '@ionic/angular';
 import { from } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
-import { NotificationOptions } from './common/interface';
 import { RevokeMsgTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { MsgDescPipe } from './pipes/msg-desc.pipe';
@@ -191,16 +190,14 @@ export class AppComponent implements OnInit {
         const chatroomName = chatSession ? chatSession.title : '收到新消息';
         const content = this.msgDescPipe.transform(data);
 
-        const opts: NotificationOptions = {
-          icon: chatSession ? chatSession.avatarThumbnail : data.avatarThumbnail,
-          title: chatroomName,
-          description: (chatroomName !== data.nickname ? data.nickname + '：' : '') + content,
-          url: '/chat/' + data.chatroomId
-        };
-
         // 并且不在同一个房间，就弹出通知
         if (data.chatroomId !== chatroomId || document.hidden) {
-          this.overlay.presentNotification(opts);
+          this.overlay.presentNotification({
+            icon: chatSession ? chatSession.avatarThumbnail : data.avatarThumbnail,
+            title: chatroomName,
+            description: (chatroomName !== data.nickname ? data.nickname + '：' : '') + content,
+            url: '/chat/' + data.chatroomId
+          });
         }
 
         this.feedbackService.playAudio(AudioName.Boo);
