@@ -4,9 +4,9 @@ import { RevokeMsgTipsMessage, RichTextMessage, TextMessage, TipsMessage } from 
 import { Message } from '../models/onchat.model';
 
 @Pipe({
-  name: 'msgDesc'
+  name: 'messageDesc'
 })
-export class MsgDescPipe implements PipeTransform {
+export class MessageDescPipe implements PipeTransform {
 
   transform(value: Message): string {
     const { type, data } = value;

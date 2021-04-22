@@ -10,7 +10,7 @@
 
     <ng-container [ngSwitch]="item.type">
       <li *ngSwitchCase="msgType.Tips" class="tips-item">
-        <app-tips [tips]="item.data"></app-tips>
+        <app-tips-message [tips]="item.data"></app-tips-message>
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="msgItemClass(item.userId)">
@@ -83,9 +83,10 @@
           <span #bubble appRipple class="msg-bubble msg-bubble-img" (tap)="previewImage(item.id)"
                 (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
-            <img [appImageSize]="[item.data['width'],item.data['height']]" [src]="item.data['url']" />
+            <img [appImageSize]="[item.data['width'], item.data['height']]" [src]="item.data['url']" />
             <ng-container *ngIf="item.loading">
-              <div class="loading-mask" [ngStyle]="{ height: 100 - item.percent + '%' }"></div>
+              <div class="loading-mask"></div>
+              <div class="loading-progress" [style.height]="100 - item.percent + '%'"></div>
               <div class="loading-container">
                 <ion-spinner [hidden]="!item.percent" name="crescent"></ion-spinner>
                 <ion-spinner [hidden]="item.percent" name="dots"></ion-spinner>

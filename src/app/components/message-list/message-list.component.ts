@@ -9,11 +9,11 @@ import { ImagePreviewerComponent } from '../modals/image-previewer/image-preview
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
 @Component({
-  selector: 'app-msg-list',
-  templateUrl: './msg-list.component.html',
-  styleUrls: ['./msg-list.component.scss'],
+  selector: 'app-message-list',
+  templateUrl: './message-list.component.html',
+  styleUrls: ['./message-list.component.scss'],
 })
-export class MsgListComponent implements OnInit {
+export class MessageListComponent implements OnInit {
   /** 消息类型枚举 */
   msgType: typeof MessageType = MessageType;
   /** 聊天室类型枚举 */

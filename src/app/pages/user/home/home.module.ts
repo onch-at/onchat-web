@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { ConstellationIconComponent } from 'src/app/components/constellation-icon/constellation-icon.component';
-import { MoodIconComponent } from 'src/app/components/mood-icon/mood-icon.component';
+import { ConstellationIconComponent } from 'src/app/components/icons/constellation-icon/constellation-icon.component';
+import { MoodIconComponent } from 'src/app/components/icons/mood-icon/mood-icon.component';
 import { ActiveClassModule } from 'src/app/modules/active-class.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
 import { ScrollbarModule } from 'src/app/modules/scrollbar.module';

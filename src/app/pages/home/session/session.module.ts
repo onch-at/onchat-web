@@ -6,7 +6,7 @@ import { EmptyModule } from 'src/app/modules/empty.module';
 import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
 import { VirtualScrollPatchModule } from 'src/app/modules/virtual-scroll-patch.module';
-import { MsgDescPipe } from 'src/app/pipes/msg-desc.pipe';
+import { MessageDescPipe } from 'src/app/pipes/message-desc.pipe';
 import { SenderPipe } from 'src/app/pipes/sender.pipe';
 import { SessionPageRoutingModule } from './session-routing.module';
 import { SessionPage } from './session.page';
@@ -24,7 +24,7 @@ import { SessionPage } from './session.page';
   ],
   declarations: [
     SessionPage,
-    MsgDescPipe,
+    MessageDescPipe,
     SenderPipe
   ]
 })

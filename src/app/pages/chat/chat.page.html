@@ -19,12 +19,12 @@
     </ion-toolbar>
   </ion-header>
 
-  <main [ngStyle]="{ 'padding-bottom': 'calc(0.75rem + ' + bottomBar.clientHeight + 'px)' }" (click)="hideDrawer()">
+  <main [style.padding-bottom]="'calc(0.75rem + ' + bottomBar.clientHeight + 'px)'" (click)="hideDrawer()">
     <ion-infinite-scroll position="top" threshold="-10px" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
-    <app-msg-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-msg-list>
+    <app-message-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-message-list>
   </main>
 
   <div #bottomBar class="bottom-bar" slot="fixed">
@@ -51,7 +51,7 @@
       </button>
     </div>
 
-    <div #drawer class="drawer" [ngStyle]="{'height': showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0}">
+    <div #drawer class="drawer" [style.height]="showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0">
       <app-drawer [page]="this"></app-drawer>
     </div>
   </div>

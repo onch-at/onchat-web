@@ -7,7 +7,7 @@ import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { RevokeMsgTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
-import { MsgDescPipe } from './pipes/msg-desc.pipe';
+import { MessageDescPipe } from './pipes/message-desc.pipe';
 import { ApiService } from './services/api.service';
 import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
@@ -23,7 +23,7 @@ import { SocketService } from './services/socket.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  private msgDescPipe: MsgDescPipe = new MsgDescPipe();
+  private messageDescPipe: MessageDescPipe = new MessageDescPipe();
 
   constructor(
     private router: Router,
@@ -188,7 +188,7 @@ export class AppComponent implements OnInit {
       // 如果消息不是自己的话，就播放提示音
       if (data.userId !== user.id) {
         const chatroomName = chatSession ? chatSession.title : '收到新消息';
-        const content = this.msgDescPipe.transform(data);
+        const content = this.messageDescPipe.transform(data);
 
         // 并且不在同一个房间，就弹出通知
         if (data.chatroomId !== chatroomId || document.hidden) {
@@ -407,15 +407,7 @@ export class AppComponent implements OnInit {
     }).then(() => setTimeout(() => location.reload(), 2000)));
 
     this.swUpdate.available.pipe(
-      mergeMap(() => {
-        this.overlay.presentNotification({
-          title: '发现新版本',
-          description: 'OnChat：检测到有可用更新，后台自动下载中…',
-          icon: 'arrow-down-circle'
-        });
-
-        return from(this.swUpdate.activateUpdate());
-      })
+      mergeMap(() => from(this.swUpdate.activateUpdate()))
     ).subscribe(() => this.overlay.presentAlert({
       header: '新版本已就绪',
       message: '是否立即重启以更新到新版本？',
