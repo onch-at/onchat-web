@@ -57,7 +57,7 @@
 
   &::after {
     content: "Chat";
-    color: var(--oc-color-primary);
+    color: var(--color-primary);
   }
 }
 
@@ -88,30 +88,30 @@
 
 // 主要输入框
 .ipt-primary {
-  color: var(--oc-color-dark);
+  color: var(--color-dark);
   border: none;
-  background: var(--oc-color-secondary);
+  background: var(--color-secondary);
 
   &:focus,
   &:focus-within {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.5);
   }
 
   &::placeholder {
-    color: var(--oc-color-muted);
+    color: var(--color-muted);
     opacity: 0.5;
   }
 
   &.ng-invalid:not(.ng-pristine),
   &.invalid {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-danger-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-danger-rgb), 0.5);
   }
 }
 
 // 主要输入框的警告模式
 .ipt-primary ~ .form-control-warning,
 form .feedback-form-invalid {
-  color: var(--oc-color-danger);
+  color: var(--color-danger);
   opacity: 1;
   transition: all 0.125s ease-in-out;
 }
@@ -129,55 +129,55 @@ form.ng-pristine .feedback-form-invalid {
 // 主要按钮
 .btn-primary {
   color: #424242;
-  background-color: var(--oc-color-primary);
+  background-color: var(--color-primary);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.5);
   }
 
   &[disabled] {
     color: rgba(#424242, 0.75);
-    background-color: rgba(var(--oc-color-primary-rgb), 0.5);
+    background-color: rgba(var(--color-primary-rgb), 0.5);
     pointer-events: none;
   }
 }
 
 // 白色按钮
 .btn-white {
-  color: var(--oc-color-dark);
-  background-color: var(--oc-color-white);
+  color: var(--color-dark);
+  background-color: var(--color-white);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-white-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-white-rgb), 0.5);
   }
 }
 
 // 白色按钮
 .btn-light {
-  color: var(--oc-color-dark);
-  background-color: var(--oc-color-light);
+  color: var(--color-dark);
+  background-color: var(--color-light);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-white-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-white-rgb), 0.5);
   }
 }
 
 // 二级按钮
 .btn-secondary {
-  color: var(--oc-color-dark);
-  background-color: var(--oc-color-secondary);
+  color: var(--color-dark);
+  background-color: var(--color-secondary);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-secondary-rgb), 0.75);
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-secondary-rgb), 0.75);
   }
 }
 
 .btn-danger {
-  color: var(--oc-color-danger);
-  background-color: var(--oc-color-white);
+  color: var(--color-danger);
+  background-color: var(--color-white);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-danger-rgb), 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-danger-rgb), 0.25);
   }
 }
 

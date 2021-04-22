@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { QuillModule } from 'ngx-quill';
 import { DrawerComponent } from 'src/app/components/drawer/drawer.component';
+import { TipsComponent } from 'src/app/components/messages/tips/tips.component';
 import { ImagePreviewerComponent } from 'src/app/components/modals/image-previewer/image-previewer.component';
 import { RichTextEditorComponent } from 'src/app/components/modals/rich-text-editor/rich-text-editor.component';
 import { BubbleToolbarComponent } from 'src/app/components/popovers/bubble-toolbar/bubble-toolbar.component';
@@ -36,6 +37,7 @@ import { ChatPage } from './chat.page';
     ChatPage,
     ImageSizeDirective,
     MsgListComponent,
+    TipsComponent,
     BubbleToolbarComponent,
     DrawerComponent,
     RichTextEditorComponent,

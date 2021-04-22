@@ -27,10 +27,10 @@ ion-item[detail] {
     --padding-top: 0.5rem;
     --padding-bottom: 0.5rem;
     --inner-padding-end: 0;
-    --background: var(--oc-color-white);
-    --color: var(--oc-color-dark);
+    --background: var(--color-white);
+    --color: var(--color-dark);
     --detail-icon-font-size: 1.25rem;
-    --detail-icon-color: var(--oc-color-muted);
+    --detail-icon-color: var(--color-muted);
     --detail-icon-opacity: 0.85;
     --min-height: 2rem;
     font-size: 0.95rem;
@@ -38,7 +38,7 @@ ion-item[detail] {
     > ion-icon[slot="start"] {
         margin: 0 0.25rem 0 0;
         font-size: 1.3rem;
-        color: rgba(var(--oc-color-primary-rgb), 0.75);
+        color: rgba(var(--color-primary-rgb), 0.75);
     }
 
     > ion-label {
@@ -47,14 +47,14 @@ ion-item[detail] {
 
     > .value {
         margin: 0 0.5rem;
-        color: var(--oc-color-muted);
+        color: var(--color-muted);
         font-size: 0.85rem;
     }
 }
 
 ion-searchbar.sc-ion-searchbar-ios-h {
-    --color: var(--oc-color-dark);
-    --background: var(--oc-color-secondary);
+    --color: var(--color-dark);
+    --background: var(--color-secondary);
     height: auto;
     contain: content;
 
@@ -91,25 +91,25 @@ ion-searchbar.sc-ion-searchbar-ios-h {
 }
 
 ion-segment {
-    --background: var(--oc-color-secondary);
+    --background: var(--color-secondary);
     border-radius: 1.5rem;
 }
 
 ion-segment-button {
-    --color: var(--oc-color-dark);
-    --color-checked: var(--oc-color-dark);
-    --color-focused: var(--oc-color-black);
-    --color-hover: var(--oc-color-muted);
+    --color: var(--color-dark);
+    --color-checked: var(--color-dark);
+    --color-focused: var(--color-black);
+    --color-hover: var(--color-muted);
     --border-radius: 1.5rem;
     --border-width: 0;
-    --indicator-color: var(--oc-color-white);
+    --indicator-color: var(--color-white);
     margin: 0.25rem 0.125rem;
     font-size: 1rem;
 }
 
 ion-picker {
     .sc-ion-picker-ios {
-        --background: var(--oc-color-light);
+        --background: var(--color-light);
         --height: 275px;
 
         &.picker-wrapper {
@@ -127,11 +127,11 @@ ion-picker {
         }
 
         &.picker-above-highlight {
-            background: linear-gradient(to bottom, var(--background) 20%, rgba(var(--oc-color-light-rgb), 0.8) 100%);
+            background: linear-gradient(to bottom, var(--background) 20%, rgba(var(--color-light-rgb), 0.8) 100%);
         }
 
         &.picker-below-highlight {
-            background: linear-gradient(to top, var(--background) 20%, rgba(var(--oc-color-light-rgb), 0.8) 100%);
+            background: linear-gradient(to top, var(--background) 20%, rgba(var(--color-light-rgb), 0.8) 100%);
         }
 
         &.picker-button {
@@ -140,14 +140,14 @@ ion-picker {
         }
 
         &.picker-toolbar-cancel > .picker-button {
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
         }
 
         &:not(.picker-toolbar-cancel) > .picker-button {
-            color: var(--oc-color-primary);
+            color: var(--color-primary);
 
             &.ion-activated {
-                color: var(--oc-color-primary);
+                color: var(--color-primary);
             }
         }
     }
@@ -178,7 +178,7 @@ ion-input {
             padding: 0;
 
             &::placeholder {
-                color: var(--oc-color-muted);
+                color: var(--color-muted);
                 opacity: 0.75;
             }
         }
@@ -199,7 +199,7 @@ ion-textarea {
     .sc-ion-textarea-ios {
         &.native-textarea {
             &::placeholder {
-                color: var(--oc-color-muted);
+                color: var(--color-muted);
                 opacity: 0.75;
             }
         }
@@ -211,13 +211,13 @@ ion-refresher {
     height: 4rem;
 
     .refresher-refreshing-icon > * {
-        color: var(--oc-color-primary) !important;
+        color: var(--color-primary) !important;
         transform: scale(1.25);
     }
 
     .refresher-pulling-icon > * {
         font-size: 2rem;
-        color: var(--oc-color-dark) !important;
+        color: var(--color-dark) !important;
     }
 
     .refresher-refreshing-text {
@@ -227,7 +227,7 @@ ion-refresher {
     .refresher-refreshing-text,
     .refresher-pulling-text {
         font-size: 0.75rem;
-        color: var(--oc-color-medium) !important;
+        color: var(--color-medium) !important;
     }
 }
 
@@ -244,7 +244,7 @@ ion-popover {
 ion-infinite-scroll {
     ion-infinite-scroll-content {
         min-height: 5rem;
-        background: var(--oc-color-white);
+        background: var(--color-white);
     }
 
     .infinite-loading {
@@ -252,18 +252,18 @@ ion-infinite-scroll {
     }
 
     .infinite-loading-spinner > * {
-        color: var(--oc-color-primary) !important;
+        color: var(--color-primary) !important;
         transform: scale(1.25);
     }
 }
 
 ion-content {
-    --color: var(--oc-color-dark);
-    --background: var(--oc-color-white);
+    --color: var(--color-dark);
+    --background: var(--color-white);
 
     &::part(scroll) {
         scrollbar-width: thin;
-        scrollbar-color: rgba(var(--oc-color-dark-rgb), 0.125) transparent;
+        scrollbar-color: rgba(var(--color-dark-rgb), 0.125) transparent;
 
         will-change: scroll-position;
     }
@@ -271,13 +271,13 @@ ion-content {
 
 // 进度条
 ion-progress-bar {
-    --background: rgba(var(--oc-color-primary-rgb), 0.125);
-    --progress-background: rgba(var(--oc-color-primary-rgb), 0.625);
+    --background: rgba(var(--color-primary-rgb), 0.125);
+    --progress-background: rgba(var(--color-primary-rgb), 0.625);
 }
 
 // loading
 .ion-loading {
-    --background: rgba(var(--oc-color-light-rgb), 0.9);
+    --background: rgba(var(--color-light-rgb), 0.9);
 
     .loading-wrapper {
         height: 9rem;
@@ -293,13 +293,13 @@ ion-progress-bar {
     }
 
     ion-spinner {
-        --spinner-color: var(--oc-color-dark);
+        --spinner-color: var(--color-dark);
         width: 4rem;
         height: 4rem;
     }
 
     .loading-content {
-        color: var(--oc-color-dark);
+        color: var(--color-dark);
         margin-top: 0.5rem;
         font-size: 1rem;
         font-weight: normal;
@@ -309,18 +309,18 @@ ion-progress-bar {
 
 // action sheet
 .ion-action-sheet {
-    --color: var(--oc-color-dark);
-    --background: rgba(var(--oc-color-light-rgb), 0.85);
-    --button-color: var(--oc-color-dark);
-    --button-color-hover: var(--oc-color-dark);
-    --button-color-activated: var(--oc-color-dark);
-    --button-color-focused: var(--oc-color-dark);
-    --button-color-selected: var(--oc-color-dark);
+    --color: var(--color-dark);
+    --background: rgba(var(--color-light-rgb), 0.85);
+    --button-color: var(--color-dark);
+    --button-color-hover: var(--color-dark);
+    --button-color-activated: var(--color-dark);
+    --button-color-focused: var(--color-dark);
+    --button-color-selected: var(--color-dark);
     --button-background: transparent;
-    --button-background-hover: var(--oc-color-medium);
-    --button-background-activated: var(--oc-color-medium);
-    --button-background-focused: var(--oc-color-medium);
-    --button-background-selected: var(--oc-color-medium);
+    --button-background-hover: var(--color-medium);
+    --button-background-activated: var(--color-medium);
+    --button-background-focused: var(--color-medium);
+    --button-background-selected: var(--color-medium);
 
     .action-sheet-group {
         border-radius: 1.5rem;
@@ -354,8 +354,8 @@ ion-progress-bar {
 }
 
 ion-slides.swiper-container {
-    --bullet-background-active: var(--oc-color-primary);
-    --bullet-background: var(--oc-color-primary);
+    --bullet-background-active: var(--color-primary);
+    --bullet-background: var(--color-primary);
 }
 
 // 警告框
@@ -366,7 +366,7 @@ ion-alert {
         &.alert-wrapper {
             min-width: 16rem;
             max-width: 85vw;
-            background: rgba(var(--oc-color-light-rgb), 0.9);
+            background: rgba(var(--color-light-rgb), 0.9);
             border-radius: 1rem;
             box-shadow: 0 0 0.5rem 0.05rem rgba(#000, 0.125);
         }
@@ -379,14 +379,14 @@ ion-alert {
         }
 
         &.alert-title {
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
             font-weight: bold;
             font-size: 1rem;
             margin-top: 0.5rem;
         }
 
         &.alert-message {
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
             font-size: 0.85rem;
             padding-inline-start: 1rem;
             padding-inline-end: 1rem;
@@ -398,7 +398,7 @@ ion-alert {
         }
 
         &.alert-input-group {
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
             font-size: 0.85rem;
             padding-inline-start: 1rem;
             padding-inline-end: 1rem;
@@ -424,7 +424,7 @@ ion-alert {
             textarea {
                 padding-inline-start: 0.5rem;
                 padding-inline-end: 0.5rem;
-                background: var(--oc-color-white);
+                background: var(--color-white);
                 border: none;
             }
         }
@@ -432,15 +432,15 @@ ion-alert {
         &.alert-button {
             height: 2.5rem;
             border-width: 0.25px;
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
 
             &:last-child {
                 font-weight: normal;
-                color: var(--oc-color-primary);
+                color: var(--color-primary);
             }
 
             &.ion-activated {
-                background-color: var(--oc-color-gray);
+                background-color: var(--color-gray);
             }
         }
     }
@@ -463,7 +463,7 @@ ion-col {
 // 返回按钮图标
 ion-back-button {
     --padding-start: 0.25rem;
-    --color: var(--oc-color-medium);
+    --color: var(--color-medium);
     font-size: 1.05rem;
 }
 
@@ -474,7 +474,7 @@ ion-list.list-ios {
 // 滑动列表里面的按钮
 ion-item-options {
     border: none;
-    background: var(--oc-color-white);
+    background: var(--color-white);
 
     &.item-options-start > ion-item-option:last-child {
         border-radius: 0 0.75rem 0.75rem 0;
@@ -485,7 +485,7 @@ ion-item-options {
     }
 
     > ion-item-option {
-        color: var(--oc-color-white);
+        color: var(--color-white);
         min-width: 4.5rem;
         overflow: hidden;
     }
@@ -499,8 +499,8 @@ ion-badge {
 }
 
 ion-item {
-    --background: var(--oc-color-white);
-    background: var(--oc-color-white);
+    --background: var(--color-white);
+    background: var(--color-white);
 
     .item-content {
         margin: 0.75rem 0;
@@ -530,11 +530,11 @@ ion-toast {
     --end: 10px;
     --height: 3rem;
     --border-radius: 1.5rem;
-    --color: var(--oc-color-light);
-    --background: var(--oc-color-black);
+    --color: var(--color-light);
+    --background: var(--color-black);
 
     @media (prefers-color-scheme: dark) {
-        --background: var(--oc-color-dark);
+        --background: var(--color-dark);
     }
 }
 

@@ -88,11 +88,11 @@ export class Overlay {
       buttons: [
         {
           text: opts.cancelText || '取消',
-          handler: data => cancelHandler && cancelHandler(data)
+          handler: data => cancelHandler?.(data)
         },
         {
           text: opts.confirmText || '确认',
-          handler: data => confirmHandler(data)
+          handler: data => confirmHandler?.(data)
         }
       ]
     });

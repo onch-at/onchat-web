@@ -1,10 +1,10 @@
 ion-header {
-    background: var(--oc-color-light);
+    background: var(--color-light);
 
     ion-buttons ion-back-button,
     ion-buttons ion-button,
     ion-title {
-        --color: var(--oc-color-black);
+        --color: var(--color-black);
     }
 }
 
@@ -33,7 +33,7 @@ quill-editor ::ng-deep {
         -webkit-user-select: text !important;
 
         &.ql-blank::before {
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
         }
 
         blockquote {
@@ -41,7 +41,7 @@ quill-editor ::ng-deep {
             width: 100%;
             border: none;
             padding: 0.3rem 0.75rem;
-            background: var(--oc-color-gray);
+            background: var(--color-gray);
         }
 
         ol,
@@ -68,7 +68,7 @@ quill-editor ::ng-deep {
         position: sticky;
         top: 3rem;
         left: 0;
-        background: var(--oc-color-light);
+        background: var(--color-light);
         z-index: 1;
         padding: 0 0.75rem 0.5rem;
         box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.125);
@@ -100,7 +100,7 @@ quill-editor ::ng-deep {
         }
 
         .ql-picker-label {
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
             font-size: 1rem;
             line-height: 1.5rem;
         }
@@ -111,7 +111,7 @@ quill-editor ::ng-deep {
         }
 
         .ql-picker {
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
 
             &.ql-header {
                 width: 6.25rem;
@@ -124,13 +124,13 @@ quill-editor ::ng-deep {
             }
 
             &.ql-expanded .ql-picker-label {
-                color: var(--oc-color-muted);
+                color: var(--color-muted);
             }
         }
 
         .ql-picker-options {
             padding: 0.25rem 0.75rem;
-            background: var(--oc-color-light);
+            background: var(--color-light);
             border-radius: 1rem;
         }
 
@@ -152,12 +152,12 @@ quill-editor ::ng-deep {
         @media (pointer: coarse) {
             button:hover:not(.ql-active) .ql-stroke,
             button:hover:not(.ql-active) .ql-stroke-miter {
-                stroke: var(--oc-color-dark);
+                stroke: var(--color-dark);
             }
 
             button:hover:not(.ql-active) .ql-fill,
             button:hover:not(.ql-active) .ql-stroke.ql-fill {
-                fill: var(--oc-color-dark);
+                fill: var(--color-dark);
             }
         }
 
@@ -175,7 +175,7 @@ quill-editor ::ng-deep {
         .ql-picker-label.ql-active .ql-stroke.ql-fill,
         .ql-picker-item:hover .ql-stroke.ql-fill,
         .ql-picker-item.ql-selected .ql-stroke.ql-fill {
-            fill: var(--oc-color-primary);
+            fill: var(--color-primary);
         }
 
         button:hover .ql-stroke,
@@ -192,7 +192,7 @@ quill-editor ::ng-deep {
         .ql-picker-label.ql-active .ql-stroke-miter,
         .ql-picker-item:hover .ql-stroke-miter,
         .ql-picker-item.ql-selected .ql-stroke-miter {
-            stroke: var(--oc-color-primary);
+            stroke: var(--color-primary);
         }
 
         button:hover,
@@ -202,15 +202,15 @@ quill-editor ::ng-deep {
         .ql-picker-label.ql-active,
         .ql-picker-item:hover,
         .ql-picker-item.ql-selected {
-            color: var(--oc-color-primary);
+            color: var(--color-primary);
         }
 
         .ql-stroke {
-            stroke: var(--oc-color-dark);
+            stroke: var(--color-dark);
         }
 
         .ql-fill {
-            fill: var(--oc-color-dark);
+            fill: var(--color-dark);
         }
     }
 }

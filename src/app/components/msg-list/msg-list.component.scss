@@ -2,30 +2,27 @@
   padding: 0;
   margin: 0;
   list-style: none;
-  color: var(--oc-color-dark);
+  color: var(--color-dark);
   contain: content;
 }
 
-.tip-item {
+.tips-item {
   margin: 1rem 0 0.25rem;
   text-align: center;
   opacity: 0;
   animation: fade-in 0.3s ease 0.25s forwards;
 
-  > span {
+  > span,
+  > app-tips {
     display: inline-block;
     max-width: calc(100vw - 7.5rem);
     text-align: left;
     font-size: 0.7rem;
     line-height: 0.95rem;
-    color: var(--oc-color-medium);
+    color: var(--color-medium);
     padding: 0.25rem 0.75rem;
-    background: var(--oc-color-secondary);
+    background: var(--color-secondary);
     border-radius: 0.75rem;
-  }
-
-  ::ng-deep a {
-    text-decoration: none;
   }
 }
 
@@ -37,7 +34,7 @@
     flex-shrink: 0;
     width: 2.5rem;
     height: 2.5rem;
-    background: var(--oc-color-secondary);
+    background: var(--color-secondary);
     border-radius: 2rem;
   }
 
@@ -61,7 +58,7 @@
   touch-action: auto !important;
 
   @media (prefers-color-scheme: dark) {
-    color: var(--oc-color-white);
+    color: var(--color-white);
   }
 
   &.ql-editor ::ng-deep {
@@ -105,7 +102,7 @@
   }
 
   .msg-bubble {
-    background: var(--oc-color-gray);
+    background: var(--color-gray);
   }
 }
 
@@ -127,7 +124,7 @@
     height: 1.5rem;
     width: 2rem;
     font-size: 999rem;
-    --color: var(--oc-color-muted);
+    --color: var(--color-muted);
   }
 
   .username {
@@ -135,7 +132,7 @@
   }
 
   .msg-bubble {
-    background: var(--oc-color-primary);
+    background: var(--color-primary);
     text-align: left;
   }
 }

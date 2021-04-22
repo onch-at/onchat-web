@@ -1,23 +1,23 @@
 ion-header {
-    background: rgba(var(--oc-color-white-rgb), 0.75);
+    background: rgba(var(--color-white-rgb), 0.75);
     backdrop-filter: blur(15px) saturate(175%);
     border-radius: 0 0 1.5rem 1.5rem;
 
     ion-buttons ion-back-button,
     ion-buttons ion-button,
     ion-title {
-        --color: var(--oc-color-black);
+        --color: var(--color-black);
     }
 
     ion-spinner {
-        --color: var(--oc-color-black);
+        --color: var(--color-black);
         margin-right: 0.25rem;
     }
 }
 
 main {
     padding: 4rem 1rem 1rem;
-    color: var(--oc-color-dark);
+    color: var(--color-dark);
 }
 
 .avatar {
@@ -25,7 +25,7 @@ main {
     height: 5.75rem;
     border-radius: 50%;
     object-fit: cover;
-    background: var(--oc-color-secondary);
+    background: var(--color-secondary);
     margin: 0 auto;
 }
 

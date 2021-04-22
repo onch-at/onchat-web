@@ -15,7 +15,7 @@
 				</ion-item-option>
 			</ion-item-options>
 
-			<ion-item [ngSwitch]="item.type" class="chat-session-item" [ngClass]="{'sticky': item.sticky}" lines="none" [detail]="false"
+			<ion-item [ngSwitch]="item.type" class="chat-session-item" [class.sticky]="item.sticky" lines="none" [detail]="false"
 								[button]="true" (tap)="onTap(item)">
 
 				<!-- 聊天室类型 -->
@@ -49,7 +49,7 @@
 							{{ item.updateTime | date:'BBBBhh:mm' }}
 						</ng-container>
 					</time>
-					<ion-badge [hidden]="!item.unread" class="bg-danger" mode="ios">
+					<ion-badge [class.visibility-hidden]="!item.unread" class="bg-danger" mode="ios">
 						{{ item.unread | numLimit }}
 					</ion-badge>
 				</div>

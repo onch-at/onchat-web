@@ -80,6 +80,12 @@ export enum MessageType {
   Image = 5,
 }
 
+/** 枚举文字提示类型 */
+export enum TipsType {
+  /** 撤回消息 */
+  RevokeMsg = 0
+}
+
 /** 枚举聊天会话类型 */
 export enum ChatSessionType {
   /** 聊天室 */

@@ -2,16 +2,16 @@
 * {
     outline: none;
     scrollbar-width: thin;
-    scrollbar-color: rgba(var(--oc-color-dark-rgb), 0.125) transparent;
+    scrollbar-color: rgba(var(--color-dark-rgb), 0.125) transparent;
 
     &::selection {
-        color: var(--oc-color-white);
-        background: rgba(var(--oc-color-primary-rgb), 0.75);
+        color: var(--color-white);
+        background: rgba(var(--color-primary-rgb), 0.75);
     }
 }
 
 body {
-    background: var(--oc-color-white);
+    background: var(--color-white);
 }
 
 img,

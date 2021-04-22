@@ -5,7 +5,7 @@
         <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
       </ion-buttons>
 
-      <ion-title [ngClass]="{hidden: !showMask}">{{ chatroom.name }}</ion-title>
+      <ion-title [class.hidden]="!showMask">{{ chatroom.name }}</ion-title>
 
       <ion-buttons slot="end">
         <ion-button>
@@ -15,7 +15,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="home-header" [ngClass]="{'show-mask': showMask}" (tap)="presentActionSheet()">
+  <div class="home-header" [class.show-mask]="showMask" (tap)="presentActionSheet()">
     <!-- <img class="home-header-img" src="https://blog.hypergo.net/images/banner/yein.jpg"> -->
     <img class="home-header-img" [src]="chatroom.avatar">
     <div class="home-header-mask"></div>

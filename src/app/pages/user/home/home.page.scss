@@ -59,7 +59,7 @@ main {
 
 .cloud-block {
   padding: 0.75rem;
-  background: rgba(var(--oc-color-white-rgb), 0.75);
+  background: rgba(var(--color-white-rgb), 0.75);
   backdrop-filter: blur(15px) saturate(175%);
   border-radius: 1.25rem;
 
@@ -69,7 +69,7 @@ main {
   }
 
   &.signature {
-    background: rgba(var(--oc-color-primary-rgb), 0.75);
+    background: rgba(var(--color-primary-rgb), 0.75);
     border-radius: 1.25rem 1.25rem 0.5rem 0.5rem;
 
     > .text-ellipsis {
@@ -78,7 +78,7 @@ main {
   }
 
   &.last-online {
-    background: rgba(#3880ff, 0.75);
+    background: rgba(var(--color-info-rgb), 0.75);
     border-radius: 0.5rem 0.5rem 1.25rem 1.25rem;
   }
 

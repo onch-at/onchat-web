@@ -24,9 +24,9 @@ export class MoodIconComponent implements OnInit {
 
   color() {
     return {
-      [Mood.Joy]: 'var(--oc-color-primary)',
-      [Mood.Angry]: 'var(--oc-color-danger)',
-      [Mood.Sorrow]: 'var(--oc-color-info)',
+      [Mood.Joy]: 'var(--color-primary)',
+      [Mood.Angry]: 'var(--color-danger)',
+      [Mood.Sorrow]: 'var(--color-info)',
       [Mood.Fun]: '#fa541c',
     }[this.value];
   }

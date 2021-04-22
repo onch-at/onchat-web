@@ -6,7 +6,7 @@ import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { MessageEntity } from 'src/app/entities/message.entity';
-import { RichTextMessage } from 'src/app/models/form.model';
+import { RichTextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
 import { GlobalData } from 'src/app/services/global-data.service';

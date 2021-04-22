@@ -125,7 +125,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   onClick(event: Event) {
     this.renderer.listen(this.element, 'transitionend', () => {
       this.dismiss();
-      this.handler && this.handler(event);
+      this.handler?.(event);
     });
   }
 

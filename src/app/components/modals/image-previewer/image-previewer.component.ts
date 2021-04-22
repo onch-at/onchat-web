@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetButton } from 'src/app/common/interface';
-import { ImageMessage } from 'src/app/models/form.model';
+import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';

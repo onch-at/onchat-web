@@ -2,7 +2,7 @@ import { Component, Injector, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet } from '@ionic/angular';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
-import { ImageMessage } from 'src/app/models/form.model';
+import { ImageMessage } from 'src/app/models/msg.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';

@@ -3,8 +3,8 @@
     padding: 0.25rem 0.5rem;
     display: flex;
     flex-wrap: wrap;
-    color: var(--oc-color-light);
-    background: var(--oc-color-dark);
+    color: var(--color-light);
+    background: var(--color-dark);
     list-style: none;
 }
 
@@ -27,7 +27,7 @@
 
 ::ng-deep .bubble-toolbar-popover {
     .popover-arrow::after {
-        background: var(--oc-color-dark) !important;
+        background: var(--color-dark) !important;
     }
 
     .popover-content {

@@ -1,26 +1,23 @@
 <ul class="msg-list">
-  <li class="tip-item" *ngIf="end">
+  <li class="tips-item" *ngIf="end">
     <span>没有更多消息</span>
   </li>
 
   <ng-container *ngFor="let item of data; let index = index; trackBy: trackByFn">
-    <li class="tip-item" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
-      <span>{{ item.createTime | detailDate }} {{ item.createTime | date:'BBBBhh:mm' }}</span>
+    <li class="tips-item" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
+      <span>{{ item.createTime | detailDate }} {{ item.createTime | date: 'BBBBhh:mm' }}</span>
     </li>
 
     <ng-container [ngSwitch]="item.type">
-      <li *ngSwitchCase="msgType.Tips" class="tip-item">
-        <span [innerHTML]="item.data['content'] | sanitize: 'html'"></span>
+      <li *ngSwitchCase="msgType.Tips" class="tips-item">
+        <app-tips [tips]="item.data"></app-tips>
       </li>
 
-      <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="{
-        'msg-item-right':  globalData.user?.id == item.userId,
-        'msg-item-left':  globalData.user?.id != item.userId
-      }">
+      <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="msgItemClass(item.userId)">
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId != globalData.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
@@ -29,15 +26,12 @@
                 [innerHTML]="item.data['content'] | hyperlink | sanitize: 'html'">
           </span>
 
-          <ion-spinner *ngIf="globalData.user?.id == item.userId && item.loading" class="send-spinner" name="dots"
+          <ion-spinner *ngIf="globalData.user?.id === item.userId && item.loading" class="send-spinner" name="dots"
                        [duration]="1000"></ion-spinner>
         </div>
       </li>
 
-      <li *ngSwitchCase="msgType.RichText" class="msg-item" [ngClass]="{
-        'msg-item-right': globalData.user?.id == item.userId,
-        'msg-item-left': globalData.user?.id != item.userId
-      }">
+      <li *ngSwitchCase="msgType.RichText" class="msg-item" [ngClass]="msgItemClass(item.userId)">
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div class="ql-container ql-snow">
@@ -51,10 +45,7 @@
         </div>
       </li>
 
-      <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item" [ngClass]="{
-        'msg-item-right': globalData.user?.id == item.userId,
-        'msg-item-left': globalData.user?.id != item.userId
-      }">
+      <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item" [ngClass]="msgItemClass(item.userId)">
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
@@ -81,10 +72,7 @@
         </div>
       </li>
 
-      <li *ngSwitchCase="msgType.Image" class="msg-item" [ngClass]="{
-        'msg-item-right':  globalData.user?.id == item.userId,
-        'msg-item-left':  globalData.user?.id != item.userId
-      }">
+      <li *ngSwitchCase="msgType.Image" class="msg-item" [ngClass]="msgItemClass(item.userId)">
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>

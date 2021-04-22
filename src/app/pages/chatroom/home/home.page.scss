@@ -19,10 +19,10 @@ ion-header {
 }
 
 ion-content {
-    --background: var(--oc-color-gray);
+    --background: var(--color-gray);
 
     @media (prefers-color-scheme: dark) {
-        --background: var(--oc-color-white);
+        --background: var(--color-white);
     }
 }
 
@@ -85,19 +85,19 @@ ion-content {
 }
 
 .home-info {
-    background: var(--oc-color-light);
+    background: var(--color-light);
     padding: 0.6rem 0.85rem;
     font-size: 0.8rem;
     border-radius: 1.25rem;
     margin: 0.75rem;
-    color: var(--oc-color-dark);
+    color: var(--color-dark);
 }
 
 .home-item {
-    background: var(--oc-color-light);
+    background: var(--color-light);
     padding: 0.5rem 0.75rem;
     margin-bottom: 0.75rem;
-    color: var(--oc-color-dark);
+    color: var(--color-dark);
 }
 
 ion-item-group {
@@ -107,7 +107,7 @@ ion-item-group {
 .btn-danger {
     margin: 0 0.75rem;
     width: calc(100% - 1.5rem);
-    background-color: var(--oc-color-light);
+    background-color: var(--color-light);
 }
 
 .home-info-item {
@@ -136,18 +136,18 @@ ion-item-group {
     }
 
     .add-btn {
-        color: var(--oc-color-muted);
+        color: var(--color-muted);
         font-size: 1.75rem;
         display: flex;
         align-items: center;
         justify-content: center;
         background: transparent;
-        border: 0.1rem dashed var(--oc-color-muted);
+        border: 0.1rem dashed var(--color-muted);
     }
 }
 
 ion-item[detail] {
-    --background: var(--oc-color-light);
+    --background: var(--color-light);
 }
 
 .bottom-bar {

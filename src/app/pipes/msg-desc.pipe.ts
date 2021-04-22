@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MessageType } from '../common/enum';
-import { RichTextMessage, TextMessage } from '../models/form.model';
+import { MessageType, TipsType } from '../common/enum';
+import { RevokeMsgTipsMessage, RichTextMessage, TextMessage, TipsMessage } from '../models/msg.model';
 import { Message } from '../models/onchat.model';
 
 @Pipe({
@@ -9,12 +9,17 @@ import { Message } from '../models/onchat.model';
 export class MsgDescPipe implements PipeTransform {
 
   transform(value: Message): string {
+    const { type, data } = value;
+
     return {
-      [MessageType.Text]: (value.data as TextMessage).content,
-      [MessageType.RichText]: (value.data as RichTextMessage).text,
-      [MessageType.ChatInvitation]: '[分享]邀请加入群聊',
+      [MessageType.Text]: (data as TextMessage).content,
+      [MessageType.RichText]: (data as RichTextMessage).text,
       [MessageType.Image]: '[图片]',
-    }[value.type] || '[收到新消息]';
+      [MessageType.ChatInvitation]: '[分享]邀请加入聊天室',
+      [MessageType.Tips]: {
+        [TipsType.RevokeMsg]: (data as RevokeMsgTipsMessage).nickname + ' 撤回了一条消息'
+      }[(data as TipsMessage).type]
+    }[type] || '[收到新消息]';
   }
 
 }

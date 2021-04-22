@@ -4,8 +4,8 @@ ion-header {
     ion-buttons ion-back-button,
     ion-buttons ion-button,
     ion-title {
-        --color: var(--oc-color-white);
-        filter: drop-shadow(0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75));
+        --color: var(--color-white);
+        filter: drop-shadow(0 0 0.5rem rgba(var(--color-black-rgb), 0.75));
     }
 }
 
@@ -28,7 +28,7 @@ main {
     height: 100%;
     z-index: 1;
     padding: 4rem 0 calc(var(--ion-safe-area-bottom, 0) + 1rem);
-    background: linear-gradient(to bottom, transparent, rgba(var(--oc-color-white-rgb), 0.5));
+    background: linear-gradient(to bottom, transparent, rgba(var(--color-white-rgb), 0.5));
     backdrop-filter: blur(15px) saturate(175%);
 }
 
@@ -36,20 +36,20 @@ main {
     width: 7.5rem;
     height: 7.5rem;
     border-radius: 5rem;
-    border: 0.25rem solid rgba(var(--oc-color-white-rgb), 0.5);
+    border: 0.25rem solid rgba(var(--color-white-rgb), 0.5);
     object-fit: cover;
 }
 
 h1 {
-    color: var(--oc-color-white);
+    color: var(--color-white);
     font-weight: bold;
     font-size: 1.5rem;
-    text-shadow: 0 0 0.5rem rgba(var(--oc-color-black-rgb), 0.75);
+    text-shadow: 0 0 0.5rem rgba(var(--color-black-rgb), 0.75);
     margin: 1rem 0 1.25rem;
 }
 
 ion-item {
-    --background: rgba(var(--oc-color-white-rgb), 0.75);
+    --background: rgba(var(--color-white-rgb), 0.75);
     --padding-start: 1rem;
     --inner-padding-end: 1rem;
     margin-bottom: 1rem;
@@ -57,7 +57,7 @@ ion-item {
     overflow: hidden;
 
     &:focus-within {
-        box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
+        box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.5);
         transition: box-shadow 0.2s ease-in-out;
     }
 
@@ -66,14 +66,14 @@ ion-item {
         font-size: 1rem;
         margin: 0 0 0.4rem;
         padding: 0.25rem 0;
-        color: var(--oc-color-medium);
+        color: var(--color-medium);
         word-break: break-word;
     }
 
     > ion-label {
         font-size: 0.95rem;
         margin: 0.6rem 0 0;
-        --color: var(--oc-color-dark);
+        --color: var(--color-dark);
     }
 
     > ion-input,
@@ -83,7 +83,7 @@ ion-item {
         --padding-top: 0.25rem;
         --padding-bottom: 0.25rem;
         --padding-end: 0;
-        --color: var(--oc-color-medium);
+        --color: var(--color-medium);
     }
 
     ::ng-deep ion-input .input-clear-icon {

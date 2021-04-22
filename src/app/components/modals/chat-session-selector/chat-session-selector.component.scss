@@ -1,16 +1,16 @@
 ion-header {
-    background: rgba(var(--oc-color-white-rgb), 0.75);
+    background: rgba(var(--color-white-rgb), 0.75);
     backdrop-filter: blur(15px) saturate(175%);
     border-radius: 0 0 1.5rem 1.5rem;
 
     ion-buttons ion-back-button,
     ion-buttons ion-button,
     ion-title {
-        --color: var(--oc-color-black);
+        --color: var(--color-black);
     }
 
     ion-spinner {
-        --color: var(--oc-color-black);
+        --color: var(--color-black);
         margin-right: 0.25rem;
     }
 }
@@ -33,7 +33,7 @@ ion-searchbar {
             }
 
             .searchbar-input {
-                --background: rgba(var(--oc-color-gray-rgb), 0.5);
+                --background: rgba(var(--color-gray-rgb), 0.5);
                 backdrop-filter: blur(15px) saturate(175%);
             }
         }
@@ -57,7 +57,7 @@ ion-searchbar {
         margin: 0 0.75rem 0 0;
         border-radius: 50%;
         object-fit: cover;
-        background: var(--oc-color-secondary);
+        background: var(--color-secondary);
         overflow: hidden;
     }
 
@@ -67,13 +67,13 @@ ion-searchbar {
     }
 
     ion-checkbox {
-        --background: var(--oc-color-white);
+        --background: var(--color-white);
         --border-width: 0.075rem;
-        --border-color: rgba(var(--oc-color-dark-rgb), 0.5);
+        --border-color: rgba(var(--color-dark-rgb), 0.5);
         --size: 1.5rem;
         --checkmark-width: 0.15rem;
-        --background-checked: var(--oc-color-primary);
-        --border-color-checked: var(--oc-color-primary);
+        --background-checked: var(--color-primary);
+        --border-color-checked: var(--color-primary);
         --transition: background-color ease-in-out 0.125s;
 
         margin: 0 0 0 0.75rem;

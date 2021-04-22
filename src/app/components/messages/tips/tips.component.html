@@ -1,0 +1,6 @@
+<ng-container [ngSwitch]="tips.type">
+  <ng-container *ngSwitchCase="tipsType.RevokeMsg">
+    <span class="color-info cursor-pointer" [routerLink]="['/user', tips['userId']]">{{ tips['nickname'] }}</span>
+    撤回了一条消息
+  </ng-container>
+</ng-container>

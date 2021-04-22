@@ -47,15 +47,15 @@ label {
     }
 
     &[for="mood-joy"] {
-        color: var(--oc-color-primary);
+        color: var(--color-primary);
     }
 
     &[for="mood-angry"] {
-        color: var(--oc-color-danger);
+        color: var(--color-danger);
     }
 
     &[for="mood-sorrow"] {
-        color: var(--oc-color-info);
+        color: var(--color-info);
     }
 
     &[for="mood-fun"] {

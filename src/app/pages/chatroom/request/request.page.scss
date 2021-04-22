@@ -53,7 +53,7 @@ main {
 }
 
 ion-item {
-    --background: rgba(var(--oc-color-white-rgb), 0.75);
+    --background: rgba(var(--color-white-rgb), 0.75);
     --padding-start: 1rem;
     --inner-padding-end: 1rem;
     margin-bottom: 1rem;
@@ -62,7 +62,7 @@ ion-item {
     backdrop-filter: blur(15px) saturate(175%);
 
     &:focus-within {
-        box-shadow: 0 0 0 0.2rem rgba(var(--oc-color-primary-rgb), 0.5);
+        box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.5);
         transition: box-shadow 0.2s ease-in-out;
     }
 
@@ -72,7 +72,7 @@ ion-item {
         font-size: 1rem;
         margin: 0 0 0.4rem;
         padding: 0.25rem 0;
-        color: var(--oc-color-medium);
+        color: var(--color-medium);
         word-break: break-word;
     }
 
@@ -87,7 +87,7 @@ ion-item {
     > ion-label {
         font-size: 0.95rem;
         margin: 0.6rem 0 0;
-        --color: var(--oc-color-dark);
+        --color: var(--color-dark);
     }
 
     > ion-input,
@@ -97,7 +97,7 @@ ion-item {
         --padding-top: 0.25rem;
         --padding-bottom: 0.25rem;
         --padding-end: 0;
-        --color: var(--oc-color-medium);
+        --color: var(--color-medium);
     }
 
     ::ng-deep ion-input .input-clear-icon {

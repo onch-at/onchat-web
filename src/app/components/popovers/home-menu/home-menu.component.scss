@@ -2,7 +2,7 @@
     list-style: none;
     margin: 0;
     padding: 0.15rem 0;
-    color: var(--oc-color-dark);
+    color: var(--color-dark);
 }
 
 .home-menu-item {
@@ -18,7 +18,7 @@
 }
 
 ::ng-deep .home-menu-popover {
-    --background: var(--oc-color-light);
+    --background: var(--color-light);
 
     .popover-content {
         --max-width: 8.5rem;

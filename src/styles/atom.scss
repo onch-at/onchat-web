@@ -1,62 +1,17 @@
+@import "variables/color";
+
+@each $color-name, $color-value in $colors-light {
+    .color-#{$color-name} {
+        color: var(--color-#{$color-name}) !important;
+    }
+
+    .bg-#{$color-name} {
+        background-color: var(--color-#{$color-name}) !important;
+    }
+}
+
 .font-primary {
     font-family: "Alibaba-Sans-Black" !important;
-}
-.color-primary {
-    color: var(--oc-color-primary) !important;
-}
-.color-secondary {
-    color: var(--oc-color-secondary) !important;
-}
-.color-white {
-    color: var(--oc-color-white) !important;
-}
-.color-black {
-    color: var(--oc-color-black) !important;
-}
-.color-dark {
-    color: var(--oc-color-dark) !important;
-}
-.color-danger {
-    color: var(--oc-color-danger) !important;
-}
-.color-light {
-    color: var(--oc-color-light) !important;
-}
-.color-gray {
-    color: var(--oc-color-gray) !important;
-}
-.color-medium {
-    color: var(--oc-color-medium) !important;
-}
-.color-muted {
-    color: var(--oc-color-muted) !important;
-}
-.bg-primary {
-    background-color: var(--oc-color-primary) !important;
-}
-.bg-secondary {
-    background-color: var(--oc-color-secondary) !important;
-}
-.bg-white {
-    background-color: var(--oc-color-white) !important;
-}
-.bg-black {
-    background-color: var(--oc-color-black) !important;
-}
-.bg-danger {
-    background-color: var(--oc-color-danger) !important;
-}
-.bg-light {
-    background-color: var(--oc-color-light) !important;
-}
-.bg-gray {
-    background-color: var(--oc-color-gray) !important;
-}
-.bg-medium {
-    background-color: var(--oc-color-medium) !important;
-}
-.bg-muted {
-    background-color: var(--oc-color-muted) !important;
 }
 .dp-block {
     display: block !important;

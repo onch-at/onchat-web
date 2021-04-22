@@ -8,7 +8,7 @@ import { NICKNAME_MAX_LENGTH, TEXT_MSG_MAX_LENGTH } from 'src/app/common/constan
 import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { MessageEntity } from 'src/app/entities/message.entity';
-import { TextMessage } from 'src/app/models/form.model';
+import { RevokeMsgTipsMessage, TextMessage } from 'src/app/models/msg.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -149,14 +149,11 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
       })
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
-      for (const msgItem of this.msgList) {
-        if (msgItem.id == result.data.msgId) { // 移除被撤回的那条消息
-          msgItem.type = MessageType.Tips;
-          const name = msgItem.userId == this.globalData.user.id ? '我' : msgItem.nickname;
-          // TODO AS ANY
-          (msgItem.data as any).content = `<a target="_blank" href="/user/${msgItem.userId}">${name}</a> 撤回了一条消息`;
-          break;
-        }
+      const msg = this.msgList.find(o => o.id === result.data.msgId);
+      if (msg) {
+        const nickname = msg.userId === this.globalData.user.id ? '我' : msg.nickname;
+        msg.type = MessageType.Tips;
+        msg.data = new RevokeMsgTipsMessage(msg.userId, nickname);
       }
     });
 
@@ -262,7 +259,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // 如果是第一次查记录，就执行滚动
-        this.msgId == 0 && this.scrollToBottom(0).then(() => {
+        this.msgId === 0 && this.scrollToBottom(0).then(() => {
           this.first = false;
         });
 

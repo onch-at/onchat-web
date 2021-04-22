@@ -3,7 +3,7 @@
   left: 0;
   height: 100%;
   width: 3rem;
-  background: rgba(var(--oc-color-primary-rgb), 0.75);
+  background: rgba(var(--color-primary-rgb), 0.75);
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
   overflow: hidden;
 
@@ -13,8 +13,8 @@
     width: 2.3rem;
     height: 2.3rem;
     border-radius: 50%;
-    background: var(--oc-color-white);
-    border: 0.075rem solid var(--oc-color-white);
+    background: var(--color-white);
+    border: 0.075rem solid var(--color-white);
   }
 
   .button-group {
@@ -24,10 +24,10 @@
   }
 
   ion-button {
-    --color: rgba(var(--oc-color-white-rgb), 0.55);
-    --color-hover: var(--oc-color-white);
-    --color-focused: var(--oc-color-white);
-    --color-activated: var(--oc-color-white);
+    --color: rgba(var(--color-white-rgb), 0.55);
+    --color-hover: var(--color-white);
+    --color-focused: var(--color-white);
+    --color-activated: var(--color-white);
     --padding-start: 0.6rem;
     --padding-end: 0.6rem;
     --padding-left: 0.6rem;
@@ -43,13 +43,13 @@
       position: absolute;
       height: 4.5rem;
       width: 4.5rem;
-      background: var(--oc-color-white);
+      background: var(--color-white);
       border-radius: 50%;
       transform: scale(0);
     }
 
     &.active {
-      --color: var(--oc-color-white);
+      --color: var(--color-white);
       animation: active 0.4s ease-out forwards;
     }
 
@@ -71,7 +71,7 @@ ion-header {
   right: 0;
   width: calc(100% - 3rem);
   overflow: hidden;
-  background: var(--oc-color-light);
+  background: var(--color-light);
   border-radius: 0 0 1.5rem 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
   transition: border-radius ease-in-out 0.25s;
@@ -81,7 +81,7 @@ ion-header {
     --background: transparent;
 
     ion-button {
-      --color: var(--oc-color-medium);
+      --color: var(--color-medium);
 
       > ion-icon {
         font-size: 1.75rem;

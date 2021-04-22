@@ -1,7 +1,7 @@
 import { Injector } from "@angular/core";
 import { filter } from "rxjs/operators";
 import { MessageType, ResultCode, SocketEvent } from "../common/enum";
-import { ChatInvitationMessage, ImageMessage, RichTextMessage, TextMessage } from "../models/form.model";
+import { ChatInvitationMessage, ImageMessage, RichTextMessage, TextMessage } from "../models/msg.model";
 import { Message, Result } from "../models/onchat.model";
 import { SocketService } from "../services/socket.service";
 

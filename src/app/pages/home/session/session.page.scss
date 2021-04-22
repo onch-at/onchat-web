@@ -16,7 +16,7 @@
     width: 0;
     height: 0;
     border: 0.5rem solid;
-    border-color: transparent transparent rgba(var(--oc-color-primary-rgb), 0.5) transparent;
+    border-color: transparent transparent rgba(var(--color-primary-rgb), 0.5) transparent;
     border-radius: 0.25rem;
     z-index: 2;
     transform: rotate(45deg);
@@ -24,7 +24,7 @@
 
   .chat-session-item-img {
     object-fit: cover;
-    background: var(--oc-color-secondary);
+    background: var(--color-secondary);
     overflow: hidden;
     aspect-ratio: 1 / 1;
   }
@@ -41,16 +41,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(var(--oc-color-primary-rgb), 0.75);
+    background: rgba(var(--color-primary-rgb), 0.75);
 
     ion-icon {
       font-size: 1.65rem;
-      color: var(--oc-color-white);
+      color: var(--color-white);
     }
   }
 
   .chat-session-item-title {
-    color: var(--oc-color-dark);
+    color: var(--color-dark);
     font-size: 0.9rem;
     font-weight: bold;
     margin: 0 0 0.125rem;
@@ -58,7 +58,7 @@
 
   .chat-session-item-desc {
     font-size: 0.7rem;
-    color: var(--oc-color-muted);
+    color: var(--color-muted);
     margin: 0;
   }
 }
@@ -72,7 +72,7 @@
 
   time {
     display: block;
-    color: var(--oc-color-muted);
+    color: var(--color-muted);
     font-size: 0.65rem;
     margin-bottom: 0.25rem;
   }

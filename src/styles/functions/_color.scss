@@ -1,0 +1,14 @@
+// 将颜色与黑色混合以创建阴影
+@function get-color-shade($color) {
+    @return mix(#000, $color, 12%);
+}
+
+// 将颜色与白色混合以创建其色调
+@function get-color-tint($color) {
+    @return mix(#fff, $color, 11%);
+}
+
+// 将颜色转换为逗号分隔的rgb
+@function color-to-rgb-list($color) {
+    @return #{red($color)}, #{green($color)}, #{blue($color)};
+}

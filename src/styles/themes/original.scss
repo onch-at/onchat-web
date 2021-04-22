@@ -1,41 +1,15 @@
+@import "../variables/color";
+@import "../functions/color";
+
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
 :root {
-  --oc-color-primary: #ffc107;
-  --oc-color-primary-rgb: 255, 193, 7;
-  --oc-color-primary-shade: #ffb300;
-
-  --oc-color-secondary: #f5f5f5;
-  --oc-color-secondary-rgb: 245, 245, 245;
-
-  --oc-color-muted: #757575;
-  --oc-color-muted-rgb: 117, 117, 117;
-
-  --oc-color-dark: #424242;
-  --oc-color-dark-rgb: 66, 66, 66;
-
-  --oc-color-gray: #eeeeee;
-  --oc-color-gray-rgb: 238, 238, 238;
-
-  --oc-color-medium: #616161;
-  --oc-color-medium-rgb: 97, 97, 97;
-
-  --oc-color-danger: #ff5252;
-  --oc-color-danger-rgb: 255, 82, 82;
-
-  --oc-color-info: #1890ff;
-  --oc-color-info-rgb: 24, 144, 255;
-
-  --oc-color-light: #fafafa;
-  --oc-color-light-rgb: 250, 250, 250;
-
-  --oc-color-white: #fff;
-  --oc-color-white-rgb: 255, 255, 255;
-
-  --oc-color-black: #000;
-  --oc-color-black-rgb: 0, 0, 0;
+  @each $color-name, $color-value in $colors-light {
+    --color-#{$color-name}: #{$color-value};
+    --color-#{$color-name}-rgb: #{color-to-rgb-list($color-value)};
+  }
 
   /** primary **/
   --ion-color-primary: #3880ff;
@@ -117,38 +91,10 @@
    */
 
   body {
-    --oc-color-primary: #cc9900;
-    --oc-color-primary-rgb: 204, 153, 0;
-
-    --oc-color-secondary: #424242;
-    --oc-color-secondary-rgb: 66, 66, 66;
-
-    --oc-color-muted: #757575;
-    --oc-color-muted-rgb: 117, 117, 117;
-
-    --oc-color-dark: #bdbdbd;
-    --oc-color-dark-rgb: 189, 189, 189;
-
-    --oc-color-gray: #616161;
-    --oc-color-gray-rgb: 97, 97, 97;
-
-    --oc-color-medium: #9e9e9e;
-    --oc-color-medium-rgb: 158, 158, 158;
-
-    --oc-color-danger: #9a1818;
-    --oc-color-danger-rgb: 154, 24, 24;
-
-    --oc-color-info: #0077e6;
-    --oc-color-info-rgb: 0, 119, 230;
-
-    --oc-color-light: #424242;
-    --oc-color-light-rgb: 66, 66, 66;
-
-    --oc-color-white: #212121;
-    --oc-color-white-rgb: 33, 33, 33;
-
-    --oc-color-black: #fff;
-    --oc-color-black-rgb: 255, 255, 255;
+    @each $color-name, $color-value in $colors-dark {
+      --color-#{$color-name}: #{$color-value};
+      --color-#{$color-name}-rgb: #{color-to-rgb-list($color-value)};
+    }
 
     --ion-color-primary: #428cff;
     --ion-color-primary-rgb: 66, 140, 255;

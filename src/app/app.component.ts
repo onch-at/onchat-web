@@ -6,6 +6,7 @@ import { from } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { NotificationOptions } from './common/interface';
+import { RevokeMsgTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { MsgDescPipe } from './pipes/msg-desc.pipe';
 import { ApiService } from './services/api.service';
@@ -226,16 +227,14 @@ export class AppComponent implements OnInit {
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
-      const index = this.globalData.chatSessions.findIndex(o => o.data.chatroomId === result.data.chatroomId);
-      if (index >= 0) {
-        const chatSession = this.globalData.chatSessions[index];
-        chatSession.unread > 0 && chatSession.unread--;
-        chatSession.content = JSON.parse(JSON.stringify(chatSession.content));
+      const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === result.data.chatroomId);
+      if (chatSession) {
+        const nickname = chatSession.content.userId === this.globalData.user.id ? '我' : chatSession.content.nickname;
+        chatSession.unread && chatSession.unread--;
         chatSession.content.type = MessageType.Tips;
-        const name = chatSession.content.userId == this.globalData.user.id ? '我' : chatSession.content.nickname;
-        (chatSession.content.data as any).content = name + ' 撤回了一条消息';
+        chatSession.content.data = new RevokeMsgTipsMessage(chatSession.content.userId, nickname);
+        chatSession.content = { ...chatSession.content };
         chatSession.updateTime = Date.now();
-        this.globalData.chatSessions[index] = chatSession;
         this.globalData.sortChatSessions();
       }
     });

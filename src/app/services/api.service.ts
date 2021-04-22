@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
-import { ChangePassword, ImageMessage, Login, Register, ResetPassword, UserInfo } from '../models/form.model';
+import { ChangePassword, Login, Register, ResetPassword, UserInfo } from '../models/form.model';
+import { ImageMessage } from '../models/msg.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
 
 const HTTP_OPTIONS_JSON = {

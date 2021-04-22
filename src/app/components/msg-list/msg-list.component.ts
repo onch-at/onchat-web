@@ -27,6 +27,14 @@ export class MsgListComponent implements OnInit {
 
   trackByFn = EntityUtil.trackBy;
 
+  msgItemClass = (userId: number) => {
+    const { user } = this.globalData;
+    return {
+      'msg-item-right': user?.id === userId,
+      'msg-item-left': user?.id !== userId
+    }
+  }
+
   constructor(
     private overlay: Overlay,
     private feedbackService: FeedbackService,

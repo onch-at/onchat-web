@@ -6,21 +6,25 @@ ion-header {
     ion-buttons ion-back-button,
     ion-buttons ion-button,
     ion-title {
-        --color: var(--oc-color-black);
+        --color: var(--color-black);
     }
 
     ion-spinner {
-        --color: var(--oc-color-black);
+        --color: var(--color-black);
         margin-right: 0.25rem;
     }
 
     > ion-toolbar {
-        --background: rgba(var(--oc-color-white-rgb), 0.75);
+        --background: rgba(var(--color-white-rgb), 0.75);
     }
 }
 
 .router-outlet {
     margin-top: 6rem;
+
+    &::ng-deep > * {
+        background: var(--color-white);
+    }
 }
 
 :host ::ng-deep {
@@ -40,19 +44,19 @@ ion-header {
             height: 3.25rem;
             border-radius: 50%;
             object-fit: cover;
-            background: var(--oc-color-secondary);
+            background: var(--color-secondary);
             overflow: hidden;
         }
 
         h2 {
-            color: var(--oc-color-dark);
+            color: var(--color-dark);
             font-size: 0.9rem;
             margin: 0 0 0.125rem;
         }
 
         p {
             font-size: 0.7rem;
-            color: var(--oc-color-muted);
+            color: var(--color-muted);
             margin: 0;
         }
 
@@ -64,7 +68,7 @@ ion-header {
         }
 
         .status {
-            color: var(--oc-color-muted);
+            color: var(--color-muted);
             font-size: 0.75rem;
             margin-right: 0.2rem;
         }
