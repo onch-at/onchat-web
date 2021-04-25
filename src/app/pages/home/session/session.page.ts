@@ -30,7 +30,7 @@ export class SessionPage implements OnInit {
     private router: Router,
     private onChatService: OnChatService,
     private apiService: ApiService,
-    public globalData: GlobalData,
+    public globalData: GlobalData
   ) { }
 
   ngOnInit() { }

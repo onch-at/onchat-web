@@ -22,8 +22,7 @@
           </div>
 
           <span #bubble appRipple class="msg-bubble" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
-                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-                [innerHTML]="item.data['content'] | hyperlink | sanitize: 'html'">
+                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)" [innerHTML]="item.data['content'] | hyperlink">
           </span>
 
           <ion-spinner *ngIf="globalData.user?.id === item.userId && item.loading" class="send-spinner" name="dots"
@@ -41,7 +40,7 @@
 
           <span #bubble appRipple class="msg-bubble ql-editor" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
-                [innerHTML]=" item.data['html'] | hyperlink | sanitize: 'html'"></span>
+                [innerHTML]="item.data['html'] | hyperlink"></span>
         </div>
       </li>
 

@@ -11,6 +11,8 @@ export class ImageMessageComponent implements OnInit, AfterViewInit {
   @Input() msg: Message<ImageMessage>;
   @ViewChild('img', { static: true }) img: ElementRef<HTMLImageElement>;
 
+  private timer: number;
+
   constructor(
     private renderer: Renderer2
   ) { }
@@ -24,15 +26,16 @@ export class ImageMessageComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize')
   onWindowResize() {
-    this.resize();
+    this.timer && clearTimeout(this.timer);
+    this.timer = window.setTimeout(() => this.resize(), 100);
   }
 
   private resize() {
     let divisor = 1;
     let { width, height } = this.msg.data;
+    const { nativeElement } = this.img;
     const maxWidth = window.innerWidth * 0.4;
     const maxHeight = window.innerHeight * 0.5;
-    const { nativeElement } = this.img;
 
     if (width > maxWidth) {
       divisor = width / maxWidth;

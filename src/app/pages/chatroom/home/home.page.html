@@ -40,7 +40,7 @@
   <div class="home-item">
     <div class="home-info-label">聊天室成员</div>
     <div class="avatar-list-track">
-      <ng-container *ngFor="let item of chatMembers | slice: 0:7">
+      <ng-container *ngFor="let item of chatMembers | slice: 0:(isMember ? 6 : 7)">
         <img class="avatar-list-img cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
       </ng-container>
 

@@ -12,7 +12,7 @@
   <swiper #swiper class="swiper" [initialSlide]="index" [lazy]="lazy" [zoom]="zoom">
     <ng-template swiperSlide *ngFor="let item of data; trackBy: trackByFn">
       <div class="swiper-zoom-container dp-flex align-center justify-center" (click)="dismiss()">
-        <img class="swiper-lazy" [attr.data-src]="item.data['url'] | sanitize: 'resolve'" (press)="onPress(item)"
+        <img class="swiper-lazy" [attr.data-src]="item.data['url'] | sanitize: 'url'" (press)="onPress(item)"
              (click)="$event.stopPropagation()">
         <ion-spinner class="swiper-lazy-spinner" name="crescent"></ion-spinner>
       </div>

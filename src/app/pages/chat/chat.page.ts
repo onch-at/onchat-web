@@ -207,8 +207,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     if (
       this.platform.is('desktop') &&
       event.key.toLowerCase() === 'enter' &&
-      !event.ctrlKey &&
-      !event.shiftKey
+      !event.ctrlKey && !event.shiftKey
     ) {
       this.send();
     }
@@ -330,6 +329,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     msg.data = new TextMessage(this.msg);
 
     msg.send();
+
+    msg.data.content = StrUtil.html(this.msg);
 
     this.msgList.push(msg);
     this.scrollToBottom();

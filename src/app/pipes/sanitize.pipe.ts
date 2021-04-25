@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Pipe({
@@ -8,14 +8,16 @@ export class SanitizePipe implements PipeTransform {
 
   constructor(private sanitizer: DomSanitizer) { }
 
-  transform(value: string, type: 'html' | 'style' | 'script' | 'url' | 'resolve'): unknown {
-    return {
-      'html': this.sanitizer.bypassSecurityTrustHtml(value),
-      'style': this.sanitizer.bypassSecurityTrustStyle(value),
-      'script': this.sanitizer.bypassSecurityTrustScript(value),
-      'url': this.sanitizer.bypassSecurityTrustUrl(value),
-      'resolve': value['changingThisBreaksApplicationSecurity'] || value
+  transform(value: string, type: 'html' | 'style' | 'script' | 'url' | 'res'): string {
+    const context = {
+      'res': SecurityContext.RESOURCE_URL,
+      'url': SecurityContext.URL,
+      'html': SecurityContext.HTML,
+      'style': SecurityContext.STYLE,
+      'script': SecurityContext.SCRIPT
     }[type];
+
+    return this.sanitizer.sanitize(context, value);
   }
 
 }
