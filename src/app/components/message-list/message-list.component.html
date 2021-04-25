@@ -35,7 +35,7 @@
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div class="ql-container ql-snow">
-          <div class="username" *ngIf="item.userId != globalData.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId !== globalData.user.id && chatroomType === chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
@@ -49,25 +49,17 @@
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId != globalData.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId !== globalData.user.id && chatroomType === chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
           <span #bubble appRipple class="msg-bubble msg-bubble-card" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
                 [routerLink]="['/chatroom', item.data['chatroomId']]">
-            <ion-img class="bg-img" [src]="item.data['avatarThumbnail']"></ion-img>
-            <div class="msg-bubble-card-body cursor-pointer">
-              <div class="msg-bubble-card-label">邀请加入群聊</div>
-              <div class="dp-flex">
-                <ion-img class="msg-bubble-card-avatar" [src]="item.data['avatarThumbnail']"></ion-img>
-                <div>
-                  <div class="msg-bubble-card-title text-ellipsis">{{ item.data['name'] }}</div>
-                  <div class="msg-bubble-card-description">{{ '简介：' + (item.data['description'] ?
-                    item.data['description'] : '暂无聊天室简介') }}</div>
-                </div>
-              </div>
-            </div>
+            <app-card-message label="邀请加入群聊" [title]="item.data['name']"
+                              [description]="'简介：' + (item.data['description'] ? item.data['description'] : '暂无聊天室简介')"
+                              [avatar]="item.data['avatarThumbnail']" [background]="item.data['avatarThumbnail']">
+            </app-card-message>
           </span>
         </div>
       </li>
@@ -83,16 +75,7 @@
           <span #bubble appRipple class="msg-bubble msg-bubble-img" (tap)="previewImage(item.id)"
                 (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
-            <img [appImageSize]="[item.data['width'], item.data['height']]" [src]="item.data['url']" />
-            <ng-container *ngIf="item.loading">
-              <div class="loading-mask"></div>
-              <div class="loading-progress" [style.height]="100 - item.percent + '%'"></div>
-              <div class="loading-container">
-                <ion-spinner [hidden]="!item.percent" name="crescent"></ion-spinner>
-                <ion-spinner [hidden]="item.percent" name="dots"></ion-spinner>
-                <div class="loading-value" [hidden]="!item.percent">{{ item.percent + '%' }}</div>
-              </div>
-            </ng-container>
+            <app-image-message [msg]="item"></app-image-message>
           </span>
         </div>
       </li>

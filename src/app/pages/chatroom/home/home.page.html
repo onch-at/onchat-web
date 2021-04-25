@@ -40,13 +40,13 @@
   <div class="home-item">
     <div class="home-info-label">聊天室成员</div>
     <div class="avatar-list-track">
-      <ng-container *ngFor="let item of chatMembers | slice: 0:(isMember ? 6 : 7)">
+      <ng-container *ngFor="let item of chatMembers | slice: 0:7">
         <img class="avatar-list-img cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
       </ng-container>
 
       <!-- 如果不够6个，就填充空元素来维持UI -->
       <ng-container *ngIf="chatMembers.length < 6">
-        <div *ngFor="let item of (6 - chatMembers.length | fill)" class="avatar-list-img"></div>
+        <div *ngFor="let item of (isMember ? 6: 7) - chatMembers.length | fill" class="avatar-list-img"></div>
       </ng-container>
 
       <button appRipple *ngIf="isMember" class="add-btn" (tap)="inviteJoinChatroom()">

@@ -1,5 +1,5 @@
 import { ChatMemberRole, ChatRequestStatus, ChatSessionType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
-import { ChatInvitationMessage, ImageMessage, RichTextMessage, TextMessage, TipsMessage } from './msg.model';
+import { AnyMessage } from './msg.model';
 
 export interface Result<T = null> {
   code: ResultCode | number;
@@ -102,7 +102,7 @@ export interface ChatSession extends IEntity {
 }
 
 /** 消息实体 */
-export interface Message extends IEntity {
+export interface Message<T extends AnyMessage = AnyMessage> extends IEntity {
   /** 消息对应的聊天室ID */
   chatroomId: number;
   /** 消息发送者ID */
@@ -114,7 +114,7 @@ export interface Message extends IEntity {
   /** 消息类型 */
   type: MessageType;
   /** 消息内容 */
-  data: TipsMessage | TextMessage | RichTextMessage | ChatInvitationMessage | ImageMessage;
+  data: T;
   /** 回复消息的消息记录ID */
   replyId?: number;
   /** 消息在客户端发送的时间 */

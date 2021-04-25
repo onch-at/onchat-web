@@ -44,9 +44,9 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   /** IonContent */
   @ViewChild('ionContent', { static: true }) ionContent: IonContent;
   /** 抽屉 */
-  @ViewChild('drawer', { static: true }) drawer: ElementRef;
+  @ViewChild('drawer', { static: true }) drawer: ElementRef<HTMLElement>;
   /** 文本框 */
-  @ViewChild('textarea', { static: true }) textarea: ElementRef;
+  @ViewChild('textarea', { static: true }) textarea: ElementRef<HTMLTextAreaElement>;
   /** IonContent滚动元素 */
   contentElement: HTMLElement;
   /** IonContent滚动元素初始可视高度 */

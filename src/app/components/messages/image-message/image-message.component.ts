@@ -1,33 +1,38 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
-import { Throttle } from '../common/decorator';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ImageMessage } from 'src/app/models/msg.model';
+import { Message } from 'src/app/models/onchat.model';
 
-@Directive({
-  selector: '[appImageSize]'
+@Component({
+  selector: 'app-image-message',
+  templateUrl: './image-message.component.html',
+  styleUrls: ['./image-message.component.scss'],
 })
-export class ImageSizeDirective implements AfterViewInit {
-  @Input() appImageSize: [number, number];
+export class ImageMessageComponent implements OnInit, AfterViewInit {
+  @Input() msg: Message<ImageMessage>;
+  @ViewChild('img', { static: true }) img: ElementRef<HTMLImageElement>;
 
   constructor(
-    private elementRef: ElementRef,
     private renderer: Renderer2
   ) { }
+
+  ngOnInit() {
+  }
 
   ngAfterViewInit() {
     this.resize();
   }
 
   @HostListener('window:resize')
-  @Throttle(100)
   onWindowResize() {
     this.resize();
   }
 
   private resize() {
     let divisor = 1;
-    let [width, height] = this.appImageSize;
-    const { nativeElement } = this.elementRef;
+    let { width, height } = this.msg.data;
     const maxWidth = window.innerWidth * 0.4;
     const maxHeight = window.innerHeight * 0.5;
+    const { nativeElement } = this.img;
 
     if (width > maxWidth) {
       divisor = width / maxWidth;

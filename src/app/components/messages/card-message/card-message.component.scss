@@ -1,0 +1,49 @@
+ion-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.msg-bubble-card-body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0.4rem 0.75rem;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2.5px);
+  border-radius: 1rem;
+}
+
+.msg-bubble-card-label {
+  padding-bottom: 0.4rem;
+}
+
+.msg-bubble-card-avatar {
+  height: 3.75rem;
+  width: 3.75rem;
+  border-radius: 50%;
+  border: 0.15rem solid rgba(255, 255, 255, 0.75);
+  object-fit: cover;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.msg-bubble-card-title {
+  padding-bottom: 0.125rem;
+  max-width: 8.85rem;
+}
+
+.msg-bubble-card-description {
+  font-size: 0.8rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.msg-bubble-card-title,
+.msg-bubble-card-description {
+  padding-left: 0.65rem;
+}

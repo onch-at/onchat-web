@@ -1,5 +1,7 @@
 import { TipsType } from '../common/enum';
 
+export type AnyMessage = TipsMessage | TextMessage | RichTextMessage | ChatInvitationMessage | ImageMessage;
+
 /** 纯文本消息 */
 export class TextMessage {
   constructor(
