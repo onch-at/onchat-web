@@ -55,7 +55,7 @@
           <span #bubble appRipple class="msg-bubble msg-bubble-card" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
                 [routerLink]="['/chatroom', item.data['chatroomId']]">
-            <app-card-message label="邀请加入群聊" [title]="item.data['name']"
+            <app-card-message label="邀请加入聊天室" [title]="item.data['name']"
                               [description]="'简介：' + (item.data['description'] ? item.data['description'] : '暂无聊天室简介')"
                               [avatar]="item.data['avatarThumbnail']" [background]="item.data['avatarThumbnail']">
             </app-card-message>
@@ -67,7 +67,7 @@
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId != globalData.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username" *ngIf="item.userId !== globalData.user.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 

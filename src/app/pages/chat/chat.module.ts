@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { QuillModule } from 'ngx-quill';
-import { DrawerComponent } from 'src/app/components/drawer/drawer.component';
+import { ChatDrawerComponent } from 'src/app/components/chat-drawer/chat-drawer.component';
 import { CardMessageComponent } from 'src/app/components/messages/card-message/card-message.component';
 import { ImageMessageComponent } from 'src/app/components/messages/image-message/image-message.component';
 import { TipsMessageComponent } from 'src/app/components/messages/tips-message/tips-message.component';
@@ -41,7 +41,7 @@ import { ChatPage } from './chat.page';
     ImageMessageComponent,
     CardMessageComponent,
     BubbleToolbarComponent,
-    DrawerComponent,
+    ChatDrawerComponent,
     RichTextEditorComponent,
     ImagePreviewerComponent
   ]

@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
+import { ChatDrawerComponent } from './chat-drawer.component';
 
-import { DrawerComponent } from './drawer.component';
-
-describe('DrawerComponent', () => {
-  let component: DrawerComponent;
-  let fixture: ComponentFixture<DrawerComponent>;
+describe('ChatDrawerComponent', () => {
+  let component: ChatDrawerComponent;
+  let fixture: ComponentFixture<ChatDrawerComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DrawerComponent ],
+      declarations: [ChatDrawerComponent],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DrawerComponent);
+    fixture = TestBed.createComponent(ChatDrawerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

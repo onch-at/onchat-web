@@ -11,11 +11,11 @@ import { SysUtil } from 'src/app/utils/sys.util';
 import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-editor.component';
 
 @Component({
-  selector: 'app-drawer',
-  templateUrl: './drawer.component.html',
-  styleUrls: ['./drawer.component.scss'],
+  selector: 'app-chat-drawer',
+  templateUrl: './chat-drawer.component.html',
+  styleUrls: ['./chat-drawer.component.scss'],
 })
-export class DrawerComponent implements OnInit {
+export class ChatDrawerComponent implements OnInit {
   @Input() page: ChatPage;
 
   private imgMsgList: ImageMessageEntity[] = [];
