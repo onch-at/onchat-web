@@ -1,21 +1,33 @@
 import { Injectable } from '@angular/core';
-import { from, fromEvent } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { from, fromEvent, of } from 'rxjs';
+import { filter, mergeMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Recorder {
-  private recorder: MediaRecorder;
+  private recorder: MediaRecorder = null;
 
-  constructor() { }
+  constructor() {
+    // 在页面隐藏的时候，关闭媒体流
+    fromEvent(document, 'visibilitychange').pipe(
+      filter(() => document.hidden && this.recorder !== null)
+    ).subscribe(() => {
+      this.recorder.stream.getAudioTracks().forEach(o => o.stop());
+      this.recorder = null;
+    });
+  }
 
   /**
    * 申请权限并准备录音
    */
   record() {
+    if (this.recorder) {
+      return of(this.recorder);
+    }
+
     return from(navigator.mediaDevices.getUserMedia({ audio: true })).pipe(
-      tap(stream => this.recorder = new MediaRecorder(stream))
+      mergeMap(stream => of(this.recorder = new MediaRecorder(stream)))
     );
   }
 
@@ -39,11 +51,7 @@ export class Recorder {
    * 结束录音
    */
   stop() {
-    if (this.recorder) {
-      this.recorder.state !== 'inactive' && this.recorder.stop();
-      this.recorder.stream.getAudioTracks().forEach(o => o.stop());
-      this.recorder = null;
-    }
+    this.recorder?.state !== 'inactive' && this.recorder?.stop();
   }
 
   available() {

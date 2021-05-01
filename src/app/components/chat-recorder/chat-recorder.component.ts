@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, filter, mergeMap } from 'rxjs/operators';
+import { catchError, filter, first, mergeMap } from 'rxjs/operators';
 import { Vector2 } from 'src/app/common/class';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -74,6 +74,7 @@ export class ChatRecorderComponent implements OnInit {
         return o && this.startTime !== null;
       }),
       mergeMap(() => this.recorder.start()),
+      first(),
       mergeMap(() => {
         this.startTime = Date.now(); // 校准录音起始时间
         this.operateState = OperateState.Send;
@@ -89,14 +90,14 @@ export class ChatRecorderComponent implements OnInit {
             this.operateState = OperateState.Play;
             this.complete();
             this.feedbackService.slightVibrate();
-            this.clearTimer();
           }
         }, 1000);
 
         return this.recorder.available();
-      })
+      }),
+      first(),
     ).subscribe(({ data }: BlobEvent) => {
-      // 如果取消确认，或者录不到音
+      // 如果没有确认，或者录不到音
       if (!this.comfirmed || data.size === 0) {
         return this.comfirmed = true;
       }
@@ -230,6 +231,7 @@ export class ChatRecorderComponent implements OnInit {
   private clearTimer() {
     this.timer && clearInterval(this.timer);
     this.timer = null;
+
   }
 
 }
