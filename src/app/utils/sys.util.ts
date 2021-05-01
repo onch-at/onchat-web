@@ -1,6 +1,5 @@
 import { Renderer2 } from '@angular/core';
-import { from, Observable, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
 
 export class SysUtil {
 
@@ -138,15 +137,6 @@ export class SysUtil {
 
       return bitmap;
     }));
-  }
-
-  /**
-   * 申请权限录音
-   */
-  static record() {
-    return from(navigator.mediaDevices.getUserMedia({ audio: true })).pipe(
-      mergeMap(stream => of(new MediaRecorder(stream)))
-    )
   }
 
   // /**
