@@ -1,6 +1,6 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { IonRouterOutlet } from '@ionic/angular';
+import { IonRouterOutlet, IonSlides } from '@ionic/angular';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
@@ -8,6 +8,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
+import { SwiperOptions } from 'swiper';
 import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-editor.component';
 
 @Component({
@@ -17,6 +18,9 @@ import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-ed
 })
 export class ChatDrawerComponent implements OnInit {
   @Input() page: ChatPage;
+  @ViewChild(IonSlides, { static: true }) ionSlides: IonSlides;
+
+  slideOpts: SwiperOptions = { initialSlide: 1 };
 
   private imgMsgList: ImageMessageEntity[] = [];
 
@@ -33,6 +37,14 @@ export class ChatDrawerComponent implements OnInit {
   ) { }
 
   ngOnInit() { }
+
+  setIndex(index: number, speed?: number) {
+    this.ionSlides.slideTo(index, speed);
+  }
+
+  getIndex() {
+    return this.ionSlides.getActiveIndex();
+  }
 
   editRichText() {
     this.overlay.presentModal({

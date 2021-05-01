@@ -1,4 +1,8 @@
-<ion-slides [pager]="true">
+<ion-slides [pager]="true" [options]="slideOpts">
+  <ion-slide>
+    <app-chat-recorder></app-chat-recorder>
+  </ion-slide>
+
   <ion-slide>
     <div class="grid-container">
       <button appRipple appActiveClass class="btn-white" (tap)="selectImage()">

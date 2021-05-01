@@ -7,6 +7,7 @@ import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { ChatDrawerComponent } from 'src/app/components/chat-drawer/chat-drawer.component';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RevokeMsgTipsMessage, TextMessage } from 'src/app/models/msg.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
@@ -23,7 +24,22 @@ import { StrUtil } from 'src/app/utils/str.util';
 })
 export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   private subject: Subject<unknown> = new Subject();
+  /** IonContent滚动元素 */
+  private contentElement: HTMLElement;
+  /** IonContent滚动元素初始可视高度 */
+  private contentClientHeight: number;
+
   textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
+
+  /** IonContent */
+  @ViewChild(IonContent, { static: true }) ionContent: IonContent;
+  /** 抽屉容器 */
+  @ViewChild('drawerContainer', { static: true }) drawerContainer: ElementRef<HTMLElement>;
+  /** 抽屉 */
+  @ViewChild(ChatDrawerComponent, { static: true }) drawer: ChatDrawerComponent;
+  /** 文本框 */
+  @ViewChild('textarea', { static: true }) textarea: ElementRef<HTMLTextAreaElement>;
+
   msg: string = '';
   /** 当前房间名字 */
   chatroomName: string = 'Loading…';
@@ -31,32 +47,25 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   chatroomId: number;
   /** 聊天室类型 */
   chatroomType: ChatroomType;
-  /** 会话 */
+  /** 会话列表中对应的会话 */
   chatSession: ChatSession;
   /** 消息ID，用于查询指定消息段 */
   msgId: number = 0;
   /** 聊天记录 */
   msgList: Message[] = [];
-  /** 是否是第一次查询 */
-  first: boolean = true;
   /** 聊天记录是否查到末尾了 */
   end: boolean = false;
-  /** IonContent */
-  @ViewChild('ionContent', { static: true }) ionContent: IonContent;
-  /** 抽屉 */
-  @ViewChild('drawer', { static: true }) drawer: ElementRef<HTMLElement>;
-  /** 文本框 */
-  @ViewChild('textarea', { static: true }) textarea: ElementRef<HTMLTextAreaElement>;
-  /** IonContent滚动元素 */
-  contentElement: HTMLElement;
-  /** IonContent滚动元素初始可视高度 */
-  contentClientHeight: number;
   /** 是否有未读消息 */
-  hasUnread: boolean = false;
+  hasUnreadMsg: boolean = false;
   /** 是否显示抽屉 */
   showDrawer: boolean = false;
   /** 键盘高度 */
   keyboardHeight: number;
+
+  /** 是否禁用发送按钮 */
+  disableSendBtn = () => this.msg.length > TEXT_MSG_MAX_LENGTH;
+  /** 是否显示发送按钮 */
+  showSendBtn = () => StrUtil.trimAll(this.msg).length > 0;
 
   constructor(
     public globalData: GlobalData,
@@ -67,7 +76,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private renderer: Renderer2,
     private overlay: Overlay,
-    private injector: Injector
+    private injector: Injector,
   ) { }
 
   ngOnInit() {
@@ -180,7 +189,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       this.contentClientHeight = element.clientHeight;
     });
 
-    this.renderer.listen(this.drawer.nativeElement, 'transitionend', (e: any) => {
+    this.renderer.listen(this.drawerContainer.nativeElement, 'transitionend', (e: any) => {
       const clientHeight = e.target.clientHeight;
       // 只有当抽屉显示（高度不为零）的时候，做抬升滚动
       clientHeight && this.ionContent.scrollByPoint(0, clientHeight, 0);
@@ -193,8 +202,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   onIonScrollEnd() {
     const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
     // 已经有未读消息，且当前位置接近最底部了
-    if (this.hasUnread && scrollHeight - scrollTop - clientHeight <= 50) {
-      this.hasUnread = false;
+    if (this.hasUnreadMsg && scrollHeight - scrollTop - clientHeight <= 50) {
+      this.hasUnreadMsg = false;
     }
   }
 
@@ -224,7 +233,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
    * @param event
    */
   loadMoreRecords(event: any) {
-    if (this.first) {
+    if (!this.msgId) {
       return this.scrollToBottom().then(() => {
         event.target.complete()
       });
@@ -258,9 +267,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // 如果是第一次查记录，就执行滚动
-        this.msgId === 0 && this.scrollToBottom(0).then(() => {
-          this.first = false;
-        });
+        !this.msgId && this.scrollToBottom(0);
 
         this.msgId = this.msgList[0].id;
 
@@ -310,7 +317,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     if (canScrollToBottom) { // 当前滚动的位置允许滚动
       this.scrollToBottom();
     } else {
-      this.hasUnread = true;
+      this.hasUnreadMsg = true;
     }
   }
 
@@ -341,26 +348,31 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * 是否禁用发送按钮
-   */
-  disableSendBtn() {
-    return this.msg.length > TEXT_MSG_MAX_LENGTH;
-  }
-
-  /**
-   * 是否显示发送按钮
-   */
-  showSendBtn() {
-    return StrUtil.trimAll(this.msg).length > 0;
-  }
-
-  /**
    * 显示/隐藏抽屉
    */
-  toggleDrawer() {
-    setTimeout(() => {
+  async toggleDrawer() {
+    const index = await this.drawer.getIndex();
+
+    if (this.showDrawer && index < 1) {
+      this.drawer.setIndex(1);
+    } else {
+      this.drawer.setIndex(1, 0);
       this.showDrawer = !this.showDrawer;
-    }, 75);
+    }
+  }
+
+  /**
+   * 打开录音抽屉
+   */
+  async record() {
+    const index = await this.drawer.getIndex();
+
+    if (this.showDrawer && index > 0) {
+      this.drawer.setIndex(0);
+    } else {
+      this.drawer.setIndex(0, 0);
+      this.showDrawer = !this.showDrawer;
+    }
   }
 
   /**
@@ -381,7 +393,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
    */
   setFriendAlias() {
     // 只有私聊才可改好友别名
-    if (this.chatroomType != ChatroomType.Private) { return; }
+    if (this.chatroomType !== ChatroomType.Private) { return; }
 
     this.overlay.presentAlert({
       header: '好友别名',

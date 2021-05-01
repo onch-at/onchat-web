@@ -1,0 +1,81 @@
+.record-container {
+  flex-direction: column;
+  height: 100%;
+}
+
+.record-slide-container {
+  width: 100%;
+}
+
+.record-tips {
+  font-size: 1rem;
+}
+
+.send-btn,
+.record-btn,
+.cancel-btn,
+.play-btn {
+  border-radius: 50%;
+}
+
+.cancel-btn,
+.play-btn {
+  width: 3.75rem;
+  height: 3.75rem;
+  font-size: 1.75rem;
+  opacity: 0;
+  transform: scale(0);
+  transition: background-color ease-out 125ms, color ease-out 125ms, transform ease-in 125ms, opacity ease-in 125ms;
+
+  &.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.play-btn.active {
+  color: var(--color-white);
+  background: var(--color-info);
+}
+
+.cancel-btn:active,
+.cancel-btn.active {
+  color: var(--color-white);
+  background: var(--color-danger);
+}
+
+.send-btn,
+.record-btn {
+  width: 5rem;
+  height: 5rem;
+  font-size: 2.75rem;
+  margin: 1.5rem 3rem;
+}
+
+.record-btn {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(var(--color-primary-rgb), 0.75);
+    z-index: -1;
+    animation: wave 1.25s ease-out infinite;
+  }
+}
+
+@keyframes wave {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}

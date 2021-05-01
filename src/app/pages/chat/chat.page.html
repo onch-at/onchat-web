@@ -1,4 +1,4 @@
-<ion-content #ionContent appScrollbar [fullscreen]="true" [scrollEvents]="hasUnread" (ionScrollEnd)="onIonScrollEnd()">
+<ion-content #ionContent appScrollbar [fullscreen]="true" [scrollEvents]="hasUnreadMsg" (ionScrollEnd)="onIonScrollEnd()">
   <ion-header slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -28,12 +28,16 @@
   </main>
 
   <div #bottomBar class="bottom-bar" slot="fixed">
-    <button appActiveClass class="tips-btn btn-primary" [class.show]="hasUnread" (tap)="scrollToBottom()">
+    <button appActiveClass class="tips-btn btn-primary" [class.show]="hasUnreadMsg" (tap)="scrollToBottom()">
       收到新消息
       <ion-icon name="arrow-down-outline"></ion-icon>
     </button>
 
     <div class="bottom-bar-header">
+      <button appRipple appActiveClass class="btn-secondary fn-btn dp-flex justify-center align-center" (click)="toggleDrawer()">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </button>
+
       <!-- 这里的ID将附加上房间号来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
       <textarea #textarea [id]="'message-' + chatroomId" name="message" rows="1" [class.invalid]="msg.length > textMsgMaxLength"
                 (keyup)="onKeyup($event)" (focus)="hideDrawer()" placeholder="来说点什么吧！" [(ngModel)]="msg"></textarea>
@@ -46,12 +50,13 @@
         </label>
       </button>
 
-      <button appRipple appActiveClass class="btn-secondary more-btn" (click)="toggleDrawer()" [hidden]="showSendBtn()">
-        <ion-icon name="add-circle-outline"></ion-icon>
+      <button appRipple appActiveClass class="btn-primary mic-btn" [hidden]="showSendBtn()" (click)="record()">
+        <ion-icon name="mic-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 35px;"></ion-icon>
       </button>
     </div>
 
-    <div #drawer class="drawer" [style.height]="showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0">
+    <div #drawerContainer class="drawer-container"
+         [style.height]="showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0">
       <app-chat-drawer [page]="this"></app-chat-drawer>
     </div>
   </div>

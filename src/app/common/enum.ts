@@ -78,6 +78,8 @@ export enum MessageType {
   ChatInvitation = 4,
   /** 图片 */
   Image = 5,
+  /** 语音 */
+  Voice = 6,
 }
 
 /** 枚举文字提示类型 */
@@ -103,11 +105,7 @@ export enum FriendRequestStatus {
   /** 同意 */
   Agree = 1,
   /** 拒绝 */
-  Reject = 2,
-  /** 忽略 */
-  Ignore = 3,
-  /** 删除 */
-  Delete = 4,
+  Reject = 2
 }
 
 /** 聊天申请的状态 */

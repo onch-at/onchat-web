@@ -52,6 +52,19 @@ export class ImageMessage {
   ) { }
 }
 
+/** 语音消息 */
+export class VoiceMessgae {
+  /** 文件名 */
+  filename: string;
+
+  constructor(
+    /** 音频URL */
+    public url: string,
+    /** 音频时长 */
+    public duration: number
+  ) { }
+}
+
 /** 文字提示消息 */
 export interface TipsMessage {
   type: TipsType;

@@ -90,7 +90,7 @@ ion-header {
     background: var(--color-white);
     max-height: 10em;
     min-height: 100%;
-    margin-right: 0.425rem;
+    margin: 0 0.425rem;
 
     &::-webkit-scrollbar {
       display: none;
@@ -98,7 +98,8 @@ ion-header {
   }
 
   .send-btn,
-  .more-btn {
+  .fn-btn,
+  .mic-btn {
     height: 2.45rem;
     width: 2.45rem;
     border-radius: 50%;
@@ -112,8 +113,10 @@ ion-header {
     height: 100%;
   }
 
-  .more-btn > ion-icon {
-    font-size: 2.45rem;
+  .fn-btn > ion-icon {
+    position: absolute;
+    font-size: 2.75rem;
+    --ionicon-stroke-width: 25px;
   }
 }
 
@@ -121,7 +124,7 @@ main {
   padding: 2.75rem 0 4rem;
 }
 
-.drawer {
+.drawer-container {
   overflow: hidden;
   transition: height 0.1s ease-out;
 }

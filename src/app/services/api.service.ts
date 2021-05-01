@@ -124,6 +124,13 @@ export class ApiService {
     return this.http.post<Result<AvatarData>>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
   }
 
+  uploadVoiceToChatroom(voice: Blob) {
+    const formData: FormData = new FormData();
+    formData.append('voice', voice);
+
+    return this.http.post<Result<AvatarData>>('/onchat/index/voice', formData, HTTP_OPTIONS_DEFAULT);
+  }
+
   /**
    * 保存用户信息
    * @param userInfo

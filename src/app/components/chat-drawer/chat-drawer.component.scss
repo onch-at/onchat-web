@@ -6,6 +6,12 @@ ion-slides {
 
 ion-slide {
     align-items: flex-start;
+    color: var(--color-dark);
+}
+
+app-chat-recorder {
+    height: 90%;
+    width: 100%;
 }
 
 .grid-container {

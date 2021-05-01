@@ -12,7 +12,7 @@ ion-header {
         font-size: 1rem;
         transition: opacity ease-in-out 0.125s;
 
-        &.hidden {
+        &.hide {
             opacity: 0;
         }
     }

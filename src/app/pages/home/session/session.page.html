@@ -51,7 +51,7 @@
 							{{ item.updateTime | date:'BBBBhh:mm' }}
 						</ng-container>
 					</time>
-					<ion-badge [class.visibility-hidden]="!item.unread" class="bg-danger" mode="ios">
+					<ion-badge [class.hidden]="!item.unread" class="bg-danger" mode="ios">
 						{{ item.unread | numLimit }}
 					</ion-badge>
 				</div>
