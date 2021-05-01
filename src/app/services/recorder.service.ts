@@ -23,6 +23,7 @@ export class Recorder {
    */
   record() {
     if (this.recorder) {
+      this.stop();
       return of(this.recorder);
     }
 

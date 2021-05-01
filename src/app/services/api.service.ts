@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { AvatarData } from '../components/modals/avatar-cropper/avatar-cropper.component';
 import { ChangePassword, Login, Register, ResetPassword, UserInfo } from '../models/form.model';
-import { ImageMessage } from '../models/msg.model';
+import { ImageMessage, VoiceMessage } from '../models/msg.model';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, FriendRequest, Message, Result, User } from '../models/onchat.model';
 
 const HTTP_OPTIONS_JSON = {
@@ -124,13 +124,6 @@ export class ApiService {
     return this.http.post<Result<AvatarData>>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
   }
 
-  uploadVoiceToChatroom(voice: Blob) {
-    const formData: FormData = new FormData();
-    formData.append('voice', voice);
-
-    return this.http.post<Result<AvatarData>>('/onchat/index/voice', formData, HTTP_OPTIONS_DEFAULT);
-  }
-
   /**
    * 保存用户信息
    * @param userInfo
@@ -240,6 +233,18 @@ export class ApiService {
     });
 
     return this.http.request<Result<ImageMessage>>(request);
+  }
+
+  /**
+   * 上传语音
+   * @param id 聊天室ID
+   * @param voice 语音
+   */
+  uploadVoiceToChatroom(id: number, voice: Blob) {
+    const formData: FormData = new FormData();
+    formData.append('voice', voice);
+
+    return this.http.post<Result<VoiceMessage>>(env.chatroomUrl + id + '/voice', formData, HTTP_OPTIONS_DEFAULT);
   }
 
   /**

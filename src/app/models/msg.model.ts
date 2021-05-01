@@ -53,7 +53,7 @@ export class ImageMessage {
 }
 
 /** 语音消息 */
-export class VoiceMessgae {
+export class VoiceMessage {
   /** 文件名 */
   filename: string;
 
