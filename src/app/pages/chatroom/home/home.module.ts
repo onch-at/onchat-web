@@ -7,7 +7,7 @@ import { AvatarCropperModule } from 'src/app/modules/avatar-cropper.module';
 import { ChatSessionSelectorModule } from 'src/app/modules/chat-session-selector.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
 import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
-import { FillPipe } from 'src/app/pipes/fill.pipe';
+import { SharedModule } from 'src/app/modules/shared.module';
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 
@@ -21,11 +21,11 @@ import { HomePage } from './home.page';
     ActiveClassModule,
     ScrollbarModule,
     ChatSessionSelectorModule,
-    RippleModule
+    RippleModule,
+    SharedModule
   ],
   declarations: [
-    HomePage,
-    FillPipe
+    HomePage
   ]
 })
 export class HomePageModule { }

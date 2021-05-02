@@ -1,7 +1,7 @@
 <div class="record-container dp-flex justify-center align-center" (mousemove)="onMouseMove($event)" (mouseup)="onEnd()">
   <div class="record-tips">{{ tips() }}</div>
   <div class="record-slide-container dp-flex justify-center align-center">
-    <button #playBtn class="play-btn btn-white"
+    <button #playBtn appRipple class="play-btn btn-white"
             [ngClass]="{ show: operateState !== operateStates.None, active: operateState === operateStates.Play }"
             (click)="play()">
       <ion-icon [hidden]="audio && !audio.paused" name="play" style="margin-left: 5%;"></ion-icon>
@@ -14,12 +14,12 @@
       <ion-icon name="mic"></ion-icon>
     </button>
 
-    <button [hidden]="operateState !== operateStates.Play || !audio || startTime" class="send-btn btn-primary swiper-no-swiping"
-            (click)="send()">
+    <button appRipple [hidden]="operateState !== operateStates.Play || !audio || startTime"
+            class="send-btn btn-primary swiper-no-swiping" (click)="send()">
       <ion-icon name="arrow-up"></ion-icon>
     </button>
 
-    <button #cancelBtn class="cancel-btn btn-white"
+    <button #cancelBtn appRipple class="cancel-btn btn-white"
             [ngClass]="{ show: operateState !== operateStates.None, active: operateState === operateStates.Cancel }"
             (click)="onCancel()">
       <ion-icon name="trash"></ion-icon>

@@ -1,0 +1,35 @@
+:host {
+  display: flex;
+  align-items: center;
+}
+
+.play-btn {
+  font-size: 1.5rem;
+}
+
+.pulse-icon {
+  font-size: 1.25rem;
+
+  &.pulsing {
+    animation: pulse 0.5s linear var(--pulse-delay) infinite;
+  }
+
+  &:not(:first-child) {
+    margin-left: -0.2rem;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: skewY(0);
+  }
+  33.333% {
+    transform: skewY(10deg);
+  }
+  66.666% {
+    transform: skewY(-10deg);
+  }
+  100% {
+    transform: skewY(0);
+  }
+}

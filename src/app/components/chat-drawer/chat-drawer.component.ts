@@ -2,7 +2,8 @@ import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
-import { ImageMessage } from 'src/app/models/msg.model';
+import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
+import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';
@@ -44,6 +45,20 @@ export class ChatDrawerComponent implements OnInit {
 
   getIndex() {
     return this.ionSlides.getActiveIndex();
+  }
+
+  onVoiceOutput([voice, data]: [Blob, VoiceMessage]) {
+    const { chatroomId } = this.page;
+    const { user } = this.globalData;
+
+    const msg = new VoiceMessageEntity(voice, data).inject(this.injector);
+    msg.chatroomId = chatroomId;
+    msg.userId = user.id;
+    msg.avatarThumbnail = user.avatarThumbnail;
+    msg.send();
+
+    this.page.msgList.push(msg);
+    this.page.scrollToBottom();
   }
 
   editRichText() {

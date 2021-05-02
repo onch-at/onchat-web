@@ -1,0 +1,11 @@
+<div class="play-btn dp-flex align-center">
+  <ion-icon [hidden]="!audio || audio.paused" name="pause-circle"></ion-icon>
+  <ion-icon [hidden]="audio && !audio.paused" name="play-circle"></ion-icon>
+</div>
+
+<div class="dp-flex align-center" style="margin: 0 0.275rem 0 0.15rem;">
+  <ion-icon *ngFor="let item of (msg.data.duration < 10 ? 10 : msg.data.duration) / 10 | fill; let i = index" class="pulse-icon"
+            name="pulse-sharp" [class.pulsing]="audio && !audio.paused" [style.--pulse-delay.s]="i * 0.25">
+  </ion-icon>
+</div>
+<div>{{ msg.data.duration }}"</div>

@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError, filter, first, mergeMap } from 'rxjs/operators';
 import { Vector2 } from 'src/app/common/class';
-import { ApiService } from 'src/app/services/api.service';
+import { VoiceMessage } from 'src/app/models/msg.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
-import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { Recorder } from 'src/app/services/recorder.service';
 
@@ -37,6 +36,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   audio: HTMLAudioElement;
   /** 语音音频 */
   private voice: Blob;
+  private duration: number;
   /** 一分钟录音计时器 */
   private timer: number;
   /** 发射器 */
@@ -44,6 +44,11 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
   @ViewChild('playBtn', { static: true }) playBtn: ElementRef<HTMLElement>;
   @ViewChild('cancelBtn', { static: true }) cancelBtn: ElementRef<HTMLElement>;
+
+  /** 开始录音 */
+  @Output() start: EventEmitter<void> = new EventEmitter();
+  /** 录音完成 */
+  @Output() output: EventEmitter<[Blob, VoiceMessage]> = new EventEmitter();
 
   tips = () => ({
     [OperateState.None]: '按住讲话',
@@ -55,8 +60,6 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   constructor(
     private overlay: Overlay,
     private recorder: Recorder,
-    private apiService: ApiService,
-    private globalData: GlobalData,
     private feedbackService: FeedbackService,
     private changeDetectorRef: ChangeDetectorRef
   ) { }
@@ -65,13 +68,14 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.launcher?.complete();
+    this.recorder.close();
   }
 
   onStart() {
     this.feedbackService.slightVibrate();
     this.startTime = Date.now();
     this.comfirmed ||= true;
-    this.launcher ??= new BehaviorSubject<boolean>(false);
+    this.launcher ??= new BehaviorSubject(false);
 
     this.recorder.record().pipe(
       catchError(() => {
@@ -83,7 +87,10 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
         !this.startTime && this.recorder.stop();
         return o && this.startTime !== null;
       }),
-      mergeMap(() => this.recorder.start()),
+      mergeMap(() => {
+        this.start.emit();
+        return this.recorder.start();
+      }),
       first(),
       mergeMap(() => {
         this.clearTimer();
@@ -97,8 +104,8 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
           }
 
           if (time >= 60000) {
-            this.operateState = OperateState.Play;
             this.complete();
+            this.operateState = OperateState.Play;
             this.feedbackService.slightVibrate();
           }
         }, 1000);
@@ -128,21 +135,25 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     switch (true) {
       // 拖动到播放按钮
       case this.isInsideRect(pos, playBtn.getBoundingClientRect()):
-        this.comfirmed = true;
-        this.operateState !== OperateState.Play && this.feedbackService.slightVibrate();
-        this.operateState = OperateState.Play;
+        if (this.operateState !== OperateState.Play) {
+          this.feedbackService.slightVibrate();
+          this.operateState = OperateState.Play;
+        }
         break;
 
       // 拖动到取消按钮
       case this.isInsideRect(pos, cancelBtn.getBoundingClientRect()):
-        this.comfirmed = false;
-        this.operateState !== OperateState.Cancel && this.feedbackService.slightVibrate();
-        this.operateState = OperateState.Cancel;
+        if (this.operateState !== OperateState.Cancel) {
+          this.feedbackService.slightVibrate();
+          this.operateState = OperateState.Cancel;
+        }
         break;
 
+      // 其他情况全部视为发送
       default:
-        this.comfirmed = true;
-        this.operateState = OperateState.Send;
+        if (this.operateState !== OperateState.Send) {
+          this.operateState = OperateState.Send;
+        }
     }
   }
 
@@ -161,7 +172,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   onCancel() {
     this.operateState = OperateState.None;
     this.audio?.pause();
-    this.complete();
+    this.complete(false);
   }
 
   onMouseLeave() {
@@ -176,10 +187,8 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
     // 录音时间少于0.5秒 或者取消发送
     if (Date.now() - this.startTime < 500 || this.operateState === OperateState.Cancel) {
-      this.comfirmed = false;
       this.operateState = OperateState.None;
-
-      return this.complete();
+      return this.complete(false);
     }
 
     this.complete();
@@ -203,18 +212,12 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     this.audio?.pause();
     this.operateState = OperateState.None;
 
-    const { chatroomId } = this.globalData;
-
     this.launcher.pipe(
       filter(sign => sign),
       first()
     ).subscribe(() => {
       this.launcher.next(false);
-      this.overlay.presentToast('TEST SUCCESS！');
-      // this.apiService.uploadVoiceToChatroom(chatroomId, this.voice).subscribe((result: Result<VoiceMessage>) => {
-      //   console.log(result);
-
-      // });
+      this.output.emit([this.voice, new VoiceMessage(this.audio.src, this.duration)]);
     });
   }
 
@@ -240,9 +243,12 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
   /**
    * 结束录音
+   * @param comfirm 确认录音
    */
-  private complete() {
+  private complete(comfirm: boolean = true) {
+    this.comfirmed = comfirm;
     this.recorder.stop();
+    this.duration = (Date.now() - this.startTime) / 1000 | 0;
     this.startTime = null;
     this.clearTimer();
   }

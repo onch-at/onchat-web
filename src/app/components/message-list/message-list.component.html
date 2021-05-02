@@ -41,6 +41,9 @@
           <span #bubble appRipple class="msg-bubble ql-editor" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
                 [innerHTML]="item.data['html'] | hyperlink"></span>
+
+          <ion-spinner *ngIf="globalData.user?.id === item.userId && item.loading" class="send-spinner" name="dots"
+                       [duration]="1000"></ion-spinner>
         </div>
       </li>
 
@@ -76,6 +79,24 @@
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <app-image-message [msg]="item"></app-image-message>
           </span>
+        </div>
+      </li>
+
+      <li *ngSwitchCase="msgType.Voice" class="msg-item" [ngClass]="msgItemClass(item.userId)">
+        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+
+        <div>
+          <div class="username" *ngIf="item.userId !== globalData.user.id && chatroomType == chatroomTypes.Group">
+            {{ item.nickname }}
+          </div>
+
+          <span #bubble appRipple class="msg-bubble msg-bubble-voice" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)" (tap)="playVoice(voiceMsg)">
+            <app-voice-message #voiceMsg [msg]="item"></app-voice-message>
+          </span>
+
+          <ion-spinner *ngIf="globalData.user?.id === item.userId && item.loading" class="send-spinner" name="dots"
+                       [duration]="1000"></ion-spinner>
         </div>
       </li>
     </ng-container>

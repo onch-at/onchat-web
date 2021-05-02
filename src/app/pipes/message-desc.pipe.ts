@@ -15,6 +15,7 @@ export class MessageDescPipe implements PipeTransform {
       [MessageType.Text]: (data as TextMessage).content,
       [MessageType.RichText]: (data as RichTextMessage).text,
       [MessageType.Image]: '[图片]',
+      [MessageType.Voice]: '[语音]',
       [MessageType.ChatInvitation]: '[分享]邀请加入聊天室',
       [MessageType.Tips]: {
         [TipsType.RevokeMsg]: (data as RevokeMsgTipsMessage).nickname + ' 撤回了一条消息'

@@ -1,6 +1,6 @@
 import { TipsType } from '../common/enum';
 
-export type AnyMessage = TipsMessage | TextMessage | RichTextMessage | ChatInvitationMessage | ImageMessage;
+export type AnyMessage = TipsMessage | TextMessage | RichTextMessage | ChatInvitationMessage | ImageMessage | VoiceMessage;
 
 /** 纯文本消息 */
 export class TextMessage {
@@ -56,6 +56,8 @@ export class ImageMessage {
 export class VoiceMessage {
   /** 文件名 */
   filename: string;
+  /** 已读列表 */
+  readedList: number[] = [];
 
   constructor(
     /** 音频URL */

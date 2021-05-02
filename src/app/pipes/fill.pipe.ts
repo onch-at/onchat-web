@@ -9,7 +9,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FillPipe implements PipeTransform {
 
   transform(value: number): Array<null> {
-    return new Array(value).fill(null);
+    return new Array(Math.round(value)).fill(null);
   }
 
 }

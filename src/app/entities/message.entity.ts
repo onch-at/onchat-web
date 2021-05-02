@@ -1,7 +1,7 @@
 import { Injector } from "@angular/core";
 import { filter } from "rxjs/operators";
 import { MessageType, ResultCode, SocketEvent } from "../common/enum";
-import { ChatInvitationMessage, ImageMessage, RichTextMessage, TextMessage } from "../models/msg.model";
+import { AnyMessage } from "../models/msg.model";
 import { Message, Result } from "../models/onchat.model";
 import { SocketService } from "../services/socket.service";
 
@@ -14,7 +14,7 @@ export class MessageEntity implements Message {
   nickname?: string;
   avatarThumbnail?: string;
   type: MessageType;
-  data: TextMessage | RichTextMessage | ChatInvitationMessage | ImageMessage;
+  data: AnyMessage;
   replyId?: number;
   sendTime?: number;
   loading?: boolean;
@@ -26,6 +26,7 @@ export class MessageEntity implements Message {
     this.sendTime = Date.now();
     this.createTime = this.sendTime;
     this.loading = true;
+
   }
 
   /**
@@ -45,8 +46,8 @@ export class MessageEntity implements Message {
 
     const subscription = socketService.on(SocketEvent.Message).pipe(
       filter((result: Result<Message>) => {
-        const { data } = result;
-        return result.code === ResultCode.Success && this.isSelf(data);
+        const { code, data } = result;
+        return code === ResultCode.Success && this.isSelf(data);
       })
     ).subscribe((result: Result<Message>) => {
       const { data, ...msg } = result.data;

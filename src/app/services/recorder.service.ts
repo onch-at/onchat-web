@@ -11,11 +11,18 @@ export class Recorder {
   constructor() {
     // 在页面隐藏的时候，关闭媒体流
     fromEvent(document, 'visibilitychange').pipe(
-      filter(() => document.hidden && this.recorder !== null)
-    ).subscribe(() => {
+      filter(() => document.hidden)
+    ).subscribe(() => this.close());
+  }
+
+  /**
+   * 关闭音频流并销毁记录器
+   */
+  close() {
+    if (this.recorder) {
       this.recorder.stream.getAudioTracks().forEach(o => o.stop());
       this.recorder = null;
-    });
+    }
   }
 
   /**

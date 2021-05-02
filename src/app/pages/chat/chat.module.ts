@@ -9,6 +9,7 @@ import { ChatRecorderComponent } from 'src/app/components/chat-recorder/chat-rec
 import { CardMessageComponent } from 'src/app/components/messages/card-message/card-message.component';
 import { ImageMessageComponent } from 'src/app/components/messages/image-message/image-message.component';
 import { TipsMessageComponent } from 'src/app/components/messages/tips-message/tips-message.component';
+import { VoiceMessageComponent } from 'src/app/components/messages/voice-message/voice-message.component';
 import { ImagePreviewerComponent } from 'src/app/components/modals/image-previewer/image-previewer.component';
 import { RichTextEditorComponent } from 'src/app/components/modals/rich-text-editor/rich-text-editor.component';
 import { BubbleToolbarComponent } from 'src/app/components/popovers/bubble-toolbar/bubble-toolbar.component';
@@ -41,6 +42,7 @@ import { ChatPage } from './chat.page';
     TipsMessageComponent,
     ImageMessageComponent,
     CardMessageComponent,
+    VoiceMessageComponent,
     BubbleToolbarComponent,
     ChatDrawerComponent,
     ChatRecorderComponent,

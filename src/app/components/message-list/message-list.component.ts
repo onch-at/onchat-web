@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ChatroomType, MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { EntityUtil } from 'src/app/utils/entity.util';
+import { VoiceMessageComponent } from '../messages/voice-message/voice-message.component';
 import { ImagePreviewerComponent } from '../modals/image-previewer/image-previewer.component';
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
@@ -24,6 +25,8 @@ export class MessageListComponent implements OnInit {
   @Input() end: boolean;
   /** 聊天室类型 */
   @Input() chatroomType: ChatroomType;
+
+  @ViewChildren(VoiceMessageComponent) voiceMsgList: QueryList<VoiceMessageComponent>;
 
   trackByFn = EntityUtil.trackBy;
 
@@ -94,6 +97,11 @@ export class MessageListComponent implements OnInit {
         index: index
       }
     });
+  }
+
+  playVoice(voiceMsg: VoiceMessageComponent) {
+    this.voiceMsgList.forEach(o => o !== voiceMsg && o.pause());
+    voiceMsg.play();
   }
 
 }
