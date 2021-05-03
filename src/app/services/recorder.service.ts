@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { from, fromEvent, of } from 'rxjs';
-import { filter, mergeMap } from 'rxjs/operators';
+import { from, fromEvent, of, Subject } from 'rxjs';
+import { filter, first, mergeMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Recorder {
   private recorder: MediaRecorder = null;
+  /** 开始录音主题 */
+  action: Subject<void> = new Subject();
+  available: Subject<BlobEvent> = new Subject();
 
   constructor() {
     // 在页面隐藏的时候，关闭媒体流
@@ -50,9 +53,17 @@ export class Recorder {
    * 开始录音
    */
   start() {
-    const event = fromEvent(this.recorder, 'start');
+    fromEvent(this.recorder, 'start').pipe(first()).subscribe(() => {
+      this.action.next();
+    });
+
+    fromEvent(this.recorder, 'dataavailable').pipe(first()).subscribe((event: BlobEvent) => {
+      this.available.next(event);
+    });
+
     this.recorder.start();
-    return event;
+
+    return this.action;
   }
 
   /**
@@ -62,7 +73,4 @@ export class Recorder {
     this.recorder?.state !== 'inactive' && this.recorder?.stop();
   }
 
-  available() {
-    return fromEvent<BlobEvent>(this.recorder, 'dataavailable');
-  }
 }

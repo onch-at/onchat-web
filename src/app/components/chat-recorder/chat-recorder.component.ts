@@ -110,7 +110,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
           }
         }, 1000);
 
-        return this.recorder.available();
+        return this.recorder.available;
       }),
       first(),
     ).subscribe(({ data }: BlobEvent) => {

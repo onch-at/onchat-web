@@ -2,7 +2,7 @@ import { KeyValue } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, Injector, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent, Platform } from '@ionic/angular';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
@@ -28,6 +28,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   private contentElement: HTMLElement;
   /** IonContent滚动元素初始可视高度 */
   private contentClientHeight: number;
+  /** 抽屉容器可视高度 */
+  private drawerContainerClientHeight: number;
 
   textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
 
@@ -189,10 +191,28 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       this.contentClientHeight = element.clientHeight;
     });
 
-    this.renderer.listen(this.drawerContainer.nativeElement, 'transitionend', (e: any) => {
-      const clientHeight = e.target.clientHeight;
-      // 只有当抽屉显示（高度不为零）的时候，做抬升滚动
-      clientHeight && this.ionContent.scrollByPoint(0, clientHeight, 0);
+    const drawerContainerElement = this.drawerContainer.nativeElement;
+
+    fromEvent(drawerContainerElement, 'transitionend').pipe(
+      takeUntil(this.subject),
+      filter((event: TransitionEvent) => {
+        const { target, propertyName } = event;
+        return target === drawerContainerElement && propertyName === 'height';
+      })
+    ).subscribe((event: TransitionEvent) => {
+      const { clientHeight } = event.target as HTMLElement;
+
+      // 如果抽屉打开了
+      if (clientHeight > 0) {
+        this.drawerContainerClientHeight = clientHeight;
+        this.ionContent.scrollByPoint(0, clientHeight, 30);
+      } else {
+        const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
+        // scrollHeight - scrollTop - clientHeight 得到距离底部的高度
+        const canScroll = scrollHeight - scrollTop - clientHeight > this.drawerContainerClientHeight;
+
+        canScroll && this.ionContent.scrollByPoint(0, -this.drawerContainerClientHeight, 30);
+      }
     });
   }
 
@@ -312,12 +332,13 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
    */
   tryToScrollToBottom() {
     const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
-    const canScrollToBottom = scrollHeight - scrollTop - clientHeight <= 50;
+    // scrollHeight - scrollTop - clientHeight 得到距离底部的高度
+    const scrollBottom = scrollHeight - scrollTop - clientHeight;
 
-    if (canScrollToBottom) { // 当前滚动的位置允许滚动
-      this.scrollToBottom();
-    } else {
+    if (scrollBottom > 50) {
       this.hasUnreadMsg = true;
+    } else {
+      this.scrollToBottom();
     }
   }
 
