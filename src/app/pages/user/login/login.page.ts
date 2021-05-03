@@ -23,8 +23,8 @@ import { OnChatService } from '../../../services/onchat.service';
 export class LoginPage implements OnInit, ViewWillLeave, ViewWillEnter {
   /** 密码框类型 */
   pwdInputType: string = 'password';
-  usernameMaxLength: number = USERNAME_MAX_LENGTH;
-  passwordMaxLength: number = PASSWORD_MAX_LENGTH;
+  readonly usernameMaxLength: number = USERNAME_MAX_LENGTH;
+  readonly passwordMaxLength: number = PASSWORD_MAX_LENGTH;
 
   form: FormGroup = this.formBuilder.group({
     username: [

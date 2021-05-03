@@ -27,8 +27,8 @@ export class RequestPage implements OnInit, OnDestroy {
   /** 对方的拒绝原因 */
   rejectReason: string;
 
-  nicknameMaxLength = NICKNAME_MAX_LENGTH;
-  reasonMaxLength = REASON_MAX_LENGTH;
+  readonly nicknameMaxLength = NICKNAME_MAX_LENGTH;
+  readonly reasonMaxLength = REASON_MAX_LENGTH;
 
   constructor(
     public globalData: GlobalData,

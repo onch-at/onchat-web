@@ -31,7 +31,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   /** 抽屉容器可视高度 */
   private drawerContainerClientHeight: number;
 
-  textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
+  readonly textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
 
   /** IonContent */
   @ViewChild(IonContent, { static: true }) ionContent: IonContent;

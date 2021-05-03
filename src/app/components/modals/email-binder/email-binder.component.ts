@@ -37,7 +37,7 @@ export class EmailBinderComponent extends ModalComponent {
       ]
     ]
   });
-  emailMaxLength: number = EMAIL_MAX_LENGTH;
+  readonly emailMaxLength: number = EMAIL_MAX_LENGTH;
   emailFeedback: ValidationFeedback = emailFeedback;
   captchaFeedback: ValidationFeedback = captchaFeedback;
 

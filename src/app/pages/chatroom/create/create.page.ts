@@ -22,9 +22,9 @@ const ITEM_ROWS: number = 10;
 export class CreatePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   /** 群名最大长度 */
-  nameMaxLength: number = CHATROOM_NAME_MAX_LENGTH;
+  readonly nameMaxLength: number = CHATROOM_NAME_MAX_LENGTH;
   /** 群简介最大长度 */
-  descriptionMaxLength: number = CHATROOM_DESCRIPTION_MAX_LENGTH;
+  readonly descriptionMaxLength: number = CHATROOM_DESCRIPTION_MAX_LENGTH;
   /** 加载中 */
   loading: boolean = false;
   /** 原始私聊聊天室列表 */

@@ -24,9 +24,9 @@ import { SysUtil } from 'src/app/utils/sys.util';
 export class InfoPage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   /** 昵称最大长度 */
-  nicknameMaxLength: number = USERNAME_MAX_LENGTH;
+  readonly nicknameMaxLength: number = USERNAME_MAX_LENGTH;
   /** 个性签名最大长度 */
-  signatureMaxLength: number = SIGNATURE_MAX_LENGTH;
+  readonly signatureMaxLength: number = SIGNATURE_MAX_LENGTH;
   /** 性别枚举 */
   gender: typeof Gender = Gender;
   /** 月份别名 */

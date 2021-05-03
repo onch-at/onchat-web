@@ -23,7 +23,7 @@ import { ModalComponent } from '../modal.component';
 export class PasswordModifierComponent extends ModalComponent {
   /** 密码框类型 */
   pwdInputType: string = 'password';
-  passwordMaxLength: number = PASSWORD_MAX_LENGTH;
+  readonly passwordMaxLength: number = PASSWORD_MAX_LENGTH;
   passwordFeedback: ValidationFeedback = passwordFeedback;
 
   form: FormGroup = this.formBuilder.group({

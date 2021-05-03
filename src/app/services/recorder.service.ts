@@ -8,8 +8,8 @@ import { filter, first, mergeMap } from 'rxjs/operators';
 export class Recorder {
   private recorder: MediaRecorder = null;
   /** 开始录音主题 */
-  action: Subject<void> = new Subject();
-  available: Subject<BlobEvent> = new Subject();
+  readonly action: Subject<void> = new Subject();
+  readonly available: Subject<BlobEvent> = new Subject();
 
   constructor() {
     // 在页面隐藏的时候，关闭媒体流

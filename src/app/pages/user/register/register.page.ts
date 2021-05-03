@@ -25,9 +25,9 @@ import { SyncValidator } from 'src/app/validators/sync.validator';
 export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
   /** 密码框类型 */
   pwdInputType: string = 'password';
-  usernameMaxLength: number = USERNAME_MAX_LENGTH;
-  passwordMaxLength: number = PASSWORD_MAX_LENGTH;
-  emailMaxLength: number = EMAIL_MAX_LENGTH;
+  readonly usernameMaxLength: number = USERNAME_MAX_LENGTH;
+  readonly passwordMaxLength: number = PASSWORD_MAX_LENGTH;
+  readonly emailMaxLength: number = EMAIL_MAX_LENGTH;
   /** 60秒倒计时 */
   countdown: number = 60;
   /** 倒计时计时器 */

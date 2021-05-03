@@ -56,8 +56,8 @@ export class ResetPage implements OnInit, ViewWillLeave, ViewWillEnter {
 
   /** 密码框类型 */
   pwdInputType: string = 'password';
-  usernameMaxLength: number = USERNAME_MAX_LENGTH;
-  passwordMaxLength: number = PASSWORD_MAX_LENGTH;
+  readonly usernameMaxLength: number = USERNAME_MAX_LENGTH;
+  readonly passwordMaxLength: number = PASSWORD_MAX_LENGTH;
   usernameFeedback: ValidationFeedback = usernameFeedback;
   passwordFeedback: ValidationFeedback = passwordFeedback;
   captchaFeedback: ValidationFeedback = captchaFeedback;
