@@ -73,8 +73,8 @@ export interface TipsMessage {
 }
 
 /** 撤回消息文字提示消息 */
-export class RevokeMsgTipsMessage implements TipsMessage {
-  type: TipsType = TipsType.RevokeMsg;
+export class RevokeMessageTipsMessage implements TipsMessage {
+  type: TipsType = TipsType.RevokeMessage;
 
   constructor(
     /** 消息对应用户的ID */

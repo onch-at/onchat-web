@@ -56,8 +56,8 @@ export class SocketService {
    * @param chatroomId
    * @param msgId
    */
-  revokeMsg(chatroomId: number, msgId: number) {
-    this.emit(SocketEvent.RevokeMsg, {
+  revokeMessage(chatroomId: number, msgId: number) {
+    this.emit(SocketEvent.RevokeMessage, {
       chatroomId,
       msgId
     });

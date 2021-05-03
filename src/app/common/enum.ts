@@ -45,7 +45,7 @@ export enum SocketEvent {
   /** 接收到消息时 */
   Message = 'message',
   /** 收到撤回消息 */
-  RevokeMsg = 'revoke_msg',
+  RevokeMessage = 'revoke_message',
   /** 好友申请 */
   FriendRequest = 'friend_request',
   /** 同意好友申请 */
@@ -85,7 +85,7 @@ export enum MessageType {
 /** 枚举文字提示类型 */
 export enum TipsType {
   /** 撤回消息 */
-  RevokeMsg = 0,
+  RevokeMessage = 0,
   /** 加入房间 */
   JoinRoom = 1
 }

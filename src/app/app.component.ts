@@ -5,7 +5,7 @@ import { NavController } from '@ionic/angular';
 import { from } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
-import { RevokeMsgTipsMessage } from './models/msg.model';
+import { RevokeMessageTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { MessageDescPipe } from './pipes/message-desc.pipe';
 import { ApiService } from './services/api.service';
@@ -220,7 +220,7 @@ export class AppComponent implements OnInit {
     });
 
     // 撤回消息时
-    this.socketService.on(SocketEvent.RevokeMsg).pipe(
+    this.socketService.on(SocketEvent.RevokeMessage).pipe(
       filter((result: Result) => result.code === ResultCode.Success)
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
@@ -229,7 +229,7 @@ export class AppComponent implements OnInit {
         const nickname = chatSession.content.userId === this.globalData.user.id ? '我' : chatSession.content.nickname;
         chatSession.unread && chatSession.unread--;
         chatSession.content.type = MessageType.Tips;
-        chatSession.content.data = new RevokeMsgTipsMessage(chatSession.content.userId, nickname);
+        chatSession.content.data = new RevokeMessageTipsMessage(chatSession.content.userId, nickname);
         chatSession.content = { ...chatSession.content };
         chatSession.updateTime = Date.now();
         this.globalData.sortChatSessions();

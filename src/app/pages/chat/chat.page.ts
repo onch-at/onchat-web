@@ -9,7 +9,7 @@ import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatDrawerComponent } from 'src/app/components/chat-drawer/chat-drawer.component';
 import { MessageEntity } from 'src/app/entities/message.entity';
-import { RevokeMsgTipsMessage, TextMessage } from 'src/app/models/msg.model';
+import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -153,7 +153,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       this.apiService.readedChatSession(this.chatSession.id).subscribe();
     });
 
-    this.socketService.on(SocketEvent.RevokeMsg).pipe(
+    this.socketService.on(SocketEvent.RevokeMessage).pipe(
       takeUntil(this.subject),
       filter((result: Result<{ chatroomId: number, msgId: number }>) => {
         const { code, data } = result;
@@ -164,7 +164,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       if (msg) {
         const nickname = msg.userId === this.globalData.user.id ? '我' : msg.nickname;
         msg.type = MessageType.Tips;
-        msg.data = new RevokeMsgTipsMessage(msg.userId, nickname);
+        msg.data = new RevokeMessageTipsMessage(msg.userId, nickname);
       }
     });
 

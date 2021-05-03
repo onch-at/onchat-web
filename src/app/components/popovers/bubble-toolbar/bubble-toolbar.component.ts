@@ -41,8 +41,8 @@ export class BubbleToolbarComponent implements OnInit {
   /**
    * 撤回消息
    */
-  revokeMsg() {
-    this.socketService.revokeMsg(+this.globalData.chatroomId, +this.msgItem.id);
+  revokeMessage() {
+    this.socketService.revokeMessage(+this.globalData.chatroomId, +this.msgItem.id);
     this.dismiss();
   }
 
