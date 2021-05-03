@@ -83,7 +83,7 @@ export class MessageListComponent implements OnInit {
    * @param otherTime 上一个时间
    */
   canShowTime(time: number, otherTime: number): boolean {
-    return (time - otherTime) > 60000; // 一分钟
+    return (time - otherTime) > 90000; // 一分半钟
   }
 
   previewImage(id: number) {

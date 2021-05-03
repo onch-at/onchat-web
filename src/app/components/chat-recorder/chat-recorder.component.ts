@@ -34,13 +34,12 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   comfirmed: boolean = true;
   /** 语音音频对象 */
   audio: HTMLAudioElement;
-  /** 语音音频 */
-  private voice: Blob;
+  /** 语音时长 */
   private duration: number;
   /** 一分钟录音计时器 */
   private timer: number;
   /** 发射器 */
-  private launcher: BehaviorSubject<boolean>;
+  private launcher: BehaviorSubject<[Blob, VoiceMessage]>;
 
   @ViewChild('playBtn', { static: true }) playBtn: ElementRef<HTMLElement>;
   @ViewChild('cancelBtn', { static: true }) cancelBtn: ElementRef<HTMLElement>;
@@ -75,7 +74,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     this.feedbackService.slightVibrate();
     this.startTime = Date.now();
     this.comfirmed ||= true;
-    this.launcher ??= new BehaviorSubject(false);
+    this.launcher ??= new BehaviorSubject([null, null]);
 
     this.recorder.record().pipe(
       catchError(() => {
@@ -116,14 +115,14 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     ).subscribe(({ data }: BlobEvent) => {
       // 如果没有确认，或者录不到音
       if (!this.comfirmed || data.size === 0) {
-        return this.comfirmed = true;
+        this.comfirmed = true;
+        return this.launcher.next([null, null]);
       }
 
-      this.voice = data;
       this.audio = new Audio(URL.createObjectURL(data));
       // 手动触发数据检查
       this.audio.onended = () => this.changeDetectorRef.detectChanges();
-      this.launcher.next(true);
+      this.launcher.next([data, new VoiceMessage(this.audio.src, this.duration)]);
     });
   }
 
@@ -173,6 +172,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     this.operateState = OperateState.None;
     this.audio?.pause();
     this.complete(false);
+    this.launcher.next([null, null]);
   }
 
   onMouseLeave() {
@@ -213,11 +213,11 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     this.operateState = OperateState.None;
 
     this.launcher.pipe(
-      filter(sign => sign),
+      filter(([voice]) => voice !== null),
       first()
-    ).subscribe(() => {
-      this.launcher.next(false);
-      this.output.emit([this.voice, new VoiceMessage(this.audio.src, this.duration)]);
+    ).subscribe((value: [Blob, VoiceMessage]) => {
+      this.launcher.next([null, null]);
+      this.output.emit(value);
     });
   }
 
@@ -248,7 +248,9 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   private complete(comfirm: boolean = true) {
     this.comfirmed = comfirm;
     this.recorder.stop();
-    this.duration = (Date.now() - this.startTime) / 1000 | 0;
+    const duration = (Date.now() - this.startTime) / 1000;
+    // 小于1秒则保留一位小数
+    this.duration = duration >= 1 ? duration | 0 : +duration.toFixed(1);
     this.startTime = null;
     this.clearTimer();
   }

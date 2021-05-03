@@ -9,6 +9,7 @@ export class Recorder {
   private recorder: MediaRecorder = null;
   /** 开始录音主题 */
   readonly action: Subject<void> = new Subject();
+  /** 录音完成主题 */
   readonly available: Subject<BlobEvent> = new Subject();
 
   constructor() {
