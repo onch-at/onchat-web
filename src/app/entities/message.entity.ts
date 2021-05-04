@@ -1,5 +1,5 @@
 import { Injector } from "@angular/core";
-import { filter, first } from "rxjs/operators";
+import { filter, take } from "rxjs/operators";
 import { MessageType, ResultCode, SocketEvent } from "../common/enum";
 import { AnyMessage } from "../models/msg.model";
 import { Message, Result } from "../models/onchat.model";
@@ -49,7 +49,7 @@ export class MessageEntity implements Message {
         const { code, data } = result;
         return code === ResultCode.Success && this.isSelf(data);
       }),
-      first()
+      take(1)
     ).subscribe((result: Result<Message>) => {
       const { avatarThumbnail, data, ...msg } = result.data;
 

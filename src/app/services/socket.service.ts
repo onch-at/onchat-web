@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
 import { Observable, Subject } from 'rxjs';
-import { first, tap, timeout } from 'rxjs/operators';
+import { take, tap, timeout } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enum';
 import { Message } from '../models/onchat.model';
 import { Overlay } from './overlay.service';
@@ -30,7 +30,7 @@ export class SocketService {
   init() {
     this.on(SocketEvent.Init).pipe(
       timeout(10000),
-      first()
+      take(1)
     ).subscribe(() => this.init$.next());
 
     this.emit(SocketEvent.Init, { sessId: this.cookieService.get('PHPSESSID') });

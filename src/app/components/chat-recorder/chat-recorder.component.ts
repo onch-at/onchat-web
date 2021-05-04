@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
-import { catchError, filter, first, mergeMap } from 'rxjs/operators';
+import { catchError, filter, mergeMap, take } from 'rxjs/operators';
 import { Vector2 } from 'src/app/common/class';
 import { VoiceMessage } from 'src/app/models/msg.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -91,7 +91,17 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
         this.start.emit();
         return this.recorder.start();
       }),
-      first(),
+      take(1),
+      filter(() => {
+        if (this.startTime) {
+          return true;
+        }
+
+        this.operateState = OperateState.None;
+        this.complete(false);
+
+        return false;
+      }),
       mergeMap(() => {
         this.clearTimer();
         this.startTime = Date.now(); // 校准录音起始时间
@@ -112,11 +122,11 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
         return this.recorder.available;
       }),
-      first(),
+      take(1),
     ).subscribe(({ data }: BlobEvent) => {
       // 如果没有确认，或者录不到音
       if (!this.comfirmed || data.size === 0) {
-        return this.comfirmed = true;
+        return;
       }
 
       this.audio = new Audio(URL.createObjectURL(data));
@@ -182,7 +192,9 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   }
 
   onEnd() {
-    if (!this.startTime || !this.recorder.state()) { return; }
+    if (!this.startTime || !this.recorder.state()) {
+      return this.startTime = null;
+    }
 
     // 录音时间少于0.5秒 或者取消发送
     if (Date.now() - this.startTime < 500 || this.operateState === OperateState.Cancel) {
@@ -213,7 +225,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
     this.launcher.pipe(
       filter(([voice]) => voice !== null),
-      first()
+      take(1)
     ).subscribe((value: [Blob, VoiceMessage]) => {
       this.launcher.next([null, null]);
       this.output.emit(value);

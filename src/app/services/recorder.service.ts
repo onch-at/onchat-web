@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, fromEvent, of, Subject } from 'rxjs';
-import { filter, first, mergeMap } from 'rxjs/operators';
+import { filter, mergeMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -54,11 +54,11 @@ export class Recorder {
    * 开始录音
    */
   start() {
-    fromEvent(this.recorder, 'start').pipe(first()).subscribe(() => {
+    fromEvent(this.recorder, 'start').pipe(take(1)).subscribe(() => {
       this.action.next();
     });
 
-    fromEvent(this.recorder, 'dataavailable').pipe(first()).subscribe((event: BlobEvent) => {
+    fromEvent(this.recorder, 'dataavailable').pipe(take(1)).subscribe((event: BlobEvent) => {
       this.available.next(event);
     });
 
