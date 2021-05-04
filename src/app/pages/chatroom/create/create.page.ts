@@ -178,7 +178,7 @@ export class CreatePage implements OnInit, OnDestroy {
     if (keyword.length) {
       keyword = keyword.toLowerCase();
       // 模糊搜索：别名和用户ID
-      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.title.toLowerCase().includes(keyword) || (o.data.userId + '').includes(keyword));
+      originPrivateChatrooms = originPrivateChatrooms.filter(o => o.title.toLowerCase().includes(keyword) || (o.data.userId.toString()).includes(keyword));
     }
     return this.privateChatroomsPage ? originPrivateChatrooms.slice(0, this.privateChatroomsPage * ITEM_ROWS) : originPrivateChatrooms;
   }

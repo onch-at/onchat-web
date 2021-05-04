@@ -28,7 +28,7 @@ const HTTP_OPTIONS_DEFAULT = {
  * @param cacheTime 缓存时间,默认十分钟
  */
 function cache(cacheTime: number = 600000): { cache: string } {
-  return { cache: cacheTime + '' };
+  return { cache: cacheTime.toString() };
 }
 
 @Injectable({
@@ -222,10 +222,12 @@ export class ApiService {
    * 上传图片
    * @param id 聊天室ID
    * @param image 图片
+   * @param sendTime 发送时间
    */
-  uploadImageToChatroom(id: number, image: Blob) {
+  uploadImageToChatroom(id: number, image: Blob, sendTime: number) {
     const formData: FormData = new FormData();
     formData.append('image', image);
+    formData.append('time', sendTime.toString());
 
     const request = new HttpRequest('POST', env.chatroomUrl + id + '/image', formData, {
       ...HTTP_OPTIONS_DEFAULT,
@@ -239,12 +241,14 @@ export class ApiService {
    * 上传语音
    * @param id 聊天室ID
    * @param voice 语音
+   * @param sendTime 发送时间
    */
-  uploadVoiceToChatroom(id: number, voice: Blob) {
+  uploadVoiceToChatroom(id: number, voice: Blob, sendTime: number) {
     const formData: FormData = new FormData();
     formData.append('voice', voice);
+    formData.append('time', sendTime.toString());
 
-    return this.http.post<Result<VoiceMessage>>(env.chatroomUrl + id + '/voice', formData, HTTP_OPTIONS_DEFAULT);
+    return this.http.post<Result<Message<VoiceMessage>>>(env.chatroomUrl + id + '/voice', formData, HTTP_OPTIONS_DEFAULT);
   }
 
   /**

@@ -46,7 +46,9 @@ export class ImageMessageEntity extends MessageEntity {
 
   send() {
     return (this.original ? of(null) : this.compress()).pipe(mergeMap(() => new Observable(observer => {
-      this.injector.get(ApiService).uploadImageToChatroom(this.chatroomId, this.file).subscribe((event: HttpEvent<Result<ImageMessage>>) => {
+      super.track();
+
+      this.injector.get(ApiService).uploadImageToChatroom(this.chatroomId, this.file, this.sendTime).subscribe((event: HttpEvent<Result<ImageMessage>>) => {
         switch (event.type) {
           case HttpEventType.Sent:
             break;
@@ -69,7 +71,6 @@ export class ImageMessageEntity extends MessageEntity {
             }
 
             Object.assign(this.data, data);
-            super.send();
             break;
         }
       });

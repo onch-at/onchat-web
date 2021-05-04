@@ -20,11 +20,11 @@
   </ion-header>
 
   <main [style.padding-bottom]="'calc(0.75rem + ' + bottomBar.clientHeight + 'px)'" (click)="hideDrawer()">
-    <ion-infinite-scroll position="top" threshold="-10px" [disabled]="end" (ionInfinite)="loadMoreRecords($event)">
+    <ion-infinite-scroll position="top" threshold="-10px" [disabled]="ended" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
-    <app-message-list [data]="msgList" [end]="end" [chatroomType]="chatroomType"></app-message-list>
+    <app-message-list [data]="msgList" [ended]="ended" [chatroomType]="chatroomType"></app-message-list>
   </main>
 
   <div #bottomBar class="bottom-bar" slot="fixed">

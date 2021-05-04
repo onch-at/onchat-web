@@ -56,7 +56,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   /** 聊天记录 */
   msgList: Message[] = [];
   /** 聊天记录是否查到末尾了 */
-  end: boolean = false;
+  ended: boolean = false;
   /** 是否有未读消息 */
   hasUnreadMsg: boolean = false;
   /** 是否显示抽屉 */
@@ -272,30 +272,35 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
    * @param complete
    */
   loadRecords(complete?: () => void) {
-    if (this.end) { return complete?.(); }
+    if (this.ended) { return complete?.(); }
 
     this.apiService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<Message[]>) => {
-      if (result.code === ResultCode.Success) {
+      const { code, data } = result;
+      if (code === ResultCode.Success) {
         // 按照ID排序
         // result.data.sort((a: Message, b: Message) => {
         //   return a.id - b.id;
         // });
         // this.msgList = result.data.concat(this.msgList);
 
-        for (const msgItem of result.data) {
+        for (const msgItem of data) {
           this.msgList.unshift(msgItem);
         }
 
         // 如果是第一次查记录，就执行滚动
-        !this.msgId && this.scrollToBottom(0);
+        !this.msgId && this.scrollToBottom(0).then(() => setTimeout(() => (
+          this.scrollToBottom(0)
+        )));
 
-        this.msgId = this.msgList[0].id;
+        if (data.length > 0) {
+          this.msgId = this.msgList[0].id;
+        }
 
         // 如果返回的消息里少于10条，则代表这是最后一段消息了
-        result.data.length < 15 && (this.end = true);
-      } else if (result.code === 1) { // 如果没有消息
-        this.end = true;
-      } else if (result.code === ResultCode.ErrorNoPermission) { // 如果没有权限
+        if (data.length < 15) {
+          this.ended = true;
+        }
+      } else if (code === ResultCode.ErrorNoPermission) { // 如果没有权限
         this.overlay.presentToast('你还没有权限进入此聊天室！');
         this.router.navigateByUrl('/'); // 没权限还想进来，回首页去吧
       }

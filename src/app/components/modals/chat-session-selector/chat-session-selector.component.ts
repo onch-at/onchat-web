@@ -49,7 +49,7 @@ export class ChatSessionSelectorComponent extends ModalComponent {
   search(keyword: string) {
     if (keyword.length) {
       this.list = this.chatSessions.filter(o => (
-        o.title.toLowerCase().includes(keyword) || (o.data.userId + '').includes(keyword)
+        o.title.toLowerCase().includes(keyword) || (o.data.userId.toString()).includes(keyword)
       ));
     } else {
       this.list = this.chatSessions;

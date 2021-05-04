@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { IonRouterOutlet } from '@ionic/angular';
+import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { VoiceMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
@@ -19,11 +20,15 @@ export class VoiceMessageComponent implements OnInit, OnDestroy {
 
   constructor(
     private recorder: Recorder,
+    private routerOutlet: IonRouterOutlet,
     private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.recorder.action.pipe(takeUntil(this.subject)).subscribe(() => this.pause());
+    merge(
+      this.recorder.action,
+      this.routerOutlet.activateEvents
+    ).pipe(takeUntil(this.subject)).subscribe(() => this.pause());
   }
 
   ngOnDestroy() {

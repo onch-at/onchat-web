@@ -22,7 +22,7 @@ export class MessageListComponent implements OnInit {
   /** 消息记录 */
   @Input() data: Message[] = [];
   /** 消息记录是否到了末尾 */
-  @Input() end: boolean;
+  @Input() ended: boolean;
   /** 聊天室类型 */
   @Input() chatroomType: ChatroomType;
 

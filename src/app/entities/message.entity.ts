@@ -1,5 +1,5 @@
 import { Injector } from "@angular/core";
-import { filter } from "rxjs/operators";
+import { filter, first } from "rxjs/operators";
 import { MessageType, ResultCode, SocketEvent } from "../common/enum";
 import { AnyMessage } from "../models/msg.model";
 import { Message, Result } from "../models/onchat.model";
@@ -39,26 +39,32 @@ export class MessageEntity implements Message {
   }
 
   /**
-   * 发送消息
+   * 追踪本条消息以更新数据
    */
-  send() {
+  track() {
     const socketService = this.injector.get(SocketService);
 
-    const subscription = socketService.on(SocketEvent.Message).pipe(
+    socketService.on(SocketEvent.Message).pipe(
       filter((result: Result<Message>) => {
         const { code, data } = result;
         return code === ResultCode.Success && this.isSelf(data);
-      })
+      }),
+      first()
     ).subscribe((result: Result<Message>) => {
-      const { data, ...msg } = result.data;
+      const { avatarThumbnail, data, ...msg } = result.data;
 
       Object.assign(this, msg);
       this.loading = false;
-
-      subscription.unsubscribe();
     });
 
-    socketService.message({
+    return socketService;
+  }
+
+  /**
+   * 发送消息
+   */
+  send() {
+    this.track().message({
       id: undefined,
       chatroomId: this.chatroomId,
       userId: this.userId,

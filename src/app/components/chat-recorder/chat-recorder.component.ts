@@ -72,9 +72,10 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
   onStart() {
     this.feedbackService.slightVibrate();
-    this.startTime = Date.now();
     this.comfirmed ||= true;
     this.launcher ??= new BehaviorSubject([null, null]);
+    this.launcher.value[0] && this.launcher.next([null, null]);
+    this.startTime = Date.now();
 
     this.recorder.record().pipe(
       catchError(() => {
@@ -115,8 +116,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     ).subscribe(({ data }: BlobEvent) => {
       // 如果没有确认，或者录不到音
       if (!this.comfirmed || data.size === 0) {
-        this.comfirmed = true;
-        return this.launcher.next([null, null]);
+        return this.comfirmed = true;
       }
 
       this.audio = new Audio(URL.createObjectURL(data));
@@ -172,7 +172,6 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     this.operateState = OperateState.None;
     this.audio?.pause();
     this.complete(false);
-    this.launcher.next([null, null]);
   }
 
   onMouseLeave() {

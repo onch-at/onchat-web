@@ -1,7 +1,5 @@
-import { filter } from 'rxjs/operators';
-import { MessageType, ResultCode } from '../common/enum';
+import { MessageType } from '../common/enum';
 import { VoiceMessage } from '../models/msg.model';
-import { Result } from '../models/onchat.model';
 import { ApiService } from '../services/api.service';
 import { MessageEntity } from './message.entity';
 
@@ -17,11 +15,7 @@ export class VoiceMessageEntity extends MessageEntity {
   }
 
   send() {
-    this.injector.get(ApiService).uploadVoiceToChatroom(this.chatroomId, this.file).pipe(
-      filter((result: Result<VoiceMessage>) => result.code === ResultCode.Success)
-    ).subscribe((result: Result<VoiceMessage>) => {
-      Object.assign(this.data, result.data);
-      super.send();
-    });
+    super.track();
+    this.injector.get(ApiService).uploadVoiceToChatroom(this.chatroomId, this.file, this.sendTime).subscribe();
   }
 }
