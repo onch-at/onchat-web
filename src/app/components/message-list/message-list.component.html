@@ -74,7 +74,7 @@
             {{ item.nickname }}
           </div>
 
-          <span #bubble appRipple class="msg-bubble msg-bubble-img" (tap)="previewImage(item.id)"
+          <span #bubble appRipple class="msg-bubble msg-bubble-img" (tap)="previewImage(item)"
                 (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <app-image-message [msg]="item"></app-image-message>

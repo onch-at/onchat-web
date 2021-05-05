@@ -21,7 +21,7 @@ SwiperCore.use([Lazy, Zoom]);
   styleUrls: ['./image-previewer.component.scss'],
 })
 export class ImagePreviewerComponent extends ModalComponent implements AfterViewInit {
-  @Input() data: Message[] = [];
+  @Input() data: Message<ImageMessage>[] = [];
   @Input() index: number;
 
   trackByFn = EntityUtil.trackBy;
@@ -53,15 +53,15 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
     }, 500);
   }
 
-  onPress(item: Message) {
+  onPress(item: Message<ImageMessage>) {
     this.feedbackService.slightVibrate();
     this.presentActionSheet(item);
   }
 
-  presentActionSheet(item: Message) {
+  presentActionSheet(item: Message<ImageMessage>) {
     const buttons: ActionSheetButton[] = [{ text: '取消', role: 'cancel' }];
 
-    if (StrUtil.isString((item.data as ImageMessage).url)) {
+    if (StrUtil.isString(item.data.url)) {
       buttons.unshift({ text: '保存图片', handler: () => SysUtil.downLoadFile((item.data as ImageMessage).url) })
     }
 

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ChatroomType, MessageType } from 'src/app/common/enum';
+import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -30,14 +31,6 @@ export class MessageListComponent implements OnInit {
 
   trackByFn = EntityUtil.trackBy;
 
-  msgItemClass = (userId: number) => {
-    const { user } = this.globalData;
-    return {
-      'msg-item-right': user?.id === userId,
-      'msg-item-left': user?.id !== userId
-    }
-  }
-
   constructor(
     private overlay: Overlay,
     private feedbackService: FeedbackService,
@@ -45,6 +38,14 @@ export class MessageListComponent implements OnInit {
   ) { }
 
   ngOnInit() { }
+
+  msgItemClass(userId: number) {
+    const { user } = this.globalData;
+    return {
+      'msg-item-right': user.id === userId,
+      'msg-item-left': user.id !== userId
+    }
+  }
 
   /**
    * 弹出BubbleToolbar气泡工具条
@@ -86,9 +87,9 @@ export class MessageListComponent implements OnInit {
     return (time - otherTime) > 90000; // 一分半钟
   }
 
-  previewImage(id: number) {
+  previewImage(item: Message<ImageMessage>) {
     const data = this.data.filter(o => o.type === MessageType.Image);
-    const index = data.findIndex(o => o.id === id);
+    const index = data.findIndex(o => o === item);
 
     this.overlay.presentModal({
       component: ImagePreviewerComponent,

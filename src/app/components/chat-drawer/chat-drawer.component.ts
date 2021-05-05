@@ -102,15 +102,20 @@ export class ChatDrawerComponent implements OnInit {
     const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url) as string;
 
     const msg = new ImageMessageEntity(file, url, original).inject(this.injector);
-    msg.chatroomId = chatroomId;
     msg.userId = user.id;
+    msg.chatroomId = chatroomId;
     msg.avatarThumbnail = user.avatarThumbnail;
-    msg.data = new ImageMessage(safeUrl, safeUrl);
     msg.format = this.format;
 
-    this.page.msgList.push(msg);
-    this.imgMsgList.push(msg);
-    this.page.scrollToBottom().then(() => this.page.scrollToBottom());
+    const img = new Image();
+    img.onload = () => {
+      msg.data = new ImageMessage(safeUrl, safeUrl, img.width, img.height);
+
+      this.page.msgList.push(msg);
+      this.imgMsgList.push(msg);
+      this.page.scrollToBottom();
+    }
+    img.src = url;
   }
 
   private sendImageMessage() {

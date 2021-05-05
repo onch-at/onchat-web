@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { from, fromEvent, of, Subject } from 'rxjs';
+import { from, fromEvent, merge, of, Subject } from 'rxjs';
 import { filter, mergeMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Recorder {
+  /** 原生的记录器对象 */
   private recorder: MediaRecorder = null;
+  /** 是否收录 */
+  private recorded: boolean = true;
   /** 开始录音主题 */
   readonly action: Subject<void> = new Subject();
   /** 录音完成主题 */
@@ -14,7 +17,10 @@ export class Recorder {
 
   constructor() {
     // 在页面隐藏的时候，关闭媒体流
-    fromEvent(document, 'visibilitychange').pipe(
+    merge(
+      fromEvent(document, 'visibilitychange'),
+      fromEvent(window, 'pagehide'),
+    ).pipe(
       filter(() => document.hidden)
     ).subscribe(() => this.close());
   }
@@ -58,7 +64,10 @@ export class Recorder {
       this.action.next();
     });
 
-    fromEvent(this.recorder, 'dataavailable').pipe(take(1)).subscribe((event: BlobEvent) => {
+    fromEvent(this.recorder, 'dataavailable').pipe(
+      take(1),
+      filter(() => this.recorded)
+    ).subscribe((event: BlobEvent) => {
       this.available.next(event);
     });
 
@@ -68,9 +77,25 @@ export class Recorder {
   }
 
   /**
+   * 结束录音并收录
+   */
+  complete() {
+    this.recorded ||= true;
+    this.stop();
+  }
+
+  /**
+   * 取消录音
+   */
+  cancel() {
+    this.recorded &&= false;
+    this.stop();
+  }
+
+  /**
    * 结束录音
    */
-  stop() {
+  private stop() {
     this.recorder?.state !== 'inactive' && this.recorder?.stop();
   }
 

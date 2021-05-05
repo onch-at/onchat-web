@@ -2,8 +2,7 @@
   <div class="record-tips">{{ tips() }}</div>
   <div class="record-slide-container dp-flex justify-center align-center">
     <button #playBtn appRipple class="play-btn btn-white"
-            [ngClass]="{ show: operateState !== operateStates.None, active: operateState === operateStates.Play }"
-            (click)="play()">
+            [ngClass]="{ show: operateState !== operateStates.None, active: operateState === operateStates.Play }" (tap)="play()">
       <ion-icon [hidden]="audio && !audio.paused" name="play" style="margin-left: 5%;"></ion-icon>
       <ion-icon [hidden]="!audio || audio.paused" name="pause"></ion-icon>
     </button>
@@ -21,7 +20,7 @@
 
     <button #cancelBtn appRipple class="cancel-btn btn-white"
             [ngClass]="{ show: operateState !== operateStates.None, active: operateState === operateStates.Cancel }"
-            (click)="onCancel()">
+            (tap)="onCancel()">
       <ion-icon name="trash"></ion-icon>
     </button>
   </div>

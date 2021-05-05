@@ -24,22 +24,20 @@ enum OperateState {
   styleUrls: ['./chat-recorder.component.scss'],
 })
 export class ChatRecorderComponent implements OnInit, OnDestroy {
-  /** 操作状态 */
-  operateState: OperateState = OperateState.None;
-  operateStates: typeof OperateState = OperateState;
-
-  /** 录音起始时间 */
-  startTime: number = null;
-  /** 是否确认录音 */
-  comfirmed: boolean = true;
-  /** 语音音频对象 */
-  audio: HTMLAudioElement;
   /** 语音时长 */
   private duration: number;
   /** 一分钟录音计时器 */
   private timer: number;
   /** 发射器 */
   private launcher: BehaviorSubject<[Blob, VoiceMessage]>;
+
+  /** 操作状态 */
+  operateState: OperateState = OperateState.None;
+  operateStates: typeof OperateState = OperateState;
+  /** 录音起始时间 */
+  startTime: number = null;
+  /** 语音音频对象 */
+  audio: HTMLAudioElement;
 
   @ViewChild('playBtn', { static: true }) playBtn: ElementRef<HTMLElement>;
   @ViewChild('cancelBtn', { static: true }) cancelBtn: ElementRef<HTMLElement>;
@@ -72,7 +70,6 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
   onStart() {
     this.feedbackService.slightVibrate();
-    this.comfirmed ||= true;
     this.launcher ??= new BehaviorSubject([null, null]);
     this.launcher.value[0] && this.launcher.next([null, null]);
     this.startTime = Date.now();
@@ -83,29 +80,21 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
         this.overlay.presentToast('OnChat: 录音权限授权失败！');
         return of(null);
       }),
-      filter(o => {
-        !this.startTime && this.recorder.stop();
-        return o && this.startTime !== null;
-      }),
+      filter(() => this.startTime !== null),
       mergeMap(() => {
         this.start.emit();
         return this.recorder.start();
       }),
       take(1),
       filter(() => {
-        if (this.startTime) {
-          return true;
-        }
-
-        this.operateState = OperateState.None;
-        this.complete(false);
-
-        return false;
+        // 如果录音中途被中断，即startTime被置空，则取消录音
+        this.startTime || this.recorder.cancel();
+        return this.startTime !== null;
       }),
       mergeMap(() => {
-        this.clearTimer();
         this.startTime = Date.now(); // 校准录音起始时间
         this.operateState = OperateState.Send;
+        this.clearTimer();
         this.timer = window.setInterval(() => {
           const time = Date.now() - this.startTime;
 
@@ -117,18 +106,15 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
             this.complete();
             this.operateState = OperateState.Play;
             this.feedbackService.slightVibrate();
+            this.clearTimer();
           }
         }, 1000);
 
         return this.recorder.available;
       }),
       take(1),
+      filter(({ data }: BlobEvent) => data.size > 0)
     ).subscribe(({ data }: BlobEvent) => {
-      // 如果没有确认，或者录不到音
-      if (!this.comfirmed || data.size === 0) {
-        return;
-      }
-
       this.audio = new Audio(URL.createObjectURL(data));
       // 手动触发数据检查
       this.audio.onended = () => this.changeDetectorRef.detectChanges();
@@ -179,9 +165,8 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    this.operateState = OperateState.None;
     this.audio?.pause();
-    this.complete(false);
+    this.cancel();
   }
 
   onMouseLeave() {
@@ -192,21 +177,23 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   }
 
   onEnd() {
-    if (!this.startTime || !this.recorder.state()) {
-      return this.startTime = null;
+    // 如果是试听录音
+    if (this.operateState === OperateState.Play && !this.startTime) {
+      return;
     }
 
-    // 录音时间少于0.5秒 或者取消发送
-    if (Date.now() - this.startTime < 500 || this.operateState === OperateState.Cancel) {
-      this.operateState = OperateState.None;
-      return this.complete(false);
+    // 如果录音被中断，录音时间少于0.5秒，或者取消发送
+    if (
+      !this.recorder.state() ||
+      Date.now() - this.startTime < 500 ||
+      this.operateState === OperateState.Cancel
+    ) {
+      return this.cancel();
     }
 
     this.complete();
 
-    if (this.operateState === OperateState.Send) {
-      this.send();
-    }
+    this.operateState === OperateState.Send && this.send();
   }
 
   /**
@@ -220,8 +207,10 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
 
   /** 发送语音 */
   send() {
-    this.audio?.pause();
-    this.operateState = OperateState.None;
+    if (this.operateState === OperateState.Play) {
+      this.audio.pause();
+      this.operateState = OperateState.None;
+    }
 
     this.launcher.pipe(
       filter(([voice]) => voice !== null),
@@ -233,34 +222,21 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 某坐标点是否在矩形内
-   * @param pos
-   * @param rect
+   * 取消录音
    */
-  private isInsideRect(pos: Vector2, rect: DOMRect) {
-    const { x, y } = pos;
-
-    if (
-      x < rect.x ||
-      x > rect.x + rect.width ||
-      y < rect.y ||
-      y > rect.y + rect.height
-    ) {
-      return false;
-    }
-
-    return true;
+  private cancel() {
+    this.recorder.cancel();
+    this.operateState = OperateState.None;
+    this.startTime &&= null;
+    this.clearTimer();
   }
 
   /**
    * 结束录音
-   * @param comfirm 确认录音
    */
-  private complete(comfirm: boolean = true) {
-    this.comfirmed = comfirm;
-    this.recorder.stop();
+  private complete() {
+    this.recorder.complete();
     const duration = (Date.now() - this.startTime) / 1000;
-    // 小于1秒则保留一位小数
     this.duration = duration >= 1 ? duration | 0 : +duration.toFixed(1);
     this.startTime = null;
     this.clearTimer();
@@ -272,6 +248,24 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   private clearTimer() {
     this.timer && clearInterval(this.timer);
     this.timer = null;
+  }
+
+  /**
+   * 某坐标点是否在矩形内
+   * @param pos
+   * @param rect
+   */
+  private isInsideRect(pos: Vector2, rect: DOMRect) {
+    const { x, y } = pos;
+
+    if (
+      x < rect.x || x > rect.x + rect.width ||
+      y < rect.y || y > rect.y + rect.height
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
 }

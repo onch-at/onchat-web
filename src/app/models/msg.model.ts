@@ -39,16 +39,16 @@ export class ChatInvitationMessage {
 export class ImageMessage {
   /** 文件名 */
   filename: string;
-  /** 宽度 */
-  width: number;
-  /** 高度 */
-  height: number;
 
   constructor(
     /** 原图URL */
     public url: string,
     /** 缩略图URL */
-    public thumbnailUrl: string
+    public thumbnailUrl: string,
+    /** 宽度 */
+    public width: number,
+    /** 高度 */
+    public height: number,
   ) { }
 }
 
