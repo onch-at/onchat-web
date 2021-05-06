@@ -1,6 +1,8 @@
 import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
+import { from } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
@@ -23,7 +25,8 @@ export class ChatDrawerComponent implements OnInit {
 
   slideOpts: SwiperOptions = { initialSlide: 1 };
 
-  private imgMsgList: ImageMessageEntity[] = [];
+  /** 待发送的图片消息实体 队列 */
+  private imgMsgQueue: ImageMessageEntity[] = [];
 
   /** 图片格式，优先级：webp -> jpeg -> png */
   private format: string = SysUtil.isSupportWEBP() ? 'webp' : SysUtil.isSupportJPEG() ? 'jpeg' : 'png';
@@ -77,9 +80,9 @@ export class ChatDrawerComponent implements OnInit {
       const files: FileList = event.target.files;
       const length = files.length > 10 ? 10 : files.length;
 
-      const handle = (original?: boolean) => {
+      const handle = async (original: boolean) => {
         for (let index = 0; index < length; index++) {
-          this.createImageMessage(files[index], original || this.imageService.isAnimation(files[index]));
+          await this.createImageMessage(files[index], original || this.imageService.isAnimation(files[index]));
         }
         this.sendImageMessage();
       }
@@ -95,7 +98,7 @@ export class ChatDrawerComponent implements OnInit {
     });
   }
 
-  private createImageMessage(file: Blob, original?: boolean) {
+  private createImageMessage(file: Blob, original: boolean) {
     const { chatroomId } = this.page;
     const { user } = this.globalData;
     const url = URL.createObjectURL(file);
@@ -107,21 +110,32 @@ export class ChatDrawerComponent implements OnInit {
     msg.avatarThumbnail = user.avatarThumbnail;
     msg.format = this.format;
 
-    const img = new Image();
-    img.onload = () => {
-      msg.data = new ImageMessage(safeUrl, safeUrl, img.width, img.height);
+    return new Promise<void>(resolve => {
+      const img = new Image();
+      img.onload = () => {
+        msg.data = new ImageMessage(safeUrl, safeUrl, img.width, img.height);
 
-      this.page.msgList.push(msg);
-      this.imgMsgList.push(msg);
-      this.page.scrollToBottom();
-    }
-    img.src = url;
-  }
+        this.page.msgList.push(msg);
+        this.imgMsgQueue.push(msg);
+        this.page.scrollToBottom().then(() => resolve());
+      }
 
-  private sendImageMessage() {
-    this.imgMsgList.length && this.imgMsgList.shift().send().subscribe(() => {
-      this.sendImageMessage();
+      img.onerror = () => resolve();
+
+      img.src = url;
     });
   }
 
+  /**
+   * 并发发送图片，并发数：3
+   */
+  private sendImageMessage() {
+    from(this.imgMsgQueue).pipe(
+      mergeMap(o => o.send(), 3)
+    ).subscribe(
+      () => this.imgMsgQueue.shift(),
+      () => this.imgMsgQueue.shift(),
+      () => this.imgMsgQueue.length && this.sendImageMessage()
+    );
+  }
 }
