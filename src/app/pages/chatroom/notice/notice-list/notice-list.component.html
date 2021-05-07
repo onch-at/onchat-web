@@ -9,16 +9,15 @@
         <p>{{ '申请加入 ' + item.chatroomName }}</p>
       </ion-label>
 
-      <button *ngIf="!item.handlerId" appRipple appActiveClass class="btn-primary"
-        (click)="agreeChatRequest(item.id, $event)">
+      <button appRipple appActiveClass class="btn-primary" (click)="agreeChatRequest(item.id, $event)">
         同意
       </button>
 
-      <span *ngIf="item.handlerId" class="status" [ngSwitch]="item.status">
+      <!-- <span *ngIf="item.handlerId" class="status" [ngSwitch]="item.status">
         <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
         <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
         <ng-container *ngSwitchDefault>未知状态</ng-container>
-      </span>
+      </span> -->
     </ion-item>
 
     <ion-item-options *ngIf="!item.handlerId" side="end">

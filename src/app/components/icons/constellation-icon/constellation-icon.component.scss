@@ -8,6 +8,10 @@
         url("/assets/fonts/constellation/constellation.svg") format("svg");
 }
 
+:host {
+    line-height: 0;
+}
+
 /* 星座 */
 i[class*="icon-constellation-"] {
     font-family: "constellation";
