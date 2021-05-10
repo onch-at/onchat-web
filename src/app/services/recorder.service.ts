@@ -18,10 +18,8 @@ export class Recorder {
   constructor() {
     // 在页面隐藏的时候，关闭媒体流
     merge(
-      fromEvent(document, 'visibilitychange'),
+      fromEvent(document, 'visibilitychange').pipe(filter(() => document.hidden)),
       fromEvent(window, 'pagehide'),
-    ).pipe(
-      filter(() => document.hidden)
     ).subscribe(() => this.close());
   }
 

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
-import { slideUpOnLeaveAnimation } from 'src/app/animations/slide.animation';
 import { ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -16,7 +15,6 @@ import { SysUtil } from 'src/app/utils/sys.util';
   selector: 'app-session',
   templateUrl: './session.page.html',
   styleUrls: ['./session.page.scss'],
-  animations: [slideUpOnLeaveAnimation]
 })
 export class SessionPage implements OnInit {
   msgType = MessageType;

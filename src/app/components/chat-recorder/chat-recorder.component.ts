@@ -16,7 +16,7 @@ enum OperateState {
   Play,
   /** 取消发送 */
   Cancel
-}
+};
 
 @Component({
   selector: 'app-chat-recorder',

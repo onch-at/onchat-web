@@ -2,7 +2,7 @@ import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
 import { from } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { map, mergeAll } from 'rxjs/operators';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
@@ -117,7 +117,7 @@ export class ChatDrawerComponent implements OnInit {
 
         this.page.msgList.push(msg);
         this.imgMsgQueue.push(msg);
-        this.page.scrollToBottom().then(() => resolve());
+        this.page.scrollToBottom(300).then(() => resolve());
       }
 
       img.onerror = () => resolve();
@@ -127,15 +127,14 @@ export class ChatDrawerComponent implements OnInit {
   }
 
   /**
-   * 并发发送图片，并发数：3
+   * 并发发送图片
    */
   private sendImageMessage() {
     from(this.imgMsgQueue).pipe(
-      mergeMap(o => o.send(), 3)
-    ).subscribe(
-      () => this.imgMsgQueue.shift(),
-      () => this.imgMsgQueue.shift(),
-      () => this.imgMsgQueue.length && this.sendImageMessage()
-    );
+      map(msg => msg.send()),
+      mergeAll()
+    ).subscribe({
+      complete: () => this.imgMsgQueue.length = 0
+    });
   }
 }
