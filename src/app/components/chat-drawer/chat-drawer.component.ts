@@ -1,8 +1,6 @@
 import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
-import { from } from 'rxjs';
-import { map, mergeAll } from 'rxjs/operators';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
@@ -24,9 +22,6 @@ export class ChatDrawerComponent implements OnInit {
   @ViewChild(IonSlides, { static: true }) ionSlides: IonSlides;
 
   slideOpts: SwiperOptions = { initialSlide: 1 };
-
-  /** 待发送的图片消息实体 队列 */
-  private imgMsgQueue: ImageMessageEntity[] = [];
 
   /** 图片格式，优先级：webp -> jpeg -> png */
   private format: string = SysUtil.isSupportWEBP() ? 'webp' : SysUtil.isSupportJPEG() ? 'jpeg' : 'png';
@@ -84,7 +79,6 @@ export class ChatDrawerComponent implements OnInit {
         for (let index = 0; index < length; index++) {
           await this.createImageMessage(files[index], original || this.imageService.isAnimation(files[index]));
         }
-        this.sendImageMessage();
       }
 
       this.overlay.presentAlert({
@@ -110,31 +104,18 @@ export class ChatDrawerComponent implements OnInit {
     msg.avatarThumbnail = user.avatarThumbnail;
     msg.format = this.format;
 
-    return new Promise<void>(resolve => {
+    return new Promise<ImageMessageEntity>((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
         msg.data = new ImageMessage(safeUrl, safeUrl, img.width, img.height);
-
         this.page.msgList.push(msg);
-        this.imgMsgQueue.push(msg);
-        this.page.scrollToBottom(300).then(() => resolve());
+        this.page.scrollToBottom(300).then(() => resolve(msg));
+        msg.send();
       }
 
-      img.onerror = () => resolve();
+      img.onerror = (error: any) => reject(error);
 
       img.src = url;
-    });
-  }
-
-  /**
-   * 并发发送图片
-   */
-  private sendImageMessage() {
-    from(this.imgMsgQueue).pipe(
-      map(msg => msg.send()),
-      mergeAll()
-    ).subscribe({
-      complete: () => this.imgMsgQueue.length = 0
     });
   }
 }

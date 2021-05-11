@@ -1,5 +1,5 @@
 import { HttpEvent, HttpEventType } from "@angular/common/http";
-import { Observable, of } from "rxjs";
+import { of } from "rxjs";
 import { mergeMap, tap } from "rxjs/operators";
 import { MessageType, ResultCode } from "../common/enum";
 import { ImageMessage } from '../models/msg.model';
@@ -45,35 +45,31 @@ export class ImageMessageEntity extends MessageEntity {
   }
 
   send() {
-    return (this.original ? of(null) : this.compress()).pipe(mergeMap(() => new Observable(observer => {
-      super.track();
+    (this.original ? of(null) : this.compress()).pipe(
+      tap(() => super.track()),
+      mergeMap(() => this.injector.get(ApiService).uploadImageToChatroom(this.chatroomId, this.file, this.sendTime))
+    ).subscribe((event: HttpEvent<Result<ImageMessage>>) => {
+      switch (event.type) {
+        case HttpEventType.Sent:
+          break;
 
-      this.injector.get(ApiService).uploadImageToChatroom(this.chatroomId, this.file, this.sendTime).subscribe((event: HttpEvent<Result<ImageMessage>>) => {
-        switch (event.type) {
-          case HttpEventType.Sent:
-            break;
+        case HttpEventType.UploadProgress:
+          const { total, loaded } = event;
+          if (total > 0) {
+            this.percent = +(loaded / total * 100).toFixed(); // 计算进度
+          }
+          break;
 
-          case HttpEventType.UploadProgress:
-            const { total, loaded } = event;
-            if (total > 0) {
-              this.percent = +(loaded / total * 100).toFixed(); // 计算进度
-            }
-            break;
+        case HttpEventType.Response:
+          const { code, data, msg } = event.body;
 
-          case HttpEventType.Response:
-            observer.next();
-            observer.complete();
+          if (code !== ResultCode.Success) {
+            return this.injector.get(Overlay).presentToast('图片上传失败，原因：' + msg);
+          }
 
-            const { code, data, msg } = event.body;
-
-            if (code !== ResultCode.Success) {
-              return this.injector.get(Overlay).presentToast('图片上传失败，原因：' + msg);
-            }
-
-            Object.assign(this.data, data);
-            break;
-        }
-      });
-    })));
+          Object.assign(this.data, data);
+          break;
+      }
+    });
   }
 }
