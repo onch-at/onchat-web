@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { AbstractControl, AsyncValidatorFn } from "@angular/forms";
-import { of } from "rxjs";
-import { catchError, map } from "rxjs/operators";
-import { Result } from "../models/onchat.model";
-import { ApiService } from "../services/api.service";
+import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Result } from '../models/onchat.model';
+import { ApiService } from '../services/api.service';
 
 @Injectable({
   providedIn: 'root'

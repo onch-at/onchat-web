@@ -1,5 +1,5 @@
 import { KeyValue } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { FriendRequestStatus } from 'src/app/common/enum';
@@ -13,7 +13,7 @@ import { SocketService } from 'src/app/services/socket.service';
   templateUrl: './new.component.html',
   styleUrls: ['./new.component.scss'],
 })
-export class NewComponent implements OnInit {
+export class NewComponent {
   friendRequestStatus: typeof FriendRequestStatus = FriendRequestStatus;
 
   constructor(
@@ -22,8 +22,6 @@ export class NewComponent implements OnInit {
     private socketService: SocketService,
     private overlay: Overlay,
   ) { }
-
-  ngOnInit() { }
 
   agree(id: number, event: Event) {
     event.preventDefault();

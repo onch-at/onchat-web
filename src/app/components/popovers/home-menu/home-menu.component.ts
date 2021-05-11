@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Overlay } from 'src/app/services/overlay.service';
 
@@ -7,16 +7,12 @@ import { Overlay } from 'src/app/services/overlay.service';
   templateUrl: './home-menu.component.html',
   styleUrls: ['./home-menu.component.scss'],
 })
-export class HomeMenuComponent implements OnInit {
+export class HomeMenuComponent {
 
   constructor(
     private router: Router,
     private overlay: Overlay,
   ) { }
-
-  ngOnInit() {
-
-  }
 
   navigate(commands: any[]) {
     this.router.navigate(commands);

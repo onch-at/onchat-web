@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
@@ -13,7 +13,7 @@ import { ModalComponent } from '../modal.component';
   templateUrl: './chat-session-selector.component.html',
   styleUrls: ['./chat-session-selector.component.scss'],
 })
-export class ChatSessionSelectorComponent extends ModalComponent {
+export class ChatSessionSelectorComponent extends ModalComponent implements OnInit {
   /** 标题 */
   @Input() title: string;
   /** 会话列表 */

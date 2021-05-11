@@ -1,13 +1,13 @@
-import { HttpEvent, HttpEventType } from "@angular/common/http";
-import { of } from "rxjs";
-import { mergeMap, tap } from "rxjs/operators";
-import { MessageType, ResultCode } from "../common/enum";
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { of } from 'rxjs';
+import { mergeMap, tap } from 'rxjs/operators';
+import { MessageType, ResultCode } from '../common/enum';
 import { ImageMessage } from '../models/msg.model';
-import { Result } from "../models/onchat.model";
-import { ApiService } from "../services/api.service";
-import { ImageService } from "../services/image.service";
-import { Overlay } from "../services/overlay.service";
-import { MessageEntity } from "./message.entity";
+import { Result } from '../models/onchat.model';
+import { ApiService } from '../services/api.service';
+import { ImageService } from '../services/image.service';
+import { Overlay } from '../services/overlay.service';
+import { MessageEntity } from './message.entity';
 
 export class ImageMessageEntity extends MessageEntity {
   /** 图像文件 */

@@ -1,4 +1,4 @@
-import { Gender, Mood } from "../common/enum";
+import { Gender, Mood } from '../common/enum';
 
 /** 登录表单数据模型  */
 export class Login {

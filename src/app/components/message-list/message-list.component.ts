@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { ChatroomType, MessageType } from 'src/app/common/enum';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
@@ -15,7 +15,7 @@ import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolba
   templateUrl: './message-list.component.html',
   styleUrls: ['./message-list.component.scss'],
 })
-export class MessageListComponent implements OnInit {
+export class MessageListComponent {
   /** 消息类型枚举 */
   msgType: typeof MessageType = MessageType;
   /** 聊天室类型枚举 */
@@ -36,8 +36,6 @@ export class MessageListComponent implements OnInit {
     private feedbackService: FeedbackService,
     public globalData: GlobalData,
   ) { }
-
-  ngOnInit() { }
 
   msgItemClass(userId: number) {
     const { user } = this.globalData;

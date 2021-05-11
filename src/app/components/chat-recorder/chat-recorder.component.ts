@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError, filter, mergeMap, take } from 'rxjs/operators';
 import { Vector2 } from 'src/app/common/class';
@@ -23,7 +23,7 @@ enum OperateState {
   templateUrl: './chat-recorder.component.html',
   styleUrls: ['./chat-recorder.component.scss'],
 })
-export class ChatRecorderComponent implements OnInit, OnDestroy {
+export class ChatRecorderComponent implements OnDestroy {
   /** 语音时长 */
   private duration: number;
   /** 一分钟录音计时器 */
@@ -43,9 +43,9 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
   @ViewChild('cancelBtn', { static: true }) cancelBtn: ElementRef<HTMLElement>;
 
   /** 开始录音 */
-  @Output() start: EventEmitter<void> = new EventEmitter();
+  @Output() appStart: EventEmitter<void> = new EventEmitter();
   /** 录音完成 */
-  @Output() output: EventEmitter<[Blob, VoiceMessage]> = new EventEmitter();
+  @Output() appOutput: EventEmitter<[Blob, VoiceMessage]> = new EventEmitter();
 
   tips = () => ({
     [OperateState.None]: '按住讲话',
@@ -60,8 +60,6 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
     private feedbackService: FeedbackService,
     private changeDetectorRef: ChangeDetectorRef
   ) { }
-
-  ngOnInit() { }
 
   ngOnDestroy() {
     this.launcher?.complete();
@@ -82,7 +80,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
       }),
       filter(() => this.startTime !== null),
       mergeMap(() => {
-        this.start.emit();
+        this.appStart.emit();
         return this.recorder.start();
       }),
       take(1),
@@ -217,7 +215,7 @@ export class ChatRecorderComponent implements OnInit, OnDestroy {
       take(1)
     ).subscribe((value: [Blob, VoiceMessage]) => {
       this.launcher.next([null, null]);
-      this.output.emit(value);
+      this.appOutput.emit(value);
     });
   }
 

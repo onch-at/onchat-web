@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
@@ -20,7 +20,7 @@ import { OnChatService } from '../../../services/onchat.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit, ViewWillLeave, ViewWillEnter {
+export class LoginPage implements ViewWillLeave, ViewWillEnter {
   /** 密码框类型 */
   pwdInputType: string = 'password';
   readonly usernameMaxLength: number = USERNAME_MAX_LENGTH;
@@ -57,8 +57,6 @@ export class LoginPage implements OnInit, ViewWillLeave, ViewWillEnter {
     private formBuilder: FormBuilder,
     private routerOutlet: IonRouterOutlet
   ) { }
-
-  ngOnInit() { }
 
   ionViewWillEnter() {
     this.routerOutlet.swipeGesture = false;

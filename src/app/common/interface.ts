@@ -1,6 +1,6 @@
-import { KeyValue } from "@angular/common";
-import { ValidationErrors } from "@angular/forms";
-import { ChatSession } from "../models/onchat.model";
+import { KeyValue } from '@angular/common';
+import { ValidationErrors } from '@angular/forms';
+import { ChatSession } from '../models/onchat.model';
 
 /** 组件引用 */
 type ComponentRef = Function | HTMLElement | string | null;
@@ -44,7 +44,7 @@ export interface AlertOptions {
   /** 确认时的回调函数 */
   confirmHandler?: (data?: KeyValue<string, any>) => any;
   /** 取消时的回调函数 */
-  cancelHandler?: (data?: KeyValue<string, any>) => any
+  cancelHandler?: (data?: KeyValue<string, any>) => any;
   /** 输入组 */
   inputs?: any[];
 }

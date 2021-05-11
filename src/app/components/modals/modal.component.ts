@@ -1,8 +1,8 @@
-import { Directive, OnDestroy, OnInit } from "@angular/core";
-import { NavigationEnd, Router } from "@angular/router";
-import { Subject } from "rxjs";
-import { filter, takeUntil } from "rxjs/operators";
-import { Overlay } from "src/app/services/overlay.service";
+import { Directive, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Overlay } from 'src/app/services/overlay.service';
 
 /**
  * 基础模态框组件类

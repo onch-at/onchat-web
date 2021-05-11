@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
@@ -19,7 +19,7 @@ import { SyncValidator } from 'src/app/validators/sync.validator';
   templateUrl: './reset.page.html',
   styleUrls: ['./reset.page.scss'],
 })
-export class ResetPage implements OnInit, ViewWillLeave, ViewWillEnter {
+export class ResetPage implements ViewWillLeave, ViewWillEnter {
   form: FormGroup = this.formBuilder.group({
     username: [
       '', [
@@ -74,8 +74,6 @@ export class ResetPage implements OnInit, ViewWillLeave, ViewWillEnter {
     private router: Router,
     private routerOutlet: IonRouterOutlet
   ) { }
-
-  ngOnInit() { }
 
   ionViewWillEnter() {
     this.routerOutlet.swipeGesture = false;

@@ -9,63 +9,10 @@ import { LocalStorage } from './local-storage.service';
   providedIn: 'root'
 })
 export class GlobalData {
-  /** 当前用户 */
-  user: User = null;
-  /** 记录当前所在的聊天室ID */
-  chatroomId: number = null;
-  /** 是否可以销毁（返回上一页） */
-  canDeactivate: boolean = true;
-  /** 我的收到好友申请列表 */
-  receiveFriendRequests: FriendRequest[] = [];
-  /** 我的发起的好友申请列表 */
-  sendFriendRequests: FriendRequest[] = [];
-  /** 路由导航中 */
-  navigating: boolean = false;
-
-  /** 计算未读消息总数 */
-  unreadMsgCount = () => {
-    this.totalUnreadChatRequestCount();
-
-    const count = this.chatSessions.reduce((count, o) => (
-      count + (o.unread || 0)
-    ), 0);
-
-    (navigator as any).setAppBadge?.(count);
-
-    return count;
-  };
-
-  /** 未读的好友请求 */
-  unreadFriendRequestCount = () => this.receiveFriendRequests.reduce((count, o) => (
-    o.targetReaded ? count : count + 1
-  ), 0) + this.sendFriendRequests.reduce((count, o) => (
-    o.requesterReaded ? count : count + 1
-  ), 0);
-
-  /** 私聊聊天室列表 */
-  private _privateChatrooms: ChatSession[] = [];
-  /** 群聊聊天室列表 */
-  private _groupChatrooms: ChatSession[] = [];
-  /** 我收到的入群申请 */
-  private _receiveChatRequests: ChatRequest[] = [];
-  /** 我发送的入群申请 */
-  private _sendChatRequests: ChatRequest[] = [];
-  /** 缓存聊天列表 */
-  private _chatSessions: ChatSession[] = [];
 
   constructor(
     private localStorage: LocalStorage
   ) { }
-
-  reset() {
-    this.user = null;
-    this.chatSessions = [];
-    this.receiveChatRequests = [];
-    this.sendChatRequests = [];
-    this.receiveFriendRequests = [];
-    this.sendFriendRequests = [];
-    this.privateChatrooms = [];
-  }
 
   set receiveChatRequests(requests: ChatRequest[]) {
     this._receiveChatRequests = requests;
@@ -113,6 +60,59 @@ export class GlobalData {
 
   get groupChatrooms(): ChatSession[] {
     return this._groupChatrooms;
+  }
+  /** 当前用户 */
+  user: User = null;
+  /** 记录当前所在的聊天室ID */
+  chatroomId: number = null;
+  /** 是否可以销毁（返回上一页） */
+  canDeactivate = true;
+  /** 我的收到好友申请列表 */
+  receiveFriendRequests: FriendRequest[] = [];
+  /** 我的发起的好友申请列表 */
+  sendFriendRequests: FriendRequest[] = [];
+  /** 路由导航中 */
+  navigating = false;
+
+  /** 私聊聊天室列表 */
+  private _privateChatrooms: ChatSession[] = [];
+  /** 群聊聊天室列表 */
+  private _groupChatrooms: ChatSession[] = [];
+  /** 我收到的入群申请 */
+  private _receiveChatRequests: ChatRequest[] = [];
+  /** 我发送的入群申请 */
+  private _sendChatRequests: ChatRequest[] = [];
+  /** 缓存聊天列表 */
+  private _chatSessions: ChatSession[] = [];
+
+  /** 计算未读消息总数 */
+  unreadMsgCount = () => {
+    this.totalUnreadChatRequestCount();
+
+    const count = this.chatSessions.reduce((count, o) => (
+      count + (o.unread || 0)
+    ), 0);
+
+    (navigator as any).setAppBadge?.(count);
+
+    return count;
+  }
+
+  /** 未读的好友请求 */
+  unreadFriendRequestCount = () => this.receiveFriendRequests.reduce((count, o) => (
+    o.targetReaded ? count : count + 1
+  ), 0) + this.sendFriendRequests.reduce((count, o) => (
+    o.requesterReaded ? count : count + 1
+  ), 0)
+
+  reset() {
+    this.user = null;
+    this.chatSessions = [];
+    this.receiveChatRequests = [];
+    this.sendChatRequests = [];
+    this.receiveFriendRequests = [];
+    this.sendFriendRequests = [];
+    this.privateChatrooms = [];
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonRouterOutlet } from '@ionic/angular';
 import { EmailBinderComponent } from 'src/app/components/modals/email-binder/email-binder.component';
 import { PasswordModifierComponent } from 'src/app/components/modals/password-modifier/password-modifier.component';
@@ -10,16 +10,13 @@ import { Overlay } from 'src/app/services/overlay.service';
   templateUrl: './safety.page.html',
   styleUrls: ['./safety.page.scss'],
 })
-export class SafetyPage implements OnInit {
+export class SafetyPage {
 
   constructor(
     public globalData: GlobalData,
     private overlay: Overlay,
     private routerOutlet: IonRouterOutlet
   ) { }
-
-  ngOnInit() {
-  }
 
   bindEmail() {
     this.overlay.presentModal({

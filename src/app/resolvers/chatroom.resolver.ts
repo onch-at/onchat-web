@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
-import { Observable } from "rxjs";
-import { ChatMember, Chatroom, Result } from "../models/onchat.model";
-import { ApiService } from "../services/api.service";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ChatMember, Chatroom, Result } from '../models/onchat.model';
+import { ApiService } from '../services/api.service';
 
 /**
  * 聊天室Resolve，根据路由参数中的chatroomId来获得chatroom

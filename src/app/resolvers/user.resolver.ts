@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
-import { Observable } from "rxjs";
-import { Result, User } from "../models/onchat.model";
-import { ApiService } from "../services/api.service";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Result, User } from '../models/onchat.model';
+import { ApiService } from '../services/api.service';
 import { GlobalData } from '../services/global-data.service';
 
 /**

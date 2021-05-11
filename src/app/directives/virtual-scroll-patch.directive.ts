@@ -13,7 +13,7 @@ import { filter, takeUntil } from 'rxjs/operators';
  * 原理：监听返回事件后手动更新虚拟列表
  */
 @Directive({
-  selector: 'ion-virtual-scroll'
+  selector: '[appVirtualScrollPatch]'
 })
 export class VirtualScrollPatchDirective implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();

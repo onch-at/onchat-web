@@ -1,16 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-constellation-icon',
   templateUrl: './constellation-icon.component.html',
   styleUrls: ['./constellation-icon.component.scss'],
 })
-export class ConstellationIconComponent implements OnInit {
+export class ConstellationIconComponent {
   @Input() value: number;
 
   constructor() { }
-
-  ngOnInit() { }
 
   className() {
     return 'icon-constellation-' + {

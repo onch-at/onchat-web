@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, Input, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
@@ -17,7 +17,7 @@ import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-ed
   templateUrl: './chat-drawer.component.html',
   styleUrls: ['./chat-drawer.component.scss'],
 })
-export class ChatDrawerComponent implements OnInit {
+export class ChatDrawerComponent {
   @Input() page: ChatPage;
   @ViewChild(IonSlides, { static: true }) ionSlides: IonSlides;
 
@@ -34,8 +34,6 @@ export class ChatDrawerComponent implements OnInit {
     private routerOutlet: IonRouterOutlet,
     private injector: Injector
   ) { }
-
-  ngOnInit() { }
 
   setIndex(index: number, speed?: number) {
     this.ionSlides.slideTo(index, speed);

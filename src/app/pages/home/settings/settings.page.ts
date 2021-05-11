@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Overlay } from 'src/app/services/overlay.service';
 
 @Component({
@@ -6,13 +6,11 @@ import { Overlay } from 'src/app/services/overlay.service';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss']
 })
-export class SettingsPage implements OnInit {
+export class SettingsPage {
 
   constructor(
     private overlay: Overlay,
   ) { }
-
-  ngOnInit() { }
 
   showOverlayGlobalPanelCenter() {
     this.overlay.presentNotification({

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -10,7 +10,7 @@ import { SocketService } from 'src/app/services/socket.service';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss']
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage {
 
   constructor(
     public globalData: GlobalData,
@@ -19,8 +19,6 @@ export class ProfilePage implements OnInit {
     private overlay: Overlay,
     private socketService: SocketService,
   ) { }
-
-  ngOnInit() { }
 
   logout() {
     this.overlay.presentAlert({

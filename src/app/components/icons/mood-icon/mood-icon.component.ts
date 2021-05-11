@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Mood } from 'src/app/common/enum';
 
 @Component({
@@ -6,7 +6,7 @@ import { Mood } from 'src/app/common/enum';
   templateUrl: './mood-icon.component.html',
   styleUrls: ['./mood-icon.component.scss'],
 })
-export class MoodIconComponent implements OnInit {
+export class MoodIconComponent {
   @Input() value: Mood;
 
   src = () => ('/assets/svg/mood/' + {
@@ -24,7 +24,5 @@ export class MoodIconComponent implements OnInit {
   }[this.value]);
 
   constructor() { }
-
-  ngOnInit() { }
 
 }

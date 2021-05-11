@@ -1,9 +1,9 @@
-import { Injector } from "@angular/core";
-import { filter, take } from "rxjs/operators";
-import { MessageType, ResultCode, SocketEvent } from "../common/enum";
-import { AnyMessage } from "../models/msg.model";
-import { Message, Result } from "../models/onchat.model";
-import { SocketService } from "../services/socket.service";
+import { Injector } from '@angular/core';
+import { filter, take } from 'rxjs/operators';
+import { MessageType, ResultCode, SocketEvent } from '../common/enum';
+import { AnyMessage } from '../models/msg.model';
+import { Message, Result } from '../models/onchat.model';
+import { SocketService } from '../services/socket.service';
 
 export class MessageEntity implements Message {
   id: number;

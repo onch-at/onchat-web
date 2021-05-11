@@ -1,8 +1,8 @@
 <ion-content appScrollbar>
   <app-empty *ngIf="!globalData.groupChatrooms.length"></app-empty>
 
-  <ion-virtual-scroll [items]="globalData.groupChatrooms" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
-                      [trackBy]="trackByFn">
+  <ion-virtual-scroll appVirtualScrollPatch [items]="globalData.groupChatrooms" [approxItemHeight]="itemHeight"
+                      [itemHeight]="getItemHeight" [trackBy]="trackByFn">
     <ion-item-sliding mode="md" *virtualItem="let item; let i = index;">
       <ion-item lines="none" [detail]="false" [routerLink]="['/chat', item.data.chatroomId]">
         <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>

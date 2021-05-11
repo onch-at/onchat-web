@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Mood } from 'src/app/common/enum';
 
@@ -12,7 +12,7 @@ import { Mood } from 'src/app/common/enum';
     multi: true
   }]
 })
-export class MoodRadioComponent implements OnInit, ControlValueAccessor {
+export class MoodRadioComponent implements ControlValueAccessor {
   private _value: Mood;
 
   set value(value: Mood) {
@@ -29,8 +29,6 @@ export class MoodRadioComponent implements OnInit, ControlValueAccessor {
   constructor() { }
 
   private onValueChange(value: Mood) { }
-
-  ngOnInit() { }
 
   writeValue(value: Mood): void {
     this._value = value;

@@ -50,7 +50,7 @@ export class Overlay {
       navigator.serviceWorker.ready.then((registration: ServiceWorkerRegistration) => registration.showNotification(title, {
         body: description,
         badge: '/assets/icon/favicon.ico',
-        icon: icon,
+        icon,
         requireInteraction: true,
         vibrate: [150, 75, 150],
         data: {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ChatRequestStatus } from 'src/app/common/enum';
 import { GlobalData } from 'src/app/services/global-data.service';
 
@@ -7,13 +7,11 @@ import { GlobalData } from 'src/app/services/global-data.service';
   templateUrl: './request-list.component.html',
   styleUrls: ['./request-list.component.scss'],
 })
-export class RequestListComponent implements OnInit {
+export class RequestListComponent {
   chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
 
   constructor(
     public globalData: GlobalData,
   ) { }
-
-  ngOnInit() { }
 
 }

@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
-import { Observable } from "rxjs";
-import { ChatRequest, Result } from "../models/onchat.model";
-import { ApiService } from "../services/api.service";
-import { GlobalData } from "../services/global-data.service";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ChatRequest, Result } from '../models/onchat.model';
+import { ApiService } from '../services/api.service';
+import { GlobalData } from '../services/global-data.service';
 
 /**
  * 群聊申请Resolve，根据路由参数中的chatRequestId来获得我收到的ChatRequest

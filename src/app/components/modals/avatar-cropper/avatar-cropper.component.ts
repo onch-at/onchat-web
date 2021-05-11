@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
@@ -17,7 +17,7 @@ export type AvatarData = { avatar: string; avatarThumbnail: string };
   templateUrl: './avatar-cropper.component.html',
   styleUrls: ['./avatar-cropper.component.scss'],
 })
-export class AvatarCropperComponent extends ModalComponent {
+export class AvatarCropperComponent extends ModalComponent implements OnInit {
   /** 文件变更事件 */
   @Input() imageChangedEvent: Event;
   /** 上传器 */

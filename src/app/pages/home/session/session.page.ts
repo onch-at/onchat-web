@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
   templateUrl: './session.page.html',
   styleUrls: ['./session.page.scss'],
 })
-export class SessionPage implements OnInit {
+export class SessionPage {
   msgType = MessageType;
   chatSessionType = ChatSessionType;
   /** 虚拟列表项目高度 */
@@ -30,8 +30,6 @@ export class SessionPage implements OnInit {
     private apiService: ApiService,
     public globalData: GlobalData
   ) { }
-
-  ngOnInit() { }
 
   /**
    * 刷新

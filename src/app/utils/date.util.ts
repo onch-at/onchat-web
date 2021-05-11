@@ -5,7 +5,7 @@ export class DateUtil {
    */
   static isYestday(date: Date): boolean {
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(); //今天凌晨
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(); // 今天凌晨
     const yestday = new Date(today - 86400000).getTime();
     return date.getTime() < today && yestday <= date.getTime();
   }

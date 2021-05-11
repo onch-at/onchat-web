@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MessageType } from 'src/app/common/enum';
 import { Message } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -11,7 +11,7 @@ import { SocketService } from 'src/app/services/socket.service';
   templateUrl: './bubble-toolbar.component.html',
   styleUrls: ['./bubble-toolbar.component.scss'],
 })
-export class BubbleToolbarComponent implements OnInit {
+export class BubbleToolbarComponent {
   /** 气泡节点 */
   @Input() element: HTMLElement;
   /** 消息体 */
@@ -27,8 +27,6 @@ export class BubbleToolbarComponent implements OnInit {
     private overlay: Overlay,
     private clipboard: Clipboard
   ) { }
-
-  ngOnInit() { }
 
   /**
    * 复制文本消息

@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-card-message',
   templateUrl: './card-message.component.html',
   styleUrls: ['./card-message.component.scss'],
 })
-export class CardMessageComponent implements OnInit {
+export class CardMessageComponent {
   @Input() background: string;
   @Input() avatar: string;
   @Input() label: string;
@@ -13,7 +13,5 @@ export class CardMessageComponent implements OnInit {
   @Input() description: string;
 
   constructor() { }
-
-  ngOnInit() { }
 
 }

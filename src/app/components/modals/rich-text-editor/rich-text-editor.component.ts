@@ -1,4 +1,4 @@
-import { Component, Injector, Input } from '@angular/core';
+import { Component, Injector, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentChange } from 'ngx-quill';
 import { filter } from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { ModalComponent } from '../modal.component';
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.scss'],
 })
-export class RichTextEditorComponent extends ModalComponent {
+export class RichTextEditorComponent extends ModalComponent implements OnInit {
   @Input() page: ChatPage;
   html: string;
   text: string = '';

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AnimationBuilder, AnimationController, IonRouterOutlet, ViewWillEnter } from '@ionic/angular';
 import { GlobalData } from 'src/app/services/global-data.service';
 
@@ -7,7 +7,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
   templateUrl: './contact.page.html',
   styleUrls: ['./contact.page.scss']
 })
-export class ContactPage implements OnInit, ViewWillEnter {
+export class ContactPage implements ViewWillEnter {
   animation: number = 0;
 
   @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
@@ -35,8 +35,6 @@ export class ContactPage implements OnInit, ViewWillEnter {
     public globalData: GlobalData,
     private animationCtrl: AnimationController,
   ) { }
-
-  ngOnInit() { }
 
   ionViewWillEnter() {
     this.animation = this.routerOutlet.activatedRouteData.animation;

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, Renderer2, ViewChild } from '@angular/core';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 
@@ -7,7 +7,7 @@ import { Message } from 'src/app/models/onchat.model';
   templateUrl: './image-message.component.html',
   styleUrls: ['./image-message.component.scss'],
 })
-export class ImageMessageComponent implements OnInit, AfterViewInit {
+export class ImageMessageComponent implements AfterViewInit {
   @Input() msg: Message<ImageMessage>;
   @ViewChild('img', { static: true }) img: ElementRef<HTMLImageElement>;
 
@@ -16,9 +16,6 @@ export class ImageMessageComponent implements OnInit, AfterViewInit {
   constructor(
     private renderer: Renderer2
   ) { }
-
-  ngOnInit() {
-  }
 
   ngAfterViewInit() {
     this.resize();

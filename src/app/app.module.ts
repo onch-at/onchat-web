@@ -1,26 +1,26 @@
-import { OverlayModule } from "@angular/cdk/overlay";
+import { OverlayModule } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeExtraZhHans from '@angular/common/locales/extra/zh-Hans';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
-import { QuillModule } from "ngx-quill";
+import { QuillModule } from 'ngx-quill';
 import { SocketIoModule } from 'ngx-socket-io';
 import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
-import { CacheInterceptor } from "./interceptors/cache.interceptor";
-import { ActiveClassModule } from "./modules/active-class.module";
-import { ScrollbarModule } from "./modules/scrollbar.module";
-import { SharedModule } from "./modules/shared.module";
+import { CacheInterceptor } from './interceptors/cache.interceptor';
+import { ActiveClassModule } from './modules/active-class.module';
+import { ScrollbarModule } from './modules/scrollbar.module';
+import { SharedModule } from './modules/shared.module';
 
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
 
