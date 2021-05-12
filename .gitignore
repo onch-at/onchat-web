@@ -29,7 +29,5 @@ npm-debug.log*
 /android
 /plugins
 /www
-
-/package-lock.json
 /.npmrc
 /*.pem

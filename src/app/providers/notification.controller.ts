@@ -1,8 +1,9 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ComponentRef, Injectable } from '@angular/core';
+import { ComponentRef, Inject, Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NotificationOptions } from '../common/interface';
+import { WINDOW } from '../common/token';
 import { NotificationComponent } from '../components/notification/notification.component';
 
 @Injectable({
@@ -19,7 +20,10 @@ export class NotificationController {
   /** 一个订阅器 */
   private subscription: Subscription;
 
-  constructor(private overlay: Overlay) {
+  constructor(
+    private overlay: Overlay,
+    @Inject(WINDOW) private window: Window,
+  ) {
     // 全局显示，水平居中，位于顶部
     this.overlayConfig.positionStrategy = this.overlay.position().global().centerHorizontally().top();
   }
@@ -65,7 +69,7 @@ export class NotificationController {
     });
 
     // 开始计时
-    this.dismissTimeout = window.setTimeout(() => this.dismiss(), duration || 3000);
+    this.dismissTimeout = this.window.setTimeout(() => this.dismiss(), duration || 3000);
 
     return this;
   }
@@ -83,7 +87,7 @@ export class NotificationController {
   }
 
   private clearDismissTimeout(): void {
-    window.clearTimeout(this.dismissTimeout);
+    this.window.clearTimeout(this.dismissTimeout);
     this.dismissTimeout = null;
   }
 

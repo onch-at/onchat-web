@@ -1,7 +1,8 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnDestroy, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError, filter, mergeMap, take } from 'rxjs/operators';
 import { Vector2 } from 'src/app/common/class';
+import { WINDOW } from 'src/app/common/token';
 import { VoiceMessage } from 'src/app/models/msg.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -58,7 +59,8 @@ export class ChatRecorderComponent implements OnDestroy {
     private overlay: Overlay,
     private recorder: Recorder,
     private feedbackService: FeedbackService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ngOnDestroy() {
@@ -93,7 +95,7 @@ export class ChatRecorderComponent implements OnDestroy {
         this.startTime = Date.now(); // 校准录音起始时间
         this.operateState = OperateState.Send;
         this.clearTimer();
-        this.timer = window.setInterval(() => {
+        this.timer = this.window.setInterval(() => {
           const time = Date.now() - this.startTime;
 
           if (time >= 55000) {

@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AudioName } from '../common/enum';
+import { NAVIGATOR } from '../common/token';
 
 /**
  * 反馈服务（音频，震动等）
@@ -13,7 +14,9 @@ export class FeedbackService {
   /** 提示音：叮噔 */
   private dingDengAudio: HTMLAudioElement = new Audio('/assets/audios/ding-deng.mp3');
 
-  constructor() { }
+  constructor(
+    @Inject(NAVIGATOR) private navigator: Navigator
+  ) { }
 
   playAudio(audio: AudioName) {
     return {
@@ -26,7 +29,7 @@ export class FeedbackService {
    * 轻微震动：50ms
    */
   slightVibrate() {
-    navigator.vibrate?.(25);
+    this.navigator.vibrate?.(25);
   }
 
 }

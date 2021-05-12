@@ -3,7 +3,7 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeExtraZhHans from '@angular/common/locales/extra/zh-Hans';
 import localeZhHans from '@angular/common/locales/zh-Hans';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +17,7 @@ import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { GlobalErrorHandler } from './handlers/global-error.handler';
 import { CacheInterceptor } from './interceptors/cache.interceptor';
 import { ActiveClassModule } from './modules/active-class.module';
 import { ScrollbarModule } from './modules/scrollbar.module';
@@ -65,6 +66,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     { provide: LOCALE_ID, useValue: 'zh-Hans' },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     CookieService,
   ],
   bootstrap: [AppComponent]

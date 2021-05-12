@@ -9,7 +9,7 @@ import { Overlay } from 'src/app/services/overlay.service';
 export class SettingsPage {
 
   constructor(
-    private overlay: Overlay,
+    private overlay: Overlay
   ) { }
 
   showOverlayGlobalPanelCenter() {
@@ -18,10 +18,6 @@ export class SettingsPage {
       title: 'Title标题',
       description: 'description 描述 description description description description description'
     });
-  }
-
-  rangeChange(e) {
-    document.documentElement.style.fontSize = e.detail.value + '%'
   }
 
 }

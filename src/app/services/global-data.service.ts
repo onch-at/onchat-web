@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ChatSessionType, LocalStorageKey } from '../common/enum';
+import { NAVIGATOR } from '../common/token';
 import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
 import { EntityUtil } from '../utils/entity.util';
 import { LocalStorage } from './local-storage.service';
@@ -11,7 +12,8 @@ import { LocalStorage } from './local-storage.service';
 export class GlobalData {
 
   constructor(
-    private localStorage: LocalStorage
+    private localStorage: LocalStorage,
+    @Inject(NAVIGATOR) private navigator: Navigator
   ) { }
 
   set receiveChatRequests(requests: ChatRequest[]) {
@@ -93,7 +95,7 @@ export class GlobalData {
       count + (o.unread || 0)
     ), 0);
 
-    (navigator as any).setAppBadge?.(count);
+    (this.navigator as any).setAppBadge?.(count);
 
     return count;
   }

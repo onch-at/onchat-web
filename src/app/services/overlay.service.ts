@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { ActionSheetController, AlertController, LoadingController, ModalController, PopoverController, ToastController } from '@ionic/angular';
 import { ActionSheetButton, AlertOptions, ModalOptions, NotificationOptions, PopoverOptions } from '../common/interface';
+import { NAVIGATOR } from '../common/token';
 import { NotificationController } from '../providers/notification.controller';
 import { GlobalData } from './global-data.service';
 
@@ -21,7 +23,9 @@ export class Overlay {
     private loadingCtrl: LoadingController,
     private popoverCtrl: PopoverController,
     private actionSheetCtrl: ActionSheetController,
-    private notificationCtrl: NotificationController
+    private notificationCtrl: NotificationController,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(NAVIGATOR) private navigator: Navigator
   ) { }
 
   private setDeactivate(deactivate: boolean) {
@@ -33,7 +37,7 @@ export class Overlay {
    * @param opts
    */
   presentNotification(opts: NotificationOptions) {
-    if (document.hidden) {
+    if (this.document.hidden) {
       this.presentNativeNotification(opts);
     } else {
       this.notificationCtrl.create(opts).present();
@@ -47,7 +51,7 @@ export class Overlay {
   presentNativeNotification(opts: NotificationOptions) {
     if ('Notification' in window && Notification.permission === 'granted') {
       const { title, description, icon, url } = opts;
-      navigator.serviceWorker.ready.then((registration: ServiceWorkerRegistration) => registration.showNotification(title, {
+      this.navigator.serviceWorker.ready.then((registration: ServiceWorkerRegistration) => registration.showNotification(title, {
         body: description,
         badge: '/assets/icon/favicon.ico',
         icon,

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { base64ToFile } from 'ngx-image-cropper';
 import { Observable } from 'rxjs';
 import { SysUtil } from '../utils/sys.util';
@@ -8,7 +9,9 @@ import { SysUtil } from '../utils/sys.util';
 })
 export class ImageService {
 
-  constructor() { }
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+  ) { }
 
   /**
    * 压缩图片
@@ -73,7 +76,7 @@ export class ImageService {
    * @param format 格式
    */
   draw(img: HTMLImageElement, quality: number, format: string) {
-    const canvas = document.createElement('canvas');
+    const canvas = this.document.createElement('canvas');
     canvas.width = img.width;
     canvas.height = img.height;
 

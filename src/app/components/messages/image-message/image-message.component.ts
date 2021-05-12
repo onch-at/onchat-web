@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, Input, Renderer2, ViewChild } from '@angular/core';
+import { WINDOW } from 'src/app/common/token';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 
@@ -14,7 +15,8 @@ export class ImageMessageComponent implements AfterViewInit {
   private timer: number;
 
   constructor(
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ngAfterViewInit() {
@@ -24,15 +26,15 @@ export class ImageMessageComponent implements AfterViewInit {
   @HostListener('window:resize')
   onWindowResize() {
     this.timer && clearTimeout(this.timer);
-    this.timer = window.setTimeout(() => this.resize(), 100);
+    this.timer = this.window.setTimeout(() => this.resize(), 100);
   }
 
   private resize() {
     let divisor = 1;
     let { width, height } = this.msg.data;
     const { nativeElement } = this.img;
-    const maxWidth = window.innerWidth * 0.4;
-    const maxHeight = window.innerHeight * 0.5;
+    const maxWidth = this.window.innerWidth * 0.4;
+    const maxHeight = this.window.innerHeight * 0.5;
 
     if (width > maxWidth) {
       divisor = width / maxWidth;

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate } from '@angular/service-worker';
 import { NavController } from '@ionic/angular';
 import { from } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
+import { LOCATION, WINDOW } from './common/token';
 import { RevokeMessageTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { MessageDescPipe } from './pipes/message-desc.pipe';
@@ -26,18 +28,21 @@ export class AppComponent implements OnInit {
   private messageDescPipe: MessageDescPipe = new MessageDescPipe();
 
   constructor(
+    public globalData: GlobalData,
     private router: Router,
     private swPush: SwPush,
     private swUpdate: SwUpdate,
+    private overlay: Overlay,
+    private navCtrl: NavController,
+    private apiService: ApiService,
     private cacheService: CacheService,
     private socketService: SocketService,
     private onChatService: OnChatService,
-    private apiService: ApiService,
-    private overlay: Overlay,
     private feedbackService: FeedbackService,
     private localStorage: LocalStorage,
-    private navCtrl: NavController,
-    public globalData: GlobalData,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(LOCATION) private location: Location,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ngOnInit() {
@@ -191,7 +196,7 @@ export class AppComponent implements OnInit {
         const content = this.messageDescPipe.transform(data);
 
         // 并且不在同一个房间，就弹出通知
-        if (data.chatroomId !== chatroomId || document.hidden) {
+        if (data.chatroomId !== chatroomId || this.document.hidden) {
           this.overlay.presentNotification({
             icon: chatSession ? chatSession.avatarThumbnail : data.avatarThumbnail,
             title: chatroomName,
@@ -404,7 +409,7 @@ export class AppComponent implements OnInit {
       header: '应用程序已损坏',
       message: '即将重启以更新到新版本！',
       backdropDismiss: false,
-    }).then(() => setTimeout(() => location.reload(), 2000)));
+    }).then(() => setTimeout(() => this.location.reload(), 2000)));
 
     this.swUpdate.available.pipe(
       mergeMap(() => from(this.swUpdate.activateUpdate()))
@@ -412,7 +417,7 @@ export class AppComponent implements OnInit {
       header: '新版本已就绪',
       message: '是否立即重启以更新到新版本？',
       backdropDismiss: false,
-      confirmHandler: () => location.reload()
+      confirmHandler: () => this.location.reload()
     }));
   }
 
@@ -428,8 +433,8 @@ export class AppComponent implements OnInit {
 
       this.swPush.notificationClicks.subscribe(event => {
         const { url } = event.notification.data;
-        this.router.navigateByUrl(url)
-        window.focus();
+        this.router.navigateByUrl(url);
+        this.window.focus();
       });
     }
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
@@ -6,6 +6,7 @@ import { EMAIL_MAX_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MA
 import { ResultCode } from 'src/app/common/enum';
 import { captchaFeedback, emailFeedback, passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
+import { WINDOW } from 'src/app/common/token';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -91,7 +92,8 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
     private apiService: ApiService,
     private overlay: Overlay,
     private socketService: SocketService,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ngOnInit() {
@@ -140,9 +142,9 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
       this.overlay.presentToast(result.code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
-    this.countdownTimer = window.setInterval(() => {
+    this.countdownTimer = this.window.setInterval(() => {
       if (--this.countdown <= 0) {
-        window.clearInterval(this.countdownTimer);
+        this.window.clearInterval(this.countdownTimer);
         this.countdownTimer = null;
         this.countdown = 60;
       }

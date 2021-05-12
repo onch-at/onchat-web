@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EMAIL_MAX_LENGTH } from 'src/app/common/constant';
 import { ResultCode } from 'src/app/common/enum';
 import { captchaFeedback, emailFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
+import { WINDOW } from 'src/app/common/token';
 import { Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -53,7 +54,8 @@ export class EmailBinderComponent extends ModalComponent {
     private asyncValidator: AsyncValidator,
     private apiService: ApiService,
     protected overlay: Overlay,
-    protected router: Router
+    protected router: Router,
+    @Inject(WINDOW) private window: Window,
   ) {
     super();
   }
@@ -66,9 +68,9 @@ export class EmailBinderComponent extends ModalComponent {
       this.overlay.presentToast(result.code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
-    this.countdownTimer = window.setInterval(() => {
+    this.countdownTimer = this.window.setInterval(() => {
       if (--this.countdown <= 0) {
-        window.clearInterval(this.countdownTimer);
+        this.window.clearInterval(this.countdownTimer);
         this.countdownTimer = null;
         this.countdown = 60;
       }
