@@ -77,8 +77,8 @@ export class ApiService {
    * 发送邮箱验证码
    * @param email 邮箱
    */
-  sendEmailCaptcha(email: string): Observable<Result<boolean>> {
-    return this.http.post<Result<boolean>>(env.emailCaptchaUrl, { email });
+  sendEmailCaptcha(email: string): Observable<Result> {
+    return this.http.post<Result>(env.emailCaptchaUrl, { email });
   }
 
   /**

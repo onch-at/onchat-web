@@ -6,8 +6,6 @@
 
 /** Ionic CSS Variables **/
 :root {
-  color-scheme: light dark;
-
   @each $color-name, $color-value in $colors-light {
     --color-#{$color-name}: #{$color-value};
     --color-#{$color-name}-rgb: #{color-to-rgb-list($color-value)};

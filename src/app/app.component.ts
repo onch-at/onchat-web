@@ -1,16 +1,14 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { SwPush, SwUpdate } from '@angular/service-worker';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { from } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
-import { LOCATION, WINDOW } from './common/token';
 import { RevokeMessageTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { MessageDescPipe } from './pipes/message-desc.pipe';
 import { ApiService } from './services/api.service';
+import { AppService } from './services/app.service';
 import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
 import { GlobalData } from './services/global-data.service';
@@ -30,19 +28,16 @@ export class AppComponent implements OnInit {
   constructor(
     public globalData: GlobalData,
     private router: Router,
-    private swPush: SwPush,
-    private swUpdate: SwUpdate,
     private overlay: Overlay,
     private navCtrl: NavController,
     private apiService: ApiService,
+    private appService: AppService,
     private cacheService: CacheService,
+    private localStorage: LocalStorage,
     private socketService: SocketService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
-    private localStorage: LocalStorage,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(LOCATION) private location: Location,
-    @Inject(WINDOW) private window: Window,
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit() {
@@ -352,91 +347,10 @@ export class AppComponent implements OnInit {
       this.overlay.presentToast('操作成功，已拒绝该申请！');
     });
 
-    this.detectRouteNavigation();
-
-    this.detectSocketConnect();
-
-    this.detectAppUpdate();
-
-    this.initNativeNotification();
-  }
-
-  /**
-   * 检测路由导航事件
-   */
-  detectRouteNavigation() {
-    this.router.events.subscribe((event: Event) => {
-      switch (true) {
-        case event instanceof NavigationStart:
-          this.globalData.navigating = true;
-          break;
-
-        case event instanceof NavigationCancel:
-          this.feedbackService.slightVibrate(); // 如果路由返回被取消，就震动一下，表示阻止
-        case event instanceof NavigationEnd:
-        case event instanceof NavigationError:
-          this.globalData.navigating = false;
-          break;
-      }
-    });
-  }
-
-  /**
-   * 检测Socket.IO连接状态
-   */
-  detectSocketConnect() {
-    // 连接断开时
-    this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
-      this.overlay.presentToast('OnChat: 与服务器断开连接！');
-    });
-
-    // 连接失败时
-    this.socketService.on(SocketEvent.ReconnectError).subscribe(() => {
-      this.overlay.presentToast('OnChat: 服务器连接失败！');
-    });
-
-    // 重连成功时
-    this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
-      this.overlay.presentToast('OnChat: 与服务器重连成功！');
-    });
-  }
-
-  /**
-   * 检测更新
-   */
-  detectAppUpdate() {
-    this.swUpdate.unrecoverable.subscribe(() => this.overlay.presentAlert({
-      header: '应用程序已损坏',
-      message: '即将重启以更新到新版本！',
-      backdropDismiss: false,
-    }).then(() => setTimeout(() => this.location.reload(), 2000)));
-
-    this.swUpdate.available.pipe(
-      mergeMap(() => from(this.swUpdate.activateUpdate()))
-    ).subscribe(() => this.overlay.presentAlert({
-      header: '新版本已就绪',
-      message: '是否立即重启以更新到新版本？',
-      backdropDismiss: false,
-      confirmHandler: () => this.location.reload()
-    }));
-  }
-
-  /**
-   * 初始化原生通知
-   */
-  initNativeNotification() {
-    if ('Notification' in window) {
-      const granted = 'granted';
-      Notification.permission !== granted && Notification.requestPermission().then((permission: string) => {
-        permission === granted && this.overlay.presentToast('OnChat: 通知权限授权成功！');
-      });
-
-      this.swPush.notificationClicks.subscribe(event => {
-        const { url } = event.notification.data;
-        this.router.navigateByUrl(url);
-        this.window.focus();
-      });
-    }
+    this.appService.detectUpdate();
+    this.appService.detectNavigation();
+    this.appService.detectSocketConnectStatus();
+    this.appService.initNotification();
   }
 
 }

@@ -64,7 +64,7 @@ export class EmailBinderComponent extends ModalComponent {
     const ctrl = this.form.get('email');
     if (ctrl.errors || this.countdownTimer) { return; }
 
-    this.apiService.sendEmailCaptcha(ctrl.value).subscribe((result: Result<boolean>) => {
+    this.apiService.sendEmailCaptcha(ctrl.value).subscribe((result: Result) => {
       this.overlay.presentToast(result.code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
