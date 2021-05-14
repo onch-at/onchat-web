@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { Socket } from 'ngx-socket-io';
 import { Observable, Subject } from 'rxjs';
 import { take, tap, timeout } from 'rxjs/operators';
@@ -16,7 +15,6 @@ export class SocketService {
 
   constructor(
     private socket: Socket,
-    private cookieService: CookieService,
     private overlay: Overlay
   ) { }
 
@@ -33,7 +31,7 @@ export class SocketService {
       take(1)
     ).subscribe(() => this.init$.next());
 
-    this.emit(SocketEvent.Init, { sessId: this.cookieService.get('PHPSESSID') });
+    this.emit(SocketEvent.Init);
   }
 
   /**

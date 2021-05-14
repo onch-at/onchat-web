@@ -10,7 +10,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { CookieService } from 'ngx-cookie-service';
 import { QuillModule } from 'ngx-quill';
 import { SocketIoModule } from 'ngx-socket-io';
 import { environment as env } from '../environments/environment';
@@ -66,8 +65,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     { provide: LOCALE_ID, useValue: 'zh-Hans' },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    CookieService,
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ],
   bootstrap: [AppComponent]
 })

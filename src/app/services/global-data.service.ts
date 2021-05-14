@@ -10,12 +10,6 @@ import { LocalStorage } from './local-storage.service';
   providedIn: 'root'
 })
 export class GlobalData {
-
-  constructor(
-    private localStorage: LocalStorage,
-    @Inject(NAVIGATOR) private navigator: Navigator
-  ) { }
-
   set receiveChatRequests(requests: ChatRequest[]) {
     this._receiveChatRequests = requests;
     this.sortReceiveChatRequests();
@@ -86,6 +80,11 @@ export class GlobalData {
   private _sendChatRequests: ChatRequest[] = [];
   /** 缓存聊天列表 */
   private _chatSessions: ChatSession[] = [];
+
+  constructor(
+    private localStorage: LocalStorage,
+    @Inject(NAVIGATOR) private navigator: Navigator
+  ) { }
 
   /** 计算未读消息总数 */
   unreadMsgCount = () => {

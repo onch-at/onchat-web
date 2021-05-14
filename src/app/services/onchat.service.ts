@@ -17,8 +17,8 @@ export class OnChatService {
 
   constructor(
     private router: Router,
-    private globalData: GlobalData,
     private overlay: Overlay,
+    private globalData: GlobalData,
     private apiService: ApiService,
     private socketService: SocketService,
   ) { }
