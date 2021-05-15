@@ -38,7 +38,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/global.scss",
+              "src/styles/index.scss",
               "src/styles/base.scss",
               "src/styles/font.scss",
               "src/styles/atom.scss",

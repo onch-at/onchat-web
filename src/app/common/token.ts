@@ -12,3 +12,7 @@ export const LOCATION = new InjectionToken<Location>('LocationToken', {
 export const NAVIGATOR = new InjectionToken<Navigator>('NavigatorToken', {
   factory: () => inject(WINDOW).navigator,
 });
+
+export const STORAGE = new InjectionToken<Storage>('StorageToken', {
+  factory: () => inject(WINDOW).localStorage,
+});

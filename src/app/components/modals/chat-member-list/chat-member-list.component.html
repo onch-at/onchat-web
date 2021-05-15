@@ -1,0 +1,33 @@
+<ion-content [fullscreen]="true" appScrollbar>
+  <ion-header slot="fixed">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (tap)="dismiss()">
+          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <ion-title>聊天室成员（{{ chatMembers.length }}）</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-searchbar animated placeholder="搜索" (ngModelChange)="search($event)" [(ngModel)]="keyword"></ion-searchbar>
+
+  <app-empty *ngIf="!list.length"></app-empty>
+
+  <ion-list class="chat-session-list">
+
+    <ion-virtual-scroll appVirtualScrollPatch [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
+                        [trackBy]="trackByFn">
+      <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false" (tap)="onTap(item)">
+        <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
+
+        <ion-label class="dp-flex align-center">
+          <ion-badge *ngIf="item.role === chatMemberRole.Host" mode="ios" class="host-badge">领袖</ion-badge>
+          <ion-badge *ngIf="item.role === chatMemberRole.Manage" mode="ios" class="manage-badge">掌权</ion-badge>
+          {{ item.nickname }}
+        </ion-label>
+      </ion-item>
+    </ion-virtual-scroll>
+  </ion-list>
+</ion-content>

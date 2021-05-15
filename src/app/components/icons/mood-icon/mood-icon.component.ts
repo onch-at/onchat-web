@@ -9,7 +9,7 @@ import { Mood } from 'src/app/common/enum';
 export class MoodIconComponent {
   @Input() value: Mood;
 
-  src = () => ('/assets/svg/mood/' + {
+  src = () => ('/assets/images/svg/mood/' + {
     [Mood.Joy]: 'joy',
     [Mood.Angry]: 'angry',
     [Mood.Sorrow]: 'sorrow',

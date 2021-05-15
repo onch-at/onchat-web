@@ -37,8 +37,11 @@
     </div>
   </div>
 
+  <ion-item (tap)="presentChatMemberList()" detail lines="none" button mode="md">
+    <ion-label>聊天室成员</ion-label>
+  </ion-item>
+
   <div class="home-item">
-    <div class="home-info-label">聊天室成员</div>
     <div class="avatar-list-track">
       <ng-container *ngFor="let item of chatMembers | slice: 0:(isMember ? 6 : 7)">
         <img class="avatar-list-img cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">

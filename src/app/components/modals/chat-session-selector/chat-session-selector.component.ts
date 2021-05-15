@@ -48,6 +48,7 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
 
   search(keyword: string) {
     if (keyword.length) {
+      keyword = keyword.toLowerCase();
       this.list = this.chatSessions.filter(o => (
         o.title.toLowerCase().includes(keyword) || (o.data.userId.toString()).includes(keyword)
       ));

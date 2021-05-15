@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enum';
+import { STORAGE } from '../common/token';
 
 /** 本地存储服务 */
 @Injectable({
@@ -7,13 +8,17 @@ import { LocalStorageKey } from '../common/enum';
 })
 export class LocalStorage {
 
+  constructor(
+    @Inject(STORAGE) private storage: Storage
+  ) { }
+
   /**
    * 保存数据
    * @param key 键名
    * @param value 数据
    */
   set(key: LocalStorageKey, value: any): void {
-    localStorage.setItem(key, JSON.stringify(value));
+    this.storage.setItem(key, JSON.stringify(value));
   }
 
   /**
@@ -22,7 +27,7 @@ export class LocalStorage {
    * @param defaults 默认值
    */
   get<T = any>(key: LocalStorageKey, defaults: T): T {
-    const data = localStorage.getItem(key);
+    const data = this.storage.getItem(key);
     return data ? JSON.parse(data) : defaults;
   }
 
@@ -31,7 +36,7 @@ export class LocalStorage {
    * @param key 键名
    */
   remove(key: LocalStorageKey): void {
-    localStorage.removeItem(key);
+    this.storage.removeItem(key);
   }
 
   setItemToMap<T = any>(storageKey: LocalStorageKey, key: string | number, value: T): void {

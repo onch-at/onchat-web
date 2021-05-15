@@ -8,6 +8,7 @@ import { CHATROOM_NAME_MAX_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT, NICKNAME_MAX_LE
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
+import { ChatMemberListComponent } from 'src/app/components/modals/chat-member-list/chat-member-list.component';
 import { ChatSessionSelectorComponent } from 'src/app/components/modals/chat-session-selector/chat-session-selector.component';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -103,6 +104,17 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subject.next();
     this.subject.complete();
+  }
+
+  presentChatMemberList() {
+    this.overlay.presentModal({
+      component: ChatMemberListComponent,
+      componentProps: {
+        chatMembers: this.chatMembers
+      },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl
+    });
   }
 
   changeChatroomName() {

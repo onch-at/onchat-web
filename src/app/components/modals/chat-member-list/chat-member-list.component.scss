@@ -1,0 +1,84 @@
+ion-header {
+  background: rgba(var(--color-white-rgb), 0.75);
+  backdrop-filter: blur(15px) saturate(175%);
+  border-radius: 0 0 1.5rem 1.5rem;
+
+  ion-buttons ion-back-button,
+  ion-buttons ion-button,
+  ion-title {
+    --color: var(--color-black);
+  }
+
+  ion-spinner {
+    --color: var(--color-black);
+    margin-right: 0.25rem;
+  }
+}
+
+ion-content {
+  --padding-top: 3rem;
+}
+
+ion-searchbar {
+  position: sticky;
+  top: 0;
+  padding: 0.5rem 1rem;
+  z-index: 1;
+
+  &.sc-ion-searchbar-ios-h {
+    ::ng-deep {
+      .searchbar-input-container {
+        height: 2.5rem;
+        line-height: 2.5rem;
+      }
+
+      .searchbar-input {
+        --background: rgba(var(--color-gray-rgb), 0.5);
+        backdrop-filter: blur(15px) saturate(175%);
+      }
+    }
+  }
+}
+
+.chat-session-list {
+  width: 100vw;
+
+  ion-item {
+    --padding-start: 1.125rem;
+    --padding-end: 1.125rem;
+    --inner-padding-end: 0;
+    height: 3.55rem;
+  }
+
+  ion-img,
+  img {
+    height: 2.75rem;
+    width: 2.75rem;
+    margin: 0 0.75rem 0 0;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--color-secondary);
+    overflow: hidden;
+  }
+
+  ion-label {
+    margin: 1.125rem 0;
+    font-size: 1rem;
+  }
+
+  ion-badge {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.75rem;
+    margin-right: 0.25rem;
+  }
+
+  .host-badge {
+    --background: var(--color-primary);
+    --color: #424242;
+  }
+
+  .manage-badge {
+    --background: var(--color-info);
+    --color: #fff;
+  }
+}

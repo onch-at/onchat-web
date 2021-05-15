@@ -2,7 +2,7 @@
   "name": "onchat",
   "version": "0.0.1",
   "author": "HyperLife1119",
-  "description": "A simple instant messaging website frontend built with Angular and Ionic",
+  "description": "A simple, beautiful, mobile-first instant messaging web application build with Angular and Ionic.",
   "homepage": "https://chat.hypergo.net",
   "scripts": {
     "ng": "ng",
