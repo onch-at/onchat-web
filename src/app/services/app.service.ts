@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { SwPush, SwUpdate } from '@angular/service-worker';
+import { SwPush, SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
 import { SocketEvent } from '../common/enum';
 import { LOCATION, WINDOW } from '../common/token';
 import { FeedbackService } from './feedback.service';
@@ -75,12 +75,16 @@ export class AppService {
       backdropDismiss: false,
     }).then(() => setTimeout(() => this.location.reload(), 2000)));
 
-    this.swUpdate.available.subscribe(() => this.overlay.presentAlert({
-      header: '新版本已就绪',
-      message: '是否立即重启以更新到新版本？',
-      backdropDismiss: false,
-      confirmHandler: () => this.swUpdate.activateUpdate().then(() => this.location.reload())
-    }));
+    this.swUpdate.available.subscribe((event: UpdateAvailableEvent) => {
+      console.log('current version is', event.current);
+      console.log('available version is', event.available);
+      this.overlay.presentAlert({
+        header: '新版本已就绪',
+        message: '是否立即重启以更新到新版本？',
+        backdropDismiss: false,
+        confirmHandler: () => this.swUpdate.activateUpdate().then(() => this.location.reload())
+      })
+    });
   }
 
   /**

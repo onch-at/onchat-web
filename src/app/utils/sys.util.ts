@@ -30,7 +30,7 @@ export class SysUtil {
     const input = document.createElement('input');
     input.type = 'file';
     input.multiple = multiple;
-    input.setAttribute('style', 'visibility:hidden');
+    input.style.visibility = 'hidden';
     accept && input.setAttribute('accept', accept);
     document.body.appendChild(input);
     input.click();
@@ -61,11 +61,10 @@ export class SysUtil {
    * 通过URL下载文件
    * @param url
    */
-  static downLoadFile(link: string) {
-    const url = new URL(link);
+  static downLoadFile(url: string) {
     const anchor = document.createElement('a');
-    anchor.href = link;
-    anchor.download = url.pathname.split('/').pop();
+    anchor.href = url;
+    anchor.download = new URL(url).pathname.split('/').pop();
     anchor.click();
   }
 

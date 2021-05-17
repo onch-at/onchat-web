@@ -31,7 +31,7 @@ ion-content {
     top: -13rem;
     height: 16rem;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
     border-radius: 0 0 1.5rem 1.5rem;
     transition: box-shadow ease-in-out 0.125s;
     overflow: hidden;
@@ -58,7 +58,7 @@ ion-content {
 }
 
 .show-mask .home-header-mask {
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px) saturate(175%);
 }
 
 .home-header-info {
@@ -95,7 +95,7 @@ ion-content {
 
 .home-item {
     background: var(--color-light);
-    padding: 0.5rem 0.75rem;
+    padding: 0 0.75rem 0.75rem;
     margin-bottom: 0.75rem;
     color: var(--color-dark);
 }
@@ -105,7 +105,7 @@ ion-item-group {
 }
 
 .btn-danger {
-    margin: 0 0.75rem;
+    margin: 0 0.75rem 4.5rem;
     width: calc(100% - 1.5rem);
     background-color: var(--color-light);
 }
@@ -120,22 +120,24 @@ ion-item-group {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
-    margin-bottom: 0.25rem;
+    overflow-x: auto;
+
+    .avatar-list-img {
+        margin-right: 0.5rem;
+        object-fit: cover;
+    }
 
     .avatar-list-img,
     .add-btn {
         height: 2.75rem;
         width: 2.75rem;
         border-radius: 50%;
-        object-fit: cover;
+        flex-shrink: 0;
     }
 
     .add-btn {
         color: var(--color-muted);
         font-size: 1.75rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         background: transparent;
         border: 0.1rem dashed var(--color-muted);
     }

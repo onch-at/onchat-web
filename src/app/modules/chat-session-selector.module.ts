@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { ChatSessionSelectorComponent } from '../components/modals/chat-session-selector/chat-session-selector.component';
 import { EmptyModule } from './empty.module';
 import { ScrollbarModule } from './scrollbar.module';
+import { VirtualScrollPatchModule } from './virtual-scroll-patch.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ScrollbarModule } from './scrollbar.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    ScrollbarModule
+    ScrollbarModule,
+    VirtualScrollPatchModule
   ],
   exports: [
     ChatSessionSelectorComponent

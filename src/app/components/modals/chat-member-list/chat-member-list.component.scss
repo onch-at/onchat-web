@@ -40,7 +40,7 @@ ion-searchbar {
   }
 }
 
-.chat-session-list {
+.chat-member-list {
   width: 100vw;
 
   ion-item {
@@ -50,8 +50,7 @@ ion-searchbar {
     height: 3.55rem;
   }
 
-  ion-img,
-  img {
+  ion-img {
     height: 2.75rem;
     width: 2.75rem;
     margin: 0 0.75rem 0 0;
@@ -68,7 +67,7 @@ ion-searchbar {
 
   ion-badge {
     padding: 0.2rem 0.3rem;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     margin-right: 0.25rem;
   }
 

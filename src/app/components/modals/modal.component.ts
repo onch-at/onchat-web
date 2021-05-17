@@ -32,7 +32,7 @@ export abstract class ModalComponent implements OnInit, OnDestroy {
     this.router.navigate([]);
   }
 
-  dismiss(data?: any, role?: string, id?: string): any {
+  dismiss(data?: any, role?: string, id?: string): void {
     this.overlay.dismissModal(data, role, id);
   }
 }

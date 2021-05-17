@@ -15,16 +15,16 @@
 
   <app-empty *ngIf="!list.length"></app-empty>
 
-  <ion-list class="chat-session-list">
-
+  <ion-list class="chat-member-list">
     <ion-virtual-scroll appVirtualScrollPatch [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
                         [trackBy]="trackByFn">
-      <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false" (tap)="onTap(item)">
+      <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false" button class="ion-activatable"
+                (click)="onTap(item)">
         <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label class="dp-flex align-center">
           <ion-badge *ngIf="item.role === chatMemberRole.Host" mode="ios" class="host-badge">领袖</ion-badge>
-          <ion-badge *ngIf="item.role === chatMemberRole.Manage" mode="ios" class="manage-badge">掌权</ion-badge>
+          <ion-badge *ngIf="item.role === chatMemberRole.Manage" mode="ios" class="manage-badge">助手</ion-badge>
           {{ item.nickname }}
         </ion-label>
       </ion-item>

@@ -1,3 +1,4 @@
+<app-empty *ngIf="!globalData.sendChatRequests.length"></app-empty>
 <ion-list class="chat-request-list">
   <ion-item-sliding mode="md" *ngFor="let item of globalData.sendChatRequests; let i = index;">
     <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/request', item.id]">

@@ -10,6 +10,7 @@ import { EmptyModule } from 'src/app/modules/empty.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
 import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
+import { VirtualScrollPatchModule } from 'src/app/modules/virtual-scroll-patch.module';
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 
@@ -25,7 +26,8 @@ import { HomePage } from './home.page';
     ChatSessionSelectorModule,
     EmptyModule,
     RippleModule,
-    SharedModule
+    SharedModule,
+    VirtualScrollPatchModule
   ],
   declarations: [
     HomePage,

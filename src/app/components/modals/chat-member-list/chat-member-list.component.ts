@@ -37,7 +37,9 @@ export class ChatMemberListComponent extends ModalComponent implements OnInit {
   }
 
   onTap(member: ChatMember) {
-    this.router.navigate(['/user', member.userId]);
+    this.router.navigate([]).then(() => {
+      this.router.navigate(['/user', member.userId]);
+    });
   }
 
   search(keyword: string) {
