@@ -1,5 +1,5 @@
 import { Component, Input, QueryList, ViewChildren } from '@angular/core';
-import { ChatroomType, MessageType } from 'src/app/common/enum';
+import { ChatMemberRole, ChatroomType, MessageType } from 'src/app/common/enum';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -20,6 +20,7 @@ export class MessageListComponent {
   msgType: typeof MessageType = MessageType;
   /** 聊天室类型枚举 */
   chatroomTypes: typeof ChatroomType = ChatroomType;
+  chatMemberRole: typeof ChatMemberRole = ChatMemberRole;
   /** 消息记录 */
   @Input() data: Message[] = [];
   /** 消息记录是否到了末尾 */

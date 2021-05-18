@@ -107,7 +107,9 @@ export interface Message<T extends AnyMessage = AnyMessage> extends IEntity {
   chatroomId: number;
   /** 消息发送者ID */
   userId?: number;
-  /** 消息发送者的聊天室昵称 */
+  /** 消息发送者的聊天室内角色 */
+  role?: ChatMemberRole;
+  /** 消息发送者的聊天室内昵称 */
   nickname?: string;
   /** 消息发送者的头像缩略图 */
   avatarThumbnail?: string;

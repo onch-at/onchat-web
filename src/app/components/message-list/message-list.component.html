@@ -1,5 +1,5 @@
 <ul class="msg-list">
-  <li class="tips-item" *ngIf="ended">
+  <li *ngIf="ended" class="tips-item">
     <span>没有更多消息</span>
   </li>
 
@@ -17,7 +17,10 @@
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
+          <div class="username dp-flex align-center"
+               *ngIf="item.userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
+            <ion-badge *ngIf="item.role === chatMemberRole.Host" mode="ios" class="host-badge">领袖</ion-badge>
+            <ion-badge *ngIf="item.role === chatMemberRole.Manage" mode="ios" class="manage-badge">助手</ion-badge>
             {{ item.nickname }}
           </div>
 
@@ -34,7 +37,8 @@
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div class="ql-container ql-snow">
-          <div class="username" *ngIf="item.userId !== globalData.user.id && chatroomType === chatroomTypes.Group">
+          <div class="username dp-flex align-center"
+               *ngIf="item.userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
@@ -51,7 +55,8 @@
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId !== globalData.user.id && chatroomType === chatroomTypes.Group">
+          <div class="username dp-flex align-center"
+               *ngIf="item.userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
@@ -70,7 +75,8 @@
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId !== globalData.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username dp-flex align-center"
+               *ngIf="item.userId !== globalData.user?.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 
@@ -86,7 +92,8 @@
         <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
 
         <div>
-          <div class="username" *ngIf="item.userId !== globalData.user.id && chatroomType == chatroomTypes.Group">
+          <div class="username dp-flex align-center"
+               *ngIf="item.userId !== globalData.user?.id && chatroomType == chatroomTypes.Group">
             {{ item.nickname }}
           </div>
 

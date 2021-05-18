@@ -45,7 +45,7 @@ export class NotificationController {
    * 如果通知已经存在，则更新内容并重新计时
    */
   present(): NotificationController {
-    this.dismissTimeout !== null && this.clearDismissTimeout();
+    this.dismissTimeout && this.clearDismissTimeout();
     this.subscription?.unsubscribe();
 
     this.componentRef ??= this.overlayRef.attach(new ComponentPortal(NotificationComponent));

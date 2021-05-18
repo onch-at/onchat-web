@@ -40,6 +40,22 @@
 
   .username {
     font-size: 0.8rem;
+
+    > ion-badge {
+      padding: 0.175rem 0.275rem;
+      font-size: 0.65rem;
+      margin-right: 0.25rem;
+    }
+
+    > .host-badge {
+      --background: var(--color-primary);
+      --color: #424242;
+    }
+
+    > .manage-badge {
+      --background: var(--color-info);
+      --color: #fff;
+    }
   }
 }
 

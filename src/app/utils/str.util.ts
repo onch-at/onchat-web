@@ -1,10 +1,19 @@
 export class StrUtil {
   /**
-   * 剔除字符串中所有空格
+   * 剔除字符串中所有空格及换行
    * @param str
    */
   static trimAll(str: string): string {
-    return str.replace(/\s+/g, '');
+    return str.replace(/[\s\n]+/g, '');
+  }
+
+  // TODO: 等typescript版本升上来就可以移除掉该方法了
+  /**
+   * 剔除字符串末尾的空格及换行
+   * @param str
+   */
+  static trimEnd(str: string): string {
+    return str.replace(/[\s\n]+$/, '');
   }
 
   /**

@@ -1,4 +1,4 @@
-<img #img [src]="msg.data.url" />
+<img class="image" #img [src]="msg.data.url" />
 <ng-container *ngIf="msg.loading">
   <div class="loading-mask"></div>
   <div class="loading-progress" [style.transform]="'translateY(-' + msg.percent + '%)'"></div>
