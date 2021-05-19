@@ -10,7 +10,7 @@
 
     <ng-container [ngSwitch]="item.type">
       <li *ngSwitchCase="msgType.Tips" class="tips-item">
-        <app-tips-message [tips]="item.data"></app-tips-message>
+        <app-tips-message [msg]="item"></app-tips-message>
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="msgItemClass(item.userId)">

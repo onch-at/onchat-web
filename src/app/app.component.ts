@@ -228,8 +228,9 @@ export class AppComponent implements OnInit {
       if (chatSession) {
         const nickname = chatSession.content.userId === this.globalData.user.id ? '我' : chatSession.content.nickname;
         chatSession.unread && chatSession.unread--;
+        chatSession.content.nickname = nickname;
         chatSession.content.type = MessageType.Tips;
-        chatSession.content.data = new RevokeMessageTipsMessage(chatSession.content.userId, nickname);
+        chatSession.content.data = new RevokeMessageTipsMessage();
         chatSession.content = { ...chatSession.content };
         chatSession.updateTime = Date.now();
         this.globalData.sortChatSessions();

@@ -162,9 +162,9 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
       const msg = this.msgList.find(o => o.id === result.data.msgId);
       if (msg) {
-        const nickname = msg.userId === this.globalData.user.id ? '我' : msg.nickname;
+        msg.nickname = msg.userId === this.globalData.user.id ? '我' : msg.nickname;
         msg.type = MessageType.Tips;
-        msg.data = new RevokeMessageTipsMessage(msg.userId, nickname);
+        msg.data = new RevokeMessageTipsMessage();
       }
     });
 
