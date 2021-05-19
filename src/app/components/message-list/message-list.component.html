@@ -14,51 +14,38 @@
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="msgItemClass(item.userId)">
-        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+        <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div>
-          <div class="username dp-flex align-center"
-               *ngIf="item.userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
-            <ion-badge *ngIf="item.role === chatMemberRole.Host" mode="ios" class="host-badge">领袖</ion-badge>
-            <ion-badge *ngIf="item.role === chatMemberRole.Manage" mode="ios" class="manage-badge">助手</ion-badge>
-            {{ item.nickname }}
-          </div>
+          <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
           <span #bubble appRipple class="msg-bubble" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)" [innerHTML]="item.data['content'] | hyperlink">
           </span>
 
-          <ion-spinner *ngIf="globalData.user?.id === item.userId && item.loading" class="send-spinner" name="dots"
-                       [duration]="1000"></ion-spinner>
+          <ng-container *ngTemplateOutlet="loading; context: item"></ng-container>
         </div>
       </li>
 
       <li *ngSwitchCase="msgType.RichText" class="msg-item" [ngClass]="msgItemClass(item.userId)">
-        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+        <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div class="ql-container ql-snow">
-          <div class="username dp-flex align-center"
-               *ngIf="item.userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
-            {{ item.nickname }}
-          </div>
+          <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
           <span #bubble appRipple class="msg-bubble ql-editor" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
                 [innerHTML]="item.data['html'] | hyperlink"></span>
 
-          <ion-spinner *ngIf="globalData.user?.id === item.userId && item.loading" class="send-spinner" name="dots"
-                       [duration]="1000"></ion-spinner>
+          <ng-container *ngTemplateOutlet="loading; context: item"></ng-container>
         </div>
       </li>
 
       <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item" [ngClass]="msgItemClass(item.userId)">
-        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+        <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div>
-          <div class="username dp-flex align-center"
-               *ngIf="item.userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
-            {{ item.nickname }}
-          </div>
+          <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
           <span #bubble appRipple class="msg-bubble msg-bubble-card" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
@@ -72,13 +59,10 @@
       </li>
 
       <li *ngSwitchCase="msgType.Image" class="msg-item" [ngClass]="msgItemClass(item.userId)">
-        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+        <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div>
-          <div class="username dp-flex align-center"
-               *ngIf="item.userId !== globalData.user?.id && chatroomType == chatroomTypes.Group">
-            {{ item.nickname }}
-          </div>
+          <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
           <span #bubble appRipple class="msg-bubble msg-bubble-img line-height-0" (tap)="previewImage(item)"
                 (press)="presentBubbleToolbarPopover(item, bubble, $event)"
@@ -89,23 +73,38 @@
       </li>
 
       <li *ngSwitchCase="msgType.Voice" class="msg-item" [ngClass]="msgItemClass(item.userId)">
-        <img class="avatar cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="['/user', item.userId]">
+        <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div>
-          <div class="username dp-flex align-center"
-               *ngIf="item.userId !== globalData.user?.id && chatroomType == chatroomTypes.Group">
-            {{ item.nickname }}
-          </div>
+          <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
           <span #bubble appRipple class="msg-bubble msg-bubble-voice" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)" (tap)="playVoice(voiceMsg)">
             <app-voice-message #voiceMsg [msg]="item"></app-voice-message>
           </span>
 
-          <ion-spinner *ngIf="globalData.user?.id === item.userId && item.loading" class="send-spinner" name="dots"
-                       [duration]="1000"></ion-spinner>
+          <ng-container *ngTemplateOutlet="loading; context: item"></ng-container>
         </div>
       </li>
     </ng-container>
   </ng-container>
 </ul>
+
+<!-- 头像部分 -->
+<ng-template #avatar let-userId="userId" let-avatarThumbnail="avatarThumbnail">
+  <img class="avatar cursor-pointer" [src]="avatarThumbnail" [routerLink]="['/user', userId]">
+</ng-template>
+
+<!-- 昵称部分 -->
+<ng-template #nickname let-userId="userId" let-nickname="nickname" let-role="role">
+  <div class="nickname dp-flex align-center" *ngIf="userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
+    <ion-badge *ngIf="role === chatMemberRole.Host" mode="ios" class="host-badge">领袖</ion-badge>
+    <ion-badge *ngIf="role === chatMemberRole.Manage" mode="ios" class="manage-badge">助手</ion-badge>
+    {{ nickname }}
+  </div>
+</ng-template>
+
+<!-- 加载中部分 -->
+<ng-template #loading let-userId="userId" let-loading="loading">
+  <ion-spinner *ngIf="globalData.user?.id === userId && loading" class="send-spinner" name="dots" [duration]="1000"></ion-spinner>
+</ng-template>

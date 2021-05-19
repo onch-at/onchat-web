@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Inject, Input, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Inject, Input } from '@angular/core';
 import { WINDOW } from 'src/app/common/token';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
@@ -10,12 +10,12 @@ import { Message } from 'src/app/models/onchat.model';
 })
 export class ImageMessageComponent implements AfterViewInit {
   @Input() msg: Message<ImageMessage>;
-  @ViewChild('img', { static: true }) img: ElementRef<HTMLImageElement>;
+  width: number;
+  height: number;
 
   private timer: number;
 
   constructor(
-    private renderer: Renderer2,
     @Inject(WINDOW) private window: Window,
   ) { }
 
@@ -32,7 +32,6 @@ export class ImageMessageComponent implements AfterViewInit {
   private resize() {
     let divisor = 1;
     let { width, height } = this.msg.data;
-    const { nativeElement } = this.img;
     const maxWidth = this.window.innerWidth * 0.4;
     const maxHeight = this.window.innerHeight * 0.5;
 
@@ -48,8 +47,8 @@ export class ImageMessageComponent implements AfterViewInit {
       height /= divisor;
     }
 
-    this.renderer.setStyle(nativeElement, 'width', width + 'px');
-    this.renderer.setStyle(nativeElement, 'height', height + 'px');
+    this.width = width;
+    this.height = height;
   }
 
 }

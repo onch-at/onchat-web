@@ -9,13 +9,6 @@ import { Observable, Subject } from 'rxjs';
   styleUrls: ['./notification.component.scss'],
 })
 export class NotificationComponent implements OnInit, OnDestroy {
-
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private animationCtrl: AnimationController,
-    private gestureCtrl: GestureController
-  ) { }
   /** 标题 */
   @Input() title: string;
   /** 描述 */
@@ -41,6 +34,13 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   /** 判断是否为链接 */
   isLink = () => /^(\/|http:\/\/|https:\/\/)/i.test(this.icon);
+
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private animationCtrl: AnimationController,
+    private gestureCtrl: GestureController
+  ) { }
 
   ngOnInit() {
     this.element = this.elementRef.nativeElement.querySelector('.notification');
