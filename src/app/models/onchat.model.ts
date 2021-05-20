@@ -148,12 +148,12 @@ export interface FriendRequest extends IEntity {
   /** 被申请人已读 */
   targetReaded: boolean;
 
-  /** 申请人的用户名 */
-  requesterUsername: string;
+  /** 申请人的昵称 */
+  requesterNickname: string;
   /** 申请人的头像 */
   requesterAvatarThumbnail?: string;
-  /** 被申请人的用户名 */
-  targetUsername: string;
+  /** 被申请人的昵称 */
+  targetNickname: string;
   /** 被申请人的头像 */
   targetAvatarThumbnail?: string;
 }
@@ -168,8 +168,8 @@ export interface AgreeFriendRequest {
   requesterId: number;
   /** 被申请人的ID */
   targetId: number;
-  /** 被申请人的用户名 */
-  targetUsername: string;
+  /** 被申请人的昵称 */
+  targetNickname: string;
   /** 被申请人的头像缩略图 */
   targetAvatarThumbnail: string;
 }

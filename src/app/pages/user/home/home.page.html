@@ -19,7 +19,7 @@
 
     <div class="banner-container">
       <div>
-        <h1 class="username font-bold text-ellipsis">{{ user.username }}</h1>
+        <h1 class="username font-bold text-ellipsis">{{ user.nickname }}</h1>
         <div>USER-ID：{{ user.id }}</div>
       </div>
       <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user/avatar', user.id]">
@@ -38,12 +38,12 @@
 
     <div class="cloud-block">
       <div class="cloud-block-item">
-        <span>昵 称</span>
-        <span>{{ user.nickname || user.username }}</span>
+        <span>账 号</span>
+        <span>{{ user.username }}</span>
       </div>
 
       <div class="cloud-block-item">
-        <span>心情</span>
+        <span>心 情</span>
         <span class="dp-flex align-center">
           <app-mood-icon [value]="(user.mood != null ? user.mood : mood.Joy)"></app-mood-icon>
           <span>{{ (user.mood !== null ? user.mood : mood.Joy) | mood }}</span>

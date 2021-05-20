@@ -10,7 +10,7 @@
 			<ion-img slot="start" [src]="item.requesterAvatarThumbnail"></ion-img>
 
 			<ion-label class="item-content">
-				<h2 class="font-bold">{{ item.requesterUsername }}</h2>
+				<h2 class="font-bold">{{ item.requesterNickname }}</h2>
 				<p>{{ item.requestReason || '申请添加你为好友' }}</p>
 			</ion-label>
 
@@ -33,7 +33,7 @@
 			<ion-img slot="start" [src]="item.targetAvatarThumbnail"></ion-img>
 
 			<ion-label>
-				<h2 class="font-bold">{{ item.targetUsername }}</h2>
+				<h2 class="font-bold">{{ item.targetNickname }}</h2>
 
 				<p [ngSwitch]="item.status">
 					<ng-container *ngSwitchCase="friendRequestStatus.Wait">

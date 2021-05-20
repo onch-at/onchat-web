@@ -82,7 +82,7 @@ export class AppComponent implements OnInit {
         this.overlay.presentNotification({
           icon: data.requesterAvatarThumbnail,
           title: '收到好友申请',
-          description: '用户 ' + data.requesterUsername + ' 申请添加你为好友',
+          description: '用户 ' + data.requesterNickname + ' 申请添加你为好友',
           url: '/friend/handle/' + data.requesterId
         });
         this.feedbackService.playAudio(AudioName.DingDeng);
@@ -117,7 +117,7 @@ export class AppComponent implements OnInit {
         this.overlay.presentNotification({
           icon: data.targetAvatarThumbnail,
           title: '好友申请已同意',
-          description: '已和 ' + data.targetUsername + ' 成为好友',
+          description: '已和 ' + data.targetNickname + ' 成为好友',
           url: '/chat/' + data.chatroomId
         });
         this.feedbackService.playAudio(AudioName.Boo);
@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
         this.overlay.presentNotification({
           icon: data.targetAvatarThumbnail,
           title: '好友申请被拒绝',
-          description: '用户 ' + data.targetUsername + ' 拒绝了你的好友申请',
+          description: '用户 ' + data.targetNickname + ' 拒绝了你的好友申请',
           url: '/friend/request/' + data.targetId
         });
         this.feedbackService.playAudio(AudioName.DingDeng);

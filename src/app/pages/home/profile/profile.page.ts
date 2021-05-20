@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { LOCATION } from 'src/app/common/token';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -18,6 +19,7 @@ export class ProfilePage {
     private apiService: ApiService,
     private overlay: Overlay,
     private socketService: SocketService,
+    @Inject(LOCATION) private location: Location
   ) { }
 
   logout() {
@@ -26,8 +28,8 @@ export class ProfilePage {
       message: ' 你确定要退出登录吗？',
       confirmHandler: () => this.apiService.logout().subscribe(() => {
         this.router.navigateByUrl('/user/login');
-        this.globalData.reset();
         this.socketService.unload();
+        this.location.reload();
       })
     });
   }

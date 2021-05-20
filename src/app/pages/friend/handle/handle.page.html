@@ -13,11 +13,11 @@
 
   <main class="flex-col-container align-center">
     <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user', user.id]">
-    <h1>{{ user.username }}</h1>
+    <h1>{{ user.nickname }}</h1>
 
     <ion-item lines="none">
       <ion-label position="stacked">申请原因</ion-label>
-      <p>{{ friendRequest.requestReason || user.username + ' 申请添加你为好友' }}</p>
+      <p>{{ friendRequest.requestReason || user.nickname + ' 申请添加你为好友' }}</p>
     </ion-item>
 
     <div class="flex-auto"></div>
