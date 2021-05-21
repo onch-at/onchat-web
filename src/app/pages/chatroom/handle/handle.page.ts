@@ -1,6 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { REASON_MAX_LENGTH } from 'src/app/common/constant';
@@ -17,26 +18,24 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class HandlePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
-  chatRequest: ChatRequest;
-  chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
+  readonly requestStatus: typeof ChatRequestStatus = ChatRequestStatus;
+  request: ChatRequest;
 
   constructor(
     private socketService: SocketService,
     private overlay: Overlay,
     private globalData: GlobalData,
     private route: ActivatedRoute,
-    private router: Router,
+    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { chatRequest: Result<ChatRequest> | ChatRequest }) => {
-      if ((data.chatRequest as ChatRequest).id) {
-        this.chatRequest = data.chatRequest as ChatRequest;
-      } else if ((data.chatRequest as Result<ChatRequest>).code === ResultCode.Success) {
-        this.chatRequest = (data.chatRequest as Result<ChatRequest>).data;
+    this.route.data.subscribe(({ request }: { request: ChatRequest }) => {
+      if (request) {
+        this.request = request;
       } else {
         this.overlay.presentToast('参数错误！');
-        this.router.navigateByUrl('/');
+        this.navCtrl.back();
       }
     });
 
@@ -48,7 +47,7 @@ export class HandlePage implements OnInit, OnDestroy {
         return code === ResultCode.Success && data.handlerId === this.globalData.user.id
       })
     ).subscribe((result: Result<ChatRequest>) => {
-      this.chatRequest = result.data;
+      this.request = result.data;
     });
   }
 
@@ -61,7 +60,7 @@ export class HandlePage implements OnInit, OnDestroy {
     this.overlay.presentAlert({
       header: '同意申请',
       message: '你确定同意该请求吗？',
-      confirmHandler: () => this.socketService.chatRequsetAgree(this.chatRequest.id)
+      confirmHandler: () => this.socketService.chatRequsetAgree(this.request.id)
     });
   }
 
@@ -69,20 +68,18 @@ export class HandlePage implements OnInit, OnDestroy {
     this.overlay.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.chatRequestReject(this.chatRequest.id, data['rejectReason'] || null);
+        this.socketService.chatRequestReject(this.request.id, data['rejectReason'] || null);
       },
-      inputs: [
-        {
-          name: 'rejectReason',
-          type: 'textarea',
-          placeholder: '或许可以告诉对方你拒绝的原因',
-          cssClass: 'ipt-primary',
-          attributes: {
-            rows: 4,
-            maxlength: REASON_MAX_LENGTH
-          }
+      inputs: [{
+        name: 'rejectReason',
+        type: 'textarea',
+        placeholder: '或许可以告诉对方你拒绝的原因',
+        cssClass: 'ipt-primary',
+        attributes: {
+          rows: 4,
+          maxlength: REASON_MAX_LENGTH
         }
-      ]
+      }]
     });
   }
 

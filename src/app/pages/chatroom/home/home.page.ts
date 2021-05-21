@@ -27,7 +27,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
 export class HomePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   chatroom: Chatroom;
-  chatMembers: ChatMember[];
+  members: ChatMember[];
   /** 在群成员中的我 */
   member: ChatMember;
   /** 是否是聊天室主人 */
@@ -36,15 +36,13 @@ export class HomePage implements OnInit, OnDestroy {
   isManager: boolean;
   /** 是否是聊天室成员 */
   isMember: boolean;
-  /** 成员数量 */
-  memberCount: number;
   showMask: boolean;
 
   constructor(
     public globalData: GlobalData,
-    private route: ActivatedRoute,
     private router: Router,
     private overlay: Overlay,
+    private route: ActivatedRoute,
     private apiService: ApiService,
     private cacheService: CacheService,
     private socketService: SocketService,
@@ -52,23 +50,22 @@ export class HomePage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { chatroom: Result<Chatroom>, chatMembers: Result<ChatMember[]> }) => {
-      if (data.chatroom.code !== ResultCode.Success) {
+    this.route.data.subscribe(({ chatroom, chatMembers }: { chatroom: Result<Chatroom>, chatMembers: Result<ChatMember[]> }) => {
+      if (chatroom.code !== ResultCode.Success) {
         this.overlay.presentToast('聊天室不存在！');
         return this.router.navigateByUrl('/');
       }
 
-      this.chatroom = data.chatroom.data;
-      const chatMembers = data.chatMembers.data;
-      const host = chatMembers.find(o => o.role === ChatMemberRole.Host);
-      const managers = chatMembers.filter(o => o.role === ChatMemberRole.Manage);
-      const normalMembers = chatMembers.filter(o => o.role === ChatMemberRole.Normal);
+      this.chatroom = chatroom.data;
+      const members = chatMembers.data;
+      const host = members.find(o => o.role === ChatMemberRole.Host);
+      const managers = members.filter(o => o.role === ChatMemberRole.Manage);
+      const normalMembers = members.filter(o => o.role === ChatMemberRole.Normal);
       // 按照群主>管理员>普通成员排列
-      this.chatMembers = [...(host ? [host] : []), ...managers, ...normalMembers];
-      this.memberCount = chatMembers.length;
+      this.members = [...(host ? [host] : []), ...managers, ...normalMembers];
 
       // 从群成员里面找自己
-      this.member = chatMembers.find(o => o.userId === this.globalData.user.id);
+      this.member = members.find(o => o.userId === this.globalData.user.id);
 
       this.isMember = !!this.member;
 
@@ -110,7 +107,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.overlay.presentModal({
       component: ChatMemberListComponent,
       componentProps: {
-        chatMembers: this.chatMembers
+        chatMembers: this.members
       },
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl
@@ -166,7 +163,7 @@ export class HomePage implements OnInit, OnDestroy {
             return this.overlay.presentToast(msg);
           }
 
-          const member = this.chatMembers.find(o => o.userId === this.globalData.user.id);
+          const member = this.members.find(o => o.userId === this.globalData.user.id);
           member.nickname = data;
           this.member.nickname = data;
           this.overlay.presentToast('成功修改我的昵称！', 1000);
@@ -232,7 +229,7 @@ export class HomePage implements OnInit, OnDestroy {
       componentProps: {
         title: '邀请好友',
         // 筛选出不在这个聊天室的好友会话
-        chatSessions: this.globalData.privateChatrooms.filter(o => !this.chatMembers.some(p => p.userId === o.data.userId)).map(o => ({ ...o, checked: false })),
+        chatSessions: this.globalData.privateChatrooms.filter(o => !this.members.some(p => p.userId === o.data.userId)).map(o => ({ ...o, checked: false })),
         limit: MSG_BROADCAST_QUANTITY_LIMIT,
         handler: (data: ChatSessionCheckbox[]) => {
           const observable = this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(

@@ -15,7 +15,7 @@ const routes: Routes = [
       AuthGuard
     ],
     resolve: {
-      chatRequest: ReceiveChatRequestResolve
+      request: ReceiveChatRequestResolve
     }
   }
 ];

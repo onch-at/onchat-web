@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ResultCode } from 'src/app/common/enum';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -34,18 +34,16 @@ export class AvatarPage implements OnInit {
     private apiService: ApiService,
     private feedbackService: FeedbackService,
     private route: ActivatedRoute,
-    private router: Router,
+    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { user: Result<User> | User }) => {
-      if ((data.user as User).id) {
-        this.user = data.user as User;
-      } else if ((data.user as Result<User>).code === ResultCode.Success) {
-        this.user = (data.user as Result<User>).data;
+    this.route.data.subscribe(({ user }: { user: User }) => {
+      if (user) {
+        this.user = user;
       } else {
         this.overlay.presentToast('用户不存在！');
-        this.router.navigateByUrl('/');
+        this.navCtrl.back();
       }
     });
   }

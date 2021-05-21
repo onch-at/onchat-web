@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -22,21 +23,19 @@ export class HomePage implements OnInit {
 
   constructor(
     public globalData: GlobalData,
-    private router: Router,
+    private navCtrl: NavController,
     private route: ActivatedRoute,
     private apiService: ApiService,
     private overlay: Overlay,
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { user: Result<User> | User }) => {
-      if ((data.user as User).id) {
-        this.user = data.user as User;
-      } else if ((data.user as Result<User>).code === ResultCode.Success) {
-        this.user = (data.user as Result<User>).data;
+    this.route.data.subscribe(({ user }: { user: User }) => {
+      if (user) {
+        this.user = user;
       } else {
         this.overlay.presentToast('用户不存在！');
-        this.router.navigateByUrl('/');
+        this.navCtrl.back();
       }
     });
 

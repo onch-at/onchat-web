@@ -9,39 +9,39 @@
     </ion-toolbar>
   </ion-header>
 
-  <img class="bg-img" [src]="chatRequest.chatroomAvatar">
+  <img class="bg-img" [src]="request.chatroomAvatar">
 
   <main>
     <div>
-      <h2 class="header-title text-ellipsis">{{ chatRequest.chatroomName }}</h2>
-      <div class="header-subtitle">ROOM-ID：{{ chatRequest.chatroomId }}</div>
+      <h2 class="header-title text-ellipsis">{{ request.chatroomName }}</h2>
+      <div class="header-subtitle">ROOM-ID：{{ request.chatroomId }}</div>
     </div>
 
-    <ion-item *ngIf="chatRequest.handlerId" lines="none">
-      <ion-label position="stacked">处理人：{{ chatRequest.handlerNickname }}</ion-label>
+    <ion-item *ngIf="request.handlerId" lines="none">
+      <ion-label position="stacked">处理人：{{ request.handlerNickname }}</ion-label>
       <ul>
         <li>
-          处理结果：<ng-container [ngSwitch]="chatRequest.status">
-            <ng-container *ngSwitchCase="chatRequestStatus.Agree">管理员已同意你的申请</ng-container>
-            <ng-container *ngSwitchCase="chatRequestStatus.Reject">管理员已拒绝你的申请</ng-container>
+          处理结果：<ng-container [ngSwitch]="request.status">
+            <ng-container *ngSwitchCase="requestStatus.Agree">管理员已同意你的申请</ng-container>
+            <ng-container *ngSwitchCase="requestStatus.Reject">管理员已拒绝你的申请</ng-container>
             <ng-container *ngSwitchDefault>未知状态</ng-container>
           </ng-container>
         </li>
-        <li *ngIf="chatRequest.status === chatRequestStatus.Reject && chatRequest.rejectReason">
-          拒绝原因：{{ chatRequest.rejectReason }}
+        <li *ngIf="request.status === requestStatus.Reject && request.rejectReason">
+          拒绝原因：{{ request.rejectReason }}
         </li>
       </ul>
     </ion-item>
 
-    <ng-container *ngIf="chatRequest.status !== chatRequestStatus.Agree">
+    <ng-container *ngIf="request.status !== requestStatus.Agree">
       <ion-item lines="none">
         <ion-label position="stacked">申请原因</ion-label>
         <ion-textarea [(ngModel)]="requestReason" clearInput [maxlength]="reasonMaxLength" rows="4" autoGrow
-          placeholder="可以告诉他们你的申请原因">
+                      placeholder="可以告诉他们你的申请原因">
         </ion-textarea>
       </ion-item>
 
-      <button appRipple appActiveClass (tap)="request()" class="btn-primary btn-block submit-btn">
+      <button appRipple appActiveClass (tap)="chatRequest()" class="btn-primary btn-block submit-btn">
         申请加入
       </button>
     </ng-container>

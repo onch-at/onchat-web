@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LOCATION } from 'src/app/common/token';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -18,8 +17,7 @@ export class ProfilePage {
     private router: Router,
     private apiService: ApiService,
     private overlay: Overlay,
-    private socketService: SocketService,
-    @Inject(LOCATION) private location: Location
+    private socketService: SocketService
   ) { }
 
   logout() {
@@ -29,7 +27,7 @@ export class ProfilePage {
       confirmHandler: () => this.apiService.logout().subscribe(() => {
         this.router.navigateByUrl('/user/login');
         this.socketService.unload();
-        this.location.reload();
+        this.globalData.reset();
       })
     });
   }

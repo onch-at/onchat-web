@@ -5,7 +5,7 @@ import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
-import { ResultCode, SocketEvent } from 'src/app/common/enum';
+import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -19,9 +19,10 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class HandlePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
+  readonly requestStatus: typeof FriendRequestStatus = FriendRequestStatus;
   /** 用户 */
   user: User;
-  friendRequest: FriendRequest;
+  request: FriendRequest;
 
   constructor(
     private apiService: ApiService,
@@ -33,23 +34,20 @@ export class HandlePage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { user: Result<User> | User, friendRequest: Result<FriendRequest> }) => {
-      if ((data.user as User).id) {
-        this.user = data.user as User;
-      } else if ((data.user as Result<User>).code === ResultCode.Success) {
-        this.user = (data.user as Result<User>).data;
-      }
+    this.route.data.subscribe(({ user, request }: { user: User, request: Result<FriendRequest> }) => {
+      this.user = user;
 
-      if (data.friendRequest.code !== ResultCode.Success) {
-        this.overlay.presentToast(data.friendRequest.msg);
+      const { code, msg, data } = request;
+      if (code !== ResultCode.Success) {
+        this.overlay.presentToast(msg);
         return this.navCtrl.back();
       }
 
-      this.friendRequest = data.friendRequest.data;
+      this.request = data;
     });
 
     this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.subject)).subscribe((result: Result<any>) => {
-      if (result.code === ResultCode.Success && result.data.requesterId == this.user.id) {
+      if (result.code === ResultCode.Success && result.data.requesterId === this.user.id) {
         setTimeout(() => {
           this.navCtrl.back();
         }, 250);
@@ -65,7 +63,7 @@ export class HandlePage implements OnInit, OnDestroy {
     });
 
     // 如果未读，则设置为已读
-    const { id, targetReaded } = this.friendRequest;
+    const { id, targetReaded } = this.request;
     if (!targetReaded) {
       this.apiService.readedReceiveFriendRequest(id).subscribe();
       const request = this.globalData.receiveFriendRequests.find(o => o.id === id);
@@ -84,7 +82,7 @@ export class HandlePage implements OnInit, OnDestroy {
     this.overlay.presentAlert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestAgree(this.friendRequest.id, data['requesterAlias']);
+        this.socketService.friendRequestAgree(this.request.id, data['requesterAlias']);
       },
       inputs: [{
         name: 'requesterAlias',
@@ -102,7 +100,7 @@ export class HandlePage implements OnInit, OnDestroy {
     this.overlay.presentAlert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestReject(this.friendRequest.id, data['rejectReason']);
+        this.socketService.friendRequestReject(this.request.id, data['rejectReason']);
       },
       inputs: [{
         name: 'rejectReason',

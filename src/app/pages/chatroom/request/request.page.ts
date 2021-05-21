@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { REASON_MAX_LENGTH } from 'src/app/common/constant';
@@ -16,33 +17,27 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class RequestPage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
-  chatRequest: ChatRequest;
-  chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
+  readonly requestStatus: typeof ChatRequestStatus = ChatRequestStatus;
+  readonly reasonMaxLength = REASON_MAX_LENGTH;
+  request: ChatRequest;
   requestReason: string = null;
-
-  reasonMaxLength = REASON_MAX_LENGTH;
 
   constructor(
     private socketService: SocketService,
     private overlay: Overlay,
     private globalData: GlobalData,
     private route: ActivatedRoute,
-    private router: Router,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { chatRequest: Result<ChatRequest> | ChatRequest }) => {
-      if ((data.chatRequest as ChatRequest).id) {
-        this.chatRequest = data.chatRequest as ChatRequest;
-      } else if ((data.chatRequest as Result<ChatRequest>).code === ResultCode.Success) {
-        this.chatRequest = (data.chatRequest as Result<ChatRequest>).data;
+    this.route.data.subscribe(({ request }: { request: ChatRequest }) => {
+      if (request) {
+        this.request = request;
+        this.requestReason = this.request.requestReason;
       } else {
         this.overlay.presentToast('参数错误！');
-        return this.router.navigateByUrl('/');
-      }
-
-      if (this.chatRequest) {
-        this.requestReason = this.chatRequest.requestReason;
+        this.navCtrl.back();
       }
     });
 
@@ -65,8 +60,7 @@ export class RequestPage implements OnInit, OnDestroy {
         } else {
           this.globalData.sendChatRequests.unshift(data);
         }
-
-        this.router.navigateByUrl('/');
+        this.navCtrl.navigateBack('/');
       }
     });
   }
@@ -79,8 +73,8 @@ export class RequestPage implements OnInit, OnDestroy {
   /**
    * 申请加入群聊
    */
-  request() {
-    this.socketService.chatRequset(this.chatRequest.chatroomId, this.requestReason);
+  chatRequest() {
+    this.socketService.chatRequset(this.request.chatroomId, this.requestReason);
   }
 
 }

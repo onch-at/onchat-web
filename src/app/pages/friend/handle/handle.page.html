@@ -17,12 +17,12 @@
 
     <ion-item lines="none">
       <ion-label position="stacked">申请原因</ion-label>
-      <p>{{ friendRequest.requestReason || user.nickname + ' 申请添加你为好友' }}</p>
+      <p>{{ request.requestReason || user.nickname + ' 申请添加你为好友' }}</p>
     </ion-item>
 
     <div class="flex-auto"></div>
 
-    <ion-buttons class="bottom-bar">
+    <ion-buttons *ngIf="request.status === requestStatus.Wait" class="bottom-bar">
       <button appRipple appActiveClass (tap)="reject()" class="btn-secondary btn-block">
         拒绝申请
       </button>

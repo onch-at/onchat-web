@@ -23,7 +23,7 @@
       <div class="home-header-title font-bold text-ellipsis">{{ chatroom.name }}</div>
       <div class="home-header-subtitle">
         ROOM-ID：{{ chatroom.id }}&nbsp;&nbsp;
-        成员：{{ memberCount }}/{{ chatroom.peopleLimit }}
+        成员：{{ members.length }}/{{ chatroom.peopleLimit }}
       </div>
     </div>
   </div>
@@ -43,13 +43,13 @@
 
   <div class="home-item">
     <div class="avatar-list-track">
-      <ng-container *ngFor="let item of chatMembers | slice: 0:(isMember ? 6 : 7)">
+      <ng-container *ngFor="let item of members | slice: 0:(isMember ? 6 : 7)">
         <img class="avatar-list-img cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
       </ng-container>
 
       <!-- 如果不够6个，就填充空元素来维持UI -->
-      <ng-container *ngIf="chatMembers.length < 6">
-        <div *ngFor="let item of (isMember ? 6: 7) - chatMembers.length | fill" class="avatar-list-img"></div>
+      <ng-container *ngIf="members.length < 6">
+        <div *ngFor="let item of (isMember ? 6: 7) - members.length | fill" class="avatar-list-img"></div>
       </ng-container>
 
       <button appRipple *ngIf="isMember" class="add-btn line-height-0" (tap)="inviteJoinChatroom()">

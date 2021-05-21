@@ -8,46 +8,46 @@ import { ApiService } from '../services/api.service';
  * 获取自己给对方（根据路由参数userId）发起好友申请的Resolve
  */
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class FriendRequestByTargetIdResolve implements Resolve<Result<FriendRequest>> {
-    constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) { }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<FriendRequest>> {
-        const userId = +route.params.userId;
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<FriendRequest>> {
+    const userId = +route.params.userId;
 
-        return this.apiService.getFriendRequestByTargetId(userId);
-    }
+    return this.apiService.getFriendRequestByTargetId(userId);
+  }
 }
 
 /**
  * 获取对方（根据路由参数userId）给自己发起好友申请的Resolve
  */
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class FriendRequestBySelfIdResolve implements Resolve<Result<FriendRequest>> {
-    constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) { }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<FriendRequest>> {
-        const userId = +route.params.userId;
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<FriendRequest>> {
+    const userId = +route.params.userId;
 
-        return this.apiService.getFriendRequestByRequesterId(userId);
-    }
+    return this.apiService.getFriendRequestByRequesterId(userId);
+  }
 }
 
 /**
  * 获取好友申请
  */
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class FriendRequestResolve implements Resolve<Result<FriendRequest>> {
-    constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) { }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<FriendRequest>> {
-        const friendRequestId = +route.params.friendRequestId;
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<FriendRequest>> {
+    const friendRequestId = +route.params.friendRequestId;
 
-        return this.apiService.getFriendRequestById(friendRequestId);
-    }
+    return this.apiService.getFriendRequestById(friendRequestId);
+  }
 }

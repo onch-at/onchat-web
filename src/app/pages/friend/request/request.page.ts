@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
-import { ResultCode, SocketEvent } from 'src/app/common/enum';
+import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -18,7 +18,8 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class RequestPage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
-  /** 用户 */
+  readonly requestStatus: typeof FriendRequestStatus = FriendRequestStatus;
+  /** 用户(对方) */
   user: User;
   /** 好友别名 */
   targetAlias: string;
@@ -26,6 +27,8 @@ export class RequestPage implements OnInit, OnDestroy {
   requestReason: string;
   /** 对方的拒绝原因 */
   rejectReason: string;
+  /** 请求状态 */
+  status: FriendRequestStatus;
 
   readonly nicknameMaxLength = NICKNAME_MAX_LENGTH;
   readonly reasonMaxLength = REASON_MAX_LENGTH;
@@ -40,20 +43,16 @@ export class RequestPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { user: Result<User> | User, friendRequest: Result<FriendRequest> }) => {
-      if ((data.user as User).id) {
-        this.user = data.user as User;
-      } else if ((data.user as Result<User>).code === ResultCode.Success) {
-        this.user = (data.user as Result<User>).data;
-      }
+    this.route.data.subscribe(({ user, request }: { user: User, request: Result<FriendRequest> }) => {
+      this.user = user;
 
-      const result = data.friendRequest;
+      const { code, data } = request;
       // 如果之前有申请过，就把之前填过的信息补全上去
-      if (result.code === ResultCode.Success) {
-        const { data } = result;
+      if (code === ResultCode.Success) {
         this.targetAlias = data.targetAlias;
         this.requestReason = data.requestReason;
         this.rejectReason = data.rejectReason;
+        this.status = data.status;
 
         // 如果未读，则设置为已读
         if (!data.requesterReaded) {
@@ -68,18 +67,17 @@ export class RequestPage implements OnInit, OnDestroy {
 
     this.socketService.on(SocketEvent.FriendRequest).pipe(
       takeUntil(this.subject),
-      debounceTime(100)
+      debounceTime(100),
+      filter((result: Result<FriendRequest | FriendRequest[]>) => {
+        const { data } = result;
+        return !Array.isArray(data) && data.requesterId === this.globalData.user.id && data.targetId === this.user.id
+      })
     ).subscribe((result: Result<FriendRequest | FriendRequest[]>) => {
-      const friendRequest = result.data;
-      if (Array.isArray(friendRequest) || friendRequest.requesterId !== this.globalData.user.id || friendRequest.targetId !== this.user.id) {
-        return;
-      }
+      const { code, msg } = result;
 
-      result.code === ResultCode.Success && (result.msg = '好友申请已发出，等待对方验证…');
+      this.overlay.presentToast(code === ResultCode.Success ? '好友申请已发出，等待对方验证…' : msg);
 
-      this.overlay.presentToast(result.msg);
-
-      result.code === ResultCode.Success && setTimeout(() => {
+      code === ResultCode.Success && setTimeout(() => {
         this.navCtrl.back();
       }, 250);
     });

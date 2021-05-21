@@ -33,13 +33,14 @@ export class AvatarPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { chatroom: Result<Chatroom> }) => {
-      if (data.chatroom.code !== ResultCode.Success) {
+    this.route.data.subscribe(({ chatroom }: { chatroom: Result<Chatroom> }) => {
+      const { code, data } = chatroom;
+      if (code !== ResultCode.Success) {
         this.overlay.presentToast('聊天室不存在！');
         return this.router.navigateByUrl('/');
       }
 
-      this.chatroom = data.chatroom.data;
+      this.chatroom = data;
     });
   }
 

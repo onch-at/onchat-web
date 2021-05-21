@@ -41,7 +41,7 @@
 
     <div class="flex-auto"></div>
 
-    <button appRipple appActiveClass (tap)="friendRequest()" class="btn-primary btn-block">
+    <button appRipple appActiveClass *ngIf="status !== requestStatus.Agree" (tap)="friendRequest()" class="btn-primary btn-block">
       立即申请
     </button>
   </main>

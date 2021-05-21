@@ -9,45 +9,45 @@
     </ion-toolbar>
   </ion-header>
 
-  <img class="bg-img" [src]="chatRequest.requesterAvatarThumbnail">
+  <img class="bg-img" [src]="request.requesterAvatarThumbnail">
 
   <main class="flex-col-container align-center">
-    <img class="avatar" [src]="chatRequest.requesterAvatarThumbnail" [routerLink]="['/user', chatRequest.requesterId]">
-    <h1>{{ chatRequest.requesterNickname }}</h1>
+    <img class="avatar" [src]="request.requesterAvatarThumbnail" [routerLink]="['/user', request.requesterId]">
+    <h1>{{ request.requesterNickname }}</h1>
 
     <ion-item lines="none">
       <ion-label position="stacked">申请原因</ion-label>
-      <p>{{ chatRequest.requestReason || (chatRequest.requesterNickname + ' 申请加入 ' + chatRequest.chatroomName) }}</p>
+      <p>{{ request.requestReason || (request.requesterNickname + ' 申请加入 ' + request.chatroomName) }}</p>
     </ion-item>
 
     <ion-item lines="none">
       <ion-label position="stacked">相关信息</ion-label>
       <ul>
         <li>
-          聊天室：{{ chatRequest.chatroomName }}
+          聊天室：{{ request.chatroomName }}
         </li>
 
-        <li *ngIf="chatRequest.handlerId">
-          处理人：{{ chatRequest.handlerNickname }}
+        <li *ngIf="request.handlerId">
+          处理人：{{ request.handlerNickname }}
         </li>
 
-        <li *ngIf="chatRequest.handlerId">
-          处理结果：<ng-container [ngSwitch]="chatRequest.status || chatRequestStatus.Wait">
-            <ng-container *ngSwitchCase="chatRequestStatus.Agree">已同意</ng-container>
-            <ng-container *ngSwitchCase="chatRequestStatus.Reject">已拒绝</ng-container>
+        <li *ngIf="request.handlerId">
+          处理结果：<ng-container [ngSwitch]="request.status || requestStatus.Wait">
+            <ng-container *ngSwitchCase="requestStatus.Agree">已同意</ng-container>
+            <ng-container *ngSwitchCase="requestStatus.Reject">已拒绝</ng-container>
             <ng-container *ngSwitchDefault>未知状态</ng-container>
           </ng-container>
         </li>
 
-        <li *ngIf="chatRequest.status === chatRequestStatus.Reject && chatRequest.rejectReason">
-          拒绝原因：{{ chatRequest.rejectReason }}
+        <li *ngIf="request.status === requestStatus.Reject && request.rejectReason">
+          拒绝原因：{{ request.rejectReason }}
         </li>
       </ul>
     </ion-item>
 
     <div class="flex-auto"></div>
 
-    <ion-buttons class="bottom-bar" *ngIf="!chatRequest.handlerId">
+    <ion-buttons class="bottom-bar" *ngIf="!request.handlerId">
       <button appRipple appActiveClass (tap)="reject()" class="btn-secondary btn-block">
         拒绝申请
       </button>
