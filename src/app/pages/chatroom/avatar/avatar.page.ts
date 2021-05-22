@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { ResultCode } from 'src/app/common/enum';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -29,7 +30,7 @@ export class AvatarPage implements OnInit {
     private overlay: Overlay,
     private feedbackService: FeedbackService,
     private route: ActivatedRoute,
-    private router: Router,
+    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
@@ -37,7 +38,7 @@ export class AvatarPage implements OnInit {
       const { code, data } = chatroom;
       if (code !== ResultCode.Success) {
         this.overlay.presentToast('聊天室不存在！');
-        return this.router.navigateByUrl('/');
+        return this.navCtrl.back();
       }
 
       this.chatroom = data;

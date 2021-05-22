@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonRouterOutlet } from '@ionic/angular';
+import { IonRouterOutlet, NavController } from '@ionic/angular';
 import { of, Subject } from 'rxjs';
 import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CHATROOM_NAME_MAX_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT, NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
@@ -44,6 +44,7 @@ export class HomePage implements OnInit, OnDestroy {
     private overlay: Overlay,
     private route: ActivatedRoute,
     private apiService: ApiService,
+    private navCtrl: NavController,
     private cacheService: CacheService,
     private socketService: SocketService,
     private routerOutlet: IonRouterOutlet
@@ -53,7 +54,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.route.data.subscribe(({ chatroom, chatMembers }: { chatroom: Result<Chatroom>, chatMembers: Result<ChatMember[]> }) => {
       if (chatroom.code !== ResultCode.Success) {
         this.overlay.presentToast('聊天室不存在！');
-        return this.router.navigateByUrl('/');
+        return this.navCtrl.back();
       }
 
       this.chatroom = chatroom.data;
