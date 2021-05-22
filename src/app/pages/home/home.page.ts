@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, Scroll } from '@angular/router';
-import { AnimationBuilder, AnimationController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { HomeMenuComponent } from 'src/app/components/popovers/home-menu/home-menu.component';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
+import { RouterAnimation } from 'src/app/services/router-animation.service';
 
 @Component({
   selector: 'app-home',
@@ -16,20 +16,11 @@ export class HomePage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   sharp: boolean = false;
 
-  routerAnimation: AnimationBuilder = (_, opts) => {
-    const { enteringEl, leavingEl } = opts;
-    const animation = this.animationCtrl.create().duration(250).easing('ease-out');
-    const enteringAnimation = this.animationCtrl.create().addElement(enteringEl).fromTo('opacity', 0, 1);
-    const leavingAnimation = this.animationCtrl.create().addElement(leavingEl).fromTo('opacity', 1, 0);
-
-    return animation.addAnimation([enteringAnimation, leavingAnimation]);
-  };
-
   constructor(
     private router: Router,
     private overlay: Overlay,
-    private animationCtrl: AnimationController,
-    public globalData: GlobalData
+    public globalData: GlobalData,
+    public routerAnimation: RouterAnimation,
   ) { }
 
   ngOnInit() {

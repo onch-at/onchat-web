@@ -1,44 +1,25 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AnimationBuilder, AnimationController, IonRouterOutlet, ViewWillEnter } from '@ionic/angular';
+import { IonRouterOutlet } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
+import { RouterAnimation } from 'src/app/services/router-animation.service';
 
 @Component({
   selector: 'app-notice',
   templateUrl: './notice.page.html',
   styleUrls: ['./notice.page.scss']
 })
-export class NoticePage implements OnInit, ViewWillEnter {
+export class NoticePage implements OnInit {
   url: 'notice-list' | 'request-list';
-  animation: number = 0;
 
   @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
 
-  routerAnimation: AnimationBuilder = (_, opts) => {
-    const { activatedRouteData } = this.routerOutlet;
-    const { enteringEl, leavingEl } = opts;
-    const animation = this.animationCtrl.create().duration(300).easing('ease-out');
-    const enteringAnimation = this.animationCtrl.create().addElement(enteringEl).beforeRemoveClass('ion-page-invisible');
-    const leavingAnimation = this.animationCtrl.create().addElement(leavingEl).beforeRemoveClass('ion-page-invisible');
-
-    if (this.animation > activatedRouteData.animation) {
-      enteringAnimation.fromTo('transform', 'translate3d(-100%,0,0)', 'translate3d(0,0,0)');
-      leavingAnimation.fromTo('transform', 'translate3d(0,0,0)', 'translate3d(100%,0,0)');
-    } else {
-      enteringAnimation.fromTo('transform', 'translate3d(100%,0,0)', 'translate3d(0,0,0)');
-      leavingAnimation.fromTo('transform', 'translate3d(0,0,0)', 'translate3d(-100%,0,0)');
-    }
-
-    this.animation = activatedRouteData.animation;
-    return animation.addAnimation([enteringAnimation, leavingAnimation]);
-  };
-
   constructor(
+    private router: Router,
     private apiService: ApiService,
     private globalData: GlobalData,
-    private animationCtrl: AnimationController,
-    private router: Router
+    public routerAnimation: RouterAnimation,
   ) { }
 
   ngOnInit() {
@@ -50,10 +31,6 @@ export class NoticePage implements OnInit, ViewWillEnter {
     )) && this.apiService.readedChatRequests().subscribe();
 
     this.globalData.readedChatRequest();
-  }
-
-  ionViewWillEnter() {
-    this.animation = this.routerOutlet.activatedRouteData.animation;
   }
 
   segmentChange(event: any) {
