@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
+import { slide } from 'src/app/animations/ionic.animation';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { RouterAnimation } from 'src/app/services/router-animation.service';
 
 @Component({
   selector: 'app-notice',
@@ -11,6 +11,7 @@ import { RouterAnimation } from 'src/app/services/router-animation.service';
   styleUrls: ['./notice.page.scss']
 })
 export class NoticePage implements OnInit {
+  readonly slide = slide;
   url: 'notice-list' | 'request-list';
 
   @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
@@ -19,7 +20,6 @@ export class NoticePage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     private globalData: GlobalData,
-    public routerAnimation: RouterAnimation,
   ) { }
 
   ngOnInit() {

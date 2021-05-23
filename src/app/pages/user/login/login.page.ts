@@ -44,8 +44,8 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
     ],
   });
 
-  usernameFeedback: ValidationFeedback = usernameFeedback;
-  passwordFeedback: ValidationFeedback = passwordFeedback;
+  readonly usernameFeedback: ValidationFeedback = usernameFeedback;
+  readonly passwordFeedback: ValidationFeedback = passwordFeedback;
 
   constructor(
     public globalData: GlobalData,

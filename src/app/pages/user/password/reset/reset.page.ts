@@ -59,9 +59,9 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
   pwdInputType: string = 'password';
   readonly usernameMaxLength: number = USERNAME_MAX_LENGTH;
   readonly passwordMaxLength: number = PASSWORD_MAX_LENGTH;
-  usernameFeedback: ValidationFeedback = usernameFeedback;
-  passwordFeedback: ValidationFeedback = passwordFeedback;
-  captchaFeedback: ValidationFeedback = captchaFeedback;
+  readonly usernameFeedback: ValidationFeedback = usernameFeedback;
+  readonly passwordFeedback: ValidationFeedback = passwordFeedback;
+  readonly captchaFeedback: ValidationFeedback = captchaFeedback;
   /** 60秒倒计时 */
   countdown: number = 60;
   /** 倒计时计时器 */

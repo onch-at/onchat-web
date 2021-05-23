@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonRouterOutlet } from '@ionic/angular';
+import { slide } from 'src/app/animations/ionic.animation';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { RouterAnimation } from 'src/app/services/router-animation.service';
 
 @Component({
   selector: 'app-contact',
@@ -10,10 +10,10 @@ import { RouterAnimation } from 'src/app/services/router-animation.service';
 })
 export class ContactPage {
   @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
+  readonly slide = slide;
 
   constructor(
-    public globalData: GlobalData,
-    public routerAnimation: RouterAnimation
+    public globalData: GlobalData
   ) { }
 
 }

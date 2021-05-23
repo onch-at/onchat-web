@@ -11,7 +11,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
 })
 export class TipsMessageComponent {
   @Input() msg: Message<TipsMessage>;
-  tipsType: typeof TipsType = TipsType;
+  readonly tipsType: typeof TipsType = TipsType;
 
   constructor(
     public globalData: GlobalData

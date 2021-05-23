@@ -34,7 +34,7 @@ export class ChatRecorderComponent implements OnDestroy {
 
   /** 操作状态 */
   operateState: OperateState = OperateState.None;
-  operateStates: typeof OperateState = OperateState;
+  readonly operateStates: typeof OperateState = OperateState;
   /** 录音起始时间 */
   startTime: number = null;
   /** 语音音频对象 */

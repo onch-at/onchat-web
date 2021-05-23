@@ -11,7 +11,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./notice-list.component.scss'],
 })
 export class NoticeListComponent implements OnInit {
-  chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
+  readonly chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
 
   constructor(
     private socketService: SocketService,

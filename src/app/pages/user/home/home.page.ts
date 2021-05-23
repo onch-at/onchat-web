@@ -18,8 +18,8 @@ export class HomePage implements OnInit {
   /** 私聊房间号 */
   chatroomId: number;
 
-  gender: typeof Gender = Gender;
-  mood: typeof Mood = Mood;
+  readonly gender: typeof Gender = Gender;
+  readonly mood: typeof Mood = Mood;
 
   constructor(
     public globalData: GlobalData,

@@ -8,7 +8,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
   styleUrls: ['./request-list.component.scss'],
 })
 export class RequestListComponent {
-  chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
+  readonly chatRequestStatus: typeof ChatRequestStatus = ChatRequestStatus;
 
   constructor(
     public globalData: GlobalData,

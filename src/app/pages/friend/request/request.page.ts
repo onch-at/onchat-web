@@ -19,6 +19,8 @@ import { SocketService } from 'src/app/services/socket.service';
 export class RequestPage implements OnInit, OnDestroy {
   private subject: Subject<unknown> = new Subject();
   readonly requestStatus: typeof FriendRequestStatus = FriendRequestStatus;
+  readonly nicknameMaxLength = NICKNAME_MAX_LENGTH;
+  readonly reasonMaxLength = REASON_MAX_LENGTH;
   /** 用户(对方) */
   user: User;
   /** 好友别名 */
@@ -29,9 +31,6 @@ export class RequestPage implements OnInit, OnDestroy {
   rejectReason: string;
   /** 请求状态 */
   status: FriendRequestStatus;
-
-  readonly nicknameMaxLength = NICKNAME_MAX_LENGTH;
-  readonly reasonMaxLength = REASON_MAX_LENGTH;
 
   constructor(
     public globalData: GlobalData,

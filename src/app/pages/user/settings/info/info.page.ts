@@ -28,7 +28,7 @@ export class InfoPage implements OnInit, OnDestroy {
   /** 个性签名最大长度 */
   readonly signatureMaxLength: number = SIGNATURE_MAX_LENGTH;
   /** 性别枚举 */
-  gender: typeof Gender = Gender;
+  readonly gender: typeof Gender = Gender;
   /** 月份别名 */
   monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
   /** 初始时间 */
@@ -73,7 +73,7 @@ export class InfoPage implements OnInit, OnDestroy {
     ]
   });
 
-  nicknameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+  readonly nicknameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
     if (!errors) { return; }
     if (errors.required) {
       return '昵称不能为空！';
@@ -82,7 +82,7 @@ export class InfoPage implements OnInit, OnDestroy {
       return `昵称长度必须在${NICKNAME_MIN_LENGTH}~${NICKNAME_MAX_LENGTH}位字符之间！`;
     }
   }
-  signatureFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+  readonly signatureFeedback: ValidationFeedback = (errors: ValidationErrors) => {
     if (!errors) { return; }
     if (errors.minlength || errors.maxlength) {
       return `个性签名长度必须在${SIGNATURE_MIN_LENGTH}~${SIGNATURE_MAX_LENGTH}位字符之间！`;

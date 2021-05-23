@@ -24,7 +24,7 @@ export class MoodRadioComponent implements ControlValueAccessor {
     return this._value;
   }
 
-  mood: typeof Mood = Mood;
+  readonly mood: typeof Mood = Mood;
 
   constructor() { }
 

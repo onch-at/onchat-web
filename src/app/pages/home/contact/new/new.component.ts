@@ -14,7 +14,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./new.component.scss'],
 })
 export class NewComponent {
-  friendRequestStatus: typeof FriendRequestStatus = FriendRequestStatus;
+  readonly friendRequestStatus: typeof FriendRequestStatus = FriendRequestStatus;
 
   constructor(
     public globalData: GlobalData,

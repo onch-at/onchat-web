@@ -50,7 +50,7 @@ export class CreatePage implements OnInit, OnDestroy {
     ]
   });
 
-  nameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+  readonly nameFeedback: ValidationFeedback = (errors: ValidationErrors) => {
     if (!errors) { return; }
     if (errors.required) {
       return '聊天室名称不能为空！';
@@ -60,7 +60,7 @@ export class CreatePage implements OnInit, OnDestroy {
     }
   }
 
-  descriptionFeedback: ValidationFeedback = (errors: ValidationErrors) => {
+  readonly descriptionFeedback: ValidationFeedback = (errors: ValidationErrors) => {
     if (!errors) { return; }
     if (errors.minlength || errors.maxlength) {
       return `聊天室简介长度必须在${CHATROOM_DESCRIPTION_MIN_LENGTH}~${CHATROOM_DESCRIPTION_MAX_LENGTH}位字符之间！`;

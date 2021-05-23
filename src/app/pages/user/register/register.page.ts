@@ -77,10 +77,10 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
     validators: SyncValidator.equal('password', 'confirmPassword')
   });
 
-  usernameFeedback: ValidationFeedback = usernameFeedback;
-  passwordFeedback: ValidationFeedback = passwordFeedback;
-  emailFeedback: ValidationFeedback = emailFeedback;
-  captchaFeedback: ValidationFeedback = captchaFeedback;
+  readonly usernameFeedback: ValidationFeedback = usernameFeedback;
+  readonly passwordFeedback: ValidationFeedback = passwordFeedback;
+  readonly emailFeedback: ValidationFeedback = emailFeedback;
+  readonly captchaFeedback: ValidationFeedback = captchaFeedback;
 
   constructor(
     public globalData: GlobalData,

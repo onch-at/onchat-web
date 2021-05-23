@@ -39,8 +39,8 @@ export class EmailBinderComponent extends ModalComponent {
     ]
   });
   readonly emailMaxLength: number = EMAIL_MAX_LENGTH;
-  emailFeedback: ValidationFeedback = emailFeedback;
-  captchaFeedback: ValidationFeedback = captchaFeedback;
+  readonly emailFeedback: ValidationFeedback = emailFeedback;
+  readonly captchaFeedback: ValidationFeedback = captchaFeedback;
 
   loading: boolean = false;
   /** 60秒倒计时 */

@@ -17,10 +17,10 @@ import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolba
 })
 export class MessageListComponent {
   /** 消息类型枚举 */
-  msgType: typeof MessageType = MessageType;
+  readonly msgType: typeof MessageType = MessageType;
   /** 聊天室类型枚举 */
-  chatroomTypes: typeof ChatroomType = ChatroomType;
-  chatMemberRole: typeof ChatMemberRole = ChatMemberRole;
+  readonly chatroomTypes: typeof ChatroomType = ChatroomType;
+  readonly chatMemberRole: typeof ChatMemberRole = ChatMemberRole;
   /** 消息记录 */
   @Input() data: Message[] = [];
   /** 消息记录是否到了末尾 */

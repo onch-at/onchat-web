@@ -22,7 +22,7 @@ export class ChatMemberListComponent extends ModalComponent implements OnInit {
   itemHeight: number = SysUtil.rem2px(3.55);
   getItemHeight: () => number = () => this.itemHeight;
   trackByFn = EntityUtil.trackBy;
-  chatMemberRole: typeof ChatMemberRole = ChatMemberRole;
+  readonly chatMemberRole: typeof ChatMemberRole = ChatMemberRole;
 
   constructor(
     protected overlay: Overlay,
