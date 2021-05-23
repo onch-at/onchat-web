@@ -1,7 +1,8 @@
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Animation, AnimationController, Gesture, GestureController, GestureDetail } from '@ionic/angular';
-import { Observable, Subject } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notification',
@@ -36,7 +37,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   isLink = () => /^(\/|http:\/\/|https:\/\/)/i.test(this.icon);
 
   constructor(
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private animationCtrl: AnimationController,
     private gestureCtrl: GestureController
@@ -49,7 +50,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
       .addElement(this.elementRef.nativeElement)
       .duration(200)
       .fromTo('transform', 'translateY(0)', 'translateY(-100%)')
-      .fromTo('opacity', '1', '.5')
+      .fromTo('opacity', 1, .5)
       .easing('ease-out');
     this.animation.progressStart(false);
 
@@ -106,7 +107,11 @@ export class NotificationComponent implements OnInit, OnDestroy {
    */
   dismiss(): Observable<void> {
     this.renderer.addClass(this.element, 'hide');
-    this.renderer.listen(this.element, 'transitionend', () => {
+
+    fromEvent(this.element, 'transitionend').pipe(
+      filter((event: TransitionEvent) => event.propertyName === 'visibility'),
+      take(1)
+    ).subscribe(() => {
       this.overlayRef.dispose();
       this.dismiss$.next();
     });
@@ -123,7 +128,10 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
-    this.renderer.listen(this.element, 'transitionend', () => {
+    fromEvent(this.element, 'transitionend').pipe(
+      filter((event: TransitionEvent) => event.propertyName === 'transform'),
+      take(1)
+    ).subscribe(() => {
       this.dismiss();
       this.handler?.(event);
     });

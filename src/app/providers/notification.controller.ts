@@ -2,6 +2,7 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Inject, Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { NotificationOptions } from '../common/interface';
 import { WINDOW } from '../common/token';
 import { NotificationComponent } from '../components/notification/notification.component';
@@ -46,7 +47,7 @@ export class NotificationController {
    */
   present(): NotificationController {
     this.dismissTimeout && this.clearDismissTimeout();
-    this.subscription?.unsubscribe();
+    this.subscription && !this.subscription.closed && this.subscription.unsubscribe();
 
     this.componentRef ??= this.overlayRef.attach(new ComponentPortal(NotificationComponent));
     this.componentRef.instance.overlayRef = this.overlayRef;
@@ -61,11 +62,9 @@ export class NotificationController {
     this.componentRef.instance.handler = handler;
 
     // 监听通知关闭事件
-    this.subscription = this.componentRef.instance.onDismiss().subscribe(() => {
+    this.subscription = this.componentRef.instance.onDismiss().pipe(take(1)).subscribe(() => {
       this.clearRef();
       this.clearDismissTimeout();
-      this.subscription.unsubscribe();
-      this.subscription = null;
     });
 
     // 开始计时
@@ -78,7 +77,7 @@ export class NotificationController {
    * 关闭通知
    */
   dismiss(): Observable<void> {
-    this.componentRef.instance.dismiss().subscribe(() => {
+    this.componentRef.instance.dismiss().pipe(take(1)).subscribe(() => {
       this.clearRef();
       this.clearDismissTimeout();
     });
