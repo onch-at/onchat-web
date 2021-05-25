@@ -17,7 +17,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./request.page.scss'],
 })
 export class RequestPage implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   readonly requestStatus: typeof FriendRequestStatus = FriendRequestStatus;
   readonly nicknameMaxLength = NICKNAME_MAX_LENGTH;
   readonly reasonMaxLength = REASON_MAX_LENGTH;
@@ -65,7 +65,7 @@ export class RequestPage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.FriendRequest).pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       debounceTime(100),
       filter((result: Result<FriendRequest | FriendRequest[]>) => {
         const { data } = result;
@@ -83,8 +83,8 @@ export class RequestPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   friendRequest() {

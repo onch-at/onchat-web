@@ -21,7 +21,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
   styleUrls: ['./info.page.scss'],
 })
 export class InfoPage implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   /** 昵称最大长度 */
   readonly nicknameMaxLength: number = USERNAME_MAX_LENGTH;
   /** 个性签名最大长度 */
@@ -107,14 +107,14 @@ export class InfoPage implements OnInit, OnDestroy {
       gender: user.gender ?? Gender.Secret
     });
 
-    this.form.valueChanges.pipe(takeUntil(this.subject)).subscribe(() => {
+    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dirty = true;
     });
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**

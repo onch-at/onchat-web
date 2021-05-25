@@ -12,7 +12,7 @@ import { Recorder } from 'src/app/services/recorder.service';
   styleUrls: ['./voice-message.component.scss'],
 })
 export class VoiceMessageComponent implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
 
   @Input() msg: Message<VoiceMessage>;
 
@@ -28,13 +28,13 @@ export class VoiceMessageComponent implements OnInit, OnDestroy {
     merge(
       this.recorder.action,
       this.routerOutlet.activateEvents
-    ).pipe(takeUntil(this.subject)).subscribe(() => this.pause());
+    ).pipe(takeUntil(this.destroy$)).subscribe(() => this.pause());
   }
 
   ngOnDestroy() {
     this.pause();
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   play() {

@@ -25,7 +25,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   chatroom: Chatroom;
   members: ChatMember[];
   /** 在群成员中的我 */
@@ -77,7 +77,7 @@ export class HomePage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.ChatRequest).pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       debounceTime(100)
     ).subscribe((result: Result<ChatRequest>) => {
       const { code, data, msg } = result;
@@ -100,8 +100,8 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   presentChatMemberList() {

@@ -17,7 +17,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./handle.page.scss'],
 })
 export class HandlePage implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   readonly requestStatus: typeof ChatRequestStatus = ChatRequestStatus;
   request: ChatRequest;
 
@@ -40,7 +40,7 @@ export class HandlePage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.ChatRequestReject).pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       filter((result: Result<ChatRequest>) => {
         const { code, data } = result;
         // 操作成功,并且处理人是我
@@ -52,8 +52,8 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   agree() {

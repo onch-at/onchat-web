@@ -19,7 +19,7 @@ export class SocketService {
   ) { }
 
   onInit(): Observable<void> {
-    return this.init$;
+    return this.init$.asObservable();
   }
 
   /**

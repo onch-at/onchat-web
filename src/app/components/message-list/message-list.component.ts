@@ -32,19 +32,19 @@ export class MessageListComponent {
 
   trackByFn = EntityUtil.trackBy;
 
+  msgItemClass = (userId: number) => {
+    const { user } = this.globalData;
+    return {
+      'msg-item-right': user.id === userId,
+      'msg-item-left': user.id !== userId
+    };
+  };
+
   constructor(
     private overlay: Overlay,
     private feedbackService: FeedbackService,
     public globalData: GlobalData,
   ) { }
-
-  msgItemClass(userId: number) {
-    const { user } = this.globalData;
-    return {
-      'msg-item-right': user.id === userId,
-      'msg-item-left': user.id !== userId
-    }
-  }
 
   /**
    * 弹出BubbleToolbar气泡工具条

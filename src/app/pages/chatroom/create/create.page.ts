@@ -20,7 +20,7 @@ const ITEM_ROWS: number = 10;
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   /** 群名最大长度 */
   readonly nameMaxLength: number = CHATROOM_NAME_MAX_LENGTH;
   /** 群简介最大长度 */
@@ -92,7 +92,7 @@ export class CreatePage implements OnInit, OnDestroy {
       });
     }
 
-    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.subject)).subscribe((result: Result<ChatSession>) => {
+    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.destroy$)).subscribe((result: Result<ChatSession>) => {
       this.loading = false;
       const { code, data, msg } = result;
 
@@ -113,8 +113,8 @@ export class CreatePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   submit() {

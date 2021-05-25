@@ -16,7 +16,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./request.page.scss'],
 })
 export class RequestPage implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   readonly requestStatus: typeof ChatRequestStatus = ChatRequestStatus;
   readonly reasonMaxLength = REASON_MAX_LENGTH;
   request: ChatRequest;
@@ -42,7 +42,7 @@ export class RequestPage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.ChatRequest).pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       debounceTime(100)
     ).subscribe((result: Result<ChatRequest>) => {
       const { code, data, msg } = result;
@@ -66,8 +66,8 @@ export class RequestPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**

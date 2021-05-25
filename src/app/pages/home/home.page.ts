@@ -13,7 +13,7 @@ import { Overlay } from 'src/app/services/overlay.service';
   styleUrls: ['home.page.scss']
 })
 export class HomePage implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   readonly fade = fade;
   sharp: boolean = false;
 
@@ -26,7 +26,7 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnInit() {
     // 在去到个人中心tab的时候变为直角头部
     this.router.events.pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       filter(event => event instanceof Scroll)
     ).subscribe((event: Scroll) => {
       this.sharp = event.routerEvent.url === '/home/profile';
@@ -34,8 +34,8 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   presenHomeMenutPopover(event: Event) {

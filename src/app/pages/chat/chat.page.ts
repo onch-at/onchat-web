@@ -23,7 +23,7 @@ import { StrUtil } from 'src/app/utils/str.util';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   /** IonContent滚动元素 */
   private contentElement: HTMLElement;
   /** IonContent滚动元素初始可视高度 */
@@ -85,7 +85,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     // 监听路由 滚动事件
     // 场景：从1号房间跳到2号房间，全局房间号变成2，再返回到1号房间，全局房间号变回1
     this.router.events.pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       filter(event => event instanceof Scroll),
     ).subscribe((event: Scroll) => {
       // 尝试从URL中提取chatroomId
@@ -121,7 +121,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.socketService.on(SocketEvent.Message).pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
 
       filter((result: Result<Message>) => {
         const { code, data } = result;
@@ -154,7 +154,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.socketService.on(SocketEvent.RevokeMessage).pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       filter((result: Result<{ chatroomId: number, msgId: number }>) => {
         const { code, data } = result;
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
@@ -170,7 +170,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
     // 重连时，自动重发
     this.socketService.onInit().pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       filter(() => this.msgList.some(o => o.loading))
     ).subscribe(() => {
       this.msgList.filter(o => o.loading).forEach(o => {
@@ -181,8 +181,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     this.globalData.chatroomId = null;
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterViewInit() {
@@ -194,7 +194,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     const drawerContainerElement = this.drawerContainer.nativeElement;
 
     fromEvent(drawerContainerElement, 'transitionend').pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       filter((event: TransitionEvent) => {
         const { target, propertyName } = event;
         return target === drawerContainerElement && propertyName === 'height';
@@ -239,6 +239,16 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       !event.ctrlKey && !event.shiftKey
     ) {
       this.send();
+    }
+  }
+
+  onKeypress(event: KeyboardEvent) {
+    if (
+      this.platform.is('desktop') &&
+      event.key.toLowerCase() === 'enter' &&
+      !event.ctrlKey && !event.shiftKey
+    ) {
+      event.preventDefault(); // 回车发送的时候阻止默认行为，不插入换行
     }
   }
 

@@ -16,7 +16,7 @@ import { filter, takeUntil } from 'rxjs/operators';
   selector: '[appVirtualScrollPatch]'
 })
 export class VirtualScrollPatchDirective implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -27,7 +27,7 @@ export class VirtualScrollPatchDirective implements OnInit, OnDestroy {
     const url = this.router.routerState.snapshot.url;
 
     this.router.events.pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       filter(event => event instanceof Scroll && event.routerEvent.url.includes(url))
     ).subscribe(() => {
       this.elementRef.nativeElement?.checkEnd();
@@ -35,8 +35,8 @@ export class VirtualScrollPatchDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

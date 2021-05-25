@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { from, fromEvent, merge, of, Subject } from 'rxjs';
+import { from, fromEvent, merge, Observable, of, Subject } from 'rxjs';
 import { filter, mergeMap, take } from 'rxjs/operators';
 import { NAVIGATOR } from '../common/token';
 
@@ -13,9 +13,17 @@ export class Recorder {
   /** 是否收录 */
   private recorded: boolean = true;
   /** 开始录音主题 */
-  readonly action: Subject<void> = new Subject();
+  private action$: Subject<void> = new Subject();
   /** 录音完成主题 */
-  readonly available: Subject<BlobEvent> = new Subject();
+  private available$: Subject<BlobEvent> = new Subject();
+
+  get action(): Observable<void> {
+    return this.action$.asObservable();
+  }
+
+  get available(): Observable<BlobEvent> {
+    return this.available$.asObservable();
+  }
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -64,14 +72,14 @@ export class Recorder {
    */
   start() {
     fromEvent(this.recorder, 'start').pipe(take(1)).subscribe(() => {
-      this.action.next();
+      this.action$.next();
     });
 
     fromEvent(this.recorder, 'dataavailable').pipe(
       take(1),
       filter(() => this.recorded)
     ).subscribe((event: BlobEvent) => {
-      this.available.next(event);
+      this.available$.next(event);
     });
 
     this.recorder.start();

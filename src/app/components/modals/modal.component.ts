@@ -10,7 +10,7 @@ import { Overlay } from 'src/app/services/overlay.service';
  */
 @Directive()
 export abstract class ModalComponent implements OnInit, OnDestroy {
-  protected subject: Subject<unknown> = new Subject();
+  protected destroy$: Subject<void> = new Subject<void>();
 
   protected router: Router;
   protected overlay: Overlay;
@@ -21,14 +21,14 @@ export abstract class ModalComponent implements OnInit, OnDestroy {
       this.router.navigate([], { fragment: 'modal' });
     });
     this.router.events.pipe(
-      takeUntil(this.subject),
+      takeUntil(this.destroy$),
       filter(event => event instanceof NavigationEnd),
     ).subscribe(() => this.dismiss());
   }
 
   ngOnDestroy(): void {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
     this.router.navigate([]);
   }
 

@@ -18,7 +18,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./handle.page.scss'],
 })
 export class HandlePage implements OnInit, OnDestroy {
-  private subject: Subject<unknown> = new Subject();
+  private destroy$: Subject<void> = new Subject<void>();
   readonly requestStatus: typeof FriendRequestStatus = FriendRequestStatus;
   /** 用户 */
   user: User;
@@ -46,7 +46,7 @@ export class HandlePage implements OnInit, OnDestroy {
       this.request = data;
     });
 
-    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.subject)).subscribe((result: Result<any>) => {
+    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.destroy$)).subscribe((result: Result<any>) => {
       if (result.code === ResultCode.Success && result.data.requesterId === this.user.id) {
         setTimeout(() => {
           this.navCtrl.back();
@@ -54,7 +54,7 @@ export class HandlePage implements OnInit, OnDestroy {
       }
     });
 
-    this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.subject)).subscribe((result: Result<FriendRequest>) => {
+    this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.destroy$)).subscribe((result: Result<FriendRequest>) => {
       if (result.code === ResultCode.Success && result.data.requesterId === this.user.id) {
         setTimeout(() => {
           this.navCtrl.back();
@@ -74,8 +74,8 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   agree() {
