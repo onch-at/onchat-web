@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { ValidationFeedback } from 'src/app/common/interface';
-import { AvatarCropperComponent } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
+import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -92,7 +91,6 @@ export class InfoPage implements OnInit, OnDestroy {
   constructor(
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
-    private router: Router,
     private navCtrl: NavController,
     private apiService: ApiService,
     private overlay: Overlay
@@ -167,7 +165,13 @@ export class InfoPage implements OnInit, OnDestroy {
         handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.presentModal({
           component: AvatarCropperComponent,
           componentProps: {
-            imageChangedEvent: event
+            imageChangedEvent: event,
+            uploader: (avatar: Blob) => this.apiService.uploadUserAvatar(avatar),
+            handler: (result: Result<AvatarData>) => {
+              const { avatar, avatarThumbnail } = result.data;
+              this.globalData.user.avatar = avatar;
+              this.globalData.user.avatarThumbnail = avatarThumbnail;
+            }
           }
         }))
       },

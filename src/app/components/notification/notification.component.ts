@@ -18,8 +18,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
   @Input() icon: string;
   /** 浮层 */
   @Input() overlayRef: OverlayRef;
-  /** 浮层持续时间 */
-  @Input() overlayDuration: number;
   /** 点击跳转URL */
   @Input() url: string;
   /** 点击事件处理函数 */
