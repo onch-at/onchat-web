@@ -83,7 +83,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "app:build",
-            "proxyConfig": "proxy.config.json"
+            "proxyConfig": "proxy.config.json",
+            "host": "0.0.0.0",
+            "ssl": true,
+            "sslCert": "localhost.pem",
+            "sslKey": "localhost-key.pem"
           },
           "configurations": {
             "production": {
