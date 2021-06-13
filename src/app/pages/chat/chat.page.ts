@@ -364,9 +364,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     if (!this.showSendBtn() || this.disableSendBtn()) { return; }
 
     const { id, avatarThumbnail } = this.globalData.user;
-    // 按回车键发送消息的时候，文字末尾会带上一个换行符，这里将其去除
-    this.msg = StrUtil.trimEnd(this.msg);
-
     const msg = new MessageEntity().inject(this.injector);
     msg.chatroomId = this.chatroomId;
     msg.userId = id;

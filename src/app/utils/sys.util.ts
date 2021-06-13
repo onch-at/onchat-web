@@ -68,28 +68,6 @@ export class SysUtil {
     anchor.click();
   }
 
-  /**
-   * 是否支持WebP格式
-   */
-  static isSupportWEBP(): boolean {
-    try {
-      return document.createElement('canvas').toDataURL('image/webp').startsWith('data:image/webp');
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /**
-   * 是否支持JPEG格式
-   */
-  static isSupportJPEG(): boolean {
-    try {
-      return document.createElement('canvas').toDataURL('image/jpeg').startsWith('data:image/jpeg');
-    } catch (e) {
-      return false;
-    }
-  }
-
   static throttle(fn: Function, wait: number) {
     let timer = null;
     return () => {

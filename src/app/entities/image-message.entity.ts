@@ -16,8 +16,6 @@ export class ImageMessageEntity extends MessageEntity {
   original: boolean;
   /** 图像原URL */
   url: string;
-  /** 图像格式 */
-  format: string;
   /** 上传进度 */
   percent: number;
 
@@ -36,7 +34,7 @@ export class ImageMessageEntity extends MessageEntity {
    * 压缩图像
    */
   compress() {
-    return this.injector.get(ImageService).compress(this.url, 0.75, this.format).pipe(
+    return this.injector.get(ImageService).compress(this.url).pipe(
       tap((file: Blob) => {
         this.file = file;
         this.original = false;

@@ -8,6 +8,37 @@ import { SysUtil } from '../utils/sys.util';
   providedIn: 'root'
 })
 export class ImageService {
+  private _format: string;
+
+  /** 最佳图片格式，优先级：webp -> jpeg -> png */
+  get format() {
+    if (this._format) {
+      return this._format;
+    }
+
+    return this._format = this.isSupportWEBP ? 'webp' : this.isSupportJPEG ? 'jpeg' : 'png';
+  }
+  /**
+   * 是否支持WebP格式
+   */
+  get isSupportWEBP(): boolean {
+    try {
+      return document.createElement('canvas').toDataURL('image/webp').startsWith('data:image/webp');
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * 是否支持JPEG格式
+   */
+  get isSupportJPEG(): boolean {
+    try {
+      return document.createElement('canvas').toDataURL('image/jpeg').startsWith('data:image/jpeg');
+    } catch (e) {
+      return false;
+    }
+  }
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -17,9 +48,9 @@ export class ImageService {
    * 压缩图片
    * @param src 图片URL
    * @param quality 质量
-   * @param format 格式
    */
-  compress(src: string, quality: number = 0.75, format: string = 'webp') {
+  compress(src: string, quality: number = 0.8) {
+    const format = this.format;
     const img = new Image();
     img.crossOrigin = 'anonymous';
 
@@ -125,7 +156,7 @@ export class ImageService {
    * @param image
    */
   isAnimation(image: Blob): boolean {
-    const types = ['image/apng', 'image/gif'];
-    return types.includes(image.type);
+    return ['image/apng', 'image/gif'].includes(image.type);
   }
+
 }

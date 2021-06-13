@@ -7,15 +7,6 @@ export class StrUtil {
     return str.replace(/[\s\n]+/g, '');
   }
 
-  // TODO: 等typescript版本升上来就可以移除掉该方法了
-  /**
-   * 剔除字符串末尾的空格及换行
-   * @param str
-   */
-  static trimEnd(str: string): string {
-    return str.replace(/[\s\n]+$/, '');
-  }
-
   /**
    * 是否为字符串
    * @param obj

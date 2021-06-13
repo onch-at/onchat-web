@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
@@ -6,6 +6,7 @@ import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME
 import { ResultCode } from 'src/app/common/enum';
 import { passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
+import { WINDOW } from 'src/app/common/token';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -55,7 +56,8 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
     private overlay: Overlay,
     private socketService: SocketService,
     private formBuilder: FormBuilder,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ionViewWillEnter() {
@@ -84,9 +86,9 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
       this.overlay.presentToast('登录成功！即将跳转…');
 
       this.globalData.user = data;
-      this.socketService.init();
+      this.socketService.connect();
 
-      setTimeout(() => {
+      this.window.setTimeout(() => {
         this.router.navigateByUrl('/');
         this.onChatService.init();
       }, 1000);

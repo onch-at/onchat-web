@@ -54,12 +54,6 @@ export class AppComponent implements OnInit {
       const { data } = result;
       this.globalData.user = data || null;
 
-      if (!data) {
-        // 如果不在用户登录、注册页，找回密码页，就跳转
-        const isNotAuthPage = /^(?!(\/user\/(login|register|password)))/.test(this.router.routerState.snapshot.url);
-        return isNotAuthPage && this.router.navigateByUrl('/user/login');
-      }
-
       this.socketService.init();
       this.onChatService.init();
     });

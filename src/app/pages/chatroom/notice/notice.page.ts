@@ -12,7 +12,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
 })
 export class NoticePage implements OnInit {
   readonly slide = slide;
-  url: 'notice-list' | 'request-list';
+  pathname: string;
 
   @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
 
@@ -23,19 +23,19 @@ export class NoticePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.url = this.router.routerState.snapshot.url.includes('notice-list') ? 'notice-list' : 'request-list';
-
+    this.pathname = this.router.routerState.snapshot.url;
     const { receiveChatRequests, sendChatRequests, user } = this.globalData;
-    receiveChatRequests.concat(sendChatRequests).some(o => (
+    const hasUnreaded = receiveChatRequests.concat(sendChatRequests).some(o => (
       !o.readedList.includes(user.id)
-    )) && this.apiService.readedChatRequests().subscribe();
+    ));
 
+    hasUnreaded && this.apiService.readedChatRequests().subscribe();
     this.globalData.readedChatRequest();
   }
 
   segmentChange(event: any) {
-    this.url = event.detail.value;
-    this.router.navigateByUrl('/chatroom/notice/' + this.url, { skipLocationChange: true });
+    this.pathname = event.detail.value;
+    this.router.navigateByUrl(this.pathname, { skipLocationChange: true });
   }
 
 }

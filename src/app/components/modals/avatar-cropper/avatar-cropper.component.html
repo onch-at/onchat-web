@@ -17,7 +17,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <image-cropper [hidden]="error" [format]="format" [roundCropper]="true" [imageChangedEvent]="imageChangedEvent"
+  <image-cropper [hidden]="error" [format]="imageService.format" [roundCropper]="true" [imageChangedEvent]="imageChangedEvent"
                  [maintainAspectRatio]="true" [autoCrop]="false" [aspectRatio]="1" [resizeToWidth]="512" [imageQuality]="90"
                  backgroundColor="#f0f0f0" [cropperMinWidth]="256" (imageLoaded)="onImageLoaded()"
                  (loadImageFailed)="onLoadImageFailed()">

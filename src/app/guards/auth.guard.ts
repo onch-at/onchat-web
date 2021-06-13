@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Result, User } from '../models/onchat.model';
 import { ApiService } from '../services/api.service';
 import { GlobalData } from '../services/global-data.service';
+import { SocketService } from '../services/socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import { GlobalData } from '../services/global-data.service';
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
     private apiService: ApiService,
+    private socketService: SocketService,
     private globalData: GlobalData,
     private router: Router
   ) { }
@@ -23,6 +25,7 @@ export class AuthGuard implements CanActivate, CanLoad {
       map((result: Result<false | User>) => {
         if (result.data) {
           this.globalData.user = result.data;
+          this.socketService.connect();
         } else {
           this.router.navigateByUrl('/user/login');
         }

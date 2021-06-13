@@ -1,6 +1,7 @@
-import { Component, Injector, Input, ViewChild } from '@angular/core';
+import { Component, Inject, Injector, Input, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
+import { WINDOW } from 'src/app/common/token';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
@@ -23,16 +24,14 @@ export class ChatDrawerComponent {
 
   slideOpts: SwiperOptions = { initialSlide: 1 };
 
-  /** 图片格式，优先级：webp -> jpeg -> png */
-  private format: string = SysUtil.isSupportWEBP() ? 'webp' : SysUtil.isSupportJPEG() ? 'jpeg' : 'png';
-
   constructor(
     private globalData: GlobalData,
     private sanitizer: DomSanitizer,
     private overlay: Overlay,
     private imageService: ImageService,
     private routerOutlet: IonRouterOutlet,
-    private injector: Injector
+    private injector: Injector,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   setIndex(index: number, speed?: number) {
@@ -100,14 +99,15 @@ export class ChatDrawerComponent {
     msg.userId = user.id;
     msg.chatroomId = chatroomId;
     msg.avatarThumbnail = user.avatarThumbnail;
-    msg.format = this.format;
 
     return new Promise<ImageMessageEntity>((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
         msg.data = new ImageMessage(safeUrl, safeUrl, img.width, img.height);
         this.page.msgList.push(msg);
-        this.page.scrollToBottom(300).then(() => resolve(msg));
+        this.window.setTimeout(() => {
+          this.page.scrollToBottom(300).then(() => resolve(msg));
+        });
         msg.send();
       }
 

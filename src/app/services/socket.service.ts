@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable, Subject } from 'rxjs';
-import { take, tap, timeout } from 'rxjs/operators';
+import { filter, take, tap, timeout } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enum';
-import { Message } from '../models/onchat.model';
+import { Message, Result } from '../models/onchat.model';
 import { Overlay } from './overlay.service';
 
 @Injectable({
@@ -28,8 +28,11 @@ export class SocketService {
   init() {
     this.on(SocketEvent.Init).pipe(
       timeout(10000),
-      take(1)
-    ).subscribe(() => this.init$.next());
+      take(1),
+      filter((result: Result) => result.code === ResultCode.Success)
+    ).subscribe(() => {
+      this.init$.next();
+    });
 
     this.emit(SocketEvent.Init);
   }
@@ -172,6 +175,10 @@ export class SocketService {
     return this.socket.fromEvent(eventName).pipe(tap((data: any) => {
       data?.code === ResultCode.ErrorHighFrequency && this.overlay.presentToast('操作失败，原因：请求频率过高');
     }));
+  }
+
+  connect() {
+    return this.socket.connect();
   }
 
   /**

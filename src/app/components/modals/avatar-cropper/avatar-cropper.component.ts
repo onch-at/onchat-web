@@ -5,6 +5,7 @@ import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cro
 import { Observable } from 'rxjs';
 import { ResultCode } from 'src/app/common/enum';
 import { Result } from 'src/app/models/onchat.model';
+import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 import { ModalComponent } from '../modal.component';
@@ -26,14 +27,13 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
   @Input() handler: (result: Result<AvatarData>) => unknown;
   /** 图片裁剪组件 */
   @ViewChild(ImageCropperComponent, { static: true }) imageCropper: ImageCropperComponent;
-  /** 图片格式，优先级：webp -> jpeg -> png */
-  format: string = SysUtil.isSupportWEBP() ? 'webp' : SysUtil.isSupportJPEG() ? 'jpeg' : 'png';
   /** 加载中 */
   ionLoading: Promise<HTMLIonLoadingElement>;
   /** 无法加载图片 */
   error: boolean = false;
 
   constructor(
+    public imageService: ImageService,
     private sanitizer: DomSanitizer,
     protected overlay: Overlay,
     protected router: Router

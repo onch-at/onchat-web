@@ -125,9 +125,9 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
 
       this.overlay.presentToast('注册成功！即将跳转…');
       this.globalData.user = data;
-      this.socketService.init();
+      this.socketService.connect();
 
-      setTimeout(() => {
+      this.window.setTimeout(() => {
         this.router.navigateByUrl('/');
         this.onChatService.init();
       }, 1000);

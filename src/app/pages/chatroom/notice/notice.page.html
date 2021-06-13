@@ -9,16 +9,17 @@
     </ion-toolbar>
 
     <ion-toolbar>
-      <ion-segment [(ngModel)]="url" (ionChange)="segmentChange($event)">
-        <ion-segment-button value="notice-list">
+      <ion-segment [(ngModel)]="pathname" (ionChange)="segmentChange($event)">
+        <ion-segment-button value="/chatroom/notice/notice-list">
           <ion-label>我的通知</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="request-list">
+        <ion-segment-button value="/chatroom/notice/request-list">
           <ion-label>我的申请</ion-label>
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>
   </ion-header>
 
-  <ion-router-outlet class="router-outlet" [animation]="slide(routerOutlet)"></ion-router-outlet>
+  <ion-router-outlet class="router-outlet" [animation]="slide(routerOutlet)" data-animation="1">
+  </ion-router-outlet>
 </ion-content>

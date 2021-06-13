@@ -50,6 +50,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
       url: env.socketUrl,
       options: {
         path: env.socketPath,
+        autoConnect: false,
         transports: ['websocket'] // 只使用WebSocket连接
       }
     }),
