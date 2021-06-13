@@ -5,9 +5,9 @@ import { IonicModule } from '@ionic/angular';
 import { ActiveClassModule } from 'src/app/modules/active-class.module';
 import { EmptyModule } from 'src/app/modules/empty.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
+import { NewsPageRoutingModule } from './news-routing.module';
+import { NewsPage } from './news.page';
 import { NoticeListComponent } from './notice-list/notice-list.component';
-import { NoticePageRoutingModule } from './notice-routing.module';
-import { NoticePage } from './notice.page';
 import { RequestListComponent } from './request-list/request-list.component';
 
 @NgModule({
@@ -16,14 +16,14 @@ import { RequestListComponent } from './request-list/request-list.component';
     FormsModule,
     IonicModule,
     ActiveClassModule,
-    NoticePageRoutingModule,
+    NewsPageRoutingModule,
     RippleModule,
     EmptyModule
   ],
   declarations: [
-    NoticePage,
+    NewsPage,
     NoticeListComponent,
     RequestListComponent
   ]
 })
-export class NoticePageModule { }
+export class NewsPageModule { }

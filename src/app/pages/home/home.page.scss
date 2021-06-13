@@ -41,8 +41,8 @@
     &::before {
       content: "";
       position: absolute;
-      height: 4.5rem;
-      width: 4.5rem;
+      height: 4rem;
+      width: 4rem;
       background: var(--color-white);
       border-radius: 50%;
       transform: scale(0);
@@ -50,7 +50,7 @@
 
     &.active {
       --color: var(--color-white);
-      animation: active 0.4s ease-out forwards;
+      animation: active 0.5s ease-out forwards;
     }
 
     &.active::before {

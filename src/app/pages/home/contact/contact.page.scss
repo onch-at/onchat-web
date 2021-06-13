@@ -80,7 +80,7 @@ aside {
     transform: translateX(-50%);
     background: rgba(var(--color-primary-rgb), 0.75);
     border-radius: 0.25rem;
-    transition: left 0.25s ease-in-out, width 0.25s ease-in-out;
+    transition: left 0.3s ease-out, width 0.3s ease-out;
   }
 }
 

@@ -7,10 +7,10 @@ import { GlobalData } from 'src/app/services/global-data.service';
 
 @Component({
   selector: 'app-notice',
-  templateUrl: './notice.page.html',
-  styleUrls: ['./notice.page.scss']
+  templateUrl: './news.page.html',
+  styleUrls: ['./news.page.scss']
 })
-export class NoticePage implements OnInit {
+export class NewsPage implements OnInit {
   readonly slide = slide;
   pathname: string;
 

@@ -103,7 +103,7 @@ export class SessionPage {
         break;
 
       case ChatSessionType.ChatroomNotice:
-        this.router.navigateByUrl('/chatroom/notice');
+        this.router.navigateByUrl('/chatroom/news');
         break;
     }
   }

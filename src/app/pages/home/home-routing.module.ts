@@ -1,7 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { CanDeactivateGuard } from 'src/app/guards/can-deactivate.guard';
+import { ChatroomComponent } from './contact/chatroom/chatroom.component';
+import { ContactPage } from './contact/contact.page';
+import { FriendComponent } from './contact/friend/friend.component';
+import { NewComponent } from './contact/new/new.component';
 import { HomePage } from './home.page';
+import { ProfilePage } from './profile/profile.page';
+import { SessionPage } from './session/session.page';
+import { SettingsPage } from './settings/settings.page';
 
 const routes: Routes = [
   {
@@ -16,19 +24,44 @@ const routes: Routes = [
     children: [
       {
         path: 'session',
-        loadChildren: () => import('./session/session.module').then(m => m.SessionPageModule)
+        component: SessionPage
       },
       {
         path: 'contact',
-        loadChildren: () => import('./contact/contact.module').then(m => m.ContactPageModule)
+        component: ContactPage,
+        children: [
+          {
+            path: 'new',
+            component: NewComponent,
+            data: { animation: 1 }
+          },
+          {
+            path: 'friend',
+            component: FriendComponent,
+            data: { animation: 2 }
+          },
+          {
+            path: 'chatroom',
+            component: ChatroomComponent,
+            data: { animation: 3 }
+          },
+          {
+            path: '**',
+            redirectTo: 'friend',
+            pathMatch: 'full'
+          }
+        ]
       },
       {
         path: 'settings',
-        loadChildren: () => import('./settings/settings.module').then(m => m.SettingsPageModule)
+        component: SettingsPage
       },
       {
         path: 'profile',
-        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
+        component: ProfilePage,
+        canDeactivate: [
+          CanDeactivateGuard
+        ]
       },
       {
         path: '**',

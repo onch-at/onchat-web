@@ -78,8 +78,8 @@ const routes: Routes = [
         loadChildren: () => import('./pages/chatroom/avatar/avatar.module').then(m => m.AvatarPageModule)
       },
       {
-        path: 'notice',
-        loadChildren: () => import('./pages/chatroom/notice/notice.module').then(m => m.NoticePageModule)
+        path: 'news',
+        loadChildren: () => import('./pages/chatroom/news/news.module').then(m => m.NewsPageModule)
       },
       {
         path: 'handle',

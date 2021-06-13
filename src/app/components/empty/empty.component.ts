@@ -7,7 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class EmptyComponent {
   @Input() icon: string;
-  @Input() description: string;
 
   constructor() { }
 

@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { NewsPage } from './news.page';
 import { NoticeListComponent } from './notice-list/notice-list.component';
-import { NoticePage } from './notice.page';
 import { RequestListComponent } from './request-list/request-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: NoticePage,
+    component: NewsPage,
     children: [
       {
         path: 'notice-list',
@@ -39,4 +39,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class NoticePageRoutingModule { }
+export class NewsPageRoutingModule { }
