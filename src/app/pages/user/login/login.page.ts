@@ -75,9 +75,7 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
 
     const { username, password } = this.form.value;
 
-    this.apiService.login(new Login(username, password)).subscribe((result: Result<User>) => {
-      const { code, data, msg } = result;
-
+    this.apiService.login(new Login(username, password)).subscribe(({ code, data, msg }: Result<User>) => {
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
         return this.overlay.presentToast('登录失败，原因：' + msg, 2000);

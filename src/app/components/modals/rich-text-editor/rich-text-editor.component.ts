@@ -83,8 +83,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
     msg.data = new RichTextMessage(this.html, this.text);
 
     this.socketService.on(SocketEvent.Message).pipe(
-      filter((result: Result<Message>) => {
-        const { code, data } = result;
+      filter(({ code, data }: Result<Message>) => {
         return code === ResultCode.Success && msg.isSelf(data)
       })
     ).subscribe((result: Result<Message>) => {

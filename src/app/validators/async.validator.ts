@@ -13,7 +13,7 @@ export class AsyncValidator {
 
   legalEmail(): AsyncValidatorFn {
     return (ctrl: AbstractControl) => this.apiService.checkEmail(ctrl.value).pipe(
-      map((result: Result<boolean>) => (result.data ? null : { legalemail: true })),
+      map(({ data }: Result<boolean>) => (data ? null : { legalemail: true })),
       catchError(() => of(null))
     );
   }

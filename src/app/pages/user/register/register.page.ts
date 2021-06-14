@@ -115,8 +115,7 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
     this.globalData.navigating = true;
 
     const { username, password, email, captcha } = this.form.value;
-    this.apiService.register(new Register(username, password, email, captcha)).subscribe((result: Result<User>) => {
-      const { code, data, msg } = result;
+    this.apiService.register(new Register(username, password, email, captcha)).subscribe(({ code, data, msg }: Result<User>) => {
 
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
@@ -138,8 +137,8 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
     const ctrl = this.form.get('email');
     if (ctrl.errors || this.countdownTimer) { return; }
 
-    this.apiService.sendEmailCaptcha(ctrl.value).subscribe((result: Result<boolean>) => {
-      this.overlay.presentToast(result.code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
+    this.apiService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result<boolean>) => {
+      this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {

@@ -141,16 +141,16 @@ export class InfoPage implements OnInit, OnDestroy {
     this.userInfo.birthday = Date.parse(birthday);
     this.userInfo.gender = +gender;
 
-    this.apiService.saveUserInfo(this.userInfo).subscribe((result: Result<UserInfo>) => {
+    this.apiService.saveUserInfo(this.userInfo).subscribe(({ code, data }: Result<UserInfo>) => {
       this.loading = false;
 
-      if (result.code !== ResultCode.Success) {
+      if (code !== ResultCode.Success) {
         return this.overlay.presentToast('用户信息修改失败！', 2000);
       }
 
       const { user } = this.globalData;
 
-      this.globalData.user = { ...user, ...result.data };
+      this.globalData.user = { ...user, ...data };
 
       this.overlay.presentToast('用户信息修改成功！', 1000).then(() => {
         this.navCtrl.back();
@@ -167,8 +167,8 @@ export class InfoPage implements OnInit, OnDestroy {
           componentProps: {
             imageChangedEvent: event,
             uploader: (avatar: Blob) => this.apiService.uploadUserAvatar(avatar),
-            handler: (result: Result<AvatarData>) => {
-              const { avatar, avatarThumbnail } = result.data;
+            handler: ({ data }: Result<AvatarData>) => {
+              const { avatar, avatarThumbnail } = data;
               this.globalData.user.avatar = avatar;
               this.globalData.user.avatarThumbnail = avatarThumbnail;
             }

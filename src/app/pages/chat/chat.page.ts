@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, Injector, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
-import { IonContent, Platform } from '@ionic/angular';
+import { IonContent, NavController, Platform } from '@ionic/angular';
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
@@ -79,6 +79,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     private renderer: Renderer2,
     private overlay: Overlay,
     private injector: Injector,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
@@ -112,9 +113,9 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       this.chatroomType = data.chatroomType;
     } else {
       this.apiService.getChatroom(this.chatroomId).pipe(
-        filter((result: Result) => result.code === ResultCode.Success)
-      ).subscribe((result: Result<Chatroom>) => {
-        const { name, type } = result.data
+        filter(({ code }: Result) => code === ResultCode.Success)
+      ).subscribe(({ data }: Result<Chatroom>) => {
+        const { name, type } = data
         this.chatroomName = name;
         this.chatroomType = type;
       });
@@ -123,14 +124,11 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.destroy$),
 
-      filter((result: Result<Message>) => {
-        const { code, data } = result;
+      filter(({ code, data }: Result<Message>) => {
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
       }),
 
-      tap((result: Result<Message>) => {
-        const { data } = result;
-
+      tap(({ data }: Result<Message>) => {
         // 如果不是自己发的消息
         if (data.userId !== this.globalData.user.id) {
           this.msgList.push(data);
@@ -155,12 +153,11 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
     this.socketService.on(SocketEvent.RevokeMessage).pipe(
       takeUntil(this.destroy$),
-      filter((result: Result<{ chatroomId: number, msgId: number }>) => {
-        const { code, data } = result;
+      filter(({ code, data }: Result<{ chatroomId: number, msgId: number }>) => {
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
       })
-    ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
-      const msg = this.msgList.find(o => o.id === result.data.msgId);
+    ).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
+      const msg = this.msgList.find(o => o.id === data.msgId);
       if (msg) {
         msg.nickname = msg.userId === this.globalData.user.id ? '我' : msg.nickname;
         msg.type = MessageType.Tips;
@@ -284,37 +281,37 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   loadRecords(complete?: () => void) {
     if (this.ended) { return complete?.(); }
 
-    this.apiService.getChatRecords(this.chatroomId, this.msgId).subscribe((result: Result<Message[]>) => {
-      const { code, data } = result;
-      if (code === ResultCode.Success) {
-        // 按照ID排序
-        // result.data.sort((a: Message, b: Message) => {
-        //   return a.id - b.id;
-        // });
-        // this.msgList = result.data.concat(this.msgList);
-
-        for (const msgItem of data) {
-          this.msgList.unshift(msgItem);
+    this.apiService.getChatRecords(this.msgId, this.chatroomId).pipe(
+      filter(({ code }: Result) => {
+        if (code === ResultCode.ErrorNoPermission) {
+          this.overlay.presentToast('你还没有权限进入此聊天室！');
+          this.navCtrl.back();
         }
+        complete?.();
+        return code === ResultCode.Success;
+      })
+    ).subscribe(({ data }: Result<Message[]>) => {
+      // 按照ID排序
+      // result.data.sort((a: Message, b: Message) => {
+      //   return a.id - b.id;
+      // });
+      // this.msgList = result.data.concat(this.msgList);
 
-        // 如果是第一次查记录，就执行滚动
-        !this.msgId && this.scrollToBottom(0).then(() => setTimeout(() => (
-          this.scrollToBottom(0)
-        )));
-
-        if (data.length > 0) {
-          this.msgId = this.msgList[0].id;
-        }
-
-        // 如果返回的消息里少于10条，则代表这是最后一段消息了
-        if (data.length < 15) {
-          this.ended = true;
-        }
-      } else if (code === ResultCode.ErrorNoPermission) { // 如果没有权限
-        this.overlay.presentToast('你还没有权限进入此聊天室！');
-        this.router.navigateByUrl('/'); // 没权限还想进来，回首页去吧
+      for (const msgItem of data) {
+        this.msgList.unshift(msgItem);
       }
-      complete?.();
+
+      // 如果返回的消息里少于10条，则代表这是最后一段消息了
+      if (data.length < 15) {
+        this.ended = true;
+      }
+
+      // 如果是第一次查记录，就执行滚动
+      this.msgId || setTimeout(() => this.scrollToBottom(0));
+
+      if (data.length > 0) {
+        this.msgId = this.msgList[0].id;
+      }
     });
   }
 
@@ -435,8 +432,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['alias'] === this.chatroomName) { return; }
 
-        this.apiService.setFriendAlias(this.chatroomId, data['alias']).subscribe((result: Result<string>) => {
-          const { code, data, msg } = result;
+        this.apiService.setFriendAlias(this.chatroomId, data['alias']).subscribe(({ code, data, msg }: Result<string>) => {
           if (code !== ResultCode.Success) {
             return this.overlay.presentToast(msg);
           }

@@ -26,9 +26,9 @@ export class FriendComponent implements OnInit {
   ngOnInit() {
     // 如果为空，就加载
     !this.globalData.privateChatrooms.length && this.apiService.getPrivateChatrooms().pipe(
-      filter((result: Result) => result.code === ResultCode.Success)
-    ).subscribe((result: Result<ChatSession[]>) => {
-      this.globalData.privateChatrooms = result.data;
+      filter(({ code }: Result) => code === ResultCode.Success)
+    ).subscribe(({ data }: Result<ChatSession[]>) => {
+      this.globalData.privateChatrooms = data;
     });
   }
 

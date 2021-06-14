@@ -22,14 +22,14 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (this.globalData.user) { return true; }
 
     return this.apiService.checkLogin().pipe(
-      map((result: Result<false | User>) => {
-        if (result.data) {
-          this.globalData.user = result.data;
+      map(({ data }: Result<false | User>) => {
+        if (data) {
+          this.globalData.user = data;
           this.socketService.connect();
         } else {
           this.router.navigateByUrl('/user/login');
         }
-        return !!result.data;
+        return !!data;
       })
     );
   }

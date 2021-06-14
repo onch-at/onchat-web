@@ -67,8 +67,8 @@ export class AvatarPage implements OnInit {
         componentProps: {
           imageChangedEvent: event,
           uploader: (avatar: Blob) => this.apiService.uploadUserAvatar(avatar),
-          handler: (result: Result<AvatarData>) => {
-            const { avatar, avatarThumbnail } = result.data;
+          handler: ({ data }: Result<AvatarData>) => {
+            const { avatar, avatarThumbnail } = data;
             this.user.avatar = avatar;
             this.globalData.user.avatar = avatar;
             this.globalData.user.avatarThumbnail = avatarThumbnail;

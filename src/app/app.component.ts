@@ -50,8 +50,7 @@ export class AppComponent implements OnInit {
     // 连接打通时
     this.socketService.on(SocketEvent.Connect).pipe(
       mergeMap(() => this.apiService.checkLogin())
-    ).subscribe((result: Result<false | User>) => {
-      const { data } = result;
+    ).subscribe(({ data }: Result<false | User>) => {
       this.globalData.user = data || null;
 
       this.socketService.init();
@@ -59,9 +58,8 @@ export class AppComponent implements OnInit {
     });
 
     // 发起/收到好友申请时
-    this.socketService.on(SocketEvent.FriendRequest).subscribe((result: Result<FriendRequest>) => {
-      if (result.code !== ResultCode.Success) { return; } //TODO
-      const { data } = result;
+    this.socketService.on(SocketEvent.FriendRequest).subscribe(({ code, data }: Result<FriendRequest>) => {
+      if (code !== ResultCode.Success) { return; } //TODO
       const { user } = this.globalData;
       // 收到好友申请提示，如果自己是被申请人
       if (data.targetId === user.id) {
@@ -93,9 +91,8 @@ export class AppComponent implements OnInit {
 
     // 同意好友申请/收到同意好友申请
     this.socketService.on(SocketEvent.FriendRequestAgree).pipe(
-      filter((result: Result) => result.code === ResultCode.Success)
-    ).subscribe((result: Result<AgreeFriendRequest>) => {
-      const { data } = result;
+      filter(({ code }: Result) => code === ResultCode.Success)
+    ).subscribe(({ data }: Result<AgreeFriendRequest>) => {
       const { user, receiveFriendRequests } = this.globalData;
       // 如果申请人是自己（我发的好友申请被同意了）
       if (data.requesterId === user.id) {
@@ -130,18 +127,17 @@ export class AppComponent implements OnInit {
       // 更新好友列表
       // 如果为空才更新，因为为空时，进入好友列表页会自动查询
       this.globalData.privateChatrooms.length && this.apiService.getPrivateChatrooms().pipe(
-        filter((result: Result) => result.code === ResultCode.Success)
-      ).subscribe((result: Result<ChatSession[]>) => {
-        this.globalData.privateChatrooms = result.data;
+        filter(({ code }: Result) => code === ResultCode.Success)
+      ).subscribe(({ data }: Result<ChatSession[]>) => {
+        this.globalData.privateChatrooms = data;
       });
     });
 
     // 拒绝好友申请/收到拒绝好友申请
     this.socketService.on(SocketEvent.FriendRequestReject).pipe(
-      filter((result: Result) => result.code === ResultCode.Success)
-    ).subscribe((result: Result<FriendRequest>) => {
+      filter(({ code }: Result) => code === ResultCode.Success)
+    ).subscribe(({ data }: Result<FriendRequest>) => {
       const { user } = this.globalData;
-      const { data } = result;
       // 如果申请人是自己
       if (data.requesterId === user.id) {
         const index = this.globalData.sendFriendRequests.findIndex(o => o.id === data.id);
@@ -172,9 +168,8 @@ export class AppComponent implements OnInit {
 
     // 收到消息时
     this.socketService.on(SocketEvent.Message).pipe(
-      filter((result: Result) => result.code === ResultCode.Success)
-    ).subscribe((result: Result<Message>) => {
-      const { data } = result;
+      filter(({ code }: Result) => code === ResultCode.Success)
+    ).subscribe(({ data }: Result<Message>) => {
       const { chatroomId, user } = this.globalData;
       // 先去聊天列表缓存里面查，看看有没有这个房间的数据
       const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === data.chatroomId);
@@ -215,10 +210,10 @@ export class AppComponent implements OnInit {
 
     // 撤回消息时
     this.socketService.on(SocketEvent.RevokeMessage).pipe(
-      filter((result: Result) => result.code === ResultCode.Success)
-    ).subscribe((result: Result<{ chatroomId: number, msgId: number }>) => {
+      filter(({ code }: Result) => code === ResultCode.Success)
+    ).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
-      const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === result.data.chatroomId);
+      const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === data.chatroomId);
       if (chatSession) {
         const nickname = chatSession.content.userId === this.globalData.user.id ? '我' : chatSession.content.nickname;
         chatSession.unread && chatSession.unread--;
@@ -233,13 +228,11 @@ export class AppComponent implements OnInit {
 
     // 收到入群申请时
     this.socketService.on(SocketEvent.ChatRequest).pipe(
-      filter((result: Result<ChatRequest>) => {
-        const { code, data } = result;
+      filter(({ code, data }: Result<ChatRequest>) => {
         // 如果申请人不是自己
         return code === ResultCode.Success && data?.requesterId !== this.globalData.user.id;
       })
-    ).subscribe((result: Result<ChatRequest>) => {
-      const { data } = result;
+    ).subscribe(({ data }: Result<ChatRequest>) => {
       const chatSession = this.globalData.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
       // 如果列表里没有聊天室通知会话,就需要重新拉取
       if (!chatSession) {
@@ -263,8 +256,7 @@ export class AppComponent implements OnInit {
     });
 
     // 同意别人入群/同意我入群
-    this.socketService.on(SocketEvent.ChatRequestAgree).subscribe((result: Result<[ChatRequest, ChatSession]>) => {
-      const { code, data, msg } = result;
+    this.socketService.on(SocketEvent.ChatRequestAgree).subscribe(({ code, data, msg }: Result<[ChatRequest, ChatSession]>) => {
       const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
@@ -310,8 +302,7 @@ export class AppComponent implements OnInit {
     });
 
     // 拒绝别人的入群申请/入群申请被拒绝
-    this.socketService.on(SocketEvent.ChatRequestReject).subscribe((result: Result<ChatRequest>) => {
-      const { code, data, msg } = result;
+    this.socketService.on(SocketEvent.ChatRequestReject).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
       const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {

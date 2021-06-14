@@ -26,9 +26,9 @@ export class ChatroomComponent implements OnInit {
   ngOnInit() {
     // 如果为空，就加载
     !this.globalData.groupChatrooms.length && this.apiService.getGroupChatrooms().pipe(
-      filter((result: Result) => result.code === ResultCode.Success)
-    ).subscribe((result: Result<ChatSession[]>) => {
-      this.globalData.groupChatrooms = result.data;
+      filter(({ code }: Result) => code === ResultCode.Success)
+    ).subscribe(({ data }: Result<ChatSession[]>) => {
+      this.globalData.groupChatrooms = data;
     });
   }
 

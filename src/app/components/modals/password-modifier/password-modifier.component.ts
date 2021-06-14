@@ -72,9 +72,7 @@ export class PasswordModifierComponent extends ModalComponent {
 
     const { oldPassword, newPassword } = this.form.value;
 
-    this.apiService.changePassword(new ChangePassword(oldPassword, newPassword)).subscribe((result: Result) => {
-      const { code, msg } = result;
-
+    this.apiService.changePassword(new ChangePassword(oldPassword, newPassword)).subscribe(({ code, msg }: Result) => {
       this.loading = false;
       this.overlay.presentToast(msg ? '操作失败，原因：' + msg : '成功修改密码，请重新登录！', code === ResultCode.Success ? 1000 : 2000);
 

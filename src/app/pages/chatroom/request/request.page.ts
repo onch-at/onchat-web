@@ -44,9 +44,7 @@ export class RequestPage implements OnInit, OnDestroy {
     this.socketService.on(SocketEvent.ChatRequest).pipe(
       takeUntil(this.destroy$),
       debounceTime(100)
-    ).subscribe((result: Result<ChatRequest>) => {
-      const { code, data, msg } = result;
-
+    ).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
       if (code !== ResultCode.Success) {
         return this.overlay.presentToast('申请失败，原因：' + msg);
       }

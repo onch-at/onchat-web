@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ChatRequest } from '../models/onchat.model';
+import { ChatRequest, Result } from '../models/onchat.model';
 import { ApiService } from '../services/api.service';
 import { GlobalData } from '../services/global-data.service';
 
@@ -25,7 +25,7 @@ export class ReceiveChatRequestResolve implements Resolve<ChatRequest> {
     if (chatRequest) { return chatRequest; }
 
     return this.apiService.getReceiveChatRequestById(chatRequestId).pipe(
-      map(result => result.data)
+      map(({ data }: Result<ChatRequest>) => data)
     );
   }
 }
@@ -49,7 +49,7 @@ export class SendChatRequestResolve implements Resolve<ChatRequest> {
     if (chatRequest) { return chatRequest; }
 
     return this.apiService.getSendChatRequestById(chatRequestId).pipe(
-      map(result => result.data)
+      map(({ data }: Result<ChatRequest>) => data)
     );
   }
 }

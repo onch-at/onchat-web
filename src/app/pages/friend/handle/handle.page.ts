@@ -46,19 +46,15 @@ export class HandlePage implements OnInit, OnDestroy {
       this.request = data;
     });
 
-    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.destroy$)).subscribe((result: Result<any>) => {
-      if (result.code === ResultCode.Success && result.data.requesterId === this.user.id) {
-        setTimeout(() => {
-          this.navCtrl.back();
-        }, 250);
+    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.destroy$)).subscribe(({ code, data }: Result<any>) => {
+      if (code === ResultCode.Success && data.requesterId === this.user.id) {
+        setTimeout(() => this.navCtrl.back(), 250);
       }
     });
 
-    this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.destroy$)).subscribe((result: Result<FriendRequest>) => {
-      if (result.code === ResultCode.Success && result.data.requesterId === this.user.id) {
-        setTimeout(() => {
-          this.navCtrl.back();
-        }, 250);
+    this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.destroy$)).subscribe(({ code, data }: Result<FriendRequest>) => {
+      if (code === ResultCode.Success && data.requesterId === this.user.id) {
+        setTimeout(() => this.navCtrl.back(), 250);
       }
     });
 

@@ -61,7 +61,7 @@ export class SessionPage {
    */
   doStickyChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
     (item.sticky ? this.apiService.unstickyChatSession(item.id) : this.apiService.stickyChatSession(item.id)).pipe(
-      filter((result: Result) => result.code === ResultCode.Success)
+      filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(() => {
       item.sticky = !item.sticky;
       this.globalData.sortChatSessions();
@@ -77,7 +77,7 @@ export class SessionPage {
   doReadChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
     if (!item.unread) {
       return this.apiService.unreadChatSession(item.id).pipe(
-        filter((result: Result) => result.code === ResultCode.Success)
+        filter(({ code }: Result) => code === ResultCode.Success)
       ).subscribe(() => {
         ionItemSliding.close();
         item.unread = 1;
@@ -85,7 +85,7 @@ export class SessionPage {
     }
 
     (item.type === ChatSessionType.ChatroomNotice ? this.apiService.readedChatRequests() : this.apiService.readedChatSession(item.id)).pipe(
-      filter((result: Result) => result.code === ResultCode.Success)
+      filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(() => {
       ionItemSliding.close();
       item.unread = 0;

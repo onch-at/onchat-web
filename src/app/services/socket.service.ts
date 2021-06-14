@@ -29,7 +29,7 @@ export class SocketService {
     this.on(SocketEvent.Init).pipe(
       timeout(10000),
       take(1),
-      filter((result: Result) => result.code === ResultCode.Success)
+      filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(() => {
       this.init$.next();
     });
@@ -54,13 +54,13 @@ export class SocketService {
 
   /**
    * 撤回消息
+   * @param id
    * @param chatroomId
-   * @param msgId
    */
-  revokeMessage(chatroomId: number, msgId: number) {
+  revokeMessage(id: number, chatroomId: number) {
     this.emit(SocketEvent.RevokeMessage, {
-      chatroomId,
-      msgId
+      id,
+      chatroomId
     });
   }
 

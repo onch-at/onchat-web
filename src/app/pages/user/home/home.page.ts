@@ -39,9 +39,9 @@ export class HomePage implements OnInit {
       }
     });
 
-    this.apiService.isFriend(this.user.id).subscribe((result: Result<number>) => {
-      if (result.code === ResultCode.Success) {
-        this.chatroomId = result.data;
+    this.apiService.isFriend(this.user.id).subscribe(({ code, data }: Result<number>) => {
+      if (code === ResultCode.Success) {
+        this.chatroomId = data;
       }
     });
   }

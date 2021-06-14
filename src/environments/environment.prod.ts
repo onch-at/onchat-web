@@ -6,6 +6,7 @@ export const environment = {
 
   userUrl: '/onchat/user/',
   chatroomUrl: '/onchat/chatroom/',
+  chatRecordUrl: '/onchat/chat-record/',
   friendUrl: '/onchat/friend/',
   chatUrl: '/onchat/chat/',
 

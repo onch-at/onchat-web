@@ -79,9 +79,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.socketService.on(SocketEvent.ChatRequest).pipe(
       takeUntil(this.destroy$),
       debounceTime(100)
-    ).subscribe((result: Result<ChatRequest>) => {
-      const { code, data, msg } = result;
-
+    ).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
       if (code !== ResultCode.Success) {
         return this.overlay.presentToast('申请失败，原因：' + msg);
       }
@@ -122,8 +120,7 @@ export class HomePage implements OnInit, OnDestroy {
         const { id, name } = this.chatroom;
         if (!StrUtil.trimAll(data['name']).length || data['name'] === name) { return; }
 
-        this.apiService.setChatroomName(id, data['name']).subscribe((result: Result) => {
-          const { code, msg } = result;
+        this.apiService.setChatroomName(id, data['name']).subscribe(({ code, msg }: Result) => {
           if (code !== ResultCode.Success) {
             return this.overlay.presentToast(msg);
           }
@@ -158,8 +155,7 @@ export class HomePage implements OnInit, OnDestroy {
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['nickname'] === this.member.nickname) { return; }
 
-        this.apiService.setMemberNickname(this.chatroom.id, data['nickname']).subscribe((result: Result<string>) => {
-          const { code, data, msg } = result;
+        this.apiService.setMemberNickname(this.chatroom.id, data['nickname']).subscribe(({ code, data, msg }: Result<string>) => {
           if (code !== ResultCode.Success) {
             return this.overlay.presentToast(msg);
           }
@@ -219,9 +215,9 @@ export class HomePage implements OnInit, OnDestroy {
   inviteJoinChatroom() {
     // 等待加载出好友会话后的一个可观察对象
     const observable = this.globalData.privateChatrooms.length ? of(null) : this.apiService.getPrivateChatrooms().pipe(
-      filter((result: Result) => result.code === ResultCode.Success),
-      tap((result: Result<ChatSession[]>) => {
-        this.globalData.privateChatrooms = result.data;
+      filter(({ code }: Result) => code === ResultCode.Success),
+      tap(({ data }: Result<ChatSession[]>) => {
+        this.globalData.privateChatrooms = data;
       })
     );
 
@@ -234,8 +230,7 @@ export class HomePage implements OnInit, OnDestroy {
         limit: MSG_BROADCAST_QUANTITY_LIMIT,
         handler: (data: ChatSessionCheckbox[]) => {
           const observable = this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
-            switchMap((result: Result<number[]>) => {
-              const { code, msg } = result;
+            switchMap(({ code, msg }: Result<number[]>) => {
               this.overlay.presentToast(code === ResultCode.Success ? '邀请消息已发出！' : '邀请失败，原因：' + msg);
               return of(null);
             })
@@ -273,8 +268,8 @@ export class HomePage implements OnInit, OnDestroy {
         componentProps: {
           imageChangedEvent: event,
           uploader: (avatar: Blob) => this.apiService.uploadChatroomAvatar(this.chatroom.id, avatar),
-          handler: (result: Result<AvatarData>) => {
-            const { avatar, avatarThumbnail } = result.data;
+          handler: ({ data }: Result<AvatarData>) => {
+            const { avatar, avatarThumbnail } = data;
             const id = this.chatroom.id;
             this.chatroom.avatar = avatar;
             this.chatroom.avatarThumbnail = avatarThumbnail;

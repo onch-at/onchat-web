@@ -88,8 +88,8 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
   sendCaptcha() {
     if (this.countdownTimer) { return; }
 
-    this.apiService.sendEmailCaptchaByUsername(this.form.value.username).subscribe((result: Result<boolean>) => {
-      this.overlay.presentToast(result.code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
+    this.apiService.sendEmailCaptchaByUsername(this.form.value.username).subscribe(({ code }: Result<boolean>) => {
+      this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {
@@ -106,9 +106,7 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
 
     const { username, password, captcha } = this.form.value;
 
-    this.apiService.resetPassword(new ResetPassword(username, password, captcha)).subscribe((result: Result) => {
-      const { code, msg } = result;
-
+    this.apiService.resetPassword(new ResetPassword(username, password, captcha)).subscribe(({ code, msg }: Result) => {
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
         return this.overlay.presentToast('操作失败，原因：' + msg, 2000);

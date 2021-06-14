@@ -85,16 +85,15 @@ export class CreatePage implements OnInit, OnDestroy {
       setOriginPrivateChatrooms(this.globalData.privateChatrooms);
     } else {
       this.apiService.getPrivateChatrooms().pipe(
-        filter((result: Result) => result.code === ResultCode.Success)
-      ).subscribe((result: Result<ChatSession[]>) => {
-        this.globalData.privateChatrooms = result.data;
-        setOriginPrivateChatrooms(result.data);
+        filter(({ code }: Result) => code === ResultCode.Success)
+      ).subscribe(({ data }: Result<ChatSession[]>) => {
+        this.globalData.privateChatrooms = data;
+        setOriginPrivateChatrooms(data);
       });
     }
 
-    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.destroy$)).subscribe((result: Result<ChatSession>) => {
+    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.destroy$)).subscribe(({ code, data, msg }: Result<ChatSession>) => {
       this.loading = false;
-      const { code, data, msg } = result;
 
       if (code !== ResultCode.Success) {
         return this.overlay.presentToast('聊天室创建失败，原因：' + msg);

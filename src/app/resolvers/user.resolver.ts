@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from '../models/onchat.model';
+import { Result, User } from '../models/onchat.model';
 import { ApiService } from '../services/api.service';
 import { GlobalData } from '../services/global-data.service';
 
@@ -23,7 +23,7 @@ export class UserResolve implements Resolve<User> {
     const { user } = this.globalData;
 
     return (user?.id === userId) ? user : this.apiService.getUser(userId).pipe(
-      map(result => result.data)
+      map(({ data }: Result<User>) => data)
     );
   }
 }

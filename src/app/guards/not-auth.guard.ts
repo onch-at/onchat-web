@@ -20,13 +20,13 @@ export class NotAuthGuard implements CanActivate, CanLoad {
     if (this.globalData.user) { return false; }
 
     return this.apiService.checkLogin().pipe(
-      map((result: Result<false | User>) => {
-        if (result.data) {
-          this.globalData.user = result.data;
+      map(({ data }: Result<false | User>) => {
+        if (data) {
+          this.globalData.user = data;
           this.router.navigateByUrl('/'); // 如果登录了就返回主页
         }
 
-        return !result.data;
+        return !data;
       })
     );
   }

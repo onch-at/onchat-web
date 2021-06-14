@@ -46,8 +46,7 @@ export class MessageEntity implements Message {
     const socketService = this.injector.get(SocketService);
 
     socketService.on(SocketEvent.Message).pipe(
-      filter((result: Result<Message>) => {
-        const { code, data } = result;
+      filter(({ code, data }: Result<Message>) => {
         return code === ResultCode.Success && this.isSelf(data);
       }),
       take(1)

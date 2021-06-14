@@ -26,15 +26,15 @@ export class OnChatService {
   init(): void {
     this.initChatSession().subscribe();
 
-    this.apiService.getReceiveFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
-      if (result.data?.length) {
-        this.globalData.receiveFriendRequests = result.data;
+    this.apiService.getReceiveFriendRequests().subscribe(({ data }: Result<FriendRequest[]>) => {
+      if (data?.length) {
+        this.globalData.receiveFriendRequests = data;
       }
     });
 
-    this.apiService.getSendFriendRequests().subscribe((result: Result<FriendRequest[]>) => {
-      if (result.data?.length) {
-        this.globalData.sendFriendRequests = result.data;
+    this.apiService.getSendFriendRequests().subscribe(({ data }: Result<FriendRequest[]>) => {
+      if (data?.length) {
+        this.globalData.sendFriendRequests = data;
       }
     });
 
@@ -60,14 +60,14 @@ export class OnChatService {
    */
   initChatSession() {
     return forkJoin([
-      this.apiService.getChatSession().pipe(tap((result: Result<ChatSession[]>) => {
-        this.globalData.chatSessions = result.data;
+      this.apiService.getChatSession().pipe(tap(({ data }: Result<ChatSession[]>) => {
+        this.globalData.chatSessions = data;
       })),
-      this.apiService.getReceiveChatRequests().pipe(tap((result: Result<ChatRequest[]>) => {
-        this.globalData.receiveChatRequests = result.data;
+      this.apiService.getReceiveChatRequests().pipe(tap(({ data }: Result<ChatRequest[]>) => {
+        this.globalData.receiveChatRequests = data;
       })),
-      this.apiService.getSendChatRequests().pipe(tap((result: Result<ChatRequest[]>) => {
-        this.globalData.sendChatRequests = result.data;
+      this.apiService.getSendChatRequests().pipe(tap(({ data }: Result<ChatRequest[]>) => {
+        this.globalData.sendChatRequests = data;
       }))
     ]);
   }

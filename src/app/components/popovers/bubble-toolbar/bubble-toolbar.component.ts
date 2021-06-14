@@ -40,7 +40,7 @@ export class BubbleToolbarComponent {
    * 撤回消息
    */
   revokeMessage() {
-    this.socketService.revokeMessage(+this.globalData.chatroomId, +this.msgItem.id);
+    this.socketService.revokeMessage(this.msgItem.id, this.globalData.chatroomId);
     this.dismiss();
   }
 

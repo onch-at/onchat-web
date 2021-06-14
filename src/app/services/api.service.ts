@@ -45,7 +45,7 @@ export class ApiService {
    * @param o
    */
   login(o: Login): Observable<Result<User>> {
-    return this.http.post<Result<User>>(env.userUrl + 'login', o, HTTP_OPTIONS_JSON);
+    return this.http.post<Result<User>>(env.userUrl + 'login', o);
   }
 
   /**
@@ -86,7 +86,7 @@ export class ApiService {
    * @param o
    */
   register(o: Register): Observable<Result<User>> {
-    return this.http.post<Result<User>>(env.userUrl + 'register', o, HTTP_OPTIONS_JSON);
+    return this.http.post<Result<User>>(env.userUrl + 'register', o);
   }
 
   /**
@@ -94,7 +94,7 @@ export class ApiService {
    * @param o
    */
   changePassword(o: ChangePassword): Observable<Result> {
-    return this.http.put<Result>(env.userUrl + 'password', o, HTTP_OPTIONS_JSON);
+    return this.http.put<Result>(env.userUrl + 'password', o);
   }
 
   /**
@@ -110,7 +110,7 @@ export class ApiService {
    * @param o
    */
   resetPassword(o: ResetPassword): Observable<Result> {
-    return this.http.put<Result>(env.userUrl + 'password/reset', o, HTTP_OPTIONS_JSON);
+    return this.http.put<Result>(env.userUrl + 'password/reset', o);
   }
 
   /**
@@ -121,7 +121,7 @@ export class ApiService {
     const formData: FormData = new FormData();
     formData.append('image', avatar);
 
-    return this.http.post<Result<AvatarData>>(env.userUrl + 'avatar', formData, HTTP_OPTIONS_DEFAULT);
+    return this.http.post<Result<AvatarData>>(env.userUrl + 'avatar', formData);
   }
 
   /**
@@ -129,7 +129,7 @@ export class ApiService {
    * @param userInfo
    */
   saveUserInfo(userInfo: UserInfo): Observable<Result<UserInfo>> {
-    return this.http.put<Result<UserInfo>>(env.userUrl + 'info', userInfo, HTTP_OPTIONS_JSON);
+    return this.http.put<Result<UserInfo>>(env.userUrl + 'info', userInfo);
   }
 
   /**
@@ -141,7 +141,7 @@ export class ApiService {
     return this.http.put<Result<string>>(env.userUrl + 'bindemail', {
       email,
       captcha
-    }, HTTP_OPTIONS_JSON);
+    });
   }
 
   /**
@@ -191,11 +191,12 @@ export class ApiService {
 
   /**
    * 获取聊天记录
-   * @param id 聊天室ID
-   * @param msgId 页码
+   * @param id 页码
+   * @param chatroomId 聊天室ID
    */
-  getChatRecords(id: number, msgId?: number): Observable<Result<Message[]>> {
-    return this.http.get<Result<Message[]>>(env.chatroomUrl + id + '/records/' + msgId);
+  getChatRecords(id: number, chatroomId: number): Observable<Result<Message[]>> {
+    const params = { id: id.toString() };
+    return this.http.get<Result<Message[]>>(`${env.chatRecordUrl}records/${chatroomId}`, { params });
   }
 
   /**
@@ -215,7 +216,7 @@ export class ApiService {
     const formData: FormData = new FormData();
     formData.append('image', avatar);
 
-    return this.http.post<Result<AvatarData>>(env.chatroomUrl + id + '/avatar', formData, HTTP_OPTIONS_DEFAULT);
+    return this.http.post<Result<AvatarData>>(env.chatroomUrl + id + '/avatar', formData);
   }
 
   /**
@@ -229,7 +230,7 @@ export class ApiService {
     formData.append('image', image);
     formData.append('time', sendTime.toString());
 
-    const request = new HttpRequest('POST', env.chatroomUrl + id + '/image', formData, {
+    const request = new HttpRequest('POST', `${env.chatRecordUrl}image/${id}`, formData, {
       ...HTTP_OPTIONS_DEFAULT,
       reportProgress: true
     });
@@ -248,7 +249,7 @@ export class ApiService {
     formData.append('voice', voice);
     formData.append('time', sendTime.toString());
 
-    return this.http.post<Result<Message<VoiceMessage>>>(env.chatroomUrl + id + '/voice', formData, HTTP_OPTIONS_DEFAULT);
+    return this.http.post<Result<Message<VoiceMessage>>>(`${env.chatRecordUrl}voice/${id}`, formData);
   }
 
   /**

@@ -64,8 +64,8 @@ export class EmailBinderComponent extends ModalComponent {
     const ctrl = this.form.get('email');
     if (ctrl.errors || this.countdownTimer) { return; }
 
-    this.apiService.sendEmailCaptcha(ctrl.value).subscribe((result: Result) => {
-      this.overlay.presentToast(result.code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
+    this.apiService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result) => {
+      this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {
@@ -83,9 +83,7 @@ export class EmailBinderComponent extends ModalComponent {
     this.loading = true;
 
     const { email, captcha } = this.form.value;
-    this.apiService.bindEmail(email, captcha).subscribe((result: Result<string>) => {
-      const { code, data, msg } = result;
-
+    this.apiService.bindEmail(email, captcha).subscribe(({ code, data, msg }: Result<string>) => {
       this.loading = false;
       this.overlay.presentToast(msg || '成功绑定电子邮箱！', code === ResultCode.Success ? 1000 : 2000);
 
