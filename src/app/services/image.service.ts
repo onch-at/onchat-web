@@ -1,8 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { base64ToFile } from 'ngx-image-cropper';
-import { Observable } from 'rxjs';
-import { SysUtil } from '../utils/sys.util';
+import { from, Observable } from 'rxjs';
+import { WINDOW } from '../common/token';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,7 @@ export class ImageService {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   /**
@@ -132,7 +133,7 @@ export class ImageService {
         observer.complete();
       };
 
-      SysUtil.createImageBitmap(img).subscribe(imageBitmap => {
+      this.createImageBitmap(img).subscribe(imageBitmap => {
         worker.onmessage = ({ data }) => {
           observer.next(data);
           complete();
@@ -149,6 +150,27 @@ export class ImageService {
         complete();
       });
     });
+  }
+
+  /**
+   * 创建图像位图
+   * @param img 图像源
+   */
+  createImageBitmap(img: HTMLImageElement): Observable<ImageBitmap> {
+    return from(this.window.createImageBitmap(img, {
+      resizeWidth: img.width,
+      resizeHeight: img.height
+    }).then(bitmap => {
+      // 某些情况下，图片宽度与高度会调换，因此这里要做一个判断
+      if (bitmap.width !== img.width) {
+        return this.window.createImageBitmap(img, {
+          resizeWidth: img.height,
+          resizeHeight: img.width
+        });
+      }
+
+      return bitmap;
+    }));
   }
 
   /**

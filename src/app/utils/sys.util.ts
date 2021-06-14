@@ -1,7 +1,9 @@
 import { Renderer2 } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export class SysUtil {
+  private static pixel: number;
+  private static input: HTMLInputElement;
 
   /**
    * 暴力注入CSS样式到目标元素的ShadowRoot中
@@ -27,31 +29,33 @@ export class SysUtil {
    * @param multiple 多文件上传
    */
   static selectFile(accept: string = null, multiple: boolean = false) {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.multiple = multiple;
-    input.style.visibility = 'hidden';
-    accept && input.setAttribute('accept', accept);
-    document.body.appendChild(input);
-    input.click();
+    if (!SysUtil.input) {
+      SysUtil.input = document.createElement('input');
+      SysUtil.input.type = 'file';
+      SysUtil.input.style.visibility = 'hidden';
+      document.body.appendChild(SysUtil.input);
+    }
+
+    SysUtil.input.multiple = multiple;
+    SysUtil.input.accept = accept;
+    SysUtil.input.click();
 
     return new Observable(observer => {
       const complete = () => {
         observer.complete();
-        document.body.removeChild(input);
       };
 
-      input.onchange = (event: Event) => {
+      SysUtil.input.onchange = (event: Event) => {
         observer.next(event);
         complete();
       };
 
-      input.onerror = (event: any) => {
+      SysUtil.input.onerror = (event: any) => {
         observer.error(event);
         complete();
       };
 
-      input.oncancel = () => {
+      SysUtil.input.oncancel = () => {
         complete();
       };
     });
@@ -93,28 +97,15 @@ export class SysUtil {
    * @param rem
    */
   static rem2px(rem: number): number {
-    return rem * parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
-  }
+    if (!SysUtil.pixel) {
+      const div = document.createElement('div');
+      div.style.height = '1rem';
+      document.body.appendChild(div);
+      SysUtil.pixel = div.clientHeight || parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
+      document.body.removeChild(div);
+    }
 
-  /**
-   * 创建图像位图
-   * @param img 图像源
-   */
-  static createImageBitmap(img: HTMLImageElement): Observable<ImageBitmap> {
-    return from(window.createImageBitmap(img, {
-      resizeWidth: img.width,
-      resizeHeight: img.height
-    }).then(bitmap => {
-      // 某些情况下，图片宽度与高度会调换，因此这里要做一个判断
-      if (bitmap.width !== img.width) {
-        return window.createImageBitmap(img, {
-          resizeWidth: img.height,
-          resizeHeight: img.width
-        });
-      }
-
-      return bitmap;
-    }));
+    return rem * SysUtil.pixel;
   }
 
   // /**

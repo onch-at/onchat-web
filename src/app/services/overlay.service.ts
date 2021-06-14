@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActionSheetController, AlertController, LoadingController, ModalController, PopoverController, ToastController } from '@ionic/angular';
 import { ActionSheetButton, AlertOptions, ModalOptions, NotificationOptions, PopoverOptions } from '../common/interface';
 import { NAVIGATOR } from '../common/token';
-import { NotificationController } from '../providers/notification.controller';
+import { NotificationController } from '../controllers/notification.controller';
 import { GlobalData } from './global-data.service';
 
 /**

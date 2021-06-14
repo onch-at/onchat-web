@@ -114,7 +114,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
 
       let imageBitmap: ImageBitmap;
       try {
-        imageBitmap = await SysUtil.createImageBitmap(transformedImage).toPromise();
+        imageBitmap = await this.imageService.createImageBitmap(transformedImage).toPromise();
       } catch (e) {
         worker.terminate();
         return { imageBlob, imageSrc };
