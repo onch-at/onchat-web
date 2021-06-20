@@ -15,18 +15,14 @@ export class GlobalData {
     this.sortReceiveChatRequests();
   }
 
-  get receiveChatRequests() {
-    return this._receiveChatRequests;
-  }
+  get receiveChatRequests() { return this._receiveChatRequests; }
 
   set sendChatRequests(requests: ChatRequest[]) {
     this._sendChatRequests = requests;
     this.sortSendChatRequests();
   }
 
-  get sendChatRequests() {
-    return this._sendChatRequests;
-  }
+  get sendChatRequests() { return this._sendChatRequests; }
 
   set chatSessions(chatSessions: ChatSession[]) {
     this._chatSessions = chatSessions;
@@ -34,9 +30,7 @@ export class GlobalData {
     this.localStorage.set(LocalStorageKey.ChatSessions, this.chatSessions);
   }
 
-  get chatSessions(): ChatSession[] {
-    return this._chatSessions;
-  }
+  get chatSessions(): ChatSession[] { return this._chatSessions; }
 
   set privateChatrooms(chatrooms: ChatSession[]) {
     this._privateChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => (
@@ -44,9 +38,7 @@ export class GlobalData {
     ));
   }
 
-  get privateChatrooms(): ChatSession[] {
-    return this._privateChatrooms;
-  }
+  get privateChatrooms(): ChatSession[] { return this._privateChatrooms; }
 
   set groupChatrooms(chatrooms: ChatSession[]) {
     this._groupChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => (
@@ -54,32 +46,31 @@ export class GlobalData {
     ));
   }
 
-  get groupChatrooms(): ChatSession[] {
-    return this._groupChatrooms;
-  }
+  get groupChatrooms(): ChatSession[] { return this._groupChatrooms; }
+
   /** 当前用户 */
-  user: User = null;
+  user: User;
   /** 记录当前所在的聊天室ID */
-  chatroomId: number = null;
+  chatroomId: number;
   /** 是否可以销毁（返回上一页） */
   canDeactivate = true;
   /** 我的收到好友申请列表 */
-  receiveFriendRequests: FriendRequest[] = [];
+  receiveFriendRequests: FriendRequest[];
   /** 我的发起的好友申请列表 */
-  sendFriendRequests: FriendRequest[] = [];
+  sendFriendRequests: FriendRequest[];
   /** 路由导航中 */
   navigating = false;
 
   /** 私聊聊天室列表 */
-  private _privateChatrooms: ChatSession[] = [];
+  private _privateChatrooms: ChatSession[];
   /** 群聊聊天室列表 */
-  private _groupChatrooms: ChatSession[] = [];
+  private _groupChatrooms: ChatSession[];
   /** 我收到的入群申请 */
-  private _receiveChatRequests: ChatRequest[] = [];
+  private _receiveChatRequests: ChatRequest[];
   /** 我发送的入群申请 */
-  private _sendChatRequests: ChatRequest[] = [];
+  private _sendChatRequests: ChatRequest[];
   /** 缓存聊天列表 */
-  private _chatSessions: ChatSession[] = [];
+  private _chatSessions: ChatSession[];
 
   constructor(
     private localStorage: LocalStorage,
@@ -100,20 +91,20 @@ export class GlobalData {
   }
 
   /** 未读的好友请求 */
-  unreadFriendRequestCount = () => this.receiveFriendRequests.reduce((count, o) => (
+  unreadFriendRequestCount = () => this.receiveFriendRequests?.reduce((count, o) => (
     o.targetReaded ? count : count + 1
-  ), 0) + this.sendFriendRequests.reduce((count, o) => (
+  ), 0) + this.sendFriendRequests?.reduce((count, o) => (
     o.requesterReaded ? count : count + 1
-  ), 0)
+  ), 0);
 
   reset() {
     this.user = null;
-    this.chatSessions = [];
-    this.receiveChatRequests = [];
-    this.sendChatRequests = [];
-    this.receiveFriendRequests = [];
-    this.sendFriendRequests = [];
-    this.privateChatrooms = [];
+    this.chatSessions = null;
+    this.receiveChatRequests = null;
+    this.sendChatRequests = null;
+    this.receiveFriendRequests = null;
+    this.sendFriendRequests = null;
+    this.privateChatrooms = null;
   }
 
   /**
@@ -123,7 +114,7 @@ export class GlobalData {
     const chatSession = this.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
 
     if (chatSession) {
-      chatSession.unread = this.receiveChatRequests.concat(this.sendChatRequests).reduce((count, o) => (
+      chatSession.unread = this.receiveChatRequests?.concat(this.sendChatRequests).reduce((count, o) => (
         o.readedList.includes(this.user.id) ? count : ++count
       ), 0);
     }
@@ -133,28 +124,28 @@ export class GlobalData {
    * 已读所有聊天室通知
    */
   readedChatRequest() {
-    this.receiveChatRequests.forEach(o => o.readedList.push(this.user.id));
-    this.sendChatRequests.forEach(o => o.readedList.push(this.user.id));
+    this.receiveChatRequests?.forEach(o => o.readedList.push(this.user.id));
+    this.sendChatRequests?.forEach(o => o.readedList.push(this.user.id));
   }
 
   /**
    * 按照时间/置顶顺序排序聊天列表
    */
   sortChatSessions() {
-    this.chatSessions.sort(EntityUtil.sortByUpdateTime).sort((a, b) => +b.sticky || 0 - +a.sticky || 0);
+    this.chatSessions?.sort(EntityUtil.sortByUpdateTime)?.sort((a, b) => +b.sticky || 0 - +a.sticky || 0);
   }
 
   /**
    * 排序收到的入群申请
    */
   sortReceiveChatRequests() {
-    this.receiveChatRequests.sort(EntityUtil.sortByUpdateTime);
+    this.receiveChatRequests?.sort(EntityUtil.sortByUpdateTime);
   }
 
   /**
    * 排序发送的入群申请
    */
   sortSendChatRequests() {
-    this.sendChatRequests.sort(EntityUtil.sortByUpdateTime);
+    this.sendChatRequests?.sort(EntityUtil.sortByUpdateTime);
   }
 }

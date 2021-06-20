@@ -54,5 +54,9 @@
 		</ion-item>
 	</ion-item-sliding>
 
-	<app-empty *ngIf="!globalData.receiveFriendRequests.length && !globalData.sendFriendRequests.length"></app-empty>
+	<ng-container *ngIf="!globalData.receiveFriendRequests && globalData.sendFriendRequests">
+		<app-skeleton-item *ngFor="let _ of 10 | fill"></app-skeleton-item>
+	</ng-container>
+
+	<app-empty *ngIf="globalData.receiveFriendRequests?.length === 0 && globalData.sendFriendRequests?.length === 0"></app-empty>
 </ion-content>

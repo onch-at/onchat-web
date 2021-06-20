@@ -81,7 +81,7 @@ export class CreatePage implements OnInit, OnDestroy {
       this.originPrivateChatrooms = privateChatrooms.map(o => ({ ...o, checked: false }));
     }
 
-    if (this.globalData.privateChatrooms.length) {
+    if (this.globalData.privateChatrooms) {
       setOriginPrivateChatrooms(this.globalData.privateChatrooms);
     } else {
       this.apiService.getPrivateChatrooms().pipe(
@@ -191,7 +191,7 @@ export class CreatePage implements OnInit, OnDestroy {
       return event.target.complete();
     }
 
-    if (++this.privateChatroomsPage * ITEM_ROWS >= this.globalData.privateChatrooms.length) {
+    if (++this.privateChatroomsPage * ITEM_ROWS >= this.globalData.privateChatrooms?.length) {
       this.privateChatroomsPage = null;
     }
 

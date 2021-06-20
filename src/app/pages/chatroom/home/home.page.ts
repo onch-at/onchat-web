@@ -214,7 +214,7 @@ export class HomePage implements OnInit, OnDestroy {
    */
   inviteJoinChatroom() {
     // 等待加载出好友会话后的一个可观察对象
-    const observable = this.globalData.privateChatrooms.length ? of(null) : this.apiService.getPrivateChatrooms().pipe(
+    const observable = this.globalData.privateChatrooms ? of(null) : this.apiService.getPrivateChatrooms().pipe(
       filter(({ code }: Result) => code === ResultCode.Success),
       tap(({ data }: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = data;

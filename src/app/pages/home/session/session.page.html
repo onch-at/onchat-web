@@ -6,7 +6,11 @@
 
 	<!-- <ion-searchbar animated placeholder="搜索"></ion-searchbar> -->
 
-	<app-empty *ngIf="!globalData.chatSessions.length"></app-empty>
+	<app-empty *ngIf="globalData.chatSessions?.length === 0"></app-empty>
+
+	<ng-container *ngIf="!globalData.chatSessions">
+		<app-skeleton-item *ngFor="let _ of 10 | fill"></app-skeleton-item>
+	</ng-container>
 
 	<ion-virtual-scroll appVirtualScrollPatch [items]="globalData.chatSessions" [approxItemHeight]="itemHeight"
 											[itemHeight]="getItemHeight" [trackBy]="trackByFn">

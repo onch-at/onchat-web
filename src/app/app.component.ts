@@ -125,8 +125,8 @@ export class AppComponent implements OnInit {
       this.onChatService.initChatSession().subscribe();
 
       // 更新好友列表
-      // 如果为空才更新，因为为空时，进入好友列表页会自动查询
-      this.globalData.privateChatrooms.length && this.apiService.getPrivateChatrooms().pipe(
+      // 如果不为空才更新，因为为空时，进入好友列表页会自动查询
+      this.globalData.privateChatrooms && this.apiService.getPrivateChatrooms().pipe(
         filter(({ code }: Result) => code === ResultCode.Success)
       ).subscribe(({ data }: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = data;

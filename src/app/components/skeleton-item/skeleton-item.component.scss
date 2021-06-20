@@ -1,0 +1,33 @@
+.skeleton-item {
+  height: 4.425rem;
+  --padding-start: 1rem;
+  --padding-end: 0;
+  --padding-top: 0.25rem;
+  --padding-bottom: 0.25rem;
+  --min-height: auto;
+}
+
+.skeleton-item-img {
+  margin: 0 0.75rem 0 0;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.skeleton-item-title {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  width: 75%;
+}
+
+.skeleton-item-desc {
+  font-size: 0.7rem;
+  width: 50%;
+}
+
+ion-skeleton-text {
+  --background: var(--color-secondary);
+  height: 1.1em;
+  margin: 0;
+}

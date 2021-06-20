@@ -27,15 +27,11 @@ export class OnChatService {
     this.initChatSession().subscribe();
 
     this.apiService.getReceiveFriendRequests().subscribe(({ data }: Result<FriendRequest[]>) => {
-      if (data?.length) {
-        this.globalData.receiveFriendRequests = data;
-      }
+      this.globalData.receiveFriendRequests = data;
     });
 
     this.apiService.getSendFriendRequests().subscribe(({ data }: Result<FriendRequest[]>) => {
-      if (data?.length) {
-        this.globalData.sendFriendRequests = data;
-      }
+      this.globalData.sendFriendRequests = data;
     });
 
     // 如果还没绑定邮箱

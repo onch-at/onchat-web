@@ -1,4 +1,16 @@
 <ion-content appScrollbar>
+  <ion-header slot="fixed" [style.border-radius]="sharp ? 0 : '0 0 1.5rem 0'">
+    <ion-toolbar>
+      <span class="onchat-brand"></span>
+
+      <ion-buttons slot="end">
+        <ion-button (tap)="presenHomeMenutPopover($event)">
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
   <aside class="sidebar" slot="fixed">
     <img *ngIf="globalData.user" class="avatar cursor-pointer" [src]="globalData.user.avatarThumbnail"
          [routerLink]="['/user', globalData.user.id]">
@@ -29,18 +41,6 @@
       </ion-button>
     </div>
   </aside>
-
-  <ion-header slot="fixed" [style.border-radius]="sharp ? 0 : '0 0 1.5rem 0'">
-    <ion-toolbar>
-      <span class="onchat-brand"></span>
-
-      <ion-buttons slot="end">
-        <ion-button (tap)="presenHomeMenutPopover($event)">
-          <ion-icon slot="icon-only" name="menu"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
 
   <ion-router-outlet class="router-outlet" [animation]="fade"></ion-router-outlet>
 </ion-content>

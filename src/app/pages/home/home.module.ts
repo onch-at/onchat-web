@@ -8,6 +8,7 @@ import { EmptyModule } from 'src/app/modules/empty.module';
 import { RippleModule } from 'src/app/modules/ripple.module';
 import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
+import { SkeletonModule } from 'src/app/modules/skeleton.module';
 import { VirtualScrollPatchModule } from 'src/app/modules/virtual-scroll-patch.module';
 import { ChatroomComponent } from './contact/chatroom/chatroom.component';
 import { ContactPage } from './contact/contact.page';
@@ -30,7 +31,8 @@ import { SettingsPage } from './settings/settings.page';
     VirtualScrollPatchModule,
     ActiveClassModule,
     EmptyModule,
-    ScrollbarModule
+    ScrollbarModule,
+    SkeletonModule
   ],
   declarations: [
     HomePage,
