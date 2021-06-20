@@ -3,28 +3,23 @@
 A simple, beautiful, mobile-first instant messaging progressive web application build with Angular and Ionic.
 You can [click here](https://github.com/HyperLife1119/OnChat) to view the OnChat back-end code repository.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.8.
+## Feature
 
-## Development server
+- ⚡️ **Lightning fast** - The server adopts [Swoole](https://www.swoole.co.uk/) programmatic server with asynchronous IO, coroutine and Fibers, with excellent performance.
+- ⛰ **Stable as Mount Tai** - The client is built using [Angular](https://angular.io/), which has better scalability, maintainability and stability.
+- ✨ **Small and exquisite** - There are no complicated functions and focus on online social chat.
+- 🌌 **Progressive** - Compared with ordinary Web App, PWA is faster, more powerful, more reliable and installable.
+- 📲 **Mobile first** - The user interface is specifically designed for mobile devices, the interactive experience is good.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Quick experience
 
-## Code scaffolding
+Visit the official [OnChat](https://chat.hypergo.net) site to quickly start your online social chat journey.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Suport
 
-## Build
+OnChat mainly includes the following code repositories:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- [OnChat](https://github.com/HyperLife1119/OnChat) (Server)
+- [OnChat-Web](https://github.com/HyperLife1119/OnChat-Web) (Client)
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+If you like OnChat, please give a star to the above code repository ⭐.

@@ -30,7 +30,7 @@ quill-editor ::ng-deep {
         padding: 0.75rem 1rem;
         font-size: 0.9rem;
         line-height: 1rem;
-        -webkit-user-select: text !important;
+        user-select: text !important;
 
         &.ql-blank::before {
             color: var(--color-dark);

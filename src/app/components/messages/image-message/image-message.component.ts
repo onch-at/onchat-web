@@ -23,7 +23,7 @@ export class ImageMessageComponent implements AfterViewInit {
   }
 
   @HostListener('window:resize')
-  @Throttle(300)
+  @Throttle(100)
   onWindowResize() {
     this.resize();
   }
