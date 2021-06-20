@@ -1,15 +1,16 @@
 /**
  * 类方法节流装饰器
  * @param wait
+ * @param field 定时器字段名
  */
-export function Throttle(wait: number) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    let timer: number = null;
+export function Throttle(wait: number, field?: string) {
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    field ??= `_${propertyKey}MethodThrottleTimer`;
     const fn = descriptor.value;
 
     descriptor.value = function () {
-      timer && clearTimeout(timer);
-      timer = window.setTimeout(() => {
+      this[field] && clearTimeout(this[field]);
+      this[field] = window.setTimeout(() => {
         fn.apply(this, arguments);
       }, wait);
     };
@@ -19,17 +20,18 @@ export function Throttle(wait: number) {
 /**
  * 类方法防抖装饰器
  * @param delay
+ * @param field 定时器字段名
  */
-export function Debounce(delay: number) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    let timer: number = null;
+export function Debounce(delay: number, field?: string) {
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    field ??= `_${propertyKey}MethodDebounceTimer`;
     const fn = descriptor.value;
 
     descriptor.value = function () {
-      timer === null && (timer = window.setTimeout(() => {
+      this[field] ??= window.setTimeout(() => {
         fn.apply(this, arguments);
-        timer = null;
-      }, delay));
+        this[field] = null;
+      }, delay);
     };
   }
 }

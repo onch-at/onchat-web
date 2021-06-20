@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 
 export class SysUtil {
   private static pixel: number;
-  private static input: HTMLInputElement;
 
   /**
    * 暴力注入CSS样式到目标元素的ShadowRoot中
@@ -29,33 +28,33 @@ export class SysUtil {
    * @param multiple 多文件上传
    */
   static selectFile(accept: string = null, multiple: boolean = false) {
-    if (!SysUtil.input) {
-      SysUtil.input = document.createElement('input');
-      SysUtil.input.type = 'file';
-      SysUtil.input.style.visibility = 'hidden';
-      document.body.appendChild(SysUtil.input);
-    }
+    const input = document.createElement('input');
+    input.style.visibility = 'hidden';
+    input.type = 'file';
+    input.multiple = multiple;
+    input.accept = accept;
 
-    SysUtil.input.multiple = multiple;
-    SysUtil.input.accept = accept;
-    SysUtil.input.click();
+    document.body.appendChild(input);
+
+    input.click();
 
     return new Observable(observer => {
       const complete = () => {
+        document.body.removeChild(input);
         observer.complete();
       };
 
-      SysUtil.input.onchange = (event: Event) => {
+      input.onchange = (event: Event) => {
         observer.next(event);
         complete();
       };
 
-      SysUtil.input.onerror = (event: any) => {
+      input.onerror = (event: any) => {
         observer.error(event);
         complete();
       };
 
-      SysUtil.input.oncancel = () => {
+      input.oncancel = () => {
         complete();
       };
     });

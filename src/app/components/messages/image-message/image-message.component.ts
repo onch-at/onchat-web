@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, HostListener, Inject, Input } from '@angular/core';
+import { Throttle } from 'src/app/common/decorator';
 import { WINDOW } from 'src/app/common/token';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
@@ -13,8 +14,6 @@ export class ImageMessageComponent implements AfterViewInit {
   width: number;
   height: number;
 
-  private timer: number;
-
   constructor(
     @Inject(WINDOW) private window: Window,
   ) { }
@@ -24,25 +23,18 @@ export class ImageMessageComponent implements AfterViewInit {
   }
 
   @HostListener('window:resize')
+  @Throttle(300)
   onWindowResize() {
-    this.timer && clearTimeout(this.timer);
-    this.timer = this.window.setTimeout(() => this.resize(), 100);
+    this.resize();
   }
 
   private resize() {
     let divisor = 1;
     let { width, height } = this.msg.data;
     const maxWidth = this.window.innerWidth * 0.4;
-    const maxHeight = this.window.innerHeight * 0.5;
 
     if (width > maxWidth) {
       divisor = width / maxWidth;
-      width /= divisor;
-      height /= divisor;
-    }
-
-    if (height > maxHeight) {
-      divisor = height / maxHeight;
       width /= divisor;
       height /= divisor;
     }
