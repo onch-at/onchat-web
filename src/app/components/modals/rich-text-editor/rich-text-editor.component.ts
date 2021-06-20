@@ -103,8 +103,8 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
   /**
    * 富文本变化时
    */
-  onContentChanged(event: ContentChange) {
-    this.text = event.text;
+  onContentChanged({ text }: ContentChange) {
+    this.text = text;
   }
 
   /**

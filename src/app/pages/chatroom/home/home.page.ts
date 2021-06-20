@@ -205,8 +205,8 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
-  onScroll(event: any) {
-    this.showMask = event.detail.scrollTop > 200;
+  onScroll({ detail }: any) {
+    this.showMask = detail.scrollTop > 200;
   }
 
   /**

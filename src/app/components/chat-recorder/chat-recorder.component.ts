@@ -152,8 +152,8 @@ export class ChatRecorderComponent implements OnDestroy {
     }
   }
 
-  onTouchMove(event: TouchEvent) {
-    const { clientX, clientY } = event.changedTouches.item(0);
+  onTouchMove({ changedTouches }: TouchEvent) {
+    const { clientX, clientY } = changedTouches.item(0);
     this.onMove(clientX, clientY);
   }
 

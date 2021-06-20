@@ -40,6 +40,7 @@ export class InfoPage implements OnInit, OnDestroy {
   dirty: boolean = false;
   /** 加载中 */
   loading: boolean = false;
+  showMask: boolean;
 
   form: FormGroup = this.formBuilder.group({
     nickname: [
@@ -180,6 +181,10 @@ export class InfoPage implements OnInit, OnDestroy {
     ];
 
     this.overlay.presentActionSheet(buttons);
+  }
+
+  onScroll({ detail }) {
+    this.showMask = detail.scrollTop > 125;
   }
 
 }

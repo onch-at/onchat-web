@@ -224,16 +224,15 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  onKeyup(event: KeyboardEvent) {
-    const { target } = event;
+  onKeyup({ target, key, ctrlKey, shiftKey }: KeyboardEvent) {
     this.renderer.setStyle(target, 'height', 'auto');
     this.renderer.setStyle(target, 'height', (target as Element).scrollHeight + 2.5 + 'px');
     // const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
     // (diff <= 50 && diff >= 5) && this.scrollToBottom();
     if (
       this.platform.is('desktop') &&
-      event.key.toLowerCase() === 'enter' &&
-      !event.ctrlKey && !event.shiftKey
+      key.toLowerCase() === 'enter' &&
+      !ctrlKey && !shiftKey
     ) {
       this.send();
     }

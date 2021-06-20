@@ -155,9 +155,9 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
       });
     }
 
-    const event = this.imageCropper.crop();
+    const { base64 } = this.imageCropper.crop();
 
-    imageBlob = base64ToFile(event.base64);
+    imageBlob = base64ToFile(base64);
     imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(imageBlob));
 
     return { imageBlob, imageSrc };

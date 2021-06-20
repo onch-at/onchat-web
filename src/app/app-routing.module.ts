@@ -95,12 +95,15 @@ const routes: Routes = [
       },
     ]
   },
-
+  {
+    path: 'search',
+    loadChildren: () => import('./pages/search/search.module').then(m => m.SearchPageModule)
+  },
   {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
-  }
+  },
 ];
 
 @NgModule({

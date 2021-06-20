@@ -1,0 +1,25 @@
+<ion-content appScrollbar [fullscreen]="true">
+  <ion-header slot="fixed">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="&nbsp;" defaultHref="home"></ion-back-button>
+      </ion-buttons>
+
+      <ion-title>查找</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-segment [(ngModel)]="pathname" (ionChange)="segmentChange($event)">
+        <ion-segment-button value="/chatroom/news/notice-list">
+          <ion-label>朋友</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="/chatroom/news/request-list">
+          <ion-label>聊天室</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-router-outlet #a class="router-outlet" [animation]="slide(a)" data-animation="1">
+  </ion-router-outlet>
+</ion-content>

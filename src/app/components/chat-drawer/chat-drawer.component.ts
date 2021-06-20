@@ -68,8 +68,8 @@ export class ChatDrawerComponent {
   }
 
   selectImage() {
-    SysUtil.selectFile('image/*', true).subscribe((event: any) => {
-      const files: FileList = event.target.files;
+    SysUtil.selectFile('image/*', true).subscribe(({ target }) => {
+      const files: FileList = target.files;
       const length = files.length > 10 ? 10 : files.length;
 
       const handle = async (original: boolean) => {

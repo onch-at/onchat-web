@@ -1,4 +1,4 @@
-<ion-content appScrollbar [fullscreen]="true">
+<ion-content appScrollbar [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onScroll($event)">
   <ion-header slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -17,7 +17,11 @@
   </ion-header>
 
   <main>
-    <img class="avatar dp-block" [src]="globalData.user.avatarThumbnail" (tap)="presentActionSheet()">
+    <div class="header dp-flex justify-center align-center" [class.show-mask]="showMask">
+      <img class="header-bg" src="https://blog.hypergo.net/api/bing/image.php">
+      <div class="header-mask"></div>
+      <img class="avatar dp-block" [src]="globalData.user.avatarThumbnail" (tap)="presentActionSheet()">
+    </div>
 
     <form [formGroup]="form">
       <div class="form-group">

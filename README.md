@@ -3,7 +3,7 @@
 A simple, beautiful, mobile-first instant messaging progressive web application build with Angular and Ionic.
 You can [click here](https://github.com/HyperLife1119/OnChat) to view the OnChat back-end code repository.
 
-## Feature
+## Features
 
 - ⚡️ **Lightning fast** - The server adopts [Swoole](https://www.swoole.co.uk/) programmatic server with asynchronous IO, coroutine and Fibers, with excellent performance.
 - ⛰ **Stable as Mount Tai** - The client is built using [Angular](https://angular.io/), which has better scalability, maintainability and stability.
