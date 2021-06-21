@@ -81,7 +81,7 @@ export class GlobalData {
   unreadMsgCount = () => {
     this.totalUnreadChatRequestCount();
 
-    const count = this.chatSessions.reduce((count, o) => (
+    const count = this.chatSessions?.reduce((count, o) => (
       count + (o.unread || 0)
     ), 0);
 
@@ -111,7 +111,7 @@ export class GlobalData {
    * 计算未读的聊天室通知消息数量
    */
   private totalUnreadChatRequestCount() {
-    const chatSession = this.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
+    const chatSession = this.chatSessions?.find(o => o.type === ChatSessionType.ChatroomNotice);
 
     if (chatSession) {
       chatSession.unread = this.receiveChatRequests?.concat(this.sendChatRequests).reduce((count, o) => (
