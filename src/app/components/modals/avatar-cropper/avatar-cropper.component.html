@@ -23,9 +23,8 @@
                  (imageLoaded)="onImageLoaded()" (loadImageFailed)="onLoadImageFailed()">
   </image-cropper>
 
-  <div class="warning-tips dp-flex justify-center align-center flex-col min-hg-full" *ngIf="error">
+  <div *ngIf="error" class="warning-tips dp-flex justify-center align-center flex-col min-hg-full">
     <ion-icon name="warning"></ion-icon>
-    <div class="font-bold text-center">图像加载失败</div>
   </div>
 
   <div class="buttom-bar text-center">

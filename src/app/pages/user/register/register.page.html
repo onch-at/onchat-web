@@ -13,7 +13,7 @@
               <input type="text" class="dp-block text-center ipt-primary" formControlName="username" (blur)="trimAll('username')"
                      placeholder="用户名" [maxlength]="usernameMaxLength" required>
 
-              <div class="form-control-warning">
+              <div class="form-control-warning dp-flex align-end">
                 <ion-icon name="warning"></ion-icon>
                 {{ usernameFeedback(form.controls.username.errors) }}
               </div>
@@ -23,7 +23,7 @@
               <input type="email" class="dp-block text-center ipt-primary" formControlName="email" (blur)="trimAll('email')"
                      placeholder="电子邮箱" [maxlength]="emailMaxLength" required>
 
-              <div class="form-control-warning">
+              <div class="form-control-warning dp-flex align-end">
                 <ion-icon name="warning"></ion-icon>
                 {{ emailFeedback(form.controls.email.errors) }}
               </div>
@@ -37,7 +37,7 @@
                 <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
                 </ion-icon>
 
-                <div class="form-control-warning">
+                <div class="form-control-warning dp-flex align-end">
                   <ion-icon name="warning"></ion-icon>
                   {{ passwordFeedback(form.controls.password.errors) }}
                 </div>
@@ -52,7 +52,7 @@
                 <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
                 </ion-icon>
 
-                <div class="form-control-warning">
+                <div class="form-control-warning dp-flex align-end">
                   <ion-icon name="warning"></ion-icon>
                   {{ passwordFeedback(form.controls.confirmPassword.errors) }}
                 </div>
@@ -74,7 +74,7 @@
                   {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
                 </button>
 
-                <div class="form-control-warning">
+                <div class="form-control-warning dp-flex align-end">
                   <ion-icon name="warning"></ion-icon>
                   {{ captchaFeedback(form.controls.captcha.errors) }}
                 </div>

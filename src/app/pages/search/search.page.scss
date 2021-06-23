@@ -1,0 +1,18 @@
+ion-header {
+  background: transparent;
+
+  ion-buttons ion-back-button,
+  ion-buttons ion-button,
+  ion-title {
+    --color: var(--color-black);
+  }
+
+  ion-spinner {
+    --color: var(--color-black);
+    margin-right: 0.25rem;
+  }
+
+  > ion-toolbar {
+    --background: rgba(var(--color-white-rgb), 0.75);
+  }
+}

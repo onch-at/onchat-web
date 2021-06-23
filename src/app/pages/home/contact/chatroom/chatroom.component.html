@@ -9,7 +9,7 @@
                       [itemHeight]="getItemHeight" [trackBy]="trackByFn">
     <ion-item-sliding mode="md" *virtualItem="let item; let i = index;">
       <ion-item lines="none" [detail]="false" [routerLink]="['/chat', item.data.chatroomId]">
-        <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
+        <ion-img slot="start" class="overflow-hidden" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label class="item-content">
           <h2 class="font-bold">{{ item.title }}</h2>

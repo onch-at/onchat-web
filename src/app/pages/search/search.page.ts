@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { slide } from 'src/app/animations/ionic.animation';
 
@@ -13,9 +14,12 @@ export class SearchPage implements OnInit {
 
   @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit() {
+    this.pathname = this.router.routerState.snapshot.url;
   }
 
   segmentChange(event: any) {

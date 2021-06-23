@@ -15,12 +15,11 @@ ion-content {
 }
 
 .warning-tips {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
     color: var(--color-danger);
-
-    > div {
-        margin-top: -0.5rem;
-        font-size: 1rem;
-    }
 
     > ion-icon {
         font-size: 7.5rem;

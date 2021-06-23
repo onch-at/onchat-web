@@ -4,7 +4,7 @@
   height: 100%;
   width: 3rem;
   background: rgba(var(--color-primary-rgb), 0.75);
-  box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
 
   .avatar {
     opacity: 0.9;
@@ -70,7 +70,7 @@ ion-header {
   width: calc(100% - 3rem);
   background: var(--color-light);
   border-radius: 0 0 1.5rem 0;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
   transition: border-radius ease-in-out 0.25s;
   z-index: 0;
 
