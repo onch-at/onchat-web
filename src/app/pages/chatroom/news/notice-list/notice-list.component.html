@@ -3,12 +3,11 @@
 <ion-list class="chat-request-list">
   <ion-item-sliding mode="md" *ngFor="let item of globalData.receiveChatRequests; let i = index;">
     <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/handle', item.id]">
-      <ion-img slot="start" *ngIf="i > 9" [src]="item.requesterAvatarThumbnail"></ion-img>
-      <img slot="start" *ngIf="i <= 9" [src]="item.requesterAvatarThumbnail">
+      <ion-img slot="start" class="overflow-hidden" [src]="item.requesterAvatarThumbnail"></ion-img>
 
       <ion-label class="item-content">
         <h2 class="font-bold">{{ item.requesterNickname }}</h2>
-        <p>{{ '申请加入 ' + item.chatroomName }}</p>
+        <p class="mg-0">{{ '申请加入 ' + item.chatroomName }}</p>
       </ion-label>
 
       <button *ngIf="!item.handlerId" appRipple appActiveClass class="btn-primary" (click)="agreeChatRequest(item.id, $event)">

@@ -18,7 +18,7 @@
   </ion-header>
 
   <main>
-    <quill-editor class="flex-col-container" [(ngModel)]="html" [modules]="modules"
+    <quill-editor class="dp-flex flex-col min-hg-full" [(ngModel)]="html" [modules]="modules"
                   (onContentChanged)="onContentChanged($event); cache()">
     </quill-editor>
   </main>

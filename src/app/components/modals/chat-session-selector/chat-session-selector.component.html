@@ -27,7 +27,7 @@
     <ion-virtual-scroll appVirtualScrollPatch [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
                         [trackBy]="trackByFn">
       <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false">
-        <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
+        <ion-img class="overflow-hidden" slot="start" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label>{{ item.title }}</ion-label>
 

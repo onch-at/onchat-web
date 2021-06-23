@@ -17,18 +17,18 @@
     </ion-toolbar>
   </ion-header>
 
-  <image-cropper [hidden]="error" [format]="imageService.format" [roundCropper]="true" [imageChangedEvent]="imageChangedEvent"
-                 [maintainAspectRatio]="true" [autoCrop]="false" [aspectRatio]="1" [resizeToWidth]="512" [imageQuality]="90"
-                 backgroundColor="#f0f0f0" [cropperMinWidth]="256" (imageLoaded)="onImageLoaded()"
-                 (loadImageFailed)="onLoadImageFailed()">
+  <image-cropper class="dp-flex justify-center align-center min-hg-full pd-0" [hidden]="error" [format]="imageService.format"
+                 [roundCropper]="true" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [autoCrop]="false"
+                 [aspectRatio]="1" [resizeToWidth]="512" [imageQuality]="90" backgroundColor="#f0f0f0" [cropperMinWidth]="256"
+                 (imageLoaded)="onImageLoaded()" (loadImageFailed)="onLoadImageFailed()">
   </image-cropper>
 
-  <div class="warning-tips" *ngIf="error">
+  <div class="warning-tips dp-flex justify-center align-center flex-col min-hg-full" *ngIf="error">
     <ion-icon name="warning"></ion-icon>
-    <div>图像加载失败</div>
+    <div class="font-bold text-center">图像加载失败</div>
   </div>
 
-  <div class="buttom-bar">
+  <div class="buttom-bar text-center">
     <button appRipple appActiveClass (tap)="submit()" [disabled]="error" class="btn-primary submit-btn">
       <ion-icon *ngIf="!error" name="checkmark-outline"></ion-icon>
       <ion-icon *ngIf="error" name="alert-outline"></ion-icon>

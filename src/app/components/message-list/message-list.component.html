@@ -1,19 +1,19 @@
-<ul class="msg-list">
-  <li *ngIf="ended" class="tips-item">
+<ul class="msg-list mg-0 pd-0">
+  <li *ngIf="ended" class="tips-item text-center">
     <span>没有更多消息</span>
   </li>
 
   <ng-container *ngFor="let item of data; let index = index; trackBy: trackByFn">
-    <li class="tips-item" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
+    <li class="tips-item text-center" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
       <span>{{ item.createTime | detailDate }} {{ item.createTime | date: 'BBBBhh:mm' }}</span>
     </li>
 
     <ng-container [ngSwitch]="item.type">
-      <li *ngSwitchCase="msgType.Tips" class="tips-item">
+      <li *ngSwitchCase="msgType.Tips" class="tips-item text-center">
         <app-tips-message [msg]="item"></app-tips-message>
       </li>
 
-      <li *ngSwitchCase="msgType.Text" class="msg-item" [ngClass]="msgItemClass(item.userId)">
+      <li *ngSwitchCase="msgType.Text" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div>
@@ -27,7 +27,7 @@
         </div>
       </li>
 
-      <li *ngSwitchCase="msgType.RichText" class="msg-item" [ngClass]="msgItemClass(item.userId)">
+      <li *ngSwitchCase="msgType.RichText" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div class="ql-container ql-snow">
@@ -41,13 +41,14 @@
         </div>
       </li>
 
-      <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item" [ngClass]="msgItemClass(item.userId)">
+      <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
-          <span #bubble appRipple class="msg-bubble msg-bubble-card" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+          <span #bubble appRipple class="msg-bubble msg-bubble-card pd-0"
+                (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)"
                 [routerLink]="['/chatroom', item.data['chatroomId']]">
             <app-card-message label="邀请加入聊天室" [title]="item.data['name']"
@@ -58,13 +59,13 @@
         </div>
       </li>
 
-      <li *ngSwitchCase="msgType.Image" class="msg-item" [ngClass]="msgItemClass(item.userId)">
+      <li *ngSwitchCase="msgType.Image" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
-          <span #bubble appRipple class="msg-bubble msg-bubble-img line-height-0" (tap)="previewImage(item)"
+          <span #bubble appRipple class="msg-bubble msg-bubble-img line-height-0 pd-0" (tap)="previewImage(item)"
                 (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <app-image-message [msg]="item"></app-image-message>
@@ -72,7 +73,7 @@
         </div>
       </li>
 
-      <li *ngSwitchCase="msgType.Voice" class="msg-item" [ngClass]="msgItemClass(item.userId)">
+      <li *ngSwitchCase="msgType.Voice" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
 
         <div>
@@ -106,5 +107,6 @@
 
 <!-- 加载中部分 -->
 <ng-template #loading let-userId="userId" let-loading="loading">
-  <ion-spinner *ngIf="globalData.user?.id === userId && loading" class="send-spinner" name="dots" [duration]="1000"></ion-spinner>
+  <ion-spinner *ngIf="globalData.user?.id === userId && loading" class="send-spinner dp-block" name="dots" [duration]="1000">
+  </ion-spinner>
 </ng-template>

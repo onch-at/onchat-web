@@ -15,7 +15,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="home-header" [class.show-mask]="showMask" (click)="presentActionSheet()">
+  <div class="home-header overflow-hidden" [class.show-mask]="showMask" (click)="presentActionSheet()">
     <!-- <img class="home-header-img" src="https://blog.hypergo.net/images/banner/yein.jpg"> -->
     <img class="home-header-img" [src]="chatroom.avatar">
     <div class="home-header-mask"></div>
@@ -42,7 +42,7 @@
   </ion-item>
 
   <div class="home-item">
-    <div class="avatar-list-track">
+    <div class="avatar-list-track dp-flex justify-between">
       <ng-container *ngFor="let item of members | slice: 0:(isMember ? 6 : 7)">
         <img class="avatar-list-img cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
       </ng-container>

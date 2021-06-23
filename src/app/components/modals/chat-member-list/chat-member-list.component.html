@@ -20,7 +20,7 @@
                         [trackBy]="trackByFn">
       <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false" button class="ion-activatable"
                 (click)="onTap(item)">
-        <ion-img slot="start" [src]="item.avatarThumbnail"></ion-img>
+        <ion-img class="overflow-hidden" slot="start" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label class="dp-flex align-center">
           <ion-badge *ngIf="item.role === chatMemberRole.Host" mode="ios" class="host-badge">领袖</ion-badge>

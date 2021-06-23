@@ -13,6 +13,9 @@
 .font-primary {
     font-family: "Alibaba-Sans-Black" !important;
 }
+.dp-none {
+    display: none !important;
+}
 .dp-block {
     display: block !important;
 }
@@ -36,6 +39,9 @@
 }
 .align-center {
     align-items: center !important;
+}
+.align-end {
+    align-items: flex-end !important;
 }
 .flex-auto {
     flex: auto !important;
@@ -78,4 +84,7 @@
 }
 .line-height-0 {
     line-height: 0 !important;
+}
+.min-hg-full {
+    min-height: 100% !important;
 }

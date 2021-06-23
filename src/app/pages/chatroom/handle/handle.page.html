@@ -11,16 +11,16 @@
 
   <img class="bg-img" [src]="request.requesterAvatarThumbnail">
 
-  <main class="flex-col-container align-center">
+  <main class="dp-flex flex-col min-hg-full align-center">
     <img class="avatar" [src]="request.requesterAvatarThumbnail" [routerLink]="['/user', request.requesterId]">
-    <h1>{{ request.requesterNickname }}</h1>
+    <h1 class="font-bold">{{ request.requesterNickname }}</h1>
 
-    <ion-item lines="none">
+    <ion-item class="overflow-hidden" lines="none">
       <ion-label position="stacked">申请原因</ion-label>
       <p>{{ request.requestReason || (request.requesterNickname + ' 申请加入 ' + request.chatroomName) }}</p>
     </ion-item>
 
-    <ion-item lines="none">
+    <ion-item class="overflow-hidden" lines="none">
       <ion-label position="stacked">相关信息</ion-label>
       <ul>
         <li>

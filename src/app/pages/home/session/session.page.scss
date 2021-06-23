@@ -25,7 +25,6 @@
   .chat-session-item-img {
     object-fit: cover;
     background: var(--color-secondary);
-    overflow: hidden;
     aspect-ratio: 1 / 1;
   }
 
@@ -38,9 +37,6 @@
   }
 
   .chat-session-item-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: rgba(var(--color-primary-rgb), 0.75);
 
     ion-icon {
@@ -52,14 +48,12 @@
   .chat-session-item-title {
     color: var(--color-dark);
     font-size: 0.9rem;
-    font-weight: bold;
     margin: 0 0 0.125rem;
   }
 
   .chat-session-item-desc {
     font-size: 0.7rem;
     color: var(--color-muted);
-    margin: 0;
   }
 }
 
@@ -68,10 +62,7 @@
 }
 
 .info {
-  text-align: right;
-
-  time {
-    display: block;
+  > time {
     color: var(--color-muted);
     font-size: 0.65rem;
     margin-bottom: 0.25rem;

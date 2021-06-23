@@ -5,7 +5,6 @@
   width: 3rem;
   background: rgba(var(--color-primary-rgb), 0.75);
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);
-  overflow: hidden;
 
   .avatar {
     opacity: 0.9;
@@ -18,7 +17,6 @@
   }
 
   .button-group {
-    flex-direction: column;
     margin: 0.5rem 0 var(--ion-safe-area-bottom, 0);
     height: calc(100% - 3.5rem);
   }
@@ -70,7 +68,6 @@ ion-header {
   top: 0;
   right: 0;
   width: calc(100% - 3rem);
-  overflow: hidden;
   background: var(--color-light);
   border-radius: 0 0 1.5rem 0;
   box-shadow: 0 0 0.5rem 0.1rem rgba(#000, 0.125);

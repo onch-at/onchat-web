@@ -24,7 +24,6 @@ main {
     left: 0;
     height: 12.5rem;
     border-radius: 0 0 1.5rem 1.5rem;
-    overflow: hidden;
     z-index: 5;
 }
 
@@ -53,8 +52,8 @@ main {
 }
 
 .avatar {
-    width: 5.75rem;
-    height: 5.75rem;
+    width: 6rem;
+    height: 6rem;
     border-radius: 50%;
     object-fit: cover;
     margin: 0 auto;
@@ -74,8 +73,6 @@ form {
 }
 
 .form-control-warning {
-    display: flex;
-    align-items: flex-end;
     font-size: 0.85rem;
     height: 1.75rem;
     padding-left: 0.25rem;

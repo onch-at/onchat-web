@@ -43,8 +43,6 @@ form {
 }
 
 .form-control-warning {
-    display: flex;
-    align-items: flex-end;
     font-size: 0.85rem;
     height: 1.75rem;
     padding-left: 0.25rem;
@@ -131,7 +129,6 @@ ion-searchbar {
     }
 
     .avatar-list-track {
-        display: flex;
         flex-wrap: nowrap;
         padding: 0 0.5rem;
         overflow-x: auto;
@@ -160,15 +157,13 @@ ion-searchbar {
         --inner-padding-end: 0;
     }
 
-    ion-img,
-    img {
+    ion-img {
         height: 2.75rem;
         width: 2.75rem;
         margin: 0 0.75rem 0 0;
         border-radius: 50%;
         object-fit: cover;
         background: var(--color-secondary);
-        overflow: hidden;
     }
 
     ion-label {

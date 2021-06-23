@@ -42,7 +42,6 @@ main {
 
 h1 {
     color: var(--color-white);
-    font-weight: bold;
     font-size: 1.5rem;
     text-shadow: 0 0 0.5rem rgba(var(--color-black-rgb), 0.75);
     margin: 1rem 0 1.25rem;
@@ -54,7 +53,6 @@ ion-item {
     --inner-padding-end: 1rem;
     margin-bottom: 1rem;
     border-radius: 1.25rem;
-    overflow: hidden;
 
     > ion-label {
         font-size: 0.95rem;

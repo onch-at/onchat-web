@@ -14,9 +14,6 @@ ion-content {
 }
 
 main {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   min-height: 100vh;
   padding-bottom: calc(var(--ion-safe-area-bottom, 0) + 1rem);
 }
@@ -32,9 +29,6 @@ main {
 }
 
 .banner-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
   padding: 0 0.5rem;
   font-size: 0.9rem;
   color: #fff;
@@ -94,9 +88,6 @@ main {
 }
 
 .cloud-block-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 0.5rem 0.25rem;
 
   &:first-child {

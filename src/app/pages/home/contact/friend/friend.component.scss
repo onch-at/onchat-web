@@ -15,7 +15,6 @@ ion-item {
     border-radius: 50%;
     object-fit: cover;
     background: var(--color-secondary);
-    overflow: hidden;
   }
 
   h2 {
@@ -27,7 +26,6 @@ ion-item {
   p {
     font-size: 0.7rem;
     color: var(--color-muted);
-    margin: 0;
   }
 }
 

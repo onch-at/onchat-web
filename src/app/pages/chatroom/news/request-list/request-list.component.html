@@ -2,12 +2,11 @@
 <ion-list class="chat-request-list">
   <ion-item-sliding mode="md" *ngFor="let item of globalData.sendChatRequests; let i = index;">
     <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/request', item.id]">
-      <ion-img slot="start" *ngIf="i > 9" [src]="item.chatroomAvatarThumbnail"></ion-img>
-      <img slot="start" *ngIf="i <= 9" [src]="item.chatroomAvatarThumbnail">
+      <ion-img slot="start" class="overflow-hidden" [src]="item.chatroomAvatarThumbnail"></ion-img>
 
       <ion-label class="item-content">
         <h2 class="font-bold">{{ item.chatroomName }}</h2>
-        <p>{{ 'ROOM-ID: ' + item.chatroomId }}</p>
+        <p class="mg-0">{{ 'ROOM-ID: ' + item.chatroomId }}</p>
       </ion-label>
 
       <span class="status" [ngSwitch]="item.status">

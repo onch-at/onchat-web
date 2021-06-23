@@ -5,7 +5,6 @@
   text-shadow: 0 0 0.5rem rgba(#000, 0.75);
   background: rgba(var(--color-primary-rgb), 0.5);
   border-radius: 0 0 1.5rem 0;
-  overflow: hidden;
 
   .profile-card-bg-img {
     height: 100%;
@@ -33,10 +32,6 @@
   }
 
   .profile-card-info {
-    display: flex;
-    justify-content: center;
-    justify-content: space-between;
-    flex-direction: column;
     padding: 0.5rem 0.75rem;
     white-space: nowrap;
 

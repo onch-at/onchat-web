@@ -1,7 +1,5 @@
 .bubble-toolbar {
-    margin: 0;
     padding: 0.25rem 0.5rem;
-    display: flex;
     flex-wrap: wrap;
     color: var(--color-light);
     background: var(--color-dark);
@@ -9,10 +7,6 @@
 }
 
 .bubble-toolbar-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
     flex-shrink: 0;
     height: 3rem;
     width: 3rem;
@@ -20,7 +14,6 @@
     font-size: 0.75rem;
 
     > ion-icon {
-        display: block;
         font-size: 1.25rem;
     }
 }

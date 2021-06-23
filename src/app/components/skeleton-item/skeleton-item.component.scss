@@ -12,7 +12,6 @@
   width: 3.25rem;
   height: 3.25rem;
   border-radius: 50%;
-  overflow: hidden;
 }
 
 .skeleton-item-title {
@@ -29,5 +28,4 @@
 ion-skeleton-text {
   --background: var(--color-secondary);
   height: 1.1em;
-  margin: 0;
 }

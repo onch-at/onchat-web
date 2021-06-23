@@ -1,10 +1,10 @@
-<aside class="notification cursor-pointer" appActiveClass [routerLink]="url">
+<aside class="notification cursor-pointer dp-flex" appActiveClass [routerLink]="url">
   <img *ngIf="isLink()" class="notification-icon" [src]="icon">
-  <div *ngIf="!isLink()" class="notification-icon">
+  <div *ngIf="!isLink()" class="notification-icon dp-flex justify-center align-center">
     <ion-icon [name]="icon"></ion-icon>
   </div>
-  <div class="notification-body">
-    <h1 class="notification-title text-ellipsis">{{ title }}</h1>
-    <p class="notification-description">{{ description }}</p>
+  <div class="notification-body flex-auto overflow-hidden">
+    <h1 class="notification-title text-ellipsis font-bold">{{ title }}</h1>
+    <p class="notification-description mg-0 overflow-hidden">{{ description }}</p>
   </div>
 </aside>

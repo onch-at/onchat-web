@@ -18,8 +18,6 @@
 
 .form-control-warning,
 .feedback-form-invalid {
-  display: flex;
-  align-items: flex-end;
   font-size: 0.85rem;
   height: 1.75rem;
   padding-left: 0.25rem;
@@ -74,7 +72,6 @@
 
 ion-grid {
   padding: 0 1.5rem 5vh;
-  flex: auto;
 
   &:focus-within + footer {
     padding: 0.55rem 1rem;

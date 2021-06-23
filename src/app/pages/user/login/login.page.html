@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true">
-  <div class="flex-col-container overflow-hidden">
-    <ion-grid class="dp-flex align-center">
+  <div class="dp-flex flex-col min-hg-full overflow-hidden">
+    <ion-grid class="dp-flex align-center flex-auto">
       <ion-row>
         <ion-col size="12">
           <div class="logo text-center">
@@ -13,7 +13,7 @@
               <input type="text" class="dp-block text-center ipt-primary" formControlName="username" (blur)="trimAll('username')"
                      placeholder="用户名" [maxlength]="usernameMaxLength" required>
 
-              <div class="form-control-warning">
+              <div class="form-control-warning dp-flex align-end">
                 <ion-icon name="warning"></ion-icon>
                 {{ usernameFeedback(form.controls.username.errors) }}
               </div>
@@ -27,7 +27,7 @@
                 <ion-icon [name]="pwdInputType === 'password' ? 'eye' : 'eye-off'" (tap)="togglePwdInputType()">
                 </ion-icon>
 
-                <div class="form-control-warning">
+                <div class="form-control-warning dp-flex align-end">
                   <ion-icon name="warning"></ion-icon>
                   {{ passwordFeedback(form.controls.password.errors) }}
                 </div>

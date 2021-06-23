@@ -37,15 +37,13 @@ ion-header {
         --padding-bottom: 0.25rem;
         --min-height: auto;
 
-        ion-img,
-        img {
+        ion-img {
             margin: 0 0.75rem 0 0;
             width: 3.25rem;
             height: 3.25rem;
             border-radius: 50%;
             object-fit: cover;
             background: var(--color-secondary);
-            overflow: hidden;
         }
 
         h2 {
@@ -57,7 +55,6 @@ ion-header {
         p {
             font-size: 0.7rem;
             color: var(--color-muted);
-            margin: 0;
         }
 
         button {

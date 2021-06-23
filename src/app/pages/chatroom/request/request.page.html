@@ -11,13 +11,13 @@
 
   <img class="bg-img" [src]="request.chatroomAvatar">
 
-  <main>
+  <main class="dp-flex flex-col justify-end">
     <div>
-      <h2 class="header-title text-ellipsis">{{ request.chatroomName }}</h2>
+      <h2 class="header-title text-ellipsis font-bold">{{ request.chatroomName }}</h2>
       <div class="header-subtitle">ROOM-ID：{{ request.chatroomId }}</div>
     </div>
 
-    <ion-item *ngIf="request.handlerId" lines="none">
+    <ion-item *ngIf="request.handlerId" class="overflow-hidden" lines="none">
       <ion-label position="stacked">处理人：{{ request.handlerNickname }}</ion-label>
       <ul>
         <li>
@@ -34,7 +34,7 @@
     </ion-item>
 
     <ng-container *ngIf="request.status !== requestStatus.Agree">
-      <ion-item lines="none">
+      <ion-item class="overflow-hidden" lines="none">
         <ion-label position="stacked">申请原因</ion-label>
         <ion-textarea [(ngModel)]="requestReason" clearInput [maxlength]="reasonMaxLength" rows="4" autoGrow
                       placeholder="可以告诉他们你的申请原因">

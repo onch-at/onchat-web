@@ -17,7 +17,7 @@
   </ion-header>
 
   <main>
-    <div class="header dp-flex justify-center align-center" [class.show-mask]="showMask">
+    <div class="header overflow-hidden dp-flex justify-center align-center" [class.show-mask]="showMask">
       <img class="header-bg" src="https://blog.hypergo.net/api/bing/image.php">
       <div class="header-mask"></div>
       <img class="avatar dp-block" [src]="globalData.user.avatarThumbnail" (tap)="presentActionSheet()">
@@ -29,7 +29,7 @@
         <input type="text" class="ipt-primary text-center dp-block" formControlName="nickname" (blur)="trimAll('nickname')"
                placeholder="请输入昵称" [maxlength]="nicknameMaxLength" required>
 
-        <div class="form-control-warning">
+        <div class="form-control-warning dp-flex align-end">
           <ion-icon name="warning"></ion-icon>
           {{ nicknameFeedback(form.controls.nickname.errors) }}
         </div>
@@ -40,7 +40,7 @@
         <ion-textarea class="ipt-primary text-center" formControlName="signature" rows="3" [maxlength]="signatureMaxLength"
                       placeholder="请输入个性签名" autoGrow clearInput></ion-textarea>
 
-        <div class="form-control-warning">
+        <div class="form-control-warning dp-flex align-end">
           <ion-icon name="warning"></ion-icon>
           {{ signatureFeedback(form.controls.signature.errors) }}
         </div>

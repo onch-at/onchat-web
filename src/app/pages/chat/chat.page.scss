@@ -5,10 +5,6 @@ ion-header {
   transform: translateY(-100%);
   animation: slide-in-down 0.25s ease-out 0.25s forwards;
 
-  ion-toolbar {
-    overflow: hidden;
-  }
-
   ion-title {
     font-size: 1.075rem;
     color: var(--color-dark);
@@ -70,19 +66,9 @@ ion-header {
     }
   }
 
-  .bottom-bar-header {
-    display: flex;
-    align-items: center;
-
-    // > *:not(:last-child) {
-    //   margin-right: 0.45rem;
-    // }
-  }
-
   textarea {
     color: var(--color-dark);
     resize: none;
-    flex: auto;
     font-size: 1rem;
     border: 0.075rem solid var(--color-secondary);
     border-radius: 1.5rem;
@@ -125,7 +111,6 @@ main {
 }
 
 .drawer-container {
-  overflow: hidden;
   transition: height 0.1s ease-out;
 }
 

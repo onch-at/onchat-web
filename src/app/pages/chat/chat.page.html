@@ -1,6 +1,6 @@
 <ion-content #ionContent appScrollbar [fullscreen]="true" [scrollEvents]="hasUnreadMsg" (ionScrollEnd)="onIonScrollEnd()">
   <ion-header slot="fixed">
-    <ion-toolbar>
+    <ion-toolbar class="overflow-hidden">
       <ion-buttons slot="start">
         <ion-back-button [text]="(globalData.unreadMsgCount() | numLimit) || ''" defaultHref="home">
         </ion-back-button>
@@ -33,15 +33,15 @@
       <ion-icon name="arrow-down-outline"></ion-icon>
     </button>
 
-    <div class="bottom-bar-header">
+    <div class="dp-flex align-center">
       <button appRipple appActiveClass class="btn-secondary fn-btn dp-flex justify-center align-center" (click)="toggleDrawer()">
         <ion-icon name="add-circle-outline"></ion-icon>
       </button>
 
       <!-- 这里的ID将附加上房间号来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
-      <textarea #textarea [id]="'message-' + chatroomId" name="message" rows="1" [class.invalid]="msg.length > textMsgMaxLength"
-                (keyup)="onKeyup($event)" (focus)="hideDrawer()" (keypress)="onKeypress($event)" placeholder="来聊点什么吧！"
-                [(ngModel)]="msg"></textarea>
+      <textarea #textarea [id]="'message-' + chatroomId" class="flex-auto" name="message" rows="1"
+                [class.invalid]="msg.length > textMsgMaxLength" (keyup)="onKeyup($event)" (focus)="hideDrawer()"
+                (keypress)="onKeypress($event)" placeholder="来聊点什么吧！" [(ngModel)]="msg"></textarea>
 
       <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
       <button appRipple appActiveClass class="btn-primary send-btn" (click)="send()" [hidden]="!showSendBtn()"
@@ -56,7 +56,7 @@
       </button>
     </div>
 
-    <div #drawerContainer class="drawer-container"
+    <div #drawerContainer class="drawer-container overflow-hidden"
          [style.height]="showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0">
       <app-chat-drawer [page]="this"></app-chat-drawer>
     </div>

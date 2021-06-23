@@ -26,11 +26,11 @@
 
 				<!-- 聊天室类型 -->
 				<ng-container *ngSwitchCase="chatSessionType.Chatroom">
-					<ion-img slot="start" [src]="item.avatarThumbnail" class="chat-session-item-img"></ion-img>
+					<ion-img slot="start" [src]="item.avatarThumbnail" class="chat-session-item-img overflow-hidden"></ion-img>
 
 					<ion-label class="item-content">
-						<h2 class="chat-session-item-title">{{ item.title }}</h2>
-						<p class="chat-session-item-desc"
+						<h2 class="chat-session-item-title font-bold">{{ item.title }}</h2>
+						<p class="chat-session-item-desc mg-0"
 							 [innerHTML]="item.content ? (item.content | sender: item.data.chatroomType) + (item.content | messageDesc) : '进去打个招呼吧？'">
 						</p>
 					</ion-label>
@@ -38,18 +38,18 @@
 
 				<!-- 聊天室通知 -->
 				<ng-container *ngSwitchCase="chatSessionType.ChatroomNotice">
-					<div slot="start" class="chat-session-item-icon">
+					<div slot="start" class="chat-session-item-icon dp-flex justify-center align-center">
 						<ion-icon name="notifications"></ion-icon>
 					</div>
 
 					<ion-label class="item-content">
-						<h2 class="chat-session-item-title">聊天室通知</h2>
-						<p class="chat-session-item-desc">{{ item.unread ? '你有' : '暂无'}}新的聊天室通知</p>
+						<h2 class="chat-session-item-title font-bold">聊天室通知</h2>
+						<p class="chat-session-item-desc mg-0">{{ item.unread ? '你有' : '暂无'}}新的聊天室通知</p>
 					</ion-label>
 				</ng-container>
 
-				<div class="info">
-					<time>
+				<div class="info text-right">
+					<time class="dp-block">
 						{{ item.updateTime | detailDate }}
 						<ng-container *ngIf="canShowTime(item.updateTime)">
 							{{ item.updateTime | date:'BBBBhh:mm' }}

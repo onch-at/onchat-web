@@ -10,9 +10,6 @@ ion-header {
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
     height: 100vh;
     padding: 1rem;
 
@@ -43,7 +40,6 @@ main {
 
 .header-title {
     max-width: 90vw;
-    font-weight: bold;
     font-size: 1.25rem;
     margin: 0.25rem 0;
 }
@@ -58,7 +54,6 @@ ion-item {
     --inner-padding-end: 1rem;
     margin-bottom: 1rem;
     border-radius: 1.25rem;
-    overflow: hidden;
     backdrop-filter: blur(15px) saturate(175%);
 
     &:focus-within {

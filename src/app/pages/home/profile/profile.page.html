@@ -1,12 +1,12 @@
 <ion-content *ngIf="globalData.user" appScrollbar>
-  <div appRipple class="profile-card" [routerLink]="['/user/', globalData.user.id]">
+  <div appRipple class="profile-card overflow-hidden" [routerLink]="['/user/', globalData.user.id]">
     <img class="profile-card-bg-img" [src]="'https://blog.hypergo.net/api/bing/image.php'">
 
     <div class="profile-card-content">
       <div class="dp-flex">
         <img class="profile-card-avatar" [src]="globalData.user.avatarThumbnail" (click)="viewAvatar($event)">
 
-        <div class="profile-card-info">
+        <div class="profile-card-info dp-flex flex-col justify-between">
           <h1 class="font-bold">{{ globalData.user.username }}</h1>
           <div>USER-ID：{{ globalData.user.id }}</div>
           <div>昵称：{{ globalData.user.nickname }}</div>

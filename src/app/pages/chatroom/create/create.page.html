@@ -16,7 +16,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <main class="flex-col-container align-center">
+  <main class="dp-flex flex-col min-hg-full align-center">
     <ion-icon class="avatar" name="people-circle"></ion-icon>
 
     <form [formGroup]="chatroomForm">
@@ -25,7 +25,7 @@
         <ion-input class="ipt-primary text-center" formControlName="name" placeholder="请输入聊天室名称" [maxlength]="nameMaxLength"
                    clearInput required></ion-input>
 
-        <div class="form-control-warning">
+        <div class="form-control-warning dp-flex align-end">
           <ion-icon name="warning"></ion-icon>
           {{ nameFeedback(chatroomForm.controls.name.errors) }}
         </div>
@@ -37,7 +37,7 @@
                       placeholder="请输入聊天室简介" autoGrow clearInput>
         </ion-textarea>
 
-        <div class="form-control-warning">
+        <div class="form-control-warning dp-flex align-end">
           <ion-icon name="warning"></ion-icon>
           {{ descriptionFeedback(chatroomForm.controls.description.errors) }}
         </div>
@@ -50,8 +50,8 @@
         </label>
 
         <div class="avatar-list">
-          <div class="avatar-list-track">
-            <img [src]="globalData.user.avatarThumbnail">
+          <div class="avatar-list-track dp-flex">
+            <img [src]=" globalData.user.avatarThumbnail">
             <ng-container *ngFor="let item of originPrivateChatrooms">
               <img *ngIf="item.checked" [src]="item.avatarThumbnail" (click)="deleteChatSessions(item)">
             </ng-container>
@@ -67,8 +67,7 @@
     <ion-list class="friend-list">
       <ion-item mode="md" lines="none" [detail]="false" *ngFor="let item of privateChatrooms(); let i = index;">
 
-        <ion-img slot="start" *ngIf="i > 5" [src]="item.avatarThumbnail"></ion-img>
-        <img slot="start" *ngIf="i <= 5" [src]="item.avatarThumbnail">
+        <ion-img slot="start" class="overflow-hidden" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label>{{ item.title }}</ion-label>
 

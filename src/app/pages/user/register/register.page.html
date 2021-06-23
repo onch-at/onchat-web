@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <div class="flex-col-container overflow-hidden">
+  <div class="dp-flex flex-col min-hg-full overflow-hidden">
     <ion-grid class="dp-flex align-center">
       <ion-row>
         <ion-col size="12">
@@ -57,7 +57,7 @@
                   {{ passwordFeedback(form.controls.confirmPassword.errors) }}
                 </div>
 
-                <div class="feedback-form-invalid" [hidden]="!form.errors?.equal">
+                <div class="feedback-form-invalid dp-flex align-end" [hidden]="!form.errors?.equal">
                   <ion-icon name="warning"></ion-icon>
                   确认密码与密码不一致！
                 </div>

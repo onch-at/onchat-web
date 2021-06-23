@@ -13,11 +13,11 @@
     </ion-toolbar>
   </ion-header>
 
-  <main>
-    <!-- <img class="bg-img" [src]="user.backgroundImage"> -->
+  <main class="dp-flex flex-col justify-end">
+    <!-- <img class=" bg-img" [src]="user.backgroundImage"> -->
     <img class="bg-img" src="https://blog.hypergo.net/api/bing/image.php">
 
-    <div class="banner-container">
+    <div class="banner-container dp-flex justify-between align-end">
       <div>
         <h1 class="username font-bold text-ellipsis">{{ user.nickname }}</h1>
         <div>USER-ID：{{ user.id }}</div>
@@ -37,12 +37,12 @@
     </div>
 
     <div class="cloud-block">
-      <div class="cloud-block-item">
+      <div class="cloud-block-item dp-flex justify-between align-center">
         <span>账 号</span>
         <span>{{ user.username }}</span>
       </div>
 
-      <div class="cloud-block-item">
+      <div class="cloud-block-item dp-flex justify-between align-center">
         <span>心 情</span>
         <span class="dp-flex align-center">
           <app-mood-icon [value]="(user.mood != null ? user.mood : mood.Joy)"></app-mood-icon>
@@ -50,22 +50,22 @@
         </span>
       </div>
 
-      <div class="cloud-block-item">
+      <div class="cloud-block-item dp-flex justify-between align-center">
         <span>生 日</span>
         <span>{{ user.birthday ? (user.birthday | date:'yyyy-M-d') : '未设置' }}</span>
       </div>
 
-      <div class="cloud-block-item">
+      <div class="cloud-block-item dp-flex justify-between align-center">
         <span>性 别</span>
         <span>{{ (user.gender != null ? user.gender : gender.Secret) | gender }}</span>
       </div>
 
-      <div class="cloud-block-item">
+      <div class="cloud-block-item dp-flex justify-between align-center">
         <span>年 龄</span>
         <span>{{ user.age || 0 }}岁</span>
       </div>
 
-      <div class="cloud-block-item">
+      <div class="cloud-block-item dp-flex justify-between align-center">
         <span>十二星座</span>
         <span>
           <app-constellation-icon *ngIf="user.constellation" [value]="user.constellation"></app-constellation-icon>

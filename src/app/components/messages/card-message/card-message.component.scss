@@ -26,7 +26,6 @@ ion-img {
   border-radius: 50%;
   border: 0.15rem solid rgba(255, 255, 255, 0.75);
   object-fit: cover;
-  overflow: hidden;
   flex-shrink: 0;
 }
 
@@ -40,7 +39,6 @@ ion-img {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  overflow: hidden;
 }
 
 .msg-bubble-card-title,

@@ -24,7 +24,7 @@
       <input type="email" class="dp-block text-center ipt-primary" formControlName="email" (blur)="trimAll('email')"
              placeholder="请输入你的邮箱地址" [maxlength]="emailMaxLength" required>
 
-      <div class="form-control-warning">
+      <div class="form-control-warning dp-flex align-end">
         <ion-icon name="warning"></ion-icon>
         {{ emailFeedback(form.controls.email.errors) }}
       </div>
@@ -41,7 +41,7 @@
           {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
         </button>
 
-        <div class="form-control-warning">
+        <div class="form-control-warning dp-flex align-end">
           <ion-icon name="warning"></ion-icon>
           {{ captchaFeedback(form.controls.captcha.errors) }}
         </div>

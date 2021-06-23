@@ -1,5 +1,5 @@
 <ion-content appScrollbar>
-  <ion-header slot="fixed" [style.border-radius]="sharp ? 0 : '0 0 1.5rem 0'">
+  <ion-header slot="fixed" class="overflow-hidden" [style.border-radius]="sharp ? 0 : '0 0 1.5rem 0'">
     <ion-toolbar>
       <span class="onchat-brand"></span>
 
@@ -11,11 +11,11 @@
     </ion-toolbar>
   </ion-header>
 
-  <aside class="sidebar" slot="fixed">
+  <aside class="sidebar overflow-hidden" slot="fixed">
     <img *ngIf="globalData.user" class="avatar cursor-pointer" [src]="globalData.user.avatarThumbnail"
          [routerLink]="['/user', globalData.user.id]">
 
-    <div class="button-group dp-flex">
+    <div class="button-group dp-flex flex-col">
       <ion-button expand="block" fill="clear" routerLink="/home/session" routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
         <ion-badge [hidden]="!globalData.unreadMsgCount()" class="bg-danger">
