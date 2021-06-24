@@ -1,5 +1,7 @@
 ion-header {
-  background: transparent;
+  background: rgba(var(--color-white-rgb), 0.75);
+  backdrop-filter: blur(15px) saturate(175%);
+  border-radius: 0 0 1.5rem 1.5rem;
 
   ion-buttons ion-back-button,
   ion-buttons ion-button,
@@ -13,6 +15,67 @@ ion-header {
   }
 
   > ion-toolbar {
-    --background: rgba(var(--color-white-rgb), 0.75);
+    backdrop-filter: blur(15px) saturate(175%);
+  }
+}
+
+.router-outlet {
+  margin-top: 6rem;
+
+  &::ng-deep > * {
+    background: var(--color-white);
+    overflow: auto;
+  }
+}
+
+:host ::ng-deep {
+  ion-searchbar {
+    position: sticky;
+    top: 0;
+    padding: 0.5rem 1rem;
+    z-index: 5;
+
+    &.sc-ion-searchbar-ios-h {
+      .searchbar-input-container {
+        height: 2.5rem;
+        line-height: 2.5rem;
+      }
+
+      .searchbar-input {
+        --background: rgba(var(--color-gray-rgb), 0.5);
+        backdrop-filter: blur(15px) saturate(175%);
+      }
+    }
+  }
+
+  ion-item {
+    position: relative;
+    height: 4.425rem;
+    touch-action: auto !important;
+    --padding-start: 1rem;
+    --padding-end: 0;
+    --padding-top: 0.25rem;
+    --padding-bottom: 0.25rem;
+    --min-height: auto;
+
+    ion-img {
+      margin: 0 0.75rem 0 0;
+      width: 3.25rem;
+      height: 3.25rem;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--color-secondary);
+    }
+
+    h2 {
+      color: var(--color-dark);
+      font-size: 0.9rem;
+      margin: 0 0 0.125rem;
+    }
+
+    p {
+      font-size: 0.7rem;
+      color: var(--color-muted);
+    }
   }
 }

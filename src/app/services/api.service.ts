@@ -410,4 +410,22 @@ export class ApiService {
   readedSendFriendRequest(id?: number): Observable<Result> {
     return this.http.put<Result>(`${env.friendUrl}request/send/readed/${id}`, null);
   }
+
+  /**
+   * 搜索用户
+   * @param keyword
+   * @param page
+   */
+  searchUser(keyword: string, page: number) {
+    return this.http.post<Result<User[]>>(`${env.userUrl}search`, { keyword, page: page.toString() });
+  }
+
+  /**
+   * 搜索聊天室
+   * @param keyword
+   * @param page
+   */
+  searchChatroom(keyword: string, page: number) {
+    return this.http.post<Result<Chatroom[]>>(`${env.chatroomUrl}search`, { keyword, page: page.toString() });
+  }
 }

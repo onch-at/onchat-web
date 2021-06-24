@@ -23,8 +23,8 @@ export class SearchPage implements OnInit {
   }
 
   segmentChange(event: any) {
-    // this.pathname = event.detail.value;
-    // this.router.navigateByUrl(this.pathname, { skipLocationChange: true });
+    this.pathname = event.detail.value;
+    this.router.navigateByUrl(this.pathname, { skipLocationChange: true });
   }
 
 }
