@@ -3,7 +3,7 @@ import { filter } from 'rxjs/operators';
 import { Throttle } from 'src/app/common/decorator';
 import { ResultCode } from 'src/app/common/enum';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { ChatroomService } from 'src/app/services/apis/chatroom.service';
 
 @Component({
   selector: 'app-chatroom',
@@ -16,7 +16,7 @@ export class ChatroomComponent {
   chatrooms: Chatroom[] = [];
 
   constructor(
-    private apiService: ApiService
+    private chatroomService: ChatroomService
   ) { }
 
   @Throttle(300)
@@ -47,7 +47,7 @@ export class ChatroomComponent {
   }
 
   private searchChatroom(page: number) {
-    return this.apiService.searchChatroom(this.keyword, page).pipe(
+    return this.chatroomService.search(this.keyword, page).pipe(
       filter(({ code }: Result) => code === ResultCode.Success)
     );
   }

@@ -9,7 +9,7 @@ import { ValidationFeedback } from 'src/app/common/interface';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -93,7 +93,7 @@ export class InfoPage implements OnInit, OnDestroy {
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
-    private apiService: ApiService,
+    private userService: UserService,
     private overlay: Overlay
   ) { }
 
@@ -142,7 +142,7 @@ export class InfoPage implements OnInit, OnDestroy {
     this.userInfo.birthday = Date.parse(birthday);
     this.userInfo.gender = +gender;
 
-    this.apiService.saveUserInfo(this.userInfo).subscribe(({ code, data }: Result<UserInfo>) => {
+    this.userService.saveUserInfo(this.userInfo).subscribe(({ code, data }: Result<UserInfo>) => {
       this.loading = false;
 
       if (code !== ResultCode.Success) {
@@ -167,7 +167,7 @@ export class InfoPage implements OnInit, OnDestroy {
           component: AvatarCropperComponent,
           componentProps: {
             imageChangedEvent: event,
-            uploader: (avatar: Blob) => this.apiService.uploadUserAvatar(avatar),
+            uploader: (avatar: Blob) => this.userService.avatar(avatar),
             handler: ({ data }: Result<AvatarData>) => {
               const { avatar, avatarThumbnail } = data;
               this.globalData.user.avatar = avatar;

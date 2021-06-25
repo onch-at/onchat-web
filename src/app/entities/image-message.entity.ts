@@ -4,7 +4,7 @@ import { mergeMap, tap } from 'rxjs/operators';
 import { MessageType, ResultCode } from '../common/enum';
 import { ImageMessage } from '../models/msg.model';
 import { Result } from '../models/onchat.model';
-import { ApiService } from '../services/api.service';
+import { ChatRecordService } from '../services/apis/chat-record.service';
 import { ImageService } from '../services/image.service';
 import { Overlay } from '../services/overlay.service';
 import { MessageEntity } from './message.entity';
@@ -45,7 +45,7 @@ export class ImageMessageEntity extends MessageEntity {
   send() {
     (this.original ? of(null) : this.compress()).pipe(
       tap(() => super.track()),
-      mergeMap(() => this.injector.get(ApiService).uploadImageToChatroom(this.chatroomId, this.file, this.sendTime))
+      mergeMap(() => this.injector.get(ChatRecordService).sendImage(this.chatroomId, this.file, this.sendTime))
     ).subscribe((event: HttpEvent<Result<ImageMessage>>) => {
       switch (event.type) {
         case HttpEventType.Sent:

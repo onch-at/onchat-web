@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStat
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Result, User } from '../models/onchat.model';
-import { ApiService } from '../services/api.service';
+import { UserService } from '../services/apis/user.service';
 import { GlobalData } from '../services/global-data.service';
 import { SocketService } from '../services/socket.service';
 
@@ -12,7 +12,7 @@ import { SocketService } from '../services/socket.service';
 })
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
-    private apiService: ApiService,
+    private userService: UserService,
     private socketService: SocketService,
     private globalData: GlobalData,
     private router: Router
@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate, CanLoad {
   private handle(): boolean | Observable<boolean> {
     if (this.globalData.user) { return true; }
 
-    return this.apiService.checkLogin().pipe(
+    return this.userService.checkLogin().pipe(
       map(({ data }: Result<false | User>) => {
         if (data) {
           this.globalData.user = data;

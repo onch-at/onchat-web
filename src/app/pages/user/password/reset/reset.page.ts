@@ -9,7 +9,8 @@ import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { ResetPassword } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { SystemService } from 'src/app/services/apis/system.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -70,7 +71,8 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
   constructor(
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
-    private apiService: ApiService,
+    private systemService: SystemService,
+    private userService: UserService,
     private overlay: Overlay,
     private router: Router,
     private routerOutlet: IonRouterOutlet,
@@ -88,7 +90,7 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
   sendCaptcha() {
     if (this.countdownTimer) { return; }
 
-    this.apiService.sendEmailCaptchaByUsername(this.form.value.username).subscribe(({ code }: Result<boolean>) => {
+    this.userService.sendEmailCaptchaByUsername(this.form.value.username).subscribe(({ code }: Result<boolean>) => {
       this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
@@ -106,7 +108,7 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
 
     const { username, password, captcha } = this.form.value;
 
-    this.apiService.resetPassword(new ResetPassword(username, password, captcha)).subscribe(({ code, msg }: Result) => {
+    this.userService.resetPassword(new ResetPassword(username, password, captcha)).subscribe(({ code, msg }: Result) => {
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
         return this.overlay.presentToast('操作失败，原因：' + msg, 2000);

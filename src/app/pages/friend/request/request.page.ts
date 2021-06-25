@@ -6,7 +6,7 @@ import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -35,7 +35,7 @@ export class RequestPage implements OnInit, OnDestroy {
   constructor(
     public globalData: GlobalData,
     private socketService: SocketService,
-    private apiService: ApiService,
+    private friendService: FriendService,
     private overlay: Overlay,
     private route: ActivatedRoute,
     private navCtrl: NavController
@@ -55,7 +55,7 @@ export class RequestPage implements OnInit, OnDestroy {
 
         // 如果未读，则设置为已读
         if (!data.requesterReaded) {
-          this.apiService.readedSendFriendRequest(data.id).subscribe();
+          this.friendService.readedSendRequest(data.id).subscribe();
           const request = this.globalData.sendFriendRequests.find(o => o.id === data.id);
           if (request) {
             request.requesterReaded = true;

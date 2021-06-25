@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { slide } from 'src/app/animations/ionic.animation';
-import { ApiService } from 'src/app/services/api.service';
+import { ChatService } from 'src/app/services/apis/chat.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class NewsPage implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private apiService: ApiService,
+    private chatService: ChatService,
     private globalData: GlobalData,
   ) { }
 
@@ -30,7 +30,7 @@ export class NewsPage implements OnInit, OnDestroy {
     const { receiveChatRequests, sendChatRequests, user } = this.globalData;
     receiveChatRequests?.concat(sendChatRequests).some(o => (
       !o.readedList.includes(user.id)
-    )) && this.apiService.readedChatRequests().subscribe();
+    )) && this.chatService.readedRequests().subscribe();
 
     this.globalData.readedChatRequest();
   }

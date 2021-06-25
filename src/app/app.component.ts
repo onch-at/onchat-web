@@ -1,13 +1,12 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { filter, mergeMap } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { RevokeMessageTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { MessageDescPipe } from './pipes/message-desc.pipe';
-import { ApiService } from './services/api.service';
+import { UserService } from './services/apis/user.service';
 import { AppService } from './services/app.service';
 import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
@@ -27,10 +26,9 @@ export class AppComponent implements OnInit {
 
   constructor(
     public globalData: GlobalData,
-    private router: Router,
     private overlay: Overlay,
     private navCtrl: NavController,
-    private apiService: ApiService,
+    private userService: UserService,
     private appService: AppService,
     private cacheService: CacheService,
     private localStorage: LocalStorage,
@@ -49,7 +47,7 @@ export class AppComponent implements OnInit {
 
     // 连接打通时
     this.socketService.on(SocketEvent.Connect).pipe(
-      mergeMap(() => this.apiService.checkLogin())
+      mergeMap(() => this.userService.checkLogin())
     ).subscribe(({ data }: Result<false | User>) => {
       this.globalData.user = data || null;
 
@@ -126,7 +124,7 @@ export class AppComponent implements OnInit {
 
       // 更新好友列表
       // 如果不为空才更新，因为为空时，进入好友列表页会自动查询
-      this.globalData.privateChatrooms && this.apiService.getPrivateChatrooms().pipe(
+      this.globalData.privateChatrooms && this.userService.getPrivateChatrooms().pipe(
         filter(({ code }: Result) => code === ResultCode.Success)
       ).subscribe(({ data }: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = data;

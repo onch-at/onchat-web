@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -25,7 +25,7 @@ export class HandlePage implements OnInit, OnDestroy {
   request: FriendRequest;
 
   constructor(
-    private apiService: ApiService,
+    private friendService: FriendService,
     private socketService: SocketService,
     private overlay: Overlay,
     private route: ActivatedRoute,
@@ -61,7 +61,7 @@ export class HandlePage implements OnInit, OnDestroy {
     // 如果未读，则设置为已读
     const { id, targetReaded } = this.request;
     if (!targetReaded) {
-      this.apiService.readedReceiveFriendRequest(id).subscribe();
+      this.friendService.readedReceiveRequest(id).subscribe();
       const request = this.globalData.receiveFriendRequests.find(o => o.id === id);
       if (request) {
         request.targetReaded = true;

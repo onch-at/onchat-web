@@ -3,7 +3,7 @@ import { ViewWillEnter } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { ResultCode } from 'src/app/common/enum';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { EntityUtil } from 'src/app/utils/entity.util';
 import { SysUtil } from 'src/app/utils/sys.util';
@@ -20,13 +20,13 @@ export class ChatroomComponent implements ViewWillEnter {
   trackByFn = EntityUtil.trackBy;
 
   constructor(
-    private apiService: ApiService,
+    private userService: UserService,
     public globalData: GlobalData,
   ) { }
 
   ionViewWillEnter() {
     // 如果为空，就加载
-    this.globalData.groupChatrooms || this.apiService.getGroupChatrooms().pipe(
+    this.globalData.groupChatrooms || this.userService.getGroupChatrooms().pipe(
       filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(({ data }: Result<ChatSession[]>) => {
       this.globalData.groupChatrooms = data;

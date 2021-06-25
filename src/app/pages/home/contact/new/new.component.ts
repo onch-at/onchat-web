@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { FriendRequestStatus } from 'src/app/common/enum';
-import { ApiService } from 'src/app/services/api.service';
+import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -18,7 +18,7 @@ export class NewComponent {
 
   constructor(
     public globalData: GlobalData,
-    private apiService: ApiService,
+    private friendService: FriendService,
     private socketService: SocketService,
     private overlay: Overlay,
   ) { }
@@ -65,7 +65,7 @@ export class NewComponent {
 
   // 已读收到的请求
   readedReceiveRequest(id: number, ionItemSliding: IonItemSliding) {
-    this.apiService.readedReceiveFriendRequest(id).subscribe();
+    this.friendService.readedReceiveRequest(id).subscribe();
     const request = this.globalData.receiveFriendRequests.find(o => o.id === id);
     if (request) {
       request.targetReaded = true;

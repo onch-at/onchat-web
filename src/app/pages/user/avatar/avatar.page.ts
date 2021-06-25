@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { Result, User } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -31,7 +31,7 @@ export class AvatarPage implements OnInit {
   constructor(
     public globalData: GlobalData,
     private overlay: Overlay,
-    private apiService: ApiService,
+    private userService: UserService,
     private feedbackService: FeedbackService,
     private route: ActivatedRoute,
     private navCtrl: NavController,
@@ -66,7 +66,7 @@ export class AvatarPage implements OnInit {
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
-          uploader: (avatar: Blob) => this.apiService.uploadUserAvatar(avatar),
+          uploader: (avatar: Blob) => this.userService.avatar(avatar),
           handler: ({ data }: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = data;
             this.user.avatar = avatar;

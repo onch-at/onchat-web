@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ChatMember, Chatroom, Result } from '../models/onchat.model';
-import { ApiService } from '../services/api.service';
+import { ChatroomService } from '../services/apis/chatroom.service';
 
 /**
  * 聊天室Resolve，根据路由参数中的chatroomId来获得chatroom
@@ -11,12 +11,12 @@ import { ApiService } from '../services/api.service';
   providedIn: 'root',
 })
 export class ChatroomResolve implements Resolve<Result<Chatroom>> {
-  constructor(private apiService: ApiService) { }
+  constructor(private chatroomService: ChatroomService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<Chatroom>> {
     const chatroomId = +route.params.chatroomId;
 
-    return this.apiService.getChatroom(chatroomId);
+    return this.chatroomService.getChatroom(chatroomId);
   }
 }
 
@@ -27,11 +27,11 @@ export class ChatroomResolve implements Resolve<Result<Chatroom>> {
   providedIn: 'root',
 })
 export class ChatMembersResolve implements Resolve<Result<ChatMember[]>> {
-  constructor(private apiService: ApiService) { }
+  constructor(private chatroomService: ChatroomService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Result<ChatMember[]>> {
     const chatroomId = +route.params.chatroomId;
 
-    return this.apiService.getChatMembers(chatroomId);
+    return this.chatroomService.getChatMembers(chatroomId);
   }
 }

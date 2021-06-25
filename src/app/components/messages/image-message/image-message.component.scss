@@ -13,14 +13,11 @@
   height: 100%;
 }
 
-.loading-mask {
-  backdrop-filter: blur(2.5px);
-}
-
 .loading-progress {
   height: 100%;
-  background: rgba(0, 0, 0, 0.25);
-  transition: transform ease-out 0.25s;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2.5px);
+  transition: transform ease-out 0.3s;
 }
 
 .loading-container {

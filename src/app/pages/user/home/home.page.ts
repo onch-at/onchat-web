@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Gender, Mood, ResultCode } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 
@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
     public globalData: GlobalData,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private apiService: ApiService,
+    private friendService: FriendService,
     private overlay: Overlay,
   ) { }
 
@@ -39,7 +39,7 @@ export class HomePage implements OnInit {
       }
     });
 
-    this.apiService.isFriend(this.user.id).subscribe(({ code, data }: Result<number>) => {
+    this.friendService.isFriend(this.user.id).subscribe(({ code, data }: Result<number>) => {
       if (code === ResultCode.Success) {
         this.chatroomId = data;
       }

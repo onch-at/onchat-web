@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Result, User } from '../models/onchat.model';
-import { ApiService } from '../services/api.service';
+import { UserService } from '../services/apis/user.service';
 import { GlobalData } from '../services/global-data.service';
 
 /**
@@ -14,7 +14,7 @@ import { GlobalData } from '../services/global-data.service';
 })
 export class UserResolve implements Resolve<User> {
   constructor(
-    private apiService: ApiService,
+    private userService: UserService,
     private globalData: GlobalData
   ) { }
 
@@ -22,7 +22,7 @@ export class UserResolve implements Resolve<User> {
     const userId = +route.params.userId;
     const { user } = this.globalData;
 
-    return (user?.id === userId) ? user : this.apiService.getUser(userId).pipe(
+    return (user?.id === userId) ? user : this.userService.getUser(userId).pipe(
       map(({ data }: Result<User>) => data)
     );
   }

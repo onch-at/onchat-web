@@ -1,6 +1,6 @@
 import { MessageType } from '../common/enum';
 import { VoiceMessage } from '../models/msg.model';
-import { ApiService } from '../services/api.service';
+import { ChatRecordService } from '../services/apis/chat-record.service';
 import { MessageEntity } from './message.entity';
 
 export class VoiceMessageEntity extends MessageEntity {
@@ -16,6 +16,6 @@ export class VoiceMessageEntity extends MessageEntity {
 
   send() {
     super.track();
-    this.injector.get(ApiService).uploadVoiceToChatroom(this.chatroomId, this.file, this.sendTime).subscribe();
+    this.injector.get(ChatRecordService).sendVoice(this.chatroomId, this.file, this.sendTime).subscribe();
   }
 }

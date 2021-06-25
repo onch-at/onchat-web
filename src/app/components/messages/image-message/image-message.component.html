@@ -1,10 +1,8 @@
 <img #img class="image" [src]="msg.data.url" [ngStyle]="{ 'width.px': width, 'height.px': height }" />
 <ng-container *ngIf="msg.loading">
-  <div class="loading-mask"></div>
   <div class="loading-progress" [style.transform]="'translateY(-' + msg.percent + '%)'"></div>
   <div class="loading-container">
     <ion-spinner class="dp-block" [hidden]="!msg.percent" name="crescent"></ion-spinner>
-    <ion-spinner class="dp-block" [hidden]="msg.percent" name="dots"></ion-spinner>
     <div class="loading-value" [hidden]="!msg.percent">{{ msg.percent + '%' }}</div>
   </div>
 </ng-container>

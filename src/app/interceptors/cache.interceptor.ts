@@ -16,10 +16,9 @@ export class CacheInterceptor implements HttpInterceptor {
             return next.handle(request);
         }
         // 获取请求对应的缓存对象，若存在则直接返回该请求对象对应的缓存对象
-        const cachedResponse = this.cacheService.get(request);
-        if (cachedResponse !== null) {
-            return of(cachedResponse);
-        }
+        const response = this.cacheService.get(request);
+        if (response) { return of(response); }
+
         // 发送请求，成功后缓存
         return next.handle(request).pipe(
             tap(event => {

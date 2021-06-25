@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChatRequest, Result } from '../models/onchat.model';
-import { ApiService } from '../services/api.service';
+import { ChatService } from '../services/apis/chat.service';
 import { GlobalData } from '../services/global-data.service';
 
 /**
@@ -14,7 +14,7 @@ import { GlobalData } from '../services/global-data.service';
 })
 export class ReceiveChatRequestResolve implements Resolve<ChatRequest> {
   constructor(
-    private apiService: ApiService,
+    private chatService: ChatService,
     private globalData: GlobalData
   ) { }
 
@@ -24,7 +24,7 @@ export class ReceiveChatRequestResolve implements Resolve<ChatRequest> {
 
     if (chatRequest) { return chatRequest; }
 
-    return this.apiService.getReceiveChatRequestById(chatRequestId).pipe(
+    return this.chatService.getReceiveChatRequestById(chatRequestId).pipe(
       map(({ data }: Result<ChatRequest>) => data)
     );
   }
@@ -38,7 +38,7 @@ export class ReceiveChatRequestResolve implements Resolve<ChatRequest> {
 })
 export class SendChatRequestResolve implements Resolve<ChatRequest> {
   constructor(
-    private apiService: ApiService,
+    private chatService: ChatService,
     private globalData: GlobalData
   ) { }
 
@@ -48,7 +48,7 @@ export class SendChatRequestResolve implements Resolve<ChatRequest> {
 
     if (chatRequest) { return chatRequest; }
 
-    return this.apiService.getSendChatRequestById(chatRequestId).pipe(
+    return this.chatService.getSendRequestById(chatRequestId).pipe(
       map(({ data }: Result<ChatRequest>) => data)
     );
   }

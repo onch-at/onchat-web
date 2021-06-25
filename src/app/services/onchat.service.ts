@@ -5,7 +5,9 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EmailBinderComponent } from '../components/modals/email-binder/email-binder.component';
 import { ChatRequest, ChatSession, FriendRequest, Result } from '../models/onchat.model';
-import { ApiService } from './api.service';
+import { ChatService } from './apis/chat.service';
+import { FriendService } from './apis/friend.service';
+import { UserService } from './apis/user.service';
 import { GlobalData } from './global-data.service';
 import { Overlay } from './overlay.service';
 import { SocketService } from './socket.service';
@@ -19,18 +21,20 @@ export class OnChatService {
     private router: Router,
     private overlay: Overlay,
     private globalData: GlobalData,
-    private apiService: ApiService,
+    private userService: UserService,
+    private chatService: ChatService,
+    private friendService: FriendService,
     private socketService: SocketService,
   ) { }
 
   init(): void {
     this.initChatSession().subscribe();
 
-    this.apiService.getReceiveFriendRequests().subscribe(({ data }: Result<FriendRequest[]>) => {
+    this.friendService.getReceiveRequests().subscribe(({ data }: Result<FriendRequest[]>) => {
       this.globalData.receiveFriendRequests = data;
     });
 
-    this.apiService.getSendFriendRequests().subscribe(({ data }: Result<FriendRequest[]>) => {
+    this.friendService.getSendRequests().subscribe(({ data }: Result<FriendRequest[]>) => {
       this.globalData.sendFriendRequests = data;
     });
 
@@ -43,7 +47,7 @@ export class OnChatService {
       confirmHandler: () => this.overlay.presentModal({
         component: EmailBinderComponent
       }),
-      cancelHandler: () => this.apiService.logout().subscribe(() => {
+      cancelHandler: () => this.userService.logout().subscribe(() => {
         this.router.navigateByUrl('/user/login');
         this.socketService.unload();
         this.globalData.reset();
@@ -56,13 +60,13 @@ export class OnChatService {
    */
   initChatSession() {
     return forkJoin([
-      this.apiService.getChatSession().pipe(tap(({ data }: Result<ChatSession[]>) => {
+      this.userService.getChatSession().pipe(tap(({ data }: Result<ChatSession[]>) => {
         this.globalData.chatSessions = data;
       })),
-      this.apiService.getReceiveChatRequests().pipe(tap(({ data }: Result<ChatRequest[]>) => {
+      this.chatService.getReceiveRequests().pipe(tap(({ data }: Result<ChatRequest[]>) => {
         this.globalData.receiveChatRequests = data;
       })),
-      this.apiService.getSendChatRequests().pipe(tap(({ data }: Result<ChatRequest[]>) => {
+      this.chatService.getSendRequests().pipe(tap(({ data }: Result<ChatRequest[]>) => {
         this.globalData.sendChatRequests = data;
       }))
     ]);

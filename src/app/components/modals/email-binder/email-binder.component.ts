@@ -7,7 +7,8 @@ import { captchaFeedback, emailFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { SystemService } from 'src/app/services/apis/system.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -52,7 +53,8 @@ export class EmailBinderComponent extends ModalComponent {
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
     private asyncValidator: AsyncValidator,
-    private apiService: ApiService,
+    private systemService: SystemService,
+    private userService: UserService,
     protected overlay: Overlay,
     protected router: Router,
     @Inject(WINDOW) private window: Window,
@@ -64,7 +66,7 @@ export class EmailBinderComponent extends ModalComponent {
     const ctrl = this.form.get('email');
     if (ctrl.errors || this.countdownTimer) { return; }
 
-    this.apiService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result) => {
+    this.systemService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result) => {
       this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 
@@ -83,7 +85,7 @@ export class EmailBinderComponent extends ModalComponent {
     this.loading = true;
 
     const { email, captcha } = this.form.value;
-    this.apiService.bindEmail(email, captcha).subscribe(({ code, data, msg }: Result<string>) => {
+    this.userService.bindEmail(email, captcha).subscribe(({ code, data, msg }: Result<string>) => {
       this.loading = false;
       this.overlay.presentToast(msg || '成功绑定电子邮箱！', code === ResultCode.Success ? 1000 : 2000);
 

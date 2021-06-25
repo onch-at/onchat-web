@@ -11,7 +11,8 @@ import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/av
 import { ChatMemberListComponent } from 'src/app/components/modals/chat-member-list/chat-member-list.component';
 import { ChatSessionSelectorComponent } from 'src/app/components/modals/chat-session-selector/chat-session-selector.component';
 import { ChatMember, ChatRequest, Chatroom, ChatSession, Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { ChatroomService } from 'src/app/services/apis/chatroom.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { CacheService } from 'src/app/services/cache.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -43,7 +44,8 @@ export class HomePage implements OnInit, OnDestroy {
     private router: Router,
     private overlay: Overlay,
     private route: ActivatedRoute,
-    private apiService: ApiService,
+    private chatroomService: ChatroomService,
+    private userService: UserService,
     private navCtrl: NavController,
     private cacheService: CacheService,
     private socketService: SocketService,
@@ -120,7 +122,7 @@ export class HomePage implements OnInit, OnDestroy {
         const { id, name } = this.chatroom;
         if (!StrUtil.trimAll(data['name']).length || data['name'] === name) { return; }
 
-        this.apiService.setChatroomName(id, data['name']).subscribe(({ code, msg }: Result) => {
+        this.chatroomService.setName(id, data['name']).subscribe(({ code, msg }: Result) => {
           if (code !== ResultCode.Success) {
             return this.overlay.presentToast(msg);
           }
@@ -155,7 +157,7 @@ export class HomePage implements OnInit, OnDestroy {
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['nickname'] === this.member.nickname) { return; }
 
-        this.apiService.setMemberNickname(this.chatroom.id, data['nickname']).subscribe(({ code, data, msg }: Result<string>) => {
+        this.chatroomService.setMemberNickname(this.chatroom.id, data['nickname']).subscribe(({ code, data, msg }: Result<string>) => {
           if (code !== ResultCode.Success) {
             return this.overlay.presentToast(msg);
           }
@@ -214,7 +216,7 @@ export class HomePage implements OnInit, OnDestroy {
    */
   inviteJoinChatroom() {
     // 等待加载出好友会话后的一个可观察对象
-    const observable = this.globalData.privateChatrooms ? of(null) : this.apiService.getPrivateChatrooms().pipe(
+    const observable = this.globalData.privateChatrooms ? of(null) : this.userService.getPrivateChatrooms().pipe(
       filter(({ code }: Result) => code === ResultCode.Success),
       tap(({ data }: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = data;
@@ -267,7 +269,7 @@ export class HomePage implements OnInit, OnDestroy {
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
-          uploader: (avatar: Blob) => this.apiService.uploadChatroomAvatar(this.chatroom.id, avatar),
+          uploader: (avatar: Blob) => this.chatroomService.avatar(this.chatroom.id, avatar),
           handler: ({ data }: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = data;
             const id = this.chatroom.id;

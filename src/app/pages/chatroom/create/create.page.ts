@@ -7,7 +7,7 @@ import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATR
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox, ValidationFeedback } from 'src/app/common/interface';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -70,7 +70,7 @@ export class CreatePage implements OnInit, OnDestroy {
   constructor(
     public globalData: GlobalData,
     private router: Router,
-    private apiService: ApiService,
+    private userService: UserService,
     private formBuilder: FormBuilder,
     private socketService: SocketService,
     private overlay: Overlay,
@@ -84,7 +84,7 @@ export class CreatePage implements OnInit, OnDestroy {
     if (this.globalData.privateChatrooms) {
       setOriginPrivateChatrooms(this.globalData.privateChatrooms);
     } else {
-      this.apiService.getPrivateChatrooms().pipe(
+      this.userService.getPrivateChatrooms().pipe(
         filter(({ code }: Result) => code === ResultCode.Success)
       ).subscribe(({ data }: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = data;

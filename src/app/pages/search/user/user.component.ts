@@ -3,7 +3,7 @@ import { filter } from 'rxjs/operators';
 import { Throttle } from 'src/app/common/decorator';
 import { ResultCode } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { UserService } from 'src/app/services/apis/user.service';
 
 @Component({
   selector: 'app-user',
@@ -16,7 +16,7 @@ export class UserComponent {
   users: User[] = [];
 
   constructor(
-    private apiService: ApiService
+    private userService: UserService
   ) { }
 
   @Throttle(300)
@@ -47,7 +47,7 @@ export class UserComponent {
   }
 
   private searchUser(page: number) {
-    return this.apiService.searchUser(this.keyword, page).pipe(
+    return this.userService.search(this.keyword, page).pipe(
       filter(({ code }: Result) => code === ResultCode.Success)
     );
   }

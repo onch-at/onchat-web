@@ -4,7 +4,7 @@ import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Result } from '../models/onchat.model';
-import { ApiService } from '../services/api.service';
+import { FriendService } from '../services/apis/friend.service';
 import { GlobalData } from '../services/global-data.service';
 
 @Injectable({
@@ -12,13 +12,13 @@ import { GlobalData } from '../services/global-data.service';
 })
 export class NotFriendGuard implements CanActivate {
   constructor(
-    private apiService: ApiService,
+    private friendService: FriendService,
     private globalData: GlobalData,
     private navCtrl: NavController,
   ) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.apiService.isFriend(+next.params.userId).pipe(
+    return this.friendService.isFriend(+next.params.userId).pipe(
       map(({ data }: Result<number>) => {
         // TODO 写完单聊之后，自己跟自己也是好友，把this.globalData.user.id == next.params.userId删除
         const isFriend = !!data || this.globalData.user?.id === next.params.userId;

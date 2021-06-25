@@ -9,7 +9,7 @@ import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { Login } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -52,7 +52,7 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
     public globalData: GlobalData,
     private router: Router,
     private onChatService: OnChatService,
-    private apiService: ApiService,
+    private userService: UserService,
     private overlay: Overlay,
     private socketService: SocketService,
     private formBuilder: FormBuilder,
@@ -75,7 +75,7 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
 
     const { username, password } = this.form.value;
 
-    this.apiService.login(new Login(username, password)).subscribe(({ code, data, msg }: Result<User>) => {
+    this.userService.login(new Login(username, password)).subscribe(({ code, data, msg }: Result<User>) => {
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
         return this.overlay.presentToast('登录失败，原因：' + msg, 2000);

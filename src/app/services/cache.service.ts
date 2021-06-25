@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CacheEntry } from '../models/cache.model';
 
@@ -33,7 +33,7 @@ export class CacheService {
     const entry: CacheEntry = {
       url: request.urlWithParams,
       response: response,
-      expire: Date.now() + +request.params.get('cache')
+      expire: Date.now() + +request.headers.get('Client-Cache')
     };
     // 以请求url作为键，CacheEntry对象为值，保存到cacheMap中
     this.cacheMap.set(entry.url, entry);
@@ -57,7 +57,11 @@ export class CacheService {
    * @param request
    */
   isCachable(request: HttpRequest<any>) {
-    return request.params.has('cache');
+    return request.headers.has('Client-Cache');
+  }
+
+  cacheHeader(cacheTime: number) {
+    return new HttpHeaders({ 'Client-Cache': cacheTime.toString() });
   }
 
   /**

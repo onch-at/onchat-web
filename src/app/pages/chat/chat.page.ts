@@ -11,7 +11,10 @@ import { ChatDrawerComponent } from 'src/app/components/chat-drawer/chat-drawer.
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { ChatRecordService } from 'src/app/services/apis/chat-record.service';
+import { ChatroomService } from 'src/app/services/apis/chatroom.service';
+import { FriendService } from 'src/app/services/apis/friend.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -71,7 +74,10 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     public globalData: GlobalData,
-    private apiService: ApiService,
+    private chatRecordService: ChatRecordService,
+    private chatroomService: ChatroomService,
+    private friendService: FriendService,
+    private userService: UserService,
     private platform: Platform,
     private socketService: SocketService,
     private route: ActivatedRoute,
@@ -112,7 +118,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       this.chatroomName = title;
       this.chatroomType = data.chatroomType;
     } else {
-      this.apiService.getChatroom(this.chatroomId).pipe(
+      this.chatroomService.getChatroom(this.chatroomId).pipe(
         filter(({ code }: Result) => code === ResultCode.Success)
       ).subscribe(({ data }: Result<Chatroom>) => {
         const { name, type } = data
@@ -148,7 +154,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
       debounceTime(3000)
     ).subscribe(() => {
-      this.apiService.readedChatSession(this.chatSession.id).subscribe();
+      this.userService.readedChatSession(this.chatSession.id).subscribe();
     });
 
     this.socketService.on(SocketEvent.RevokeMessage).pipe(
@@ -280,7 +286,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   loadRecords(complete?: () => void) {
     if (this.ended) { return complete?.(); }
 
-    this.apiService.getChatRecords(this.msgId, this.chatroomId).pipe(
+    this.chatRecordService.getChatRecords(this.msgId, this.chatroomId).pipe(
       filter(({ code }: Result) => {
         if (code === ResultCode.ErrorNoPermission) {
           this.overlay.presentToast('你还没有权限进入此聊天室！');
@@ -431,7 +437,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['alias'] === this.chatroomName) { return; }
 
-        this.apiService.setFriendAlias(this.chatroomId, data['alias']).subscribe(({ code, data, msg }: Result<string>) => {
+        this.friendService.setAlias(this.chatroomId, data['alias']).subscribe(({ code, data, msg }: Result<string>) => {
           if (code !== ResultCode.Success) {
             return this.overlay.presentToast(msg);
           }

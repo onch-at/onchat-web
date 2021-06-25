@@ -9,7 +9,8 @@ import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { SystemService } from 'src/app/services/apis/system.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -89,7 +90,8 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
     private formBuilder: FormBuilder,
     private asyncValidator: AsyncValidator,
     private onChatService: OnChatService,
-    private apiService: ApiService,
+    private systemService: SystemService,
+    private userService: UserService,
     private overlay: Overlay,
     private socketService: SocketService,
     private routerOutlet: IonRouterOutlet,
@@ -115,7 +117,7 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
     this.globalData.navigating = true;
 
     const { username, password, email, captcha } = this.form.value;
-    this.apiService.register(new Register(username, password, email, captcha)).subscribe(({ code, data, msg }: Result<User>) => {
+    this.userService.register(new Register(username, password, email, captcha)).subscribe(({ code, data, msg }: Result<User>) => {
 
       if (code !== ResultCode.Success) {
         this.globalData.navigating = false;
@@ -137,7 +139,7 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
     const ctrl = this.form.get('email');
     if (ctrl.errors || this.countdownTimer) { return; }
 
-    this.apiService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result<boolean>) => {
+    this.systemService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result<boolean>) => {
       this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
     });
 

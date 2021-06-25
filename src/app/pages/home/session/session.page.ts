@@ -4,7 +4,8 @@ import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
-import { ApiService } from 'src/app/services/api.service';
+import { ChatService } from 'src/app/services/apis/chat.service';
+import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { DateUtil } from 'src/app/utils/date.util';
@@ -27,7 +28,8 @@ export class SessionPage {
   constructor(
     private router: Router,
     private onChatService: OnChatService,
-    private apiService: ApiService,
+    private userService: UserService,
+    private chatService: ChatService,
     public globalData: GlobalData
   ) { }
 
@@ -60,7 +62,7 @@ export class SessionPage {
    * @param i
    */
   doStickyChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
-    (item.sticky ? this.apiService.unstickyChatSession(item.id) : this.apiService.stickyChatSession(item.id)).pipe(
+    (item.sticky ? this.userService.unstickyChatSession(item.id) : this.userService.stickyChatSession(item.id)).pipe(
       filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(() => {
       item.sticky = !item.sticky;
@@ -76,7 +78,7 @@ export class SessionPage {
    */
   doReadChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
     if (!item.unread) {
-      return this.apiService.unreadChatSession(item.id).pipe(
+      return this.userService.unreadChatSession(item.id).pipe(
         filter(({ code }: Result) => code === ResultCode.Success)
       ).subscribe(() => {
         ionItemSliding.close();
@@ -84,7 +86,7 @@ export class SessionPage {
       });
     }
 
-    (item.type === ChatSessionType.ChatroomNotice ? this.apiService.readedChatRequests() : this.apiService.readedChatSession(item.id)).pipe(
+    (item.type === ChatSessionType.ChatroomNotice ? this.chatService.readedRequests() : this.userService.readedChatSession(item.id)).pipe(
       filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(() => {
       ionItemSliding.close();
