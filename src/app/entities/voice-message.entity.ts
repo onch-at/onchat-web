@@ -15,7 +15,7 @@ export class VoiceMessageEntity extends MessageEntity {
   }
 
   send() {
-    super.track();
-    this.injector.get(ChatRecordService).sendVoice(this.chatroomId, this.file, this.sendTime).subscribe();
+    this.track();
+    this.injector.get(ChatRecordService).sendVoice(this.chatroomId, this.file, this.tempId).subscribe();
   }
 }

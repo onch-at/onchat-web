@@ -26,30 +26,30 @@ export class ChatRecordService {
    * 上传图片
    * @param id 聊天室ID
    * @param image 图片
-   * @param sendTime 发送时间
+   * @param tempId 临时ID
    */
-  sendImage(id: number, image: Blob, sendTime: number) {
+  sendImage(id: number, image: Blob, tempId: string) {
     const formData: FormData = new FormData();
     formData.append('image', image);
-    formData.append('time', sendTime.toString());
+    formData.append('tempId', tempId);
 
     const request = new HttpRequest('POST', `${environment.chatRecordUrl}image/${id}`, formData, {
       reportProgress: true
     });
 
-    return this.http.request<Result<ImageMessage>>(request);
+    return this.http.request<Result<Message<ImageMessage>>>(request);
   }
 
   /**
    * 上传语音
    * @param id 聊天室ID
    * @param voice 语音
-   * @param sendTime 发送时间
+   * @param tempId 临时ID
    */
-  sendVoice(id: number, voice: Blob, sendTime: number) {
+  sendVoice(id: number, voice: Blob, tempId: string) {
     const formData: FormData = new FormData();
     formData.append('voice', voice);
-    formData.append('time', sendTime.toString());
+    formData.append('tempId', tempId);
 
     return this.http.post<Result<Message<VoiceMessage>>>(`${environment.chatRecordUrl}voice/${id}`, formData);
   }

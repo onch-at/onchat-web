@@ -1,8 +1,8 @@
-import { Component, Inject, Injector, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
-import { WINDOW } from 'src/app/common/token';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
+import { MessageEntity } from 'src/app/entities/message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
 import { ChatPage } from 'src/app/pages/chat/chat.page';
@@ -20,6 +20,7 @@ import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-ed
 })
 export class ChatDrawerComponent {
   @Input() page: ChatPage;
+  @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
   @ViewChild(IonSlides, { static: true }) ionSlides: IonSlides;
 
   slideOpts: SwiperOptions = { initialSlide: 1 };
@@ -31,7 +32,6 @@ export class ChatDrawerComponent {
     private imageService: ImageService,
     private routerOutlet: IonRouterOutlet,
     private injector: Injector,
-    @Inject(WINDOW) private window: Window,
   ) { }
 
   setIndex(index: number, speed?: number) {
@@ -50,10 +50,8 @@ export class ChatDrawerComponent {
     msg.chatroomId = chatroomId;
     msg.userId = user.id;
     msg.avatarThumbnail = user.avatarThumbnail;
-    msg.send();
 
-    this.page.msgList.push(msg);
-    this.page.scrollToBottom();
+    this.msgpush.emit(msg);
   }
 
   editRichText() {
@@ -89,27 +87,24 @@ export class ChatDrawerComponent {
     });
   }
 
-  private createImageMessage(file: Blob, original: boolean) {
+  private createImageMessage(file: File, original: boolean) {
     const { chatroomId } = this.page;
     const { user } = this.globalData;
     const url = URL.createObjectURL(file);
     const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url) as string;
-
+    const img = new Image();
     const msg = new ImageMessageEntity(file, url, original).inject(this.injector);
+
     msg.userId = user.id;
     msg.chatroomId = chatroomId;
     msg.avatarThumbnail = user.avatarThumbnail;
 
-    return new Promise<ImageMessageEntity>((resolve, reject) => {
-      const img = new Image();
+    return new Promise((resolve, reject) => {
       img.onload = () => {
         msg.data = new ImageMessage(safeUrl, safeUrl, img.width, img.height);
-        this.page.msgList.push(msg);
-        this.window.setTimeout(() => {
-          this.page.scrollToBottom(300).then(() => resolve(msg));
-        });
-        msg.send();
-      }
+        this.msgpush.emit(msg);
+        resolve(msg);
+      };
 
       img.onerror = (error: any) => reject(error);
 

@@ -119,8 +119,8 @@ export interface Message<T extends AnyMessage = AnyMessage> extends IEntity {
   data: T;
   /** 回复消息的消息记录ID */
   replyId?: number;
-  /** 消息在客户端发送的时间 */
-  sendTime?: number;
+  /** 消息在客户端的临时ID */
+  tempId?: string;
   /** 发送中 */
   loading?: boolean;
   /** 上传进度 */

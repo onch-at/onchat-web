@@ -1,5 +1,5 @@
 import { KeyValue } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Injector, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, Injector, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent, NavController, Platform } from '@ionic/angular';
 import { fromEvent, Subject } from 'rxjs';
@@ -7,6 +7,7 @@ import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { WINDOW } from 'src/app/common/token';
 import { ChatDrawerComponent } from 'src/app/components/chat-drawer/chat-drawer.component';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
@@ -85,7 +86,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     private renderer: Renderer2,
     private overlay: Overlay,
     private injector: Injector,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ngOnInit() {
@@ -143,7 +145,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
         const has = this.msgList.some(o => (
           o.type === data.type &&
-          o.sendTime === data.sendTime
+          o.tempId === data.tempId
         ));
 
         if (!has) {
@@ -159,9 +161,9 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
     this.socketService.on(SocketEvent.RevokeMessage).pipe(
       takeUntil(this.destroy$),
-      filter(({ code, data }: Result<{ chatroomId: number, msgId: number }>) => {
-        return code === ResultCode.Success && data.chatroomId === this.chatroomId
-      })
+      filter(({ code, data }: Result<{ chatroomId: number, msgId: number }>) => (
+        code === ResultCode.Success && data.chatroomId === this.chatroomId
+      ))
     ).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
       const msg = this.msgList.find(o => o.id === data.msgId);
       if (msg) {
@@ -219,6 +221,12 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  onMessagePush(msg: MessageEntity) {
+    this.msgList.push(msg);
+    msg.send();
+    this.window.setTimeout(() => this.scrollToBottom(300));
+  }
+
   /**
    * 滚动结束时
    */
@@ -230,16 +238,12 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  onKeyup({ target, key, ctrlKey, shiftKey }: KeyboardEvent) {
+  onKeyup({ target, ctrlKey, shiftKey }: KeyboardEvent) {
     this.renderer.setStyle(target, 'height', 'auto');
     this.renderer.setStyle(target, 'height', (target as Element).scrollHeight + 2.5 + 'px');
     // const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
     // (diff <= 50 && diff >= 5) && this.scrollToBottom();
-    if (
-      this.platform.is('desktop') &&
-      key.toLowerCase() === 'enter' &&
-      !ctrlKey && !shiftKey
-    ) {
+    if (this.platform.is('desktop') && !ctrlKey && !shiftKey) {
       this.send();
     }
   }

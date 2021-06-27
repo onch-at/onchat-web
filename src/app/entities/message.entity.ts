@@ -17,17 +17,16 @@ export class MessageEntity implements Message {
   type: MessageType;
   data: AnyMessage;
   replyId?: number;
-  sendTime?: number;
+  tempId?: string;
   loading?: boolean;
 
   protected injector: Injector;
 
-  constructor(type: MessageType = MessageType.Text) {
+  constructor(type: MessageType = MessageType.Text, tempId?: string) {
     this.type = type;
-    this.sendTime = Date.now();
-    this.createTime = this.sendTime;
+    this.tempId = tempId ?? btoa(Date.now().toString());
+    this.createTime = Date.now();
     this.loading = true;
-
   }
 
   /**
@@ -46,13 +45,12 @@ export class MessageEntity implements Message {
     const socketService = this.injector.get(SocketService);
 
     socketService.on(SocketEvent.Message).pipe(
-      filter(({ code, data }: Result<Message>) => {
-        return code === ResultCode.Success && this.isSelf(data);
-      }),
+      filter(({ code, data }: Result<Message>) => (
+        code === ResultCode.Success && this.isSelf(data)
+      )),
       take(1)
     ).subscribe((result: Result<Message>) => {
       const { avatarThumbnail, data, ...msg } = result.data;
-
       Object.assign(this, msg);
       this.loading = false;
     });
@@ -71,7 +69,7 @@ export class MessageEntity implements Message {
       type: this.type,
       data: this.data,
       replyId: this.replyId,
-      sendTime: this.sendTime,
+      tempId: this.tempId,
       createTime: undefined
     });
   }
@@ -81,7 +79,7 @@ export class MessageEntity implements Message {
    */
   isSelf(msg: Message) {
     return msg.chatroomId === this.chatroomId &&
-      msg.sendTime === this.sendTime &&
+      msg.tempId === this.tempId &&
       msg.userId === this.userId &&
       msg.type === this.type;
   }

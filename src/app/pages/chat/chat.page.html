@@ -40,7 +40,7 @@
 
       <!-- 这里的ID将附加上房间号来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
       <textarea #textarea [id]="'message-' + chatroomId" class="flex-auto" name="message" rows="1"
-                [class.invalid]="msg.length > textMsgMaxLength" (keyup)="onKeyup($event)" (focus)="hideDrawer()"
+                [class.invalid]="msg.length > textMsgMaxLength" (keyup.enter)="onKeyup($event)" (focus)="hideDrawer()"
                 (keypress)="onKeypress($event)" placeholder="来聊点什么吧！" [(ngModel)]="msg"></textarea>
 
       <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
@@ -58,7 +58,7 @@
 
     <div #drawerContainer class="drawer-container overflow-hidden"
          [style.height]="showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0">
-      <app-chat-drawer [page]="this"></app-chat-drawer>
+      <app-chat-drawer [page]="this" (msgpush)="onMessagePush($event)"></app-chat-drawer>
     </div>
   </div>
 </ion-content>

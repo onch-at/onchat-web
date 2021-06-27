@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
 import { MessageType, ResultCode } from '../common/enum';
 import { ImageMessage } from '../models/msg.model';
-import { Result } from '../models/onchat.model';
+import { Message, Result } from '../models/onchat.model';
 import { ChatRecordService } from '../services/apis/chat-record.service';
 import { ImageService } from '../services/image.service';
 import { Overlay } from '../services/overlay.service';
@@ -30,27 +30,12 @@ export class ImageMessageEntity extends MessageEntity {
     this.percent = 0;
   }
 
-  /**
-   * 压缩图像
-   */
-  compress() {
-    return this.injector.get(ImageService).compress(this.url).pipe(
-      tap((file: Blob) => {
-        this.file = file;
-        this.original = false;
-      })
-    );
-  }
-
   send() {
     (this.original ? of(null) : this.compress()).pipe(
-      tap(() => super.track()),
-      mergeMap(() => this.injector.get(ChatRecordService).sendImage(this.chatroomId, this.file, this.sendTime))
-    ).subscribe((event: HttpEvent<Result<ImageMessage>>) => {
+      tap(() => this.track()),
+      mergeMap(() => this.injector.get(ChatRecordService).sendImage(this.chatroomId, this.file, this.tempId))
+    ).subscribe((event: HttpEvent<Result<Message<ImageMessage>>>) => {
       switch (event.type) {
-        case HttpEventType.Sent:
-          break;
-
         case HttpEventType.UploadProgress:
           const { total, loaded } = event;
           if (total > 0) {
@@ -59,15 +44,22 @@ export class ImageMessageEntity extends MessageEntity {
           break;
 
         case HttpEventType.Response:
-          const { code, data, msg } = event.body;
+          const { code, msg } = event.body;
 
           if (code !== ResultCode.Success) {
-            return this.injector.get(Overlay).presentToast('图片上传失败，原因：' + msg);
+            this.injector.get(Overlay).presentToast('图片上传失败，原因：' + msg);
           }
-
-          Object.assign(this.data, data);
           break;
       }
     });
+  }
+
+  /**
+   * 压缩图像
+   */
+  private compress() {
+    return this.injector.get(ImageService).compress(this.url).pipe(
+      tap((file: Blob) => this.file = file)
+    );
   }
 }

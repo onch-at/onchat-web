@@ -32,9 +32,16 @@ export class ImageMessageComponent implements AfterViewInit {
     let divisor = 1;
     let { width, height } = this.msg.data;
     const maxWidth = this.window.innerWidth * 0.4;
+    const maxHeight = this.window.innerHeight * 0.5;
 
     if (width > maxWidth) {
       divisor = width / maxWidth;
+      width /= divisor;
+      height /= divisor;
+    }
+
+    if (height > maxHeight) {
+      divisor = height / maxHeight;
       width /= divisor;
       height /= divisor;
     }
