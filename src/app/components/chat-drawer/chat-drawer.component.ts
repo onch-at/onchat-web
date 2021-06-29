@@ -88,8 +88,7 @@ export class ChatDrawerComponent {
   }
 
   private createImageMessage(file: File, original: boolean) {
-    const { chatroomId } = this.page;
-    const { user } = this.globalData;
+    const { user, chatroomId } = this.globalData;
     const url = URL.createObjectURL(file);
     const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url) as string;
     const img = new Image();

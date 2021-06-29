@@ -1,4 +1,4 @@
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
@@ -33,11 +33,10 @@ export class ChatRecordService {
     formData.append('image', image);
     formData.append('tempId', tempId);
 
-    const request = new HttpRequest('POST', `${environment.chatRecordUrl}image/${id}`, formData, {
-      reportProgress: true
+    return this.http.post<Result<Message<ImageMessage>>>(`${environment.chatRecordUrl}image/${id}`, formData, {
+      reportProgress: true,
+      observe: 'events'
     });
-
-    return this.http.request<Result<Message<ImageMessage>>>(request);
   }
 
   /**

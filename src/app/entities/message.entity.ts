@@ -24,7 +24,7 @@ export class MessageEntity implements Message {
 
   constructor(type: MessageType = MessageType.Text, tempId?: string) {
     this.type = type;
-    this.tempId = tempId ?? btoa(Date.now().toString());
+    this.tempId = tempId ?? btoa(performance.now().toString());
     this.createTime = Date.now();
     this.loading = true;
   }

@@ -32,10 +32,13 @@ export class ImageMessageEntity extends MessageEntity {
 
   send() {
     (this.original ? of(null) : this.compress()).pipe(
-      tap(() => this.track()),
       mergeMap(() => this.injector.get(ChatRecordService).sendImage(this.chatroomId, this.file, this.tempId))
     ).subscribe((event: HttpEvent<Result<Message<ImageMessage>>>) => {
       switch (event.type) {
+        case HttpEventType.Sent:
+          this.track();
+          break;
+
         case HttpEventType.UploadProgress:
           const { total, loaded } = event;
           if (total > 0) {

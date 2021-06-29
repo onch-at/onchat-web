@@ -5,7 +5,6 @@ import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { EntityUtil } from 'src/app/utils/entity.util';
 import { VoiceMessageComponent } from '../messages/voice-message/voice-message.component';
 import { ImagePreviewerComponent } from '../modals/image-previewer/image-previewer.component';
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
@@ -30,7 +29,7 @@ export class MessageListComponent {
 
   @ViewChildren(VoiceMessageComponent) voiceMsgList: QueryList<VoiceMessageComponent>;
 
-  trackByFn = EntityUtil.trackBy;
+  trackByFn = (index: number, item: Message) => item.tempId ?? item.id;
 
   msgItemClass = (userId: number) => {
     const { user } = this.globalData;
