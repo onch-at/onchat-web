@@ -104,18 +104,17 @@
 
 // 主要输入框的警告模式
 .ipt-primary ~ .form-control-warning,
-form .feedback-form-invalid {
+.ipt-primary ~ .form-control-warning {
   color: var(--color-danger);
   opacity: 1;
   transition: all 0.125s ease-out;
 }
 
 // 主要输入框的正常模式
-.ipt-primary.ng-valid ~ .form-control-warning,
-.ipt-primary.ng-pristine ~ .form-control-warning,
-.ipt-primary.ng-pending ~ .form-control-warning,
-form.ng-valid .feedback-form-invalid,
-form.ng-pristine .feedback-form-invalid {
+.ipt-primary ~ .form-control-warning.hide,
+.ipt-primary.ng-valid ~ .form-control-warning:first-of-type,
+.ipt-primary.ng-pristine ~ .form-control-warning:first-of-type,
+.ipt-primary.ng-pending ~ .form-control-warning:first-of-type {
   height: 0;
   opacity: 0;
 }

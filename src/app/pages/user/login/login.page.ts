@@ -81,7 +81,7 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
         return this.overlay.presentToast('登录失败，原因：' + msg, 2000);
       }
 
-      this.overlay.presentToast('登录成功！即将跳转…');
+      this.overlay.presentToast('登录成功！即将跳转…', 1000);
 
       this.globalData.user = data;
       this.socketService.connect();
@@ -89,7 +89,7 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
       this.window.setTimeout(() => {
         this.router.navigateByUrl('/');
         this.onChatService.init();
-      }, 1000);
+      }, 500);
     })
   }
 

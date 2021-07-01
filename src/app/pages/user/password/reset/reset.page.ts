@@ -9,7 +9,6 @@ import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { ResetPassword } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
-import { SystemService } from 'src/app/services/apis/system.service';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -71,7 +70,6 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
   constructor(
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
-    private systemService: SystemService,
     private userService: UserService,
     private overlay: Overlay,
     private router: Router,
@@ -114,11 +112,11 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
         return this.overlay.presentToast('操作失败，原因：' + msg, 2000);
       }
 
-      this.overlay.presentToast('密码重置成功，请重新登录！');
+      this.overlay.presentToast('密码重置成功，请重新登录！', 1000);
 
       setTimeout(() => {
         this.router.navigateByUrl('/user/login');
-      }, 1000);
+      }, 500);
     });
   }
 

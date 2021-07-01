@@ -47,7 +47,7 @@
                   {{ passwordFeedback(form.controls.confirmPassword.errors) }}
                 </div>
 
-                <div class="feedback-form-invalid dp-flex align-end" [hidden]="!form.errors?.equal">
+                <div class="form-control-warning dp-flex align-end" [class.hide]="!form.errors?.equal">
                   <ion-icon name="warning"></ion-icon>
                   确认密码与密码不一致！
                 </div>
