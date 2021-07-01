@@ -21,7 +21,7 @@ import { ModalComponent } from '../modal.component';
   styleUrls: ['./rich-text-editor.component.scss'],
 })
 export class RichTextEditorComponent extends ModalComponent implements OnInit {
-  html: string;
+  html: string = '';
   text: string = '';
 
   modules = {
@@ -38,7 +38,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
     ]
   };
 
-  canSend = () => StrUtil.trimAll(this.html).length > 0;
+  canSend = () => this.html && StrUtil.trimAll(this.html).length > 0;
 
   constructor(
     private globalData: GlobalData,
