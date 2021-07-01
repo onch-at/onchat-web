@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
-import { ChatPage } from 'src/app/pages/chat/chat.page';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -19,7 +18,6 @@ import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-ed
   styleUrls: ['./chat-drawer.component.scss'],
 })
 export class ChatDrawerComponent {
-  @Input() page: ChatPage;
   @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
   @ViewChild(IonSlides, { static: true }) ionSlides: IonSlides;
 
@@ -43,8 +41,7 @@ export class ChatDrawerComponent {
   }
 
   onVoiceOutput([voice, data]: [Blob, VoiceMessage]) {
-    const { chatroomId } = this.page;
-    const { user } = this.globalData;
+    const { user, chatroomId } = this.globalData;
 
     const msg = new VoiceMessageEntity(voice, data).inject(this.injector);
     msg.chatroomId = chatroomId;
@@ -57,11 +54,12 @@ export class ChatDrawerComponent {
   editRichText() {
     this.overlay.presentModal({
       component: RichTextEditorComponent,
-      componentProps: {
-        page: this.page
-      },
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl
+    }).then(modal => (
+      modal.onWillDismiss()
+    )).then(detail => {
+      detail.data && this.msgpush.emit(detail.data);
     });
   }
 

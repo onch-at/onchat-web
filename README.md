@@ -21,7 +21,7 @@ Visit the official [OnChat](https://chat.hypergo.net) site to quickly start your
 
 For the full OnChat documentation, please visit [https://docs.chat.hypergo.net/docs/intro](https://docs.chat.hypergo.net/docs/intro).
 
-## Suport
+## Support
 
 OnChat mainly includes the following code repositories:
 

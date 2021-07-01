@@ -4,6 +4,7 @@ import { ChatMemberRole, MessageType, ResultCode, SocketEvent } from '../common/
 import { AnyMessage } from '../models/msg.model';
 import { Message, Result } from '../models/onchat.model';
 import { SocketService } from '../services/socket.service';
+import { StrUtil } from '../utils/str.util';
 
 export class MessageEntity implements Message {
   id: number;
@@ -24,7 +25,7 @@ export class MessageEntity implements Message {
 
   constructor(type: MessageType = MessageType.Text, tempId?: string) {
     this.type = type;
-    this.tempId = tempId ?? btoa(performance.now().toString());
+    this.tempId = tempId ?? StrUtil.random();
     this.createTime = Date.now();
     this.loading = true;
   }

@@ -1,0 +1,32 @@
+<button appActiveClass class="tips-btn btn-primary" [class.show]="hasUnreadMsg" (tap)="scrollToBottom()">
+  收到新消息
+  <ion-icon name="arrow-down-outline"></ion-icon>
+</button>
+
+<div class="dp-flex align-center">
+  <button appRipple appActiveClass class="btn-secondary fn-btn dp-flex justify-center align-center" (click)="toggleDrawer()">
+    <ion-icon name="add-circle-outline"></ion-icon>
+  </button>
+
+  <!-- 这里的ID将附加上tempId来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
+  <textarea #textarea [id]="textareaId" class="flex-auto" name="message" rows="1" [class.invalid]="msg.length > textMsgMaxLength"
+            (keyup)="onKeyup($event)" (focus)="hideDrawer()" (keypress)="onKeypress($event)" (paste)="onPaste($event)"
+            placeholder="来聊点什么吧！" [(ngModel)]="msg"></textarea>
+
+  <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
+  <button appRipple appActiveClass class="btn-primary send-btn" (click)="send()" [hidden]="!canSend()"
+          [disabled]="disableSendBtn()">
+    <label [for]="textareaId" class="dp-flex align-center justify-center">
+      <ion-icon name="arrow-up"></ion-icon>
+    </label>
+  </button>
+
+  <button appRipple appActiveClass class="btn-primary mic-btn" [hidden]="canSend()" (click)="record()">
+    <ion-icon name="mic-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 35px;"></ion-icon>
+  </button>
+</div>
+
+<div #drawerContainer class="drawer-container overflow-hidden"
+     [style.height]="showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0">
+  <app-chat-drawer (msgpush)="onMessagePush($event)"></app-chat-drawer>
+</div>

@@ -52,6 +52,7 @@ export class Overlay {
     if ('Notification' in window && Notification.permission === 'granted') {
       const { title, description, icon, url } = opts;
       this.navigator.serviceWorker.ready.then((registration: ServiceWorkerRegistration) => registration.showNotification(title, {
+        tag: title,
         body: description,
         badge: '/assets/icon/favicon.ico',
         icon,

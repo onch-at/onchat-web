@@ -9,7 +9,7 @@
 
       <ion-title>文本编辑器</ion-title>
 
-      <ion-buttons slot="end" [hidden]="!showSendBtn()">
+      <ion-buttons slot="end" [hidden]="!canSend()">
         <ion-button (tap)="send()">
           <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>

@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { QuillModule } from 'ngx-quill';
+import { ChatBottomBarComponent } from 'src/app/components/chat-bottom-bar/chat-bottom-bar.component';
 import { ChatDrawerComponent } from 'src/app/components/chat-drawer/chat-drawer.component';
 import { ChatRecorderComponent } from 'src/app/components/chat-recorder/chat-recorder.component';
 import { CardMessageComponent } from 'src/app/components/messages/card-message/card-message.component';
@@ -46,6 +47,7 @@ import { ChatPage } from './chat.page';
     BubbleToolbarComponent,
     ChatDrawerComponent,
     ChatRecorderComponent,
+    ChatBottomBarComponent,
     RichTextEditorComponent,
     ImagePreviewerComponent
   ]

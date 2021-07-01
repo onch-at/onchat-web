@@ -1,14 +1,13 @@
 import { KeyValue } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Inject, Injector, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { IonContent, NavController, Platform } from '@ionic/angular';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
-import { NICKNAME_MAX_LENGTH, TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
-import { Throttle } from 'src/app/common/decorator';
+import { NICKNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { WINDOW } from 'src/app/common/token';
-import { ChatDrawerComponent } from 'src/app/components/chat-drawer/chat-drawer.component';
+import { ChatBottomBarComponent } from 'src/app/components/chat-bottom-bar/chat-bottom-bar.component';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
@@ -30,23 +29,10 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   private destroy$: Subject<void> = new Subject<void>();
   /** IonContent滚动元素 */
   private contentElement: HTMLElement;
-  /** IonContent滚动元素初始可视高度 */
-  private contentClientHeight: number;
-  /** 抽屉容器可视高度 */
-  private drawerContainerClientHeight: number;
-
-  readonly textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
 
   /** IonContent */
   @ViewChild(IonContent, { static: true }) ionContent: IonContent;
-  /** 抽屉容器 */
-  @ViewChild('drawerContainer', { static: true }) drawerContainer: ElementRef<HTMLElement>;
-  /** 抽屉 */
-  @ViewChild(ChatDrawerComponent, { static: true }) drawer: ChatDrawerComponent;
-  /** 文本框 */
-  @ViewChild('textarea', { static: true }) textarea: ElementRef<HTMLTextAreaElement>;
 
-  msg: string = '';
   /** 当前房间名字 */
   chatroomName: string = 'Loading…';
   /** 房间ID */
@@ -62,16 +48,11 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   /** 聊天记录是否查到末尾了 */
   ended: boolean = false;
   /** 是否有未读消息 */
-  hasUnreadMsg: boolean = false;
-  /** 是否显示抽屉 */
-  showDrawer: boolean = false;
-  /** 键盘高度 */
-  keyboardHeight: number;
+  hasUnreadMsg: boolean;
 
-  /** 是否禁用发送按钮 */
-  disableSendBtn = () => this.msg.length > TEXT_MSG_MAX_LENGTH;
-  /** 是否显示发送按钮 */
-  showSendBtn = () => StrUtil.trimAll(this.msg).length > 0;
+  paddingBottom = (bottomBar: ChatBottomBarComponent) => (
+    `max(calc(4.1rem + var(--ion-safe-area-bottom)), calc(0.75rem + ${bottomBar.elementRef.nativeElement.clientHeight}px))`
+  );
 
   constructor(
     public globalData: GlobalData,
@@ -83,9 +64,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     private socketService: SocketService,
     private route: ActivatedRoute,
     private router: Router,
-    private renderer: Renderer2,
     private overlay: Overlay,
-    private injector: Injector,
     private navCtrl: NavController,
     @Inject(WINDOW) private window: Window,
   ) { }
@@ -131,11 +110,9 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.destroy$),
-
       filter(({ code, data }: Result<Message>) => {
         return code === ResultCode.Success && data.chatroomId === this.chatroomId
       }),
-
       tap(({ data }: Result<Message>) => {
         // 如果不是自己发的消息
         if (data.userId !== this.globalData.user.id) {
@@ -153,7 +130,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
           this.scrollToBottom();
         }
       }),
-
       debounceTime(3000)
     ).subscribe(() => {
       this.userService.readedChatSession(this.chatSession.id).subscribe();
@@ -193,37 +169,17 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.ionContent.getScrollElement().then((element: HTMLElement) => {
       this.contentElement = element;
-      this.contentClientHeight = element.clientHeight;
-    });
-
-    const drawerContainerElement = this.drawerContainer.nativeElement;
-
-    fromEvent(drawerContainerElement, 'transitionend').pipe(
-      takeUntil(this.destroy$),
-      filter((event: TransitionEvent) => {
-        const { target, propertyName } = event;
-        return target === drawerContainerElement && propertyName === 'height';
-      })
-    ).subscribe((event: TransitionEvent) => {
-      const { clientHeight } = event.target as HTMLElement;
-
-      // 如果抽屉打开了
-      if (clientHeight > 0) {
-        this.drawerContainerClientHeight = clientHeight;
-        this.ionContent.scrollByPoint(0, clientHeight, 30);
-      } else {
-        const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
-        // scrollHeight - scrollTop - clientHeight 得到距离底部的高度
-        const canScroll = scrollHeight - scrollTop - clientHeight > this.drawerContainerClientHeight;
-
-        canScroll && this.ionContent.scrollByPoint(0, -this.drawerContainerClientHeight, 30);
-      }
     });
   }
 
   onMessagePush(msg: MessageEntity) {
     this.msgList.push(msg);
     msg.send();
+
+    if (msg.data instanceof TextMessage) {
+      msg.data.content = StrUtil.html(msg.data.content);
+    }
+
     this.window.setTimeout(() => this.scrollToBottom(300));
   }
 
@@ -238,48 +194,22 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  onKeyup({ target, ctrlKey, shiftKey }: KeyboardEvent) {
-    this.renderer.setStyle(target, 'height', 'auto');
-    this.renderer.setStyle(target, 'height', (target as Element).scrollHeight + 2.5 + 'px');
-    // const diff = this.contentElement.scrollHeight - this.contentElement.scrollTop - this.contentElement.clientHeight;
-    // (diff <= 50 && diff >= 5) && this.scrollToBottom();
-    if (this.platform.is('desktop') && !ctrlKey && !shiftKey) {
-      this.send();
-    }
-  }
-
-  onKeypress(event: KeyboardEvent) {
-    if (
-      this.platform.is('desktop') &&
-      event.key.toLowerCase() === 'enter' &&
-      !event.ctrlKey && !event.shiftKey
-    ) {
-      event.preventDefault(); // 回车发送的时候阻止默认行为，不插入换行
-    }
-  }
-
-  @HostListener('window:resize')
-  @Throttle(100)
-  onWindowResize() {
-    this.upliftScroll();
-  }
-
   /**
    * 加载更多消息
    * @param event
    */
-  loadMoreRecords(event: any) {
+  async loadMoreRecords({ target }: any) {
     if (!this.msgId) {
-      return this.scrollToBottom().then(() => {
-        event.target.complete()
-      });
+      await this.scrollToBottom();
+      return target.complete();
     }
+
     // 暴力兼容苹果内核
     const isIos = this.platform.is('ios');
     isIos && (this.ionContent.scrollY = false);
     this.loadRecords(() => {
       isIos && (this.ionContent.scrollY = true);
-      event.target.complete();
+      target.complete();
     });
   }
 
@@ -325,23 +255,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * 抬升滚动，用于软键盘弹起的时候
-   */
-  upliftScroll() {
-    const diffHeight = this.contentClientHeight - this.contentElement.clientHeight;
-    // 如果现在的高度与初始高度的差值是正数，则代表窗口高度变小了
-    if (diffHeight > 0) {
-      // 只有当抬起高度大于250像素才被认为是键盘高度
-      if (diffHeight > 250) {
-        this.keyboardHeight = diffHeight;
-      }
-      this.ionContent.scrollByPoint(0, diffHeight, 250);
-    } else if (diffHeight < 0) { // 如果窗口高度变大了，就重新设置一下初始高度
-      this.contentClientHeight = this.contentElement.clientHeight;
-    }
-  }
-
-  /**
    * 滚到底部
    */
   scrollToBottom(duration: number = 500) {
@@ -361,66 +274,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.scrollToBottom();
     }
-  }
-
-  /**
-   * 发送消息
-   */
-  send() {
-    if (!this.showSendBtn() || this.disableSendBtn()) { return; }
-
-    const { id, avatarThumbnail } = this.globalData.user;
-    const msg = new MessageEntity().inject(this.injector);
-    msg.chatroomId = this.chatroomId;
-    msg.userId = id;
-    msg.avatarThumbnail = avatarThumbnail;
-    msg.data = new TextMessage(this.msg);
-
-    msg.send();
-
-    msg.data.content = StrUtil.html(this.msg);
-
-    this.msgList.push(msg);
-    this.scrollToBottom();
-
-    this.msg = '';
-
-    this.renderer.setStyle(this.textarea.nativeElement, 'height', 'auto');
-  }
-
-  /**
-   * 显示/隐藏抽屉
-   */
-  async toggleDrawer() {
-    const index = await this.drawer.getIndex();
-
-    if (this.showDrawer && index < 1) {
-      this.drawer.setIndex(1);
-    } else {
-      this.drawer.setIndex(1, 0);
-      this.showDrawer = !this.showDrawer;
-    }
-  }
-
-  /**
-   * 打开录音抽屉
-   */
-  async record() {
-    const index = await this.drawer.getIndex();
-
-    if (this.showDrawer && index > 0) {
-      this.drawer.setIndex(0);
-    } else {
-      this.drawer.setIndex(0, 0);
-      this.showDrawer = !this.showDrawer;
-    }
-  }
-
-  /**
-   * 隐藏抽屉
-   */
-  hideDrawer() {
-    this.showDrawer &&= false;
   }
 
   more() {

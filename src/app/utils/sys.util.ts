@@ -29,7 +29,7 @@ export class SysUtil {
    */
   static selectFile(accept: string = null, multiple: boolean = false) {
     const input = document.createElement('input');
-    input.style.visibility = 'hidden';
+    input.style.display = 'none';
     input.type = 'file';
     input.multiple = multiple;
     input.accept = accept;

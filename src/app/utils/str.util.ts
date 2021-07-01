@@ -25,4 +25,11 @@ export class StrUtil {
 
     return element.innerHTML;
   }
+
+  /**
+   * 生成随机字符串
+   */
+  static random(): string {
+    return btoa(performance.now().toString());
+  }
 }

@@ -1,4 +1,4 @@
-<ion-content #ionContent appScrollbar [fullscreen]="true" [scrollEvents]="hasUnreadMsg" (ionScrollEnd)="onIonScrollEnd()">
+<ion-content appScrollbar [fullscreen]="true" [scrollEvents]="hasUnreadMsg" (ionScrollEnd)="onIonScrollEnd()">
   <ion-header slot="fixed">
     <ion-toolbar class="overflow-hidden">
       <ion-buttons slot="start">
@@ -19,7 +19,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <main [style.padding-bottom]="'calc(0.75rem + ' + bottomBar.clientHeight + 'px)'" (click)="hideDrawer()">
+  <main [style.padding-bottom]="paddingBottom(bottomBar)">
     <ion-infinite-scroll position="top" threshold="-10px" [disabled]="ended" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
@@ -27,38 +27,7 @@
     <app-message-list [data]="msgList" [ended]="ended" [chatroomType]="chatroomType"></app-message-list>
   </main>
 
-  <div #bottomBar class="bottom-bar" slot="fixed">
-    <button appActiveClass class="tips-btn btn-primary" [class.show]="hasUnreadMsg" (tap)="scrollToBottom()">
-      收到新消息
-      <ion-icon name="arrow-down-outline"></ion-icon>
-    </button>
-
-    <div class="dp-flex align-center">
-      <button appRipple appActiveClass class="btn-secondary fn-btn dp-flex justify-center align-center" (click)="toggleDrawer()">
-        <ion-icon name="add-circle-outline"></ion-icon>
-      </button>
-
-      <!-- 这里的ID将附加上房间号来区分，防止单页应用，同时存在两个相同页面导致ID冲突 -->
-      <textarea #textarea [id]="'message-' + chatroomId" class="flex-auto" name="message" rows="1"
-                [class.invalid]="msg.length > textMsgMaxLength" (keyup.enter)="onKeyup($event)" (focus)="hideDrawer()"
-                (keypress)="onKeypress($event)" placeholder="来聊点什么吧！" [(ngModel)]="msg"></textarea>
-
-      <!-- 小技巧：这里使用label来保持textarea的焦点状态 -->
-      <button appRipple appActiveClass class="btn-primary send-btn" (click)="send()" [hidden]="!showSendBtn()"
-              [disabled]="disableSendBtn()">
-        <label [for]="'message-' + chatroomId" class="dp-flex align-center justify-center">
-          <ion-icon name="arrow-up"></ion-icon>
-        </label>
-      </button>
-
-      <button appRipple appActiveClass class="btn-primary mic-btn" [hidden]="showSendBtn()" (click)="record()">
-        <ion-icon name="mic-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 35px;"></ion-icon>
-      </button>
-    </div>
-
-    <div #drawerContainer class="drawer-container overflow-hidden"
-         [style.height]="showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0">
-      <app-chat-drawer [page]="this" (msgpush)="onMessagePush($event)"></app-chat-drawer>
-    </div>
-  </div>
+  <app-chat-bottom-bar #bottomBar slot="fixed" [hasUnreadMsg]="hasUnreadMsg" [ionContent]="ionContent"
+                       (msgpush)="onMessagePush($event)">
+  </app-chat-bottom-bar>
 </ion-content>
