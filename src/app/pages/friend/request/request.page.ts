@@ -67,9 +67,9 @@ export class RequestPage implements OnInit, OnDestroy {
     this.socketService.on(SocketEvent.FriendRequest).pipe(
       takeUntil(this.destroy$),
       debounceTime(100),
-      filter(({ data }: Result<FriendRequest | FriendRequest[]>) => {
-        return !Array.isArray(data) && data.requesterId === this.globalData.user.id && data.targetId === this.user.id
-      })
+      filter(({ data }: Result<FriendRequest | FriendRequest[]>) => (
+        !Array.isArray(data) && data.requesterId === this.globalData.user.id && data.targetId === this.user.id
+      ))
     ).subscribe(({ code, msg }: Result<FriendRequest | FriendRequest[]>) => {
       this.overlay.presentToast(code === ResultCode.Success ? '好友申请已发出，等待对方验证…' : msg);
 

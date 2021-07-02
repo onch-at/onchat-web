@@ -186,7 +186,7 @@ export class ImageService {
    * @param blob
    */
   isImage(blob: Blob): boolean {
-    return blob.type.startsWith('image/');
+    return blob.size > 0 && blob.type.startsWith('image/');
   }
 
 }

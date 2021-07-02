@@ -1,4 +1,4 @@
-<ion-content appScrollbar [fullscreen]="true" [scrollEvents]="hasUnreadMsg" (ionScrollEnd)="onIonScrollEnd()">
+<ion-content appScrollbar [fullscreen]="true">
   <ion-header slot="fixed">
     <ion-toolbar class="overflow-hidden">
       <ion-buttons slot="start">
@@ -27,7 +27,6 @@
     <app-message-list [data]="msgList" [ended]="ended" [chatroomType]="chatroomType"></app-message-list>
   </main>
 
-  <app-chat-bottom-bar #bottomBar slot="fixed" [hasUnreadMsg]="hasUnreadMsg" [ionContent]="ionContent"
-                       (msgpush)="onMessagePush($event)">
+  <app-chat-bottom-bar #bottomBar slot="fixed" [ionContent]="ionContent" (msgpush)="onMessagePush($event)">
   </app-chat-bottom-bar>
 </ion-content>

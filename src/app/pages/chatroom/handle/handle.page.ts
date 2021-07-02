@@ -41,10 +41,10 @@ export class HandlePage implements OnInit, OnDestroy {
 
     this.socketService.on(SocketEvent.ChatRequestReject).pipe(
       takeUntil(this.destroy$),
-      filter(({ code, data }: Result<ChatRequest>) => {
+      filter(({ code, data }: Result<ChatRequest>) => (
         // 操作成功,并且处理人是我
-        return code === ResultCode.Success && data.handlerId === this.globalData.user.id
-      })
+        code === ResultCode.Success && data.handlerId === this.globalData.user.id
+      ))
     ).subscribe(({ data }: Result<ChatRequest>) => {
       this.request = data;
     });

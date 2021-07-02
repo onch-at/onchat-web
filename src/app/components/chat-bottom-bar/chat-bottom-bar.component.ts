@@ -1,14 +1,17 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Injector, Input, OnDestroy, Output, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Injector, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { IonContent, Platform } from '@ionic/angular';
 import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
+import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/msg.model';
+import { Message, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
+import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { ChatDrawerComponent } from '../chat-drawer/chat-drawer.component';
 
@@ -17,7 +20,7 @@ import { ChatDrawerComponent } from '../chat-drawer/chat-drawer.component';
   templateUrl: './chat-bottom-bar.component.html',
   styleUrls: ['./chat-bottom-bar.component.scss'],
 })
-export class ChatBottomBarComponent implements AfterViewInit, OnDestroy {
+export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$: Subject<void> = new Subject<void>();
   /** IonContent滚动元素 */
   private contentElement: HTMLElement;
@@ -28,8 +31,6 @@ export class ChatBottomBarComponent implements AfterViewInit, OnDestroy {
 
   readonly textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
 
-  /** 是否有未读消息 */
-  @Input() hasUnreadMsg: boolean;
   /** 页面内容 */
   @Input() ionContent: IonContent;
 
@@ -49,6 +50,8 @@ export class ChatBottomBarComponent implements AfterViewInit, OnDestroy {
   showDrawer: boolean = false;
   /** 键盘高度 */
   keyboardHeight: number;
+  /** 是否有未读消息 */
+  hasUnreadMsg: boolean;
 
   /** 是否禁用发送按钮 */
   disableSendBtn = () => this.msg.length > TEXT_MSG_MAX_LENGTH;
@@ -58,12 +61,32 @@ export class ChatBottomBarComponent implements AfterViewInit, OnDestroy {
   constructor(
     public globalData: GlobalData,
     public elementRef: ElementRef<HTMLElement>,
+    private socketService: SocketService,
     private overlay: Overlay,
     private imageService: ImageService,
     private renderer: Renderer2,
     private platform: Platform,
     private injector: Injector,
   ) { }
+
+  ngOnInit() {
+    const { chatroomId, user } = this.globalData;
+    this.socketService.on(SocketEvent.Message).pipe(
+      takeUntil(this.destroy$),
+      filter(({ code, data }: Result<Message>) => (
+        // 如果是这个房间的，且不是我的消息
+        code === ResultCode.Success && data.chatroomId === chatroomId && data.userId !== user.id
+      )),
+      filter(() => {
+        const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
+        // scrollHeight - scrollTop - clientHeight 得到距离底部的高度
+        const scrollBottom = scrollHeight - scrollTop - clientHeight;
+        return scrollBottom > 100;
+      })
+    ).subscribe(() => {
+      this.hasUnreadMsg = true;
+    });
+  }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -135,9 +158,7 @@ export class ChatBottomBarComponent implements AfterViewInit, OnDestroy {
 
     const file = item.getAsFile();
 
-    if (file.size === 0 || !this.imageService.isImage(file)) { return; }
-
-    this.overlay.presentAlert({
+    this.imageService.isImage(file) && this.overlay.presentAlert({
       header: '发送图片',
       message: '你确定要发送粘贴板中的图片吗？',
       cancelText: '原图发送',
@@ -230,10 +251,8 @@ export class ChatBottomBarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * 滚到底部
-   */
-  scrollToBottom(duration: number = 500) {
-    return this.ionContent.scrollToBottom(duration);
+  viewUnreadMessage() {
+    this.ionContent.scrollToBottom(300);
+    this.hasUnreadMsg = false;
   }
 }

@@ -47,8 +47,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   msgList: Message[] = [];
   /** 聊天记录是否查到末尾了 */
   ended: boolean = false;
-  /** 是否有未读消息 */
-  hasUnreadMsg: boolean;
 
   paddingBottom = (bottomBar: ChatBottomBarComponent) => (
     `max(calc(4.1rem + var(--ion-safe-area-bottom)), calc(0.75rem + ${bottomBar.elementRef.nativeElement.clientHeight}px))`
@@ -110,9 +108,9 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
 
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.destroy$),
-      filter(({ code, data }: Result<Message>) => {
-        return code === ResultCode.Success && data.chatroomId === this.chatroomId
-      }),
+      filter(({ code, data }: Result<Message>) => (
+        code === ResultCode.Success && data.chatroomId === this.chatroomId
+      )),
       tap(({ data }: Result<Message>) => {
         // 如果不是自己发的消息
         if (data.userId !== this.globalData.user.id) {
@@ -180,18 +178,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       msg.data.content = StrUtil.html(msg.data.content);
     }
 
-    this.window.setTimeout(() => this.scrollToBottom(300));
-  }
-
-  /**
-   * 滚动结束时
-   */
-  onIonScrollEnd() {
-    const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
-    // 已经有未读消息，且当前位置接近最底部了
-    if (this.hasUnreadMsg && scrollHeight - scrollTop - clientHeight <= 50) {
-      this.hasUnreadMsg = false;
-    }
+    this.scrollToBottom(300);
   }
 
   /**
@@ -246,7 +233,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       }
 
       // 如果是第一次查记录，就执行滚动
-      this.msgId || setTimeout(() => this.scrollToBottom(0));
+      this.msgId || this.scrollToBottom(0);
 
       if (data.length > 0) {
         this.msgId = this.msgList[0].id;
@@ -258,22 +245,22 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
    * 滚到底部
    */
   scrollToBottom(duration: number = 500) {
-    return this.ionContent.scrollToBottom(duration);
+    return new Promise<void>(resolve => {
+      this.window.setTimeout(async () => {
+        await this.ionContent.scrollToBottom(duration);
+        resolve();
+      })
+    });
   }
 
   /**
    * 尝试滚动到底部
    */
-  tryToScrollToBottom() {
+  private tryToScrollToBottom() {
     const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
     // scrollHeight - scrollTop - clientHeight 得到距离底部的高度
     const scrollBottom = scrollHeight - scrollTop - clientHeight;
-
-    if (scrollBottom > 50) {
-      this.hasUnreadMsg = true;
-    } else {
-      this.scrollToBottom();
-    }
+    scrollBottom <= 100 && this.scrollToBottom();
   }
 
   more() {

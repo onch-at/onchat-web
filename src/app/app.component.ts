@@ -226,10 +226,10 @@ export class AppComponent implements OnInit {
 
     // 收到入群申请时
     this.socketService.on(SocketEvent.ChatRequest).pipe(
-      filter(({ code, data }: Result<ChatRequest>) => {
+      filter(({ code, data }: Result<ChatRequest>) => (
         // 如果申请人不是自己
-        return code === ResultCode.Success && data?.requesterId !== this.globalData.user.id;
-      })
+        code === ResultCode.Success && data?.requesterId !== this.globalData.user.id
+      ))
     ).subscribe(({ data }: Result<ChatRequest>) => {
       const chatSession = this.globalData.chatSessions.find(o => o.type === ChatSessionType.ChatroomNotice);
       // 如果列表里没有聊天室通知会话,就需要重新拉取
