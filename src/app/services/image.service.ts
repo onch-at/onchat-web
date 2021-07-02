@@ -181,4 +181,12 @@ export class ImageService {
     return ['image/apng', 'image/gif'].includes(image.type);
   }
 
+  /**
+   * 是否为图片
+   * @param blob
+   */
+  isImage(blob: Blob): boolean {
+    return blob.type.startsWith('image/');
+  }
+
 }

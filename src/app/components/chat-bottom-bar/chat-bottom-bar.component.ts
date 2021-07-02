@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Injector, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Injector, Input, OnDestroy, Output, Renderer2, ViewChild } from '@angular/core';
 import { IonContent, Platform } from '@ionic/angular';
 import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -7,6 +7,8 @@ import { Throttle } from 'src/app/common/decorator';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/msg.model';
 import { GlobalData } from 'src/app/services/global-data.service';
+import { ImageService } from 'src/app/services/image.service';
+import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { ChatDrawerComponent } from '../chat-drawer/chat-drawer.component';
 
@@ -15,7 +17,7 @@ import { ChatDrawerComponent } from '../chat-drawer/chat-drawer.component';
   templateUrl: './chat-bottom-bar.component.html',
   styleUrls: ['./chat-bottom-bar.component.scss'],
 })
-export class ChatBottomBarComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ChatBottomBarComponent implements AfterViewInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   /** IonContent滚动元素 */
   private contentElement: HTMLElement;
@@ -56,14 +58,12 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(
     public globalData: GlobalData,
     public elementRef: ElementRef<HTMLElement>,
+    private overlay: Overlay,
+    private imageService: ImageService,
     private renderer: Renderer2,
     private platform: Platform,
     private injector: Injector,
   ) { }
-
-  ngOnInit() {
-    return true;
-  }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -135,10 +135,16 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit, OnDestroy 
 
     const file = item.getAsFile();
 
-    if (file.size === 0) { return; }
+    if (file.size === 0 || !this.imageService.isImage(file)) { return; }
 
-    const { user, chatroomId } = this.globalData;
-    const url = URL.createObjectURL(file);
+    this.overlay.presentAlert({
+      header: '发送图片',
+      message: '你确定要发送粘贴板中的图片吗？',
+      cancelText: '原图发送',
+      confirmText: '发送',
+      cancelHandler: () => this.drawer.createImageMessage(file, true),
+      confirmHandler: () => this.drawer.createImageMessage(file, false)
+    });
   }
 
   /**
