@@ -120,13 +120,6 @@ export class UserService {
   }
 
   /**
-   * 获取用户的聊天列表
-   */
-  getChatSession(): Observable<Result<ChatSession[]>> {
-    return this.http.get<Result<ChatSession[]>>(environment.userUrl + 'chatsession');
-  }
-
-  /**
    * 获取私聊聊天室列表
    */
   getPrivateChatrooms(): Observable<Result<ChatSession[]>> {
@@ -138,38 +131,6 @@ export class UserService {
    */
   getGroupChatrooms(): Observable<Result<ChatSession[]>> {
     return this.http.get<Result<ChatSession[]>>(environment.userUrl + 'chatrooms/group');
-  }
-
-  /**
-   * 置顶聊天列表子项
-   * @param id 聊天列表子项ID
-   */
-  stickyChatSession(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.userUrl}chatsession/sticky/${id}`, null);
-  }
-
-  /**
-   * 取消置顶聊天列表子项
-   * @param id 聊天列表子项ID
-   */
-  unstickyChatSession(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.userUrl}chatsession/unsticky/${id}`, null);
-  }
-
-  /**
-   * 将聊天列表子项设为已读
-   * @param id 聊天列表子项ID
-   */
-  readedChatSession(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.userUrl}chatsession/readed/${id}`, null);
-  }
-
-  /**
-   * 将聊天列表子项设为未读
-   * @param id 聊天列表子项ID
-   */
-  unreadChatSession(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.userUrl}chatsession/unread/${id}`, null);
   }
 
   /**

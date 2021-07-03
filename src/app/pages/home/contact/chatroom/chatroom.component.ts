@@ -16,7 +16,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
 export class ChatroomComponent implements ViewWillEnter {
   /** 虚拟列表项目高度 */
   itemHeight: number = SysUtil.rem2px(4.425);
-  getItemHeight: () => number = () => this.itemHeight;
+  getItemHeight = () => this.itemHeight;
   trackByFn = EntityUtil.trackBy;
 
   constructor(

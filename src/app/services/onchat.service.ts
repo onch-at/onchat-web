@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EmailBinderComponent } from '../components/modals/email-binder/email-binder.component';
 import { ChatRequest, ChatSession, FriendRequest, Result } from '../models/onchat.model';
+import { ChatSessionService } from './apis/chat-session.service';
 import { ChatService } from './apis/chat.service';
 import { FriendService } from './apis/friend.service';
 import { UserService } from './apis/user.service';
@@ -23,6 +24,7 @@ export class OnChatService {
     private globalData: GlobalData,
     private userService: UserService,
     private chatService: ChatService,
+    private chatSessionService: ChatSessionService,
     private friendService: FriendService,
     private socketService: SocketService,
   ) { }
@@ -60,7 +62,7 @@ export class OnChatService {
    */
   initChatSession() {
     return forkJoin([
-      this.userService.getChatSession().pipe(tap(({ data }: Result<ChatSession[]>) => {
+      this.chatSessionService.getChatSession().pipe(tap(({ data }: Result<ChatSession[]>) => {
         this.globalData.chatSessions = data;
       })),
       this.chatService.getReceiveRequests().pipe(tap(({ data }: Result<ChatRequest[]>) => {

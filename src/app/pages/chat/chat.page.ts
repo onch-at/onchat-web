@@ -12,6 +12,7 @@ import { MessageEntity } from 'src/app/entities/message.entity';
 import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
 import { ChatRecordService } from 'src/app/services/apis/chat-record.service';
+import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';
 import { FriendService } from 'src/app/services/apis/friend.service';
 import { UserService } from 'src/app/services/apis/user.service';
@@ -56,6 +57,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     public globalData: GlobalData,
     private chatRecordService: ChatRecordService,
     private chatroomService: ChatroomService,
+    private chatSessionService: ChatSessionService,
     private friendService: FriendService,
     private userService: UserService,
     private platform: Platform,
@@ -130,7 +132,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       }),
       debounceTime(3000)
     ).subscribe(() => {
-      this.userService.readedChatSession(this.chatSession.id).subscribe();
+      this.chatSessionService.readedChatSession(this.chatSession.id).subscribe();
     });
 
     this.socketService.on(SocketEvent.RevokeMessage).pipe(

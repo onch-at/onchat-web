@@ -5,10 +5,11 @@ export const environment = {
   emailCaptchaUrl: '/onchat/index/emailcaptcha',
 
   userUrl: '/onchat/user/',
+  chatUrl: '/onchat/chat/',
   chatroomUrl: '/onchat/chatroom/',
   chatRecordUrl: '/onchat/chat-record/',
+  chatSessionUrl: '/onchat/chatsession',
   friendUrl: '/onchat/friend/',
-  chatUrl: '/onchat/chat/',
 
   socketUrl: '',
   socketPath: '/ws/socket.io',

@@ -30,7 +30,7 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
   list: ChatSessionCheckbox[];
   /** 虚拟列表项目高度 */
   itemHeight: number = SysUtil.rem2px(3.55);
-  getItemHeight: () => number = () => this.itemHeight;
+  getItemHeight = () => this.itemHeight;
   trackByFn = EntityUtil.trackBy;
 
   constructor(
