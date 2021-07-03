@@ -66,7 +66,7 @@
 												 (tap)="doReadChatSession(item, ionItemSliding)">
 					{{ item.unread ? '设为已读' : '设为未读' }}
 				</ion-item-option>
-				<ion-item-option class="chat-session-item-option bg-danger" (tap)="removeChatSession(item,ionItemSliding)">
+				<ion-item-option class="chat-session-item-option bg-danger" (tap)="hideChatSession(item,ionItemSliding)">
 					移除
 				</ion-item-option>
 			</ion-item-options>

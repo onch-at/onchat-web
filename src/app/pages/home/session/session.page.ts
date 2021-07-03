@@ -48,16 +48,20 @@ export class SessionPage {
   }
 
   /**
-   * 移除聊天列表子项
+   * 移除聊天会话
    * @param index
    */
-  removeChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
-    this.globalData.chatSessions = this.globalData.chatSessions.filter(o => o.id !== item.id);
-    ionItemSliding.close();
+  hideChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
+    this.chatSessionService.hideChatSession(item.id).pipe(
+      filter(({ code }: Result) => code === ResultCode.Success)
+    ).subscribe(() => {
+      this.globalData.chatSessions = this.globalData.chatSessions.filter(o => o.id !== item.id);
+      ionItemSliding.close();
+    });
   }
 
   /**
-   * 置顶聊天列表子项
+   * 置顶聊天会话
    * @param item
    * @param i
    */
@@ -72,7 +76,7 @@ export class SessionPage {
   }
 
   /**
-   * 将聊天列表子项设置为已读
+   * 将聊天会话设置为已读
    * @param item
    * @param i
    */

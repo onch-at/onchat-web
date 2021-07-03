@@ -19,34 +19,42 @@ export class ChatSessionService {
   }
 
   /**
-   * 置顶聊天列表子项
-   * @param id 聊天列表子项ID
+   * 置顶聊天会话
+   * @param id 聊天会话ID
    */
   stickyChatSession(id: number): Observable<Result> {
     return this.http.put<Result>(`${environment.chatSessionUrl}/sticky/${id}`, null);
   }
 
   /**
-   * 取消置顶聊天列表子项
-   * @param id 聊天列表子项ID
+   * 取消置顶聊天会话
+   * @param id 聊天会话ID
    */
   unstickyChatSession(id: number): Observable<Result> {
     return this.http.put<Result>(`${environment.chatSessionUrl}/unsticky/${id}`, null);
   }
 
   /**
-   * 将聊天列表子项设为已读
-   * @param id 聊天列表子项ID
+   * 将聊天会话设为已读
+   * @param id 聊天会话ID
    */
   readedChatSession(id: number): Observable<Result> {
     return this.http.put<Result>(`${environment.chatSessionUrl}/readed/${id}`, null);
   }
 
   /**
-   * 将聊天列表子项设为未读
-   * @param id 聊天列表子项ID
+   * 将聊天会话设为未读
+   * @param id 聊天会话ID
    */
   unreadChatSession(id: number): Observable<Result> {
     return this.http.put<Result>(`${environment.chatSessionUrl}/unread/${id}`, null);
+  }
+
+  /**
+   * 隐藏聊天会话
+   * @param id 聊天会话ID
+   */
+  hideChatSession(id: number): Observable<Result> {
+    return this.http.put<Result>(`${environment.chatSessionUrl}/hide/${id}`, null);
   }
 }
