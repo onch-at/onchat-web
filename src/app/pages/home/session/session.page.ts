@@ -52,7 +52,7 @@ export class SessionPage {
    * @param index
    */
   hideChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
-    this.chatSessionService.hideChatSession(item.id).pipe(
+    this.chatSessionService.hide(item.id).pipe(
       filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(() => {
       this.globalData.chatSessions = this.globalData.chatSessions.filter(o => o.id !== item.id);
@@ -66,7 +66,7 @@ export class SessionPage {
    * @param i
    */
   doStickyChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
-    (item.sticky ? this.chatSessionService.unstickyChatSession(item.id) : this.chatSessionService.stickyChatSession(item.id)).pipe(
+    (item.sticky ? this.chatSessionService.unsticky(item.id) : this.chatSessionService.sticky(item.id)).pipe(
       filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(() => {
       item.sticky = !item.sticky;
@@ -82,7 +82,7 @@ export class SessionPage {
    */
   doReadChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
     if (!item.unread) {
-      return this.chatSessionService.unreadChatSession(item.id).pipe(
+      return this.chatSessionService.unread(item.id).pipe(
         filter(({ code }: Result) => code === ResultCode.Success)
       ).subscribe(() => {
         ionItemSliding.close();
@@ -90,7 +90,7 @@ export class SessionPage {
       });
     }
 
-    (item.type === ChatSessionType.ChatroomNotice ? this.chatService.readedRequests() : this.chatSessionService.readedChatSession(item.id)).pipe(
+    (item.type === ChatSessionType.ChatroomNotice ? this.chatService.readedRequests() : this.chatSessionService.readed(item.id)).pipe(
       filter(({ code }: Result) => code === ResultCode.Success)
     ).subscribe(() => {
       ionItemSliding.close();

@@ -132,7 +132,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       }),
       debounceTime(3000)
     ).subscribe(() => {
-      this.chatSessionService.readedChatSession(this.chatSession.id).subscribe();
+      this.chatSession && this.chatSessionService.readed(this.chatSession.id).subscribe();
     });
 
     this.socketService.on(SocketEvent.RevokeMessage).pipe(

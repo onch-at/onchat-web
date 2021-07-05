@@ -49,7 +49,7 @@ export class SocketService {
    * @param msg
    */
   message(msg: Message) {
-    this.emit(SocketEvent.Message, { msg });
+    this.emit(SocketEvent.Message, msg);
   }
 
   /**

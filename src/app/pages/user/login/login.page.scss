@@ -3,7 +3,6 @@
 
   h1 {
     font-size: 5rem;
-    animation: bounce-in-down 0.9s linear;
   }
 
   h5 {
@@ -48,16 +47,10 @@
   border-radius: 1.625rem;
 }
 
-.btn-container > .btn-primary {
-  animation: bounce-in-up 0.9s linear;
-}
-
 .link-container {
   margin-top: 0.75rem;
   padding: 0 0.5rem;
   font-size: 0.9rem;
-  opacity: 0;
-  animation: fade-in 0.25s ease-out 0.85s forwards;
 
   > span {
     display: inline-flex;
@@ -84,55 +77,5 @@ footer {
 
   @media (prefers-color-scheme: dark) {
     color: #757575;
-  }
-}
-
-@keyframes bounce-in-down {
-  from,
-  60%,
-  75%,
-  90%,
-  to {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  0% {
-    transform: translate3d(0, -3000px, 0);
-  }
-  60% {
-    transform: translate3d(0, 25px, 0);
-  }
-  75% {
-    transform: translate3d(0, -10px, 0);
-  }
-  90% {
-    transform: translate3d(0, 5px, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes bounce-in-up {
-  from,
-  60%,
-  75%,
-  90%,
-  to {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  from {
-    transform: translate3d(0, 3000px, 0);
-  }
-  60% {
-    transform: translate3d(0, -20px, 0);
-  }
-  75% {
-    transform: translate3d(0, 10px, 0);
-  }
-  90% {
-    transform: translate3d(0, -5px, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
   }
 }
