@@ -5,9 +5,7 @@
 export const environment = {
   production: false,
 
-  imageCaptchaUrl: '/onchat/index/imagecaptcha',
-  emailCaptchaUrl: '/onchat/index/emailcaptcha',
-
+  indexUrl: '/onchat/index/',
   userUrl: '/onchat/user/',
   chatUrl: '/onchat/chat/',
   chatroomUrl: '/onchat/chatroom/',

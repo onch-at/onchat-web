@@ -41,17 +41,6 @@ export class UserService {
   }
 
   /**
-   * 检测邮箱是否可用
-   * @param email 邮箱
-   */
-  checkEmail(email: string): Observable<Result<boolean>> {
-    return this.http.get<Result<boolean>>(environment.userUrl + 'checkemail', {
-      params: { email },
-      headers: this.cacheService.cacheHeader(5000)
-    });
-  }
-
-  /**
    * 注册
    * @param o
    */

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
@@ -9,7 +9,7 @@ import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { Register } from 'src/app/models/form.model';
 import { Result, User } from 'src/app/models/onchat.model';
-import { SystemService } from 'src/app/services/apis/system.service';
+import { IndexService } from 'src/app/services/apis/index.service';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
@@ -24,7 +24,7 @@ import { SyncValidator } from 'src/app/validators/sync.validator';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
-export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
+export class RegisterPage implements ViewWillLeave, ViewWillEnter {
   /** 密码框类型 */
   pwdInputType: string = 'password';
   readonly usernameMaxLength: number = USERNAME_MAX_LENGTH;
@@ -42,6 +42,8 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
         Validators.required,
         Validators.minLength(USERNAME_MIN_LENGTH),
         Validators.maxLength(USERNAME_MAX_LENGTH)
+      ], [
+        this.asyncValidator.legalUsername()
       ]
     ],
     email: [
@@ -90,18 +92,13 @@ export class RegisterPage implements OnInit, ViewWillLeave, ViewWillEnter {
     private formBuilder: FormBuilder,
     private asyncValidator: AsyncValidator,
     private onChatService: OnChatService,
-    private systemService: SystemService,
+    private systemService: IndexService,
     private userService: UserService,
     private overlay: Overlay,
     private socketService: SocketService,
     private routerOutlet: IonRouterOutlet,
     @Inject(WINDOW) private window: Window,
   ) { }
-
-  ngOnInit() {
-    const username = this.route.snapshot.queryParams.username;
-    username && this.form.controls.username.setValue(username);
-  }
 
   ionViewWillEnter() {
     this.routerOutlet.swipeGesture = false;

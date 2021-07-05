@@ -7,7 +7,7 @@ import { captchaFeedback, emailFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { Result } from 'src/app/models/onchat.model';
-import { SystemService } from 'src/app/services/apis/system.service';
+import { IndexService } from 'src/app/services/apis/index.service';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -53,7 +53,7 @@ export class EmailBinderComponent extends ModalComponent {
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
     private asyncValidator: AsyncValidator,
-    private systemService: SystemService,
+    private systemService: IndexService,
     private userService: UserService,
     protected overlay: Overlay,
     protected router: Router,

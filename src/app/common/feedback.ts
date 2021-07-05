@@ -13,6 +13,9 @@ export const usernameFeedback: ValidationFeedback = (errors: ValidationErrors) =
   if (errors.minlength || errors.maxlength) {
     return `用户名长度必须在${USERNAME_MIN_LENGTH}~${USERNAME_MAX_LENGTH}位字符之间！`;
   }
+  if (errors.legalusername) {
+    return '该用户名已被占用！';
+  }
 };
 
 export const passwordFeedback: ValidationFeedback = (errors: ValidationErrors) => {
