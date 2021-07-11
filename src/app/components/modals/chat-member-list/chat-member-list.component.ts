@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { ChatMemberRole } from 'src/app/common/enum';
 import { ChatMember } from 'src/app/models/onchat.model';
 import { Overlay } from 'src/app/services/overlay.service';
+import { CssUtil } from 'src/app/utils/css.util';
 import { EntityUtil } from 'src/app/utils/entity.util';
-import { SysUtil } from 'src/app/utils/sys.util';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -19,7 +19,7 @@ export class ChatMemberListComponent extends ModalComponent implements OnInit {
   /** 搜索关键字 */
   keyword: string = '';
   /** 虚拟列表项目高度 */
-  itemHeight: number = SysUtil.rem2px(3.55);
+  itemHeight: number = CssUtil.rem2px(3.55);
   getItemHeight = () => this.itemHeight;
   trackByFn = EntityUtil.trackBy;
   readonly chatMemberRole: typeof ChatMemberRole = ChatMemberRole;

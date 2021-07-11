@@ -129,7 +129,7 @@ export class HomePage implements OnInit, OnDestroy {
 
           this.chatroom.name = data['name'];
           this.overlay.presentToast('成功修改聊天室名称！', 1000);
-          this.cacheService.revoke('/chatroom/' + id + '?');
+          this.cacheService.revoke('/chatroom/' + id);
 
           const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === id);
           if (chatSession) {
@@ -166,7 +166,7 @@ export class HomePage implements OnInit, OnDestroy {
           member.nickname = data;
           this.member.nickname = data;
           this.overlay.presentToast('成功修改我的昵称！', 1000);
-          this.cacheService.revoke('/chatroom/' + this.chatroom.id + '/members?');
+          this.cacheService.revoke('/chatroom/' + this.chatroom.id + '/members');
         });
       },
       inputs: [{
@@ -275,7 +275,7 @@ export class HomePage implements OnInit, OnDestroy {
             const id = this.chatroom.id;
             this.chatroom.avatar = avatar;
             this.chatroom.avatarThumbnail = avatarThumbnail;
-            this.cacheService.revoke('/chatroom/' + id + '?');
+            this.cacheService.revoke('/chatroom/' + id);
             const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === id);
             if (chatSession) {
               chatSession.avatarThumbnail = avatarThumbnail;

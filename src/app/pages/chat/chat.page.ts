@@ -15,10 +15,10 @@ import { ChatRecordService } from 'src/app/services/apis/chat-record.service';
 import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';
 import { FriendService } from 'src/app/services/apis/friend.service';
-import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { CssUtil } from 'src/app/utils/css.util';
 import { StrUtil } from 'src/app/utils/str.util';
 
 @Component({
@@ -49,9 +49,11 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   /** 聊天记录是否查到末尾了 */
   ended: boolean = false;
 
-  paddingBottom = (bottomBar: ChatBottomBarComponent) => (
-    `max(calc(4.1rem + var(--ion-safe-area-bottom)), calc(0.75rem + ${bottomBar.elementRef.nativeElement.clientHeight}px))`
-  );
+  paddingBottom = (bottomBar: ChatBottomBarComponent) => {
+    const spare = 'calc(4.1rem + var(--ion-safe-area-bottom))';
+    const size = `calc(0.75rem + ${bottomBar.elementRef.nativeElement.clientHeight}px)`;
+    return CssUtil.size(spare) > CssUtil.size(size) ? spare : size;
+  };
 
   constructor(
     public globalData: GlobalData,
@@ -59,7 +61,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     private chatroomService: ChatroomService,
     private chatSessionService: ChatSessionService,
     private friendService: FriendService,
-    private userService: UserService,
     private platform: Platform,
     private socketService: SocketService,
     private route: ActivatedRoute,

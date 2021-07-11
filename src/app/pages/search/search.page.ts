@@ -15,7 +15,7 @@ export class SearchPage implements OnInit {
   @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
 
   constructor(
-    private router: Router,
+    private router: Router
   ) { }
 
   ngOnInit() {

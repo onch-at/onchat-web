@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
+import { CssUtil } from 'src/app/utils/css.util';
 import { EntityUtil } from 'src/app/utils/entity.util';
-import { SysUtil } from 'src/app/utils/sys.util';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -29,7 +29,7 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
   /** 展示的列表 */
   list: ChatSessionCheckbox[];
   /** 虚拟列表项目高度 */
-  itemHeight: number = SysUtil.rem2px(3.55);
+  itemHeight: number = CssUtil.rem2px(3.55);
   getItemHeight = () => this.itemHeight;
   trackByFn = EntityUtil.trackBy;
 

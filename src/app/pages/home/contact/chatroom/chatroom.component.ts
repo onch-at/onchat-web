@@ -5,8 +5,8 @@ import { ResultCode } from 'src/app/common/enum';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
+import { CssUtil } from 'src/app/utils/css.util';
 import { EntityUtil } from 'src/app/utils/entity.util';
-import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
   selector: 'app-chatroom',
@@ -15,7 +15,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
 })
 export class ChatroomComponent implements ViewWillEnter {
   /** 虚拟列表项目高度 */
-  itemHeight: number = SysUtil.rem2px(4.425);
+  itemHeight: number = CssUtil.rem2px(4.425);
   getItemHeight = () => this.itemHeight;
   trackByFn = EntityUtil.trackBy;
 

@@ -2,7 +2,6 @@ import { Renderer2 } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export class SysUtil {
-  private static pixel: number;
 
   /**
    * 暴力注入CSS样式到目标元素的ShadowRoot中
@@ -89,22 +88,6 @@ export class SysUtil {
         timer = null;
       }, wait));
     }
-  }
-
-  /**
-   * rem转px
-   * @param rem
-   */
-  static rem2px(rem: number): number {
-    if (!SysUtil.pixel) {
-      const div = document.createElement('div');
-      div.style.height = '1rem';
-      document.body.appendChild(div);
-      SysUtil.pixel = div.clientHeight || parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
-      document.body.removeChild(div);
-    }
-
-    return rem * SysUtil.pixel;
   }
 
   // /**

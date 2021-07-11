@@ -71,7 +71,7 @@ export class ChatDrawerComponent {
       const handle = async (original: boolean) => {
         for (let index = 0; index < length; index++) {
           if (this.imageService.isImage(files[index])) {
-            await this.createImageMessage(files[index], original || this.imageService.isAnimation(files[index]));
+            await this.createImageMessage(files[index], original);
           }
         }
       }
@@ -88,6 +88,7 @@ export class ChatDrawerComponent {
   }
 
   createImageMessage(file: File, original: boolean) {
+    original ||= this.imageService.isAnimation(file);
     const { user, chatroomId } = this.globalData;
     const url = URL.createObjectURL(file);
     const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url) as string;

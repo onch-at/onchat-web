@@ -8,9 +8,9 @@ import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
 import { ChatService } from 'src/app/services/apis/chat.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
+import { CssUtil } from 'src/app/utils/css.util';
 import { DateUtil } from 'src/app/utils/date.util';
 import { EntityUtil } from 'src/app/utils/entity.util';
-import { SysUtil } from 'src/app/utils/sys.util';
 
 @Component({
   selector: 'app-session',
@@ -19,7 +19,7 @@ import { SysUtil } from 'src/app/utils/sys.util';
 })
 export class SessionPage {
   /** 虚拟列表项目高度 */
-  itemHeight: number = SysUtil.rem2px(4.425);
+  itemHeight: number = CssUtil.rem2px(4.425);
   msgType = MessageType;
   chatSessionType = ChatSessionType;
   getItemHeight = () => this.itemHeight;
