@@ -42,7 +42,7 @@ export class OnChatService {
 
     // 如果还没绑定邮箱
     // 因为之前有一批用户不需要绑定邮箱即可注册账号
-    !this.globalData.user.email && environment.production && this.overlay.presentAlert({
+    !this.globalData.user?.email && environment.production && this.overlay.presentAlert({
       header: '绑定电子邮箱',
       message: '绑定电子邮箱后方可继续使用',
       backdropDismiss: false,
@@ -51,8 +51,8 @@ export class OnChatService {
       }),
       cancelHandler: () => this.userService.logout().subscribe(() => {
         this.router.navigateByUrl('/user/login');
-        this.socketService.unload();
         this.globalData.reset();
+        this.socketService.disconnect();
       })
     });
   }

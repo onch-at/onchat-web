@@ -40,8 +40,6 @@ export enum SocketEvent {
   ReconnectError = 'reconnect_error',
   /** 初始化 */
   Init = 'init',
-  /** 卸载时 */
-  Unload = 'unload',
   /** 接收到消息时 */
   Message = 'message',
   /** 收到撤回消息 */

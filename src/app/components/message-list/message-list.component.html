@@ -65,7 +65,7 @@
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
-          <span #bubble appRipple class="msg-bubble msg-bubble-img line-height-0 pd-0" (tap)="previewImage(item)"
+          <span #bubble appRipple class="msg-bubble msg-bubble-img line-hg-0 pd-0" (tap)="previewImage(item)"
                 (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <app-image-message [msg]="item"></app-image-message>

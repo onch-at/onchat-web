@@ -1,25 +1,24 @@
 <div class="record-container dp-flex justify-center align-center flex-col" (mousemove)="onMouseMove($event)" (mouseup)="onEnd()">
   <div class="record-tips">{{ tips() }}</div>
   <div class="record-slide-container dp-flex justify-center align-center">
-    <button #playBtn appRipple class="play-btn btn-white line-height-0"
+    <button #playBtn appRipple class="play-btn btn-white line-hg-0"
             [ngClass]="{ show: operateState !== operateStates.None, active: operateState === operateStates.Play }" (tap)="play()">
       <ion-icon [hidden]="audio && !audio.paused" name="play" style="margin-left: 5%;"></ion-icon>
       <ion-icon [hidden]="!audio || audio.paused" name="pause"></ion-icon>
     </button>
 
     <button [hidden]="operateState === operateStates.Play && audio && !startTime"
-            class="record-btn btn-primary line-height-0 swiper-no-swiping" (touchstart)="onStart()"
-            (touchmove)="onTouchMove($event)" (touchend)="onEnd()" (touchcancel)="onCancel()" (mousedown)="onStart()"
-            (mouseleave)="onMouseLeave()">
+            class="record-btn btn-primary line-hg-0 swiper-no-swiping" (touchstart)="onStart()" (touchmove)="onTouchMove($event)"
+            (touchend)="onEnd()" (touchcancel)="onCancel()" (mousedown)="onStart()" (mouseleave)="onMouseLeave()">
       <ion-icon name="mic"></ion-icon>
     </button>
 
     <button appRipple [hidden]="operateState !== operateStates.Play || !audio || startTime"
-            class="send-btn btn-primary swiper-no-swiping line-height-0" (click)="send()">
+            class="send-btn btn-primary swiper-no-swiping line-hg-0" (click)="send()">
       <ion-icon name="arrow-up"></ion-icon>
     </button>
 
-    <button #cancelBtn appRipple class="cancel-btn btn-white line-height-0"
+    <button #cancelBtn appRipple class="cancel-btn btn-white line-hg-0"
             [ngClass]="{ show: operateState !== operateStates.None, active: operateState === operateStates.Cancel }"
             (tap)="onCancel()">
       <ion-icon name="trash"></ion-icon>

@@ -1,3 +1,5 @@
+import { Renderer2 } from '@angular/core';
+
 export class CssUtil {
   private static pixel: number;
   private static sizeMap: Map<string, number> = new Map<string, number>();
@@ -32,5 +34,25 @@ export class CssUtil {
     }
 
     return CssUtil.sizeMap.get(size);
+  }
+
+  /**
+   * 注入CSS样式到目标元素中
+   * @param renderer 渲染器
+   * @param element 目标元素
+   * @param styleSheet CSS样式
+   * @param shadowRoot 是否注入到shadowRoot元素
+   */
+  static injectStyle(renderer: Renderer2, target: HTMLElement, styleSheet: string, shadowRoot: boolean = true): void {
+    const element = shadowRoot ? target.shadowRoot : target;
+    const styleElement = element.querySelector('style');
+
+    if (styleElement) {
+      return styleElement.append(styleSheet);
+    }
+
+    const style = renderer.createElement('style');
+    style.innerHTML = styleSheet;
+    element.appendChild(style);
   }
 }

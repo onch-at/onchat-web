@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
+import { filter } from 'rxjs/operators';
 import { SocketEvent } from '../common/enum';
 import { LOCATION, WINDOW } from '../common/token';
 import { FeedbackService } from './feedback.service';
@@ -50,7 +51,9 @@ export class AppService {
    */
   detectSocketConnectStatus() {
     // 连接断开时
-    this.socketService.on(SocketEvent.Disconnect).subscribe(() => {
+    this.socketService.on(SocketEvent.Disconnect).pipe(
+      filter(() => this.globalData.user !== null)
+    ).subscribe(() => {
       this.overlay.presentToast('OnChat: 与服务器断开连接！');
     });
 

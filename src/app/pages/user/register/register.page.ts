@@ -125,10 +125,7 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
       this.globalData.user = data;
       this.socketService.connect();
 
-      this.window.setTimeout(() => {
-        this.router.navigateByUrl('/');
-        this.onChatService.init();
-      }, 500);
+      this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
     });
   }
 

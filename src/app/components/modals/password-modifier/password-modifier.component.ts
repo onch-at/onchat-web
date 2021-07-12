@@ -77,10 +77,10 @@ export class PasswordModifierComponent extends ModalComponent {
       this.overlay.presentToast(msg ? '操作失败，原因：' + msg : '成功修改密码，请重新登录！', code === ResultCode.Success ? 1000 : 2000);
 
       if (code === ResultCode.Success) {
-        this.globalData.reset();
-        this.socketService.unload();
-        this.dismiss();
         this.router.navigateByUrl('/user/login');
+        this.globalData.reset();
+        this.socketService.disconnect();
+        this.dismiss();
       }
     });
   }

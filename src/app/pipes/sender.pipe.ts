@@ -14,7 +14,7 @@ export class SenderPipe implements PipeTransform {
   constructor(private globalData: GlobalData) { }
 
   transform(value: Message, chatroomType: ChatroomType): string {
-    if (value.userId === this.globalData.user.id || value.type === MessageType.Tips) {
+    if (value.userId === this.globalData.user?.id || value.type === MessageType.Tips) {
       return '';
     }
 

@@ -38,13 +38,6 @@ export class SocketService {
   }
 
   /**
-   * 让后端把用户退出相应的房间
-   */
-  unload() {
-    this.emit(SocketEvent.Unload);
-  }
-
-  /**
    * 发送消息
    * @param msg
    */

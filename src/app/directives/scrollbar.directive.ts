@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { SysUtil } from '../utils/sys.util';
+import { CssUtil } from '../utils/css.util';
 
 /**
  * 在桌面模式下，隐藏宿主元素的滚动条
@@ -23,7 +23,7 @@ export class ScrollbarDirective implements AfterViewInit {
     if (this.platform.is('desktop')) {
       const styleSheet = '::-webkit-scrollbar { display:none; }';
 
-      SysUtil.injectStyleToShadowRoot(this.renderer, this.elementRef.nativeElement, styleSheet);
+      CssUtil.injectStyle(this.renderer, this.elementRef.nativeElement, styleSheet);
     }
   }
 

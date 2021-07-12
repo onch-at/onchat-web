@@ -37,7 +37,7 @@ export class UserService {
    * 成功登录,则返回User；否则返回false
    */
   checkLogin(): Observable<Result<false | User>> {
-    return this.http.get<Result<false | User>>(environment.userUrl + 'checklogin', { headers: this.cacheService.cacheHeader(3000) });
+    return this.http.get<Result<false | User>>(environment.userUrl + 'checklogin');
   }
 
   /**

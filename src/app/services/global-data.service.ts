@@ -33,7 +33,7 @@ export class GlobalData {
   get chatSessions(): ChatSession[] { return this._chatSessions; }
 
   set privateChatrooms(chatrooms: ChatSession[]) {
-    this._privateChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => (
+    this._privateChatrooms = chatrooms?.sort((a: ChatSession, b: ChatSession) => (
       a.title.localeCompare(b.title)
     ));
   }
@@ -41,7 +41,7 @@ export class GlobalData {
   get privateChatrooms(): ChatSession[] { return this._privateChatrooms; }
 
   set groupChatrooms(chatrooms: ChatSession[]) {
-    this._groupChatrooms = chatrooms.sort((a: ChatSession, b: ChatSession) => (
+    this._groupChatrooms = chatrooms?.sort((a: ChatSession, b: ChatSession) => (
       a.title.localeCompare(b.title)
     ));
   }
@@ -52,12 +52,12 @@ export class GlobalData {
   user: User;
   /** 记录当前所在的聊天室ID */
   chatroomId: number;
-  /** 是否可以销毁（返回上一页） */
-  canDeactivate = true;
   /** 我的收到好友申请列表 */
   receiveFriendRequests: FriendRequest[];
   /** 我的发起的好友申请列表 */
   sendFriendRequests: FriendRequest[];
+  /** 是否可以销毁（返回上一页） */
+  canDeactivate = true;
   /** 路由导航中 */
   navigating = false;
 
@@ -105,6 +105,7 @@ export class GlobalData {
     this.receiveFriendRequests = null;
     this.sendFriendRequests = null;
     this.privateChatrooms = null;
+    this.groupChatrooms = null;
   }
 
   /**
@@ -115,7 +116,7 @@ export class GlobalData {
 
     if (chatSession) {
       chatSession.unread = this.receiveChatRequests?.concat(this.sendChatRequests).reduce((count, o) => (
-        o.readedList.includes(this.user.id) ? count : ++count
+        o.readedList.includes(this.user?.id) ? count : ++count
       ), 0);
     }
   }

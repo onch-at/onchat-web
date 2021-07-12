@@ -26,8 +26,8 @@ export class ProfilePage {
       message: ' 你确定要退出登录吗？',
       confirmHandler: () => this.userService.logout().subscribe(() => {
         this.router.navigateByUrl('/user/login');
-        this.socketService.unload();
         this.globalData.reset();
+        this.socketService.disconnect();
       })
     });
   }
