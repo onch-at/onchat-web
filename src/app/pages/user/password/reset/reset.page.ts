@@ -13,7 +13,6 @@ import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtil } from 'src/app/utils/str.util';
-import { AsyncValidator } from 'src/app/validators/async.validator';
 import { SyncValidator } from 'src/app/validators/sync.validator';
 
 @Component({
@@ -29,8 +28,6 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
         Validators.pattern(USERNAME_PATTERN),
         Validators.minLength(USERNAME_MIN_LENGTH),
         Validators.maxLength(USERNAME_MAX_LENGTH)
-      ], [
-        this.asyncValidator.legalUsername()
       ]
     ],
     password: [
@@ -74,7 +71,6 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
     public globalData: GlobalData,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private asyncValidator: AsyncValidator,
     private overlay: Overlay,
     private router: Router,
     private routerOutlet: IonRouterOutlet,

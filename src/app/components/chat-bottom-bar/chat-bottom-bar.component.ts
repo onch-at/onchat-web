@@ -123,6 +123,17 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
     });
   }
 
+  /**
+   * 滚动结束时
+   */
+  onIonScrollEnd() {
+    const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
+    // 已经有未读消息，且当前位置接近最底部了
+    if (this.hasUnreadMsg && scrollHeight - scrollTop - clientHeight <= 50) {
+      this.hasUnreadMsg = false;
+    }
+  }
+
   onMessagePush(msg: MessageEntity) {
     this.msgpush.emit(msg);
   }
@@ -149,12 +160,9 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
 
   onPaste({ clipboardData: { items } }: ClipboardEvent) {
     const length = items.length;
-
-    if (!length) { return; }
-
     const item = items[length - 1];
 
-    if (item.kind !== 'file') { return; }
+    if (!length || item?.kind !== 'file') { return; }
 
     const file = item.getAsFile();
 

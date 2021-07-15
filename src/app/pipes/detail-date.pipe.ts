@@ -28,7 +28,7 @@ export class DetailDatePipe implements PipeTransform {
       return Day.Today;
     }
 
-    if (DateUtil.isYestday(date)) { // 如果是昨天
+    if (DateUtil.isYesterday(date)) { // 如果是昨天
       return Day.Yesterday;
     }
 

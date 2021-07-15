@@ -85,7 +85,10 @@ export class AppService {
         header: '新版本已就绪',
         message: '是否立即重启以更新到新版本？',
         backdropDismiss: false,
-        confirmHandler: () => this.swUpdate.activateUpdate().then(() => this.location.reload())
+        confirmHandler: () => {
+          this.overlay.presentLoading();
+          this.swUpdate.activateUpdate().then(() => this.location.reload());
+        }
       })
     });
   }

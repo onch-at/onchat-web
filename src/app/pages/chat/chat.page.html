@@ -1,4 +1,4 @@
-<ion-content appScrollbar [fullscreen]="true">
+<ion-content appScrollbar [fullscreen]="true" [scrollEvents]="bottomBar.hasUnreadMsg" (ionScrollEnd)="bottomBar.onIonScrollEnd()">
   <ion-header slot="fixed">
     <ion-toolbar class="overflow-hidden">
       <ion-buttons slot="start">

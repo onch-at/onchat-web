@@ -3,11 +3,10 @@ export class DateUtil {
    * 是否在昨天
    * @param date
    */
-  static isYestday(date: Date): boolean {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(); // 今天凌晨
-    const yestday = new Date(today - 86400000).getTime();
-    return date.getTime() < today && yestday <= date.getTime();
+  static isYesterday(date: Date): boolean {
+    const today = new Date().setHours(0, 0, 0, 0); // 今天凌晨
+    const yesterday = today - 86400000;
+    return date.getTime() < today && yesterday <= date.getTime();
   }
 
   /**
@@ -30,7 +29,7 @@ export class DateUtil {
     const nowTime = now.getTime();
     const nowDay = now.getDay();
     for (let i = 0; i < 7; i++) {
-      if (inDateStr == (new Date(nowTime + (i - nowDay) * 86400000)).toLocaleDateString()) {
+      if (inDateStr === (new Date(nowTime + (i - nowDay) * 86400000)).toLocaleDateString()) {
         return true;
       }
     }

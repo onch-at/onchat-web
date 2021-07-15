@@ -71,7 +71,7 @@ export class FriendService {
    * 已读收到的所有好友请求
    * @param id 好友请求ID
    */
-  readedReceiveRequest(id?: number): Observable<Result> {
+  readedReceiveRequest(id: number): Observable<Result> {
     return this.http.put<Result>(`${environment.friendUrl}request/receive/readed/${id}`, null);
   }
 
@@ -79,7 +79,7 @@ export class FriendService {
    * 已读发送的所有好友请求
    * @param id 好友请求ID
    */
-  readedSendRequest(id?: number): Observable<Result> {
+  readedSendRequest(id: number): Observable<Result> {
     return this.http.put<Result>(`${environment.friendUrl}request/send/readed/${id}`, null);
   }
 }
