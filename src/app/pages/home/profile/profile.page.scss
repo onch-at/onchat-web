@@ -3,7 +3,7 @@
   height: 6.5rem;
   color: #fff;
   text-shadow: 0 0 0.5rem rgba(#000, 0.75);
-  background: rgba(var(--color-primary-rgb), 0.5);
+  background: rgba(var(--color-primary-rgb), 0.75);
   border-radius: 0 0 1.5rem 0;
 
   .profile-card-bg-img {
@@ -19,7 +19,6 @@
     width: 100%;
     height: 100%;
     padding: 0.75rem;
-    background: rgba(#000, 0.25);
   }
 
   .profile-card-avatar {

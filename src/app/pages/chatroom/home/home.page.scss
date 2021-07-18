@@ -44,6 +44,8 @@ ion-content {
     height: 100%;
     width: 100%;
     object-fit: cover;
+    transform: scale(1.5);
+    animation: zoom-out 0.25s ease-out 0.125s forwards;
 }
 
 .home-header-mask {

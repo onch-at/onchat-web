@@ -7,7 +7,6 @@ import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { WINDOW } from 'src/app/common/token';
-import { ChatBottomBarComponent } from 'src/app/components/chat-bottom-bar/chat-bottom-bar.component';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
@@ -18,7 +17,6 @@ import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { CssUtil } from 'src/app/utils/css.util';
 import { StrUtil } from 'src/app/utils/str.util';
 
 @Component({
@@ -48,12 +46,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
   msgList: Message[] = [];
   /** 聊天记录是否查到末尾了 */
   ended: boolean = false;
-
-  paddingBottom = (bottomBar: ChatBottomBarComponent) => {
-    const spare = 'calc(4.1rem + var(--ion-safe-area-bottom))';
-    const size = `calc(0.75rem + ${bottomBar.elementRef.nativeElement.clientHeight}px)`;
-    return CssUtil.size(spare) > CssUtil.size(size) ? spare : size;
-  };
 
   constructor(
     public globalData: GlobalData,
@@ -230,7 +222,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
         this.msgList.unshift(msgItem);
       }
 
-      // 如果返回的消息里少于10条，则代表这是最后一段消息了
+      // 如果返回的消息里少于15条，则代表这是最后一段消息了
       if (data.length < 15) {
         this.ended = true;
       }
@@ -238,7 +230,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
       // 如果是第一次查记录，就执行滚动
       this.msgId || this.scrollToBottom(0);
 
-      if (data.length > 0) {
+      if (data.length) {
         this.msgId = this.msgList[0].id;
       }
     });
@@ -248,12 +240,10 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
    * 滚到底部
    */
   scrollToBottom(duration: number = 500) {
-    return new Promise<void>(resolve => {
-      this.window.setTimeout(async () => {
-        await this.ionContent.scrollToBottom(duration);
-        resolve();
-      })
-    });
+    return new Promise<void>(resolve => this.window.setTimeout(async () => {
+      await this.ionContent.scrollToBottom(duration);
+      resolve();
+    }));
   }
 
   /**

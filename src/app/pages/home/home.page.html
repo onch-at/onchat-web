@@ -12,7 +12,7 @@
   </ion-header>
 
   <aside class="sidebar overflow-hidden" slot="fixed">
-    <img *ngIf="globalData.user" class="avatar cursor-pointer" [src]="globalData.user.avatarThumbnail"
+    <img *ngIf="globalData.user" class="avatar pointer" [src]="globalData.user.avatarThumbnail"
          [routerLink]="['/user', globalData.user.id]">
 
     <div class="button-group dp-flex flex-col">

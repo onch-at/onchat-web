@@ -38,7 +38,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
     ]
   };
 
-  canSend = () => this.html && StrUtil.trimAll(this.html).length > 0;
+  canSend = () => this.text && StrUtil.trimAll(this.text).length > 0;
 
   constructor(
     private globalData: GlobalData,
@@ -54,6 +54,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
     this.html = this.localStorage.getItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalData.chatroomId);
+    this.text = StrUtil.html(this.html);
   }
 
   /**
@@ -95,7 +96,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
   /**
    * 缓存编辑的富文本到本地
    */
-  @Throttle(1000)
+  @Throttle(500)
   cache() {
     StrUtil.trimAll(this.text).length && this.localStorage.setItemToMap(
       LocalStorageKey.ChatRichTextMap,

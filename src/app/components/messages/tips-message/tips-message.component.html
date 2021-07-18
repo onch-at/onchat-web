@@ -1,13 +1,13 @@
 <ng-container [ngSwitch]="msg.data.type">
   <ng-container *ngSwitchCase="tipsType.JoinRoom">
-    <span class="color-info cursor-pointer" [routerLink]="['/user', msg.userId]">
+    <span class="color-info pointer" [routerLink]="['/user', msg.userId]">
       {{ msg.userId === globalData.user?.id ? '我' : msg.nickname }}
     </span>
     已加入聊天室
   </ng-container>
 
   <ng-container *ngSwitchCase="tipsType.RevokeMessage">
-    <span class="color-info cursor-pointer" [routerLink]="['/user', msg.userId]">{{ msg.nickname }}</span>
+    <span class="color-info pointer" [routerLink]="['/user', msg.userId]">{{ msg.nickname }}</span>
     撤回了一条消息
   </ng-container>
 </ng-container>

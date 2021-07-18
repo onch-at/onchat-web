@@ -77,3 +77,12 @@
         opacity: 0;
     }
 }
+// 缩小动画
+@keyframes zoom-out {
+    from {
+        transform: scale(1.5);
+    }
+    to {
+        transform: scale(1);
+    }
+}

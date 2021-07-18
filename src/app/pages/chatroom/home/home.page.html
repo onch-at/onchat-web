@@ -37,14 +37,14 @@
     </div>
   </div>
 
-  <ion-item (click)="presentChatMemberList()" detail lines="none" mode="md" class="cursor-pointer">
+  <ion-item (click)="presentChatMemberList()" detail lines="none" mode="md" class="pointer">
     <ion-label>聊天室成员</ion-label>
   </ion-item>
 
   <div class="home-item">
     <div class="avatar-list-track dp-flex justify-between">
       <ng-container *ngFor="let item of members | slice: 0:(isMember ? 6 : 7)">
-        <img class="avatar-list-img cursor-pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
+        <img class="avatar-list-img pointer" [src]="item.avatarThumbnail" [routerLink]="'/user/' + item.userId">
       </ng-container>
 
       <!-- 如果不够6个，就填充空元素来维持UI -->
