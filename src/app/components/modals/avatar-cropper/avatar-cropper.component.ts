@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
 import { Observable } from 'rxjs';
 import { ResultCode } from 'src/app/common/enum';
+import { SafeAny } from 'src/app/common/interface';
 import { Result } from 'src/app/models/onchat.model';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -58,7 +59,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
    * 上传图片
    */
   uploadImage() {
-    SysUtil.selectFile('image/*').subscribe((event: any) => {
+    SysUtil.selectFile('image/*').subscribe((event: SafeAny) => {
       this.ionLoading = this.overlay.presentLoading();
       this.error = false;
       this.imageCropper.imageQuality = 90;

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet, IonSlides } from '@ionic/angular';
+import { SafeAny } from 'src/app/common/interface';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
@@ -106,7 +107,7 @@ export class ChatDrawerComponent {
         resolve(msg);
       };
 
-      img.onerror = (error: any) => reject(error);
+      img.onerror = (error: SafeAny) => reject(error);
 
       img.src = url;
     });

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
+import { SafeAny } from 'src/app/common/interface';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
 import { ChatService } from 'src/app/services/apis/chat.service';
@@ -37,7 +38,7 @@ export class SessionPage {
    * 刷新
    * @param event
    */
-  refresh(event: any) {
+  refresh(event: SafeAny) {
     this.onChatService.initChatSession().subscribe(() => {
       event.target.complete();
     });

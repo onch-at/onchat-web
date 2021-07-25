@@ -17,7 +17,7 @@
 			<ng-container [ngSwitch]="item.status">
 				<span class="status" *ngSwitchCase="friendRequestStatus.Reject">已拒绝</span>
 				<span class="status" *ngSwitchCase="friendRequestStatus.Agree">已同意</span>
-				<button *ngSwitchDefault appRipple appActiveClass (click)="agree(item.id, $event)" class="btn-primary">
+				<button *ngSwitchDefault appRipple appActiveClass (click)="agree(item.id, $event)" class="btn-ghost-primary">
 					同意
 				</button>
 			</ng-container>

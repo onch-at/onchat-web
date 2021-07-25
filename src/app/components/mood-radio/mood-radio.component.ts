@@ -1,6 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Mood } from 'src/app/common/enum';
+import { SafeAny } from 'src/app/common/interface';
 
 @Component({
   selector: 'app-mood-radio',
@@ -34,9 +35,9 @@ export class MoodRadioComponent implements ControlValueAccessor {
     this._value = value;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: SafeAny): void {
     this.onValueChange = fn;
   }
 
-  registerOnTouched(fn: any): void { }
+  registerOnTouched(fn: SafeAny): void { }
 }

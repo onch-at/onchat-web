@@ -8,7 +8,7 @@ export class SysUtil {
    * @param multiple 多文件上传
    */
   static selectFile(accept: string = null, multiple: boolean = false) {
-    const input = document.createElement('input');
+    const input = document.createElement('input') as HTMLInputElement;
     input.style.display = 'none';
     input.type = 'file';
     input.multiple = multiple;
@@ -29,7 +29,7 @@ export class SysUtil {
         complete();
       };
 
-      input.onerror = (event: any) => {
+      input.onerror = (event: Event) => {
         observer.error(event);
         complete();
       };

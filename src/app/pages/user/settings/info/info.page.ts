@@ -163,18 +163,20 @@ export class InfoPage implements OnInit, OnDestroy {
     const buttons = [
       {
         text: '更换头像',
-        handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.presentModal({
-          component: AvatarCropperComponent,
-          componentProps: {
-            imageChangedEvent: event,
-            uploader: (avatar: Blob) => this.userService.avatar(avatar),
-            handler: ({ data }: Result<AvatarData>) => {
-              const { avatar, avatarThumbnail } = data;
-              this.globalData.user.avatar = avatar;
-              this.globalData.user.avatarThumbnail = avatarThumbnail;
+        handler: () => {
+          SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.presentModal({
+            component: AvatarCropperComponent,
+            componentProps: {
+              imageChangedEvent: event,
+              uploader: (avatar: Blob) => this.userService.avatar(avatar),
+              handler: ({ data }: Result<AvatarData>) => {
+                const { avatar, avatarThumbnail } = data;
+                this.globalData.user.avatar = avatar;
+                this.globalData.user.avatarThumbnail = avatarThumbnail;
+              }
             }
-          }
-        }))
+          }));
+        }
       },
       { text: '更换背景图' },
       { text: '取消', role: 'cancel' }

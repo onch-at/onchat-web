@@ -16,7 +16,7 @@ export class DetailDatePipe implements PipeTransform {
     WeekDay.Saturday
   ];
 
-  transform(value: any): string | WeekDay {
+  transform(value: string | number | Date): string | WeekDay {
     const now = new Date();
     const date = new Date(value);
 

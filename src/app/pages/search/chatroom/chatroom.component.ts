@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { Throttle } from 'src/app/common/decorator';
 import { ResultCode } from 'src/app/common/enum';
+import { SafeAny } from 'src/app/common/interface';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';
 
@@ -34,7 +35,7 @@ export class ChatroomComponent {
    * 加载更多
    * @param event
    */
-  loadData(event: any) {
+  loadData(event: SafeAny) {
     if (!this.page) {
       return event.target.complete();
     }

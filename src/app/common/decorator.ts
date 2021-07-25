@@ -4,7 +4,7 @@
  * @param field 定时器字段名
  */
 export function Throttle(wait: number, field?: string) {
-  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+  return (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
     field ??= `_${propertyKey}MethodThrottleTimer`;
     const fn = descriptor.value;
 
@@ -23,7 +23,7 @@ export function Throttle(wait: number, field?: string) {
  * @param field 定时器字段名
  */
 export function Debounce(delay: number, field?: string) {
-  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+  return (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
     field ??= `_${propertyKey}MethodDebounceTimer`;
     const fn = descriptor.value;
 

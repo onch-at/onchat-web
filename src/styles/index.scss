@@ -135,6 +135,15 @@
   }
 }
 
+.btn-ghost-primary {
+  color: var(--color-primary);
+  background-color: rgba(var(--color-primary-rgb), 0.25);
+
+  &.active {
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.5);
+  }
+}
+
 // 白色按钮
 .btn-white {
   color: var(--color-dark);
@@ -175,6 +184,7 @@
 }
 
 .btn-primary,
+.btn-ghost-primary,
 .btn-white,
 .btn-light,
 .btn-secondary,
@@ -192,6 +202,7 @@
 
 .ipt-primary,
 .btn-primary,
+.btn-ghost-primary,
 .btn-secondary,
 .btn-danger,
 .btn-light {

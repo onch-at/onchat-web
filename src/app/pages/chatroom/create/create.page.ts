@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
-import { ChatSessionCheckbox, ValidationFeedback } from 'src/app/common/interface';
+import { ChatSessionCheckbox, SafeAny, ValidationFeedback } from 'src/app/common/interface';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -186,7 +186,7 @@ export class CreatePage implements OnInit, OnDestroy {
    * 加载更多
    * @param event
    */
-  loadData(event: any) {
+  loadData(event: SafeAny) {
     if (!this.privateChatroomsPage) {
       return event.target.complete();
     }

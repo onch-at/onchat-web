@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { slide } from 'src/app/animations/ionic.animation';
+import { SafeAny } from 'src/app/common/interface';
 
 @Component({
   selector: 'app-search',
@@ -22,7 +23,7 @@ export class SearchPage implements OnInit {
     this.pathname = this.router.routerState.snapshot.url;
   }
 
-  segmentChange(event: any) {
+  segmentChange(event: SafeAny) {
     this.pathname = event.detail.value;
     this.router.navigateByUrl(this.pathname, { skipLocationChange: true });
   }

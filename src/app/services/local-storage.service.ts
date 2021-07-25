@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enum';
+import { SafeAny } from '../common/interface';
 import { STORAGE } from '../common/token';
 
 /** 本地存储服务 */
@@ -17,7 +18,7 @@ export class LocalStorage {
    * @param key 键名
    * @param value 数据
    */
-  set(key: LocalStorageKey, value: any): void {
+  set(key: LocalStorageKey, value: SafeAny): void {
     this.storage.setItem(key, JSON.stringify(value));
   }
 

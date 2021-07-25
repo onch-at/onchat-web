@@ -9,7 +9,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     @Inject(LOCATION) private location: Location
   ) { }
 
-  handleError(error: any): void {
+  handleError(error: Error): void {
     if (/Loading chunk [\d]+ failed/i.test(error.message)) {
       this.location.reload();
     }

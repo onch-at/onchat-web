@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { slide } from 'src/app/animations/ionic.animation';
+import { SafeAny } from 'src/app/common/interface';
 import { ChatService } from 'src/app/services/apis/chat.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 
@@ -35,7 +36,7 @@ export class NewsPage implements OnInit, OnDestroy {
     this.globalData.readedChatRequest();
   }
 
-  segmentChange(event: any) {
+  segmentChange(event: SafeAny) {
     this.pathname = event.detail.value;
     this.router.navigateByUrl(this.pathname, { skipLocationChange: true });
   }

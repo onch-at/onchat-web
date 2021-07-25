@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { ActionSheetController, AlertController, LoadingController, ModalController, PopoverController, ToastController } from '@ionic/angular';
-import { ActionSheetButton, AlertOptions, ModalOptions, NotificationOptions, PopoverOptions } from '../common/interface';
+import { ActionSheetController, ActionSheetOptions, AlertController, LoadingController, ModalController, ModalOptions, PopoverController, PopoverOptions, ToastController } from '@ionic/angular';
+import { AlertOptions, NotificationOptions, SafeAny } from '../common/interface';
 import { NAVIGATOR } from '../common/token';
 import { NotificationController } from '../controllers/notification.controller';
 import { GlobalData } from './global-data.service';
@@ -113,7 +113,7 @@ export class Overlay {
    * @param buttons 按钮组
    * @param header 标头文字
    */
-  async presentActionSheet(buttons: (ActionSheetButton | string)[], header?: string): Promise<HTMLIonActionSheetElement> {
+  async presentActionSheet(buttons: ActionSheetOptions['buttons'], header?: string): Promise<HTMLIonActionSheetElement> {
     const actionSheet = await this.actionSheetCtrl.create({
       header,
       cssClass: 'ion-action-sheet',
@@ -167,7 +167,7 @@ export class Overlay {
    * @param role
    * @param id
    */
-  dismissLoading(data?: any, role?: string, id?: string) {
+  dismissLoading(data?: SafeAny, role?: string, id?: string) {
     this.loadingCtrl.dismiss(data, role, id);
   }
 
@@ -177,7 +177,7 @@ export class Overlay {
    * @param role
    * @param id
    */
-  dismissPopover(data?: any, role?: string, id?: string) {
+  dismissPopover(data?: SafeAny, role?: string, id?: string) {
     this.popoverCtrl.dismiss(data, role, id);
   }
 
@@ -187,7 +187,7 @@ export class Overlay {
    * @param role
    * @param id
    */
-  dismissModal(data?: any, role?: string, id?: string) {
+  dismissModal(data?: SafeAny, role?: string, id?: string) {
     this.modalCtrl.dismiss(data, role, id);
   }
 

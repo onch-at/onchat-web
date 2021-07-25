@@ -71,7 +71,7 @@ export class ImageService {
         observer.complete();
       }
 
-      img.onerror = (error: any) => {
+      img.onerror = (error: Event) => {
         observer.error(error);
         observer.complete();
       }

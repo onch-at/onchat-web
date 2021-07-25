@@ -1,4 +1,5 @@
 import { ChatMemberRole, ChatRequestStatus, ChatSessionType, FriendRequestStatus, MessageType, ResultCode } from '../common/enum';
+import { SafeAny } from '../common/interface';
 import { AnyMessage } from './msg.model';
 
 export interface Result<T = null> {
@@ -90,7 +91,7 @@ export interface ChatSession extends IEntity {
   /** 聊天室头像缩略图 */
   avatarThumbnail: string;
   /** 详细数据 */
-  data: any;
+  data: SafeAny;
   /** 会话类型 */
   type: ChatSessionType;
   /** 最新消息 */

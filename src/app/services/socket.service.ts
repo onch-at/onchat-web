@@ -3,6 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { Observable, Subject } from 'rxjs';
 import { filter, take, tap, timeout } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enum';
+import { SafeAny } from '../common/interface';
 import { Message, Result } from '../models/onchat.model';
 import { Overlay } from './overlay.service';
 
@@ -165,7 +166,7 @@ export class SocketService {
    * @param eventName 事件名
    */
   on(eventName: string | SocketEvent): Observable<unknown> {
-    return this.socket.fromEvent(eventName).pipe(tap((data: any) => {
+    return this.socket.fromEvent(eventName).pipe(tap((data: SafeAny) => {
       data?.code === ResultCode.ErrorHighFrequency && this.overlay.presentToast('操作失败，原因：请求频率过高');
     }));
   }

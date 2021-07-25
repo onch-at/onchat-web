@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetButton } from 'src/app/common/interface';
+import { ActionSheetButton } from '@ionic/angular';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -23,6 +23,7 @@ SwiperCore.use([Lazy, Zoom]);
 export class ImagePreviewerComponent extends ModalComponent implements AfterViewInit {
   @Input() data: Message<ImageMessage>[] = [];
   @Input() index: number;
+  @ViewChild(SwiperComponent) swiper: SwiperComponent;
 
   trackByFn = EntityUtil.trackBy;
 
@@ -35,8 +36,6 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
   lazy: LazyOptions = {
     preloaderClass: 'swiper-lazy-spinner'
   }
-
-  @ViewChild(SwiperComponent) swiper: SwiperComponent;
 
   constructor(
     private feedbackService: FeedbackService,

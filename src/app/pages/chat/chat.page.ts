@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { SafeAny } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
@@ -180,7 +181,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
    * 加载更多消息
    * @param event
    */
-  async loadMoreRecords({ target }: any) {
+  async loadMoreRecords({ target }: SafeAny) {
     if (!this.msgId) {
       await this.scrollToBottom();
       return target.complete();

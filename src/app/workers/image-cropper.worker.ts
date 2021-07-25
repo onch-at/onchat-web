@@ -37,10 +37,12 @@ addEventListener('message', async ({ data }) => {
   ctx.rotate((transform.rotate || 0) * Math.PI / 180);
   ctx.drawImage(imageBitmap, -transformedSize.width / 2, -transformedSize.height / 2);
 
-  const output: any = {
+  const output = {
     width,
     height,
+    blob: null,
     imagePosition,
+    offsetImagePosition: null,
     cropperPosition: { ...cropper },
   };
 

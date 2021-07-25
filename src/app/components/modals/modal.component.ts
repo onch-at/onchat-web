@@ -2,6 +2,7 @@ import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { SafeAny } from 'src/app/common/interface';
 import { Overlay } from 'src/app/services/overlay.service';
 
 /**
@@ -32,7 +33,7 @@ export abstract class ModalComponent implements OnInit, OnDestroy {
     this.router.navigate([]);
   }
 
-  dismiss(data?: any, role?: string, id?: string): void {
+  dismiss(data?: SafeAny, role?: string, id?: string): void {
     this.overlay.dismissModal(data, role, id);
   }
 }

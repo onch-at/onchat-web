@@ -86,7 +86,7 @@ export class AppService {
         message: '是否立即重启以更新到新版本？',
         backdropDismiss: false,
         confirmHandler: () => {
-          this.overlay.presentLoading();
+          this.overlay.presentLoading('Installing…');
           this.swUpdate.activateUpdate().then(() => this.location.reload());
         }
       })
