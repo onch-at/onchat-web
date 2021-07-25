@@ -8,7 +8,10 @@ export class CssUtil {
    * @param rem
    */
   static rem2px(rem: number): number {
-    return rem * CssUtil.size('1em');
+    const px = CssUtil.size('1rem') || parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
+    CssUtil.sizeMap.set('1rem', px);
+
+    return rem * px;
   }
 
   /**
@@ -20,11 +23,11 @@ export class CssUtil {
       const div = document.createElement('div');
       div.style.height = size;
       document.body.appendChild(div);
-      CssUtil.sizeMap.set(size, div.offsetHeight);
+      div.offsetHeight && CssUtil.sizeMap.set(size, div.offsetHeight);
       document.body.removeChild(div);
     }
 
-    return CssUtil.sizeMap.get(size);
+    return CssUtil.sizeMap.get(size) || 0;
   }
 
   /**
