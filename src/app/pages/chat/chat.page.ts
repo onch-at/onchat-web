@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, Scroll } from '@angular/router';
-import { IonContent, NavController, Platform } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonContent, NavController, Platform, ViewWillEnter } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH } from 'src/app/common/constant';
@@ -25,7 +25,7 @@ import { StrUtil } from 'src/app/utils/str.util';
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
-export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
+export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter {
   private destroy$: Subject<void> = new Subject<void>();
   /** IonContent滚动元素 */
   private contentElement: HTMLElement;
@@ -63,24 +63,17 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit {
     @Inject(WINDOW) private window: Window,
   ) { }
 
-  ngOnInit() {
-    // 监听路由 滚动事件
+  ionViewWillEnter() {
     // 场景：从1号房间跳到2号房间，全局房间号变成2，再返回到1号房间，全局房间号变回1
-    this.router.events.pipe(
-      takeUntil(this.destroy$),
-      filter(event => event instanceof Scroll),
-    ).subscribe((event: Scroll) => {
-      // 尝试从URL中提取chatroomId
-      const chatroomId = +event.routerEvent.url.replace(/\/chat\//, '');
-      // 如果提取到的是一个数字，并且服务中的chatroomId跟这个chatroomId不一样，则更新
-      if (Number.isInteger(chatroomId) && this.globalData.chatroomId != chatroomId) {
-        this.globalData.chatroomId = chatroomId;
-      }
-    });
+    const chatroomId = +this.route.snapshot.params.id;
+    if (this.globalData.chatroomId !== chatroomId) {
+      this.globalData.chatroomId = chatroomId;
+    }
+  }
 
-    // 记录当前房间ID，用于处理聊天列表
-    this.globalData.chatroomId = +this.route.snapshot.params.id;
+  ngOnInit() {
     this.chatroomId = +this.route.snapshot.params.id;
+    this.globalData.chatroomId = this.chatroomId;
 
     this.loadRecords();
 
