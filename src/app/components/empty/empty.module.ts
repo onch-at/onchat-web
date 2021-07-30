@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { EmptyComponent } from '../components/empty/empty.component';
+import { EmptyComponent } from './empty.component';
 
 @NgModule({
   declarations: [

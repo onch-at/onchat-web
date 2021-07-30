@@ -14,9 +14,9 @@ import { VoiceMessageComponent } from 'src/app/components/messages/voice-message
 import { ImagePreviewerComponent } from 'src/app/components/modals/image-previewer/image-previewer.component';
 import { RichTextEditorComponent } from 'src/app/components/modals/rich-text-editor/rich-text-editor.component';
 import { BubbleToolbarComponent } from 'src/app/components/popovers/bubble-toolbar/bubble-toolbar.component';
-import { ActiveClassModule } from 'src/app/modules/active-class.module';
-import { RippleModule } from 'src/app/modules/ripple.module';
-import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
+import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
+import { RippleModule } from 'src/app/directives/ripple/ripple.module';
+import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
 import { SwiperModule } from 'swiper/angular';
 import { MessageListComponent } from '../../components/message-list/message-list.component';

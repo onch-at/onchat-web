@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { SkeletonItemComponent } from '../components/skeleton-item/skeleton-item.component';
+import { SkeletonItemComponent } from './skeleton-item.component';
 
 @NgModule({
   declarations: [
@@ -15,4 +15,4 @@ import { SkeletonItemComponent } from '../components/skeleton-item/skeleton-item
     SkeletonItemComponent
   ]
 })
-export class SkeletonModule { }
+export class SkeletonItemModule { }

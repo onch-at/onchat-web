@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { CssUtil } from '../utils/css.util';
+import { CssUtil } from '../../utils/css.util';
 
 /**
  * 在桌面模式下，隐藏宿主元素的滚动条

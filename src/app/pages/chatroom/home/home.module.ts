@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { EmptyModule } from 'src/app/components/empty/empty.module';
+import { AvatarCropperModule } from 'src/app/components/modals/avatar-cropper/avatar-cropper.module';
 import { ChatMemberListComponent } from 'src/app/components/modals/chat-member-list/chat-member-list.component';
-import { ActiveClassModule } from 'src/app/modules/active-class.module';
-import { AvatarCropperModule } from 'src/app/modules/avatar-cropper.module';
-import { ChatSessionSelectorModule } from 'src/app/modules/chat-session-selector.module';
-import { EmptyModule } from 'src/app/modules/empty.module';
-import { RippleModule } from 'src/app/modules/ripple.module';
-import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
+import { ChatSessionSelectorModule } from 'src/app/components/modals/chat-session-selector/chat-session-selector.module';
+import { SkeletonItemModule } from 'src/app/components/skeleton-item/skeleton-item.module';
+import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
+import { RippleModule } from 'src/app/directives/ripple/ripple.module';
+import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
-import { SkeletonModule } from 'src/app/modules/skeleton.module';
 import { VirtualScrollPatchModule } from 'src/app/modules/virtual-scroll-patch.module';
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
@@ -29,7 +29,7 @@ import { HomePage } from './home.page';
     RippleModule,
     SharedModule,
     VirtualScrollPatchModule,
-    SkeletonModule
+    SkeletonItemModule
   ],
   declarations: [
     HomePage,

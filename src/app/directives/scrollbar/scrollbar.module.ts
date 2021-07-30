@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ScrollbarDirective } from '../directives/scrollbar.directive';
+import { ScrollbarDirective } from './scrollbar.directive';
 
 @NgModule({
   declarations: [ScrollbarDirective],

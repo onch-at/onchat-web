@@ -16,10 +16,10 @@ import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { ActiveClassModule } from './directives/active-class/active-class.module';
+import { ScrollbarModule } from './directives/scrollbar/scrollbar.module';
 import { GlobalErrorHandler } from './handlers/global-error.handler';
 import { CacheInterceptor } from './interceptors/cache.interceptor';
-import { ActiveClassModule } from './modules/active-class.module';
-import { ScrollbarModule } from './modules/scrollbar.module';
 import { SharedModule } from './modules/shared.module';
 
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);

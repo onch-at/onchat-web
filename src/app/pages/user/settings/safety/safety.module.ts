@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { EmailBinderComponent } from 'src/app/components/modals/email-binder/email-binder.component';
 import { PasswordModifierComponent } from 'src/app/components/modals/password-modifier/password-modifier.component';
-import { ActiveClassModule } from 'src/app/modules/active-class.module';
-import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
+import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
+import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
 import { SafetyPageRoutingModule } from './safety-routing.module';
 import { SafetyPage } from './safety.page';
 

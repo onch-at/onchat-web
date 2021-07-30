@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { EmptyModule } from 'src/app/components/empty/empty.module';
 import { HomeMenuComponent } from 'src/app/components/popovers/home-menu/home-menu.component';
-import { ActiveClassModule } from 'src/app/modules/active-class.module';
-import { EmptyModule } from 'src/app/modules/empty.module';
-import { RippleModule } from 'src/app/modules/ripple.module';
-import { ScrollbarModule } from 'src/app/modules/scrollbar.module';
+import { SkeletonItemModule } from 'src/app/components/skeleton-item/skeleton-item.module';
+import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
+import { RippleModule } from 'src/app/directives/ripple/ripple.module';
+import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
-import { SkeletonModule } from 'src/app/modules/skeleton.module';
 import { VirtualScrollPatchModule } from 'src/app/modules/virtual-scroll-patch.module';
 import { ChatroomComponent } from './contact/chatroom/chatroom.component';
 import { ContactPage } from './contact/contact.page';
@@ -32,7 +32,7 @@ import { SettingsPage } from './settings/settings.page';
     ActiveClassModule,
     EmptyModule,
     ScrollbarModule,
-    SkeletonModule
+    SkeletonItemModule
   ],
   declarations: [
     HomePage,

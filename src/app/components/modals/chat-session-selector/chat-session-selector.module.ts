@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ChatSessionSelectorComponent } from '../components/modals/chat-session-selector/chat-session-selector.component';
-import { EmptyModule } from './empty.module';
-import { ScrollbarModule } from './scrollbar.module';
-import { VirtualScrollPatchModule } from './virtual-scroll-patch.module';
+import { ScrollbarModule } from '../../../directives/scrollbar/scrollbar.module';
+import { VirtualScrollPatchModule } from '../../../modules/virtual-scroll-patch.module';
+import { EmptyModule } from '../../empty/empty.module';
+import { ChatSessionSelectorComponent } from './chat-session-selector.component';
 
 @NgModule({
   declarations: [

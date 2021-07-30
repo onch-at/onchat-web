@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ActiveClassDirective } from '../directives/active-class.directive';
+import { ActiveClassDirective } from './active-class.directive';
 
 @NgModule({
   declarations: [ActiveClassDirective],
