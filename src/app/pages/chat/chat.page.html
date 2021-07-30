@@ -19,14 +19,14 @@
     </ion-toolbar>
   </ion-header>
 
-  <main>
+  <main class="dp-flex flex-col min-hg-full">
     <ion-infinite-scroll position="top" threshold="-10px" [disabled]="ended" (ionInfinite)="loadMoreRecords($event)">
       <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
-    <app-message-list [data]="msgList" [ended]="ended" [chatroomType]="chatroomType"></app-message-list>
+    <app-message-list class="flex-auto" [data]="msgList" [ended]="ended" [chatroomType]="chatroomType"></app-message-list>
 
-    <app-chat-bottom-bar #bottomBar [ionContent]="ionContent" (msgpush)="onMessagePush($event)">
+    <app-chat-bottom-bar #bottomBar class="dp-block" [ionContent]="ionContent" (msgpush)="onMessagePush($event)">
     </app-chat-bottom-bar>
   </main>
 </ion-content>
