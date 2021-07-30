@@ -30,7 +30,7 @@ ion-header {
 }
 
 main {
-  padding: 2.75rem 0 0.75rem;
+  padding: 2.75rem 0 0;
 }
 
 ion-back-button::part(text) {
@@ -38,11 +38,6 @@ ion-back-button::part(text) {
   padding: 0.2rem 0.4rem;
   font-size: 0.8rem;
   border-radius: 1rem;
-}
-
-ion-content::part(scroll) {
-  display: flex;
-  flex-direction: column;
 }
 
 @keyframes title-show {
