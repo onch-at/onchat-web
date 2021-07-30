@@ -17,7 +17,7 @@ import { BubbleToolbarComponent } from 'src/app/components/popovers/bubble-toolb
 import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
 import { RippleModule } from 'src/app/directives/ripple/ripple.module';
 import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
-import { SharedModule } from 'src/app/modules/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { SwiperModule } from 'swiper/angular';
 import { MessageListComponent } from '../../components/message-list/message-list.component';
 import { ChatPageRoutingModule } from './chat-routing.module';
