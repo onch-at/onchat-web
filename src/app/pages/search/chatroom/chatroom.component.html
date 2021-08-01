@@ -1,4 +1,4 @@
-<ion-content appScrollbar>
+<ion-content>
   <ion-searchbar animated placeholder="搜索" (ionChange)="search()" [(ngModel)]="keyword"></ion-searchbar>
 
   <app-empty *ngIf="chatrooms?.length === 0"></app-empty>

@@ -36,3 +36,7 @@ cdk-virtual-scroll-viewport {
         display: none;
     }
 }
+
+.cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper {
+    max-width: 100%;
+}
