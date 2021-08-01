@@ -27,3 +27,12 @@ textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
 }
+
+cdk-virtual-scroll-viewport {
+    height: 100%;
+    width: 100%;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

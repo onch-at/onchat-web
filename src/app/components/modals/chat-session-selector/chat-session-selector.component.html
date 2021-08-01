@@ -7,7 +7,7 @@
         </ion-button>
       </ion-buttons>
 
-      <ion-title>{{ title }}（{{ getCheckedChatSessions().length }}/{{ limit }}）</ion-title>
+      <ion-title>{{ title }}（{{ checkedChatSessions.length }}/{{ limit }}）</ion-title>
 
       <ion-buttons slot="end" *ngIf="!loading && canSubmit()" (tap)="submit()">
         <ion-button>
@@ -22,19 +22,17 @@
 
   <app-empty *ngIf="list.length === 0"></app-empty>
 
-  <ion-list class="chat-session-list">
-
-    <ion-virtual-scroll appVirtualScrollPatch [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
-                        [trackBy]="trackByFn">
-      <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false">
+  <cdk-virtual-scroll-viewport [itemSize]="itemHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
+    <ion-list class="chat-session-list">
+      <ion-item *cdkVirtualFor="let item of chatSessions; trackBy: trackByFn" mode="md" lines="none" [detail]="false">
         <ion-img class="overflow-hidden" slot="start" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label>{{ item.title }}</ion-label>
 
         <ion-checkbox slot="end" mode="ios" [(ngModel)]="item.checked" (ionChange)="onChange(item)"
-                      [disabled]="!item.checked && disabled()">
+                      [disabled]="!item.checked && disabled">
         </ion-checkbox>
       </ion-item>
-    </ion-virtual-scroll>
-  </ion-list>
+    </ion-list>
+  </cdk-virtual-scroll-viewport>
 </ion-content>

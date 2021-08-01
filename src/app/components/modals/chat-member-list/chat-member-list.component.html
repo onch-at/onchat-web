@@ -15,11 +15,10 @@
 
   <app-empty *ngIf="list?.length === 0"></app-empty>
 
-  <ion-list class="chat-member-list">
-    <ion-virtual-scroll appVirtualScrollPatch [items]="list" [approxItemHeight]="itemHeight" [itemHeight]="getItemHeight"
-                        [trackBy]="trackByFn">
-      <ion-item *virtualItem="let item; let i = index;" mode="md" lines="none" [detail]="false" button class="ion-activatable"
-                (click)="onTap(item)">
+  <cdk-virtual-scroll-viewport [itemSize]="itemHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
+    <ion-list class="chat-member-list">
+      <ion-item *cdkVirtualFor="let item of list; trackBy: trackByFn" mode="md" lines="none" [detail]="false" button
+                class="ion-activatable" (click)="onTap(item)">
         <ion-img class="overflow-hidden" slot="start" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label class="dp-flex align-center">
@@ -28,6 +27,6 @@
           {{ item.nickname }}
         </ion-label>
       </ion-item>
-    </ion-virtual-scroll>
-  </ion-list>
+    </ion-list>
+  </cdk-virtual-scroll-viewport>
 </ion-content>

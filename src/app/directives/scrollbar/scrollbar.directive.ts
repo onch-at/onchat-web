@@ -9,7 +9,7 @@ import { CssUtil } from '../../utils/css.util';
  * https://github.com/ionic-team/ionic-framework/issues/17685
  */
 @Directive({
-  selector: '[appScrollbar]'
+  selector: '[appScrollbar], ion-content'
 })
 export class ScrollbarDirective implements AfterViewInit {
 

@@ -1,24 +1,21 @@
-<ion-content appScrollbar>
-  <app-empty *ngIf="globalData.groupChatrooms?.length === 0"></app-empty>
+<app-empty *ngIf="globalData.groupChatrooms?.length === 0"></app-empty>
 
-  <ng-container *ngIf="!globalData.groupChatrooms">
-    <app-skeleton-item *ngFor="let _ of 10 | fill"></app-skeleton-item>
-  </ng-container>
+<ng-container *ngIf="!globalData.groupChatrooms">
+  <app-skeleton-item *ngFor="let _ of 10 | fill"></app-skeleton-item>
+</ng-container>
 
-  <ion-virtual-scroll appVirtualScrollPatch [items]="globalData.groupChatrooms" [approxItemHeight]="itemHeight"
-                      [itemHeight]="getItemHeight" [trackBy]="trackByFn">
-    <ion-item-sliding mode="md" *virtualItem="let item; let i = index;">
-      <ion-item lines="none" [detail]="false" [routerLink]="['/chat', item.data.chatroomId]">
-        <ion-img slot="start" class="overflow-hidden" [src]="item.avatarThumbnail"></ion-img>
+<cdk-virtual-scroll-viewport [itemSize]="itemHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
+  <ion-item-sliding *cdkVirtualFor="let item of globalData.groupChatrooms; trackBy: trackByFn" mode="md">
+    <ion-item lines="none" [detail]="false" [routerLink]="['/chat', item.data.chatroomId]">
+      <ion-img slot="start" class="overflow-hidden" [src]="item.avatarThumbnail"></ion-img>
 
-        <ion-label class="item-content">
-          <h2 class="font-bold">{{ item.title }}</h2>
-          <p>[简介] {{ item.content || '暂无聊天室简介~' }}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option class="bg-danger">退出聊天室</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-virtual-scroll>
-</ion-content>
+      <ion-label class="item-content">
+        <h2 class="font-bold">{{ item.title }}</h2>
+        <p>[简介] {{ item.content || '暂无聊天室简介~' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item-options side="end">
+      <ion-item-option class="bg-danger">退出聊天室</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</cdk-virtual-scroll-viewport>

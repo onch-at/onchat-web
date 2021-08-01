@@ -83,6 +83,10 @@ aside {
   }
 }
 
+:host ::ng-deep .ion-page {
+  background: var(--color-white);
+}
+
 .router-outlet {
   margin-top: 5.25rem;
 }

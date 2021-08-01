@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
 import { SafeAny } from 'src/app/common/interface';
+import { WINDOW } from 'src/app/common/token';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
 import { ChatService } from 'src/app/services/apis/chat.service';
@@ -21,9 +22,13 @@ import { EntityUtil } from 'src/app/utils/entity.util';
 export class SessionPage {
   /** 虚拟列表项目高度 */
   itemHeight: number = CssUtil.rem2px(4.425);
-  msgType = MessageType;
-  chatSessionType = ChatSessionType;
-  getItemHeight = () => this.itemHeight;
+
+  get minBufferPx() { return this.window.innerHeight + this.window.innerHeight / 2 };
+  get maxBufferPx() { return this.window.innerHeight * 2; };
+
+  readonly msgType: typeof MessageType = MessageType;
+  readonly chatSessionType: typeof ChatSessionType = ChatSessionType;
+
   trackByFn = EntityUtil.trackBy;
 
   constructor(
@@ -31,7 +36,8 @@ export class SessionPage {
     private onChatService: OnChatService,
     private chatSessionService: ChatSessionService,
     private chatService: ChatService,
-    public globalData: GlobalData
+    @Inject(WINDOW) private window: Window,
+    public globalData: GlobalData,
   ) { }
 
   /**

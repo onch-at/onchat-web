@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ChatSessionCheckbox } from 'src/app/common/interface';
+import { WINDOW } from 'src/app/common/token';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { CssUtil } from 'src/app/utils/css.util';
@@ -30,13 +31,20 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
   list: ChatSessionCheckbox[];
   /** 虚拟列表项目高度 */
   itemHeight: number = CssUtil.rem2px(3.55);
-  getItemHeight = () => this.itemHeight;
+
+  get minBufferPx() { return this.window.innerHeight + this.window.innerHeight / 2 };
+  get maxBufferPx() { return this.window.innerHeight * 2; };
+  /** 已选会话列表 */
+  get checkedChatSessions() { return this.chatSessions.filter(o => o.checked); }
+  get disabled() { return this.checkedChatSessions.length >= this.limit; }
+
   trackByFn = EntityUtil.trackBy;
 
   constructor(
     public globalData: GlobalData,
     protected overlay: Overlay,
-    protected router: Router
+    protected router: Router,
+    @Inject(WINDOW) private window: Window,
   ) {
     super();
   }
@@ -62,7 +70,7 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
    */
   async submit() {
     const loading = await this.overlay.presentLoading();
-    this.handler(this.getCheckedChatSessions()).subscribe(() => {
+    this.handler(this.checkedChatSessions).subscribe(() => {
       this.overlay.dismissModal();
       loading.dismiss();
     });
@@ -72,30 +80,15 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
    * 是否可以提交
    */
   canSubmit() {
-    return !!this.getCheckedChatSessions().length;
+    return !!this.checkedChatSessions.length;
   }
 
   /**
    * 检测checkbox变更
    */
   onChange(item: ChatSessionCheckbox) {
-    if (this.getCheckedChatSessions().length > this.limit) {
+    if (this.checkedChatSessions.length > this.limit) {
       item.checked = false;
     }
   }
-
-  /**
-   * 获得已选会话列表
-   */
-  getCheckedChatSessions() {
-    return this.chatSessions.filter(o => o.checked);
-  }
-
-  /**
-   * 是否禁用checkbox
-   */
-  disabled() {
-    return this.getCheckedChatSessions().length >= this.limit;
-  }
-
 }

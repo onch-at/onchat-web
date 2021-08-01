@@ -1,3 +1,4 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +9,6 @@ import { SkeletonItemModule } from 'src/app/components/skeleton-item/skeleton-it
 import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
 import { RippleModule } from 'src/app/directives/ripple/ripple.module';
 import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
-import { VirtualScrollPatchModule } from 'src/app/modules/virtual-scroll-patch.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ChatroomComponent } from './contact/chatroom/chatroom.component';
 import { ContactPage } from './contact/contact.page';
@@ -28,7 +28,7 @@ import { SettingsPage } from './settings/settings.page';
     HomePageRoutingModule,
     SharedModule,
     RippleModule,
-    VirtualScrollPatchModule,
+    ScrollingModule,
     ActiveClassModule,
     EmptyModule,
     ScrollbarModule,
