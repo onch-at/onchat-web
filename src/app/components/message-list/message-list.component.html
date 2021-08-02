@@ -99,8 +99,8 @@
 <!-- 昵称部分 -->
 <ng-template #nickname let-userId="userId" let-nickname="nickname" let-role="role">
   <div class="nickname dp-flex align-center" *ngIf="userId !== globalData.user?.id && chatroomType === chatroomTypes.Group">
-    <ion-badge *ngIf="role === chatMemberRole.Host" mode="ios" class="host-badge">领袖</ion-badge>
-    <ion-badge *ngIf="role === chatMemberRole.Manage" mode="ios" class="manage-badge">助手</ion-badge>
+    <ion-badge *ngIf="role === chatMemberRole.Host" mode="ios" class="host-badge">{{ role | memberRole }}</ion-badge>
+    <ion-badge *ngIf="role === chatMemberRole.Manage" mode="ios" class="manage-badge">{{ role | memberRole }}</ion-badge>
     {{ nickname }}
   </div>
 </ng-template>

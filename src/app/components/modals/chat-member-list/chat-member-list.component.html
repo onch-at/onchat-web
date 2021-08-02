@@ -22,8 +22,12 @@
         <ion-img class="overflow-hidden" slot="start" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label class="dp-flex align-center">
-          <ion-badge *ngIf="item.role === chatMemberRole.Host" mode="ios" class="host-badge">领袖</ion-badge>
-          <ion-badge *ngIf="item.role === chatMemberRole.Manage" mode="ios" class="manage-badge">助手</ion-badge>
+          <ion-badge *ngIf="item.role === chatMemberRole.Host" mode="ios" class="host-badge">
+            {{ item.role | memberRole }}
+          </ion-badge>
+          <ion-badge *ngIf="item.role === chatMemberRole.Manage" mode="ios" class="manage-badge">
+            {{ item.role | memberRole }}
+          </ion-badge>
           {{ item.nickname }}
         </ion-label>
       </ion-item>
