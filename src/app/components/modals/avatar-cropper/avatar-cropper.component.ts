@@ -94,7 +94,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
       imageCropper.sourceImage?.nativeElement &&
       imageCropper.transformedImage
     ) {
-      const worker = new Worker('../../../workers/image-cropper.worker', { type: 'module' });
+      const worker = new Worker(new URL('../../../workers/image-cropper.worker', import.meta.url), { type: 'module' });
 
       // 解构出需要的属性/方法
       const {

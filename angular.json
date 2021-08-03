@@ -22,7 +22,6 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
             "assets": [
               {
                 "glob": "**/*",
@@ -47,7 +46,13 @@
               "src/styles/themes/original.scss"
             ],
             "scripts": [],
-            "webWorkerTsConfig": "tsconfig.worker.json"
+            "webWorkerTsConfig": "tsconfig.worker.json",
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -77,7 +82,8 @@
             "ci": {
               "progress": false
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

@@ -125,7 +125,7 @@ export class ImageService {
    * @param format 格式
    */
   drawInWebWorker(img: HTMLImageElement, quality: number, format: string) {
-    const worker = new Worker('../workers/image-compressor.worker', { type: 'module' });
+    const worker = new Worker(new URL('../workers/image-compressor.worker', import.meta.url), { type: 'module' });
 
     return new Observable<Blob>(observer => {
       const complete = () => {
