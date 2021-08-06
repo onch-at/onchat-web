@@ -141,7 +141,9 @@ export enum LocalStorageKey {
   /** 聊天会话列表缓存 */
   ChatSessions = 'chat_sessions',
   /** 聊天富文本草稿 */
-  ChatRichTextMap = 'chat_rich_text_map'
+  ChatRichTextMap = 'chat_rich_text_map',
+  /** 令牌夹 */
+  TokenFolder = 'token_folder',
 }
 
 /** 枚举心情 */

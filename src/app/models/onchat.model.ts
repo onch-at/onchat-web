@@ -8,6 +8,14 @@ export interface Result<T = null> {
   data: T;
 }
 
+/** 令牌夹 */
+export interface TokenFolder {
+  /** 访问令牌 */
+  access: string;
+  /** 续签令牌 */
+  refresh: string;
+}
+
 /** 唯一基础实体类 */
 export interface IEntity {
   id: number;

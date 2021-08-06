@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
+import { ResultCode } from 'src/app/common/enum';
 import { AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { ChangePassword, Login, Register, ResetPassword, UserInfo } from 'src/app/models/form.model';
-import { ChatSession, Result, User } from 'src/app/models/onchat.model';
+import { ChatSession, Result, TokenFolder, User } from 'src/app/models/onchat.model';
 import { environment } from 'src/environments/environment';
 import { CacheService } from '../cache.service';
+import { TokenService } from '../token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +17,7 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
+    private tokenService: TokenService,
     private cacheService: CacheService
   ) { }
 
@@ -21,15 +25,21 @@ export class UserService {
    * 登录
    * @param o
    */
-  login(o: Login): Observable<Result<User>> {
-    return this.http.post<Result<User>>(environment.userUrl + 'login', o);
+  login(o: Login): Observable<Result<User & TokenFolder>> {
+    return this.http.post<Result<User & TokenFolder>>(environment.userUrl + 'login', o).pipe(
+      tap(({ code, data }: Result<User & TokenFolder>) => (
+        code === ResultCode.Success && this.tokenService.store(data.access, data.refresh)
+      ))
+    );
   }
 
   /**
    * 登出
    */
   logout(): Observable<null> {
-    return this.http.get<null>(environment.userUrl + 'logout');
+    return this.http.get<null>(environment.userUrl + 'logout').pipe(
+      finalize(() => this.tokenService.clear())
+    );
   }
 
   /**
@@ -44,8 +54,12 @@ export class UserService {
    * 注册
    * @param o
    */
-  register(o: Register): Observable<Result<User>> {
-    return this.http.post<Result<User>>(environment.userUrl + 'register', o);
+  register(o: Register): Observable<Result<User & TokenFolder>> {
+    return this.http.post<Result<User & TokenFolder>>(environment.userUrl + 'register', o).pipe(
+      tap(({ code, data }: Result<User & TokenFolder>) => (
+        code === ResultCode.Success && this.tokenService.store(data.access, data.refresh)
+      ))
+    );
   }
 
   /**
