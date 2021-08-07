@@ -19,6 +19,7 @@ import { NotificationComponent } from './components/notification/notification.co
 import { ActiveClassModule } from './directives/active-class/active-class.module';
 import { GlobalErrorHandler } from './handlers/global-error.handler';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { BaseInterceptor } from './interceptors/base.interceptor';
 import { CacheInterceptor } from './interceptors/cache.interceptor';
 import { SharedModule } from './modules/shared.module';
 
@@ -65,6 +66,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
     { provide: LOCALE_ID, useValue: 'zh-Hans' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: BaseInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ],
