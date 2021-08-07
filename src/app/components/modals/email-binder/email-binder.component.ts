@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { EMAIL_MAX_LENGTH } from 'src/app/common/constant';
-import { ResultCode } from 'src/app/common/enum';
 import { captchaFeedback, emailFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
@@ -66,8 +66,8 @@ export class EmailBinderComponent extends ModalComponent {
     const ctrl = this.form.get('email');
     if (ctrl.errors || this.countdownTimer) { return; }
 
-    this.systemService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result) => {
-      this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
+    this.systemService.sendEmailCaptcha(ctrl.value).subscribe(() => {
+      this.overlay.presentToast('验证码发送至邮箱！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {
@@ -85,15 +85,14 @@ export class EmailBinderComponent extends ModalComponent {
     this.loading = true;
 
     const { email, captcha } = this.form.value;
-    this.userService.bindEmail(email, captcha).subscribe(({ code, data, msg }: Result<string>) => {
-      this.loading = false;
-      this.overlay.presentToast(msg || '成功绑定电子邮箱！', code === ResultCode.Success ? 1000 : 2000);
+    this.userService.bindEmail(email, captcha).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe(({ data }: Result<string>) => {
+      this.overlay.presentToast('成功绑定电子邮箱！', 1000);
 
-      if (code === ResultCode.Success) {
-        this.globalData.user.email = data;
-        return this.dismiss();
-      }
-
+      this.globalData.user.email = data;
+      this.dismiss();
+    }, () => {
       this.form.get('captcha').setValue('');
     });
   }

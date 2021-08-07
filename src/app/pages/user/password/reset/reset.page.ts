@@ -3,12 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
-import { ResultCode } from 'src/app/common/enum';
 import { captchaFeedback, passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { ResetPassword } from 'src/app/models/form.model';
-import { Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -88,8 +86,10 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
   sendCaptcha() {
     if (this.countdownTimer) { return; }
 
-    this.userService.sendEmailCaptchaByUsername(this.form.value.username).subscribe(({ code }: Result<boolean>) => {
-      this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
+    this.userService.sendEmailCaptchaByUsername(this.form.value.username).subscribe(() => {
+      this.overlay.presentToast('验证码发送至邮箱！', 1000);
+    }, () => {
+      this.overlay.presentToast('验证码发送失败！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {
@@ -106,12 +106,7 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
 
     const { username, password, captcha } = this.form.value;
 
-    this.userService.resetPassword(new ResetPassword(username, password, captcha)).subscribe(({ code, msg }: Result) => {
-      if (code !== ResultCode.Success) {
-        this.globalData.navigating = false;
-        return this.overlay.presentToast('操作失败，原因：' + msg, 2000);
-      }
-
+    this.userService.resetPassword(new ResetPassword(username, password, captcha)).subscribe(() => {
       this.overlay.presentToast('密码重置成功，请重新登录！', 1000);
 
       setTimeout(() => {

@@ -1,11 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
-import { filter } from 'rxjs/operators';
-import { ChatSessionType, MessageType, ResultCode } from 'src/app/common/enum';
+import { ChatSessionType, MessageType } from 'src/app/common/enum';
 import { SafeAny } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
-import { ChatSession, Result } from 'src/app/models/onchat.model';
+import { ChatSession } from 'src/app/models/onchat.model';
 import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
 import { ChatService } from 'src/app/services/apis/chat.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -59,9 +58,7 @@ export class SessionPage {
    * @param index
    */
   hideChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
-    this.chatSessionService.hide(item.id).pipe(
-      filter(({ code }: Result) => code === ResultCode.Success)
-    ).subscribe(() => {
+    this.chatSessionService.hide(item.id).subscribe(() => {
       this.globalData.chatSessions = this.globalData.chatSessions.filter(o => o.id !== item.id);
       ionItemSliding.close();
     });
@@ -73,9 +70,7 @@ export class SessionPage {
    * @param i
    */
   doStickyChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
-    (item.sticky ? this.chatSessionService.unsticky(item.id) : this.chatSessionService.sticky(item.id)).pipe(
-      filter(({ code }: Result) => code === ResultCode.Success)
-    ).subscribe(() => {
+    (item.sticky ? this.chatSessionService.unsticky(item.id) : this.chatSessionService.sticky(item.id)).subscribe(() => {
       item.sticky = !item.sticky;
       this.globalData.sortChatSessions();
       ionItemSliding.close();
@@ -89,17 +84,13 @@ export class SessionPage {
    */
   doReadChatSession(item: ChatSession, ionItemSliding: IonItemSliding) {
     if (!item.unread) {
-      return this.chatSessionService.unread(item.id).pipe(
-        filter(({ code }: Result) => code === ResultCode.Success)
-      ).subscribe(() => {
+      return this.chatSessionService.unread(item.id).subscribe(() => {
         ionItemSliding.close();
         item.unread = 1;
       });
     }
 
-    (item.type === ChatSessionType.ChatroomNotice ? this.chatService.readedRequests() : this.chatSessionService.readed(item.id)).pipe(
-      filter(({ code }: Result) => code === ResultCode.Success)
-    ).subscribe(() => {
+    (item.type === ChatSessionType.ChatroomNotice ? this.chatService.readedRequests() : this.chatSessionService.readed(item.id)).subscribe(() => {
       ionItemSliding.close();
       item.unread = 0;
 

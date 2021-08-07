@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
-import { ResultCode } from 'src/app/common/enum';
 import { passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
@@ -75,19 +74,16 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
 
     const { username, password } = this.form.value;
 
-    this.userService.login(new Login(username, password)).subscribe(({ code, data, msg }: Result<User>) => {
-      if (code !== ResultCode.Success) {
-        this.globalData.navigating = false;
-        return this.overlay.presentToast('登录失败，原因：' + msg, 2000);
-      }
-
+    this.userService.login(new Login(username, password)).subscribe(({ data }: Result<User>) => {
       this.overlay.presentToast('登录成功！即将跳转…', 1000);
 
       this.globalData.user = data;
       this.socketService.connect();
 
       this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
-    })
+    }, () => {
+      this.globalData.navigating = false;
+    });
   }
 
   /**

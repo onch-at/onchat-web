@@ -124,9 +124,7 @@ export class AppComponent implements OnInit {
 
       // 更新好友列表
       // 如果不为空才更新，因为为空时，进入好友列表页会自动查询
-      this.globalData.privateChatrooms && this.userService.getPrivateChatrooms().pipe(
-        filter(({ code }: Result) => code === ResultCode.Success)
-      ).subscribe(({ data }: Result<ChatSession[]>) => {
+      this.globalData.privateChatrooms && this.userService.getPrivateChatrooms().subscribe(({ data }: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = data;
       });
     });

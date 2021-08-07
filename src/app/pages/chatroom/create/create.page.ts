@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/common/constant';
 import { ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox, SafeAny, ValidationFeedback } from 'src/app/common/interface';
@@ -84,9 +84,7 @@ export class CreatePage implements OnInit, OnDestroy {
     if (this.globalData.privateChatrooms) {
       setOriginPrivateChatrooms(this.globalData.privateChatrooms);
     } else {
-      this.userService.getPrivateChatrooms().pipe(
-        filter(({ code }: Result) => code === ResultCode.Success)
-      ).subscribe(({ data }: Result<ChatSession[]>) => {
+      this.userService.getPrivateChatrooms().subscribe(({ data }: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = data;
         setOriginPrivateChatrooms(data);
       });

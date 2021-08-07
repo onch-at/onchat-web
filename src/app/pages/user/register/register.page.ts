@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
 import { EMAIL_MAX_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constant';
-import { ResultCode } from 'src/app/common/enum';
 import { captchaFeedback, emailFeedback, passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
@@ -114,18 +113,14 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
     this.globalData.navigating = true;
 
     const { username, password, email, captcha } = this.form.value;
-    this.userService.register(new Register(username, password, email, captcha)).subscribe(({ code, data, msg }: Result<User>) => {
-
-      if (code !== ResultCode.Success) {
-        this.globalData.navigating = false;
-        return this.overlay.presentToast('注册失败，原因：' + msg, 2000);
-      }
-
+    this.userService.register(new Register(username, password, email, captcha)).subscribe(({ data }: Result<User>) => {
       this.overlay.presentToast('注册成功！即将跳转…', 1000);
       this.globalData.user = data;
       this.socketService.connect();
 
       this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
+    }, () => {
+      this.globalData.navigating = false;
     });
   }
 
@@ -134,7 +129,9 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
     if (ctrl.errors || this.countdownTimer) { return; }
 
     this.systemService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result<boolean>) => {
-      this.overlay.presentToast(code === ResultCode.Success ? '验证码发送至邮箱！' : '验证码发送失败！');
+      this.overlay.presentToast('验证码发送至邮箱！', 1000);
+    }, () => {
+      this.overlay.presentToast('验证码发送失败！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {

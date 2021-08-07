@@ -20,7 +20,7 @@ import { ActiveClassModule } from './directives/active-class/active-class.module
 import { GlobalErrorHandler } from './handlers/global-error.handler';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { CacheInterceptor } from './interceptors/cache.interceptor';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from './modules/shared.module';
 
 registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
 

@@ -1,12 +1,14 @@
 export enum ResultCode {
   /** 访问频率过高 */
-  ErrorHighFrequency = -4,
+  AccessOverclock = -5,
   /** 权限不足 */
-  ErrorNoPermission = -3,
+  NoPermission = -4,
+  /** 未认证 */
+  Unauthorized = -3,
   /** 参数错误 */
-  ErrorParam = -2,
+  ParamError = -2,
   /** 未知错误 */
-  ErrorUnknown = -1,
+  UnknownError = -1,
   /** 成功 */
   Success = 0,
 }

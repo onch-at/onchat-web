@@ -9,7 +9,7 @@ import { SkeletonItemModule } from 'src/app/components/skeleton-item/skeleton-it
 import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
 import { RippleModule } from 'src/app/directives/ripple/ripple.module';
 import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from 'src/app/modules/shared.module';
 import { ChatroomComponent } from './contact/chatroom/chatroom.component';
 import { ContactPage } from './contact/contact.page';
 import { FriendComponent } from './contact/friend/friend.component';

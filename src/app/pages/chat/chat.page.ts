@@ -3,7 +3,7 @@ import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, NavController, Platform, ViewWillEnter } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, filter, finalize, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { SafeAny } from 'src/app/common/interface';
@@ -86,9 +86,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
       this.chatroomName = title;
       this.chatroomType = data.chatroomType;
     } else {
-      this.chatroomService.getChatroom(this.chatroomId).pipe(
-        filter(({ code }: Result) => code === ResultCode.Success)
-      ).subscribe(({ data }: Result<Chatroom>) => {
+      this.chatroomService.getChatroom(this.chatroomId).subscribe(({ data }: Result<Chatroom>) => {
         const { name, type } = data
         this.chatroomName = name;
         this.chatroomType = type;
@@ -197,14 +195,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     if (this.ended) { return complete?.(); }
 
     this.chatRecordService.getChatRecords(this.msgId, this.chatroomId).pipe(
-      filter(({ code }: Result) => {
-        if (code === ResultCode.ErrorNoPermission) {
-          this.overlay.presentToast('你还没有权限进入此聊天室！');
-          this.navCtrl.back();
-        }
-        complete?.();
-        return code === ResultCode.Success;
-      })
+      finalize(() => complete?.())
     ).subscribe(({ data }: Result<Message[]>) => {
       // 按照ID排序
       // result.data.sort((a: Message, b: Message) => {
@@ -227,6 +218,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
       if (data.length) {
         this.msgId = this.msgList[0].id;
       }
+    }, ({ error }: { error: Result }) => {
+      error.code === ResultCode.NoPermission && this.navCtrl.back();
     });
   }
 

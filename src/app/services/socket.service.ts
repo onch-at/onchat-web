@@ -167,7 +167,7 @@ export class SocketService {
    */
   on(eventName: string | SocketEvent): Observable<unknown> {
     return this.socket.fromEvent(eventName).pipe(tap((data: SafeAny) => {
-      data?.code === ResultCode.ErrorHighFrequency && this.overlay.presentToast('操作失败，原因：请求频率过高');
+      data?.code === ResultCode.AccessOverclock && this.overlay.presentToast('操作失败，原因：请求频率过高');
     }));
   }
 

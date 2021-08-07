@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet, NavController } from '@ionic/angular';
 import { of, Subject } from 'rxjs';
-import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CHATROOM_NAME_MAX_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT, NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { ChatSessionCheckbox, SafeAny } from 'src/app/common/interface';
@@ -217,7 +217,6 @@ export class HomePage implements OnInit, OnDestroy {
   inviteJoinChatroom() {
     // 等待加载出好友会话后的一个可观察对象
     const observable = this.globalData.privateChatrooms ? of(null) : this.userService.getPrivateChatrooms().pipe(
-      filter(({ code }: Result) => code === ResultCode.Success),
       tap(({ data }: Result<ChatSession[]>) => {
         this.globalData.privateChatrooms = data;
       })

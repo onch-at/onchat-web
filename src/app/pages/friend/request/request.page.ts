@@ -45,21 +45,19 @@ export class RequestPage implements OnInit, OnDestroy {
     this.route.data.subscribe(({ user, request }: { user: User, request: Result<FriendRequest> }) => {
       this.user = user;
 
-      const { code, data } = request;
+      const { data } = request;
       // 如果之前有申请过，就把之前填过的信息补全上去
-      if (code === ResultCode.Success) {
-        this.targetAlias = data.targetAlias;
-        this.requestReason = data.requestReason;
-        this.rejectReason = data.rejectReason;
-        this.status = data.status;
+      this.targetAlias = data.targetAlias;
+      this.requestReason = data.requestReason;
+      this.rejectReason = data.rejectReason;
+      this.status = data.status;
 
-        // 如果未读，则设置为已读
-        if (!data.requesterReaded) {
-          this.friendService.readedSendRequest(data.id).subscribe();
-          const request = this.globalData.sendFriendRequests.find(o => o.id === data.id);
-          if (request) {
-            request.requesterReaded = true;
-          }
+      // 如果未读，则设置为已读
+      if (!data.requesterReaded) {
+        this.friendService.readedSendRequest(data.id).subscribe();
+        const request = this.globalData.sendFriendRequests.find(o => o.id === data.id);
+        if (request) {
+          request.requesterReaded = true;
         }
       }
     });

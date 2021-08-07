@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
-import { ResultCode } from 'src/app/common/enum';
 import { AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { ChangePassword, Login, Register, ResetPassword, UserInfo } from 'src/app/models/form.model';
 import { ChatSession, Result, TokenFolder, User } from 'src/app/models/onchat.model';
@@ -27,8 +26,8 @@ export class UserService {
    */
   login(o: Login): Observable<Result<User & TokenFolder>> {
     return this.http.post<Result<User & TokenFolder>>(environment.userUrl + 'login', o).pipe(
-      tap(({ code, data }: Result<User & TokenFolder>) => (
-        code === ResultCode.Success && this.tokenService.store(data.access, data.refresh)
+      tap(({ data }: Result<User & TokenFolder>) => (
+        this.tokenService.store(data.access, data.refresh)
       ))
     );
   }
@@ -56,8 +55,8 @@ export class UserService {
    */
   register(o: Register): Observable<Result<User & TokenFolder>> {
     return this.http.post<Result<User & TokenFolder>>(environment.userUrl + 'register', o).pipe(
-      tap(({ code, data }: Result<User & TokenFolder>) => (
-        code === ResultCode.Success && this.tokenService.store(data.access, data.refresh)
+      tap(({ data }: Result<User & TokenFolder>) => (
+        this.tokenService.store(data.access, data.refresh)
       ))
     );
   }

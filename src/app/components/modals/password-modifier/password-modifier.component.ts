@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/common/constant';
-import { ResultCode } from 'src/app/common/enum';
 import { passwordFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { ChangePassword } from 'src/app/models/form.model';
-import { Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -72,16 +71,15 @@ export class PasswordModifierComponent extends ModalComponent {
 
     const { oldPassword, newPassword } = this.form.value;
 
-    this.userService.changePassword(new ChangePassword(oldPassword, newPassword)).subscribe(({ code, msg }: Result) => {
-      this.loading = false;
-      this.overlay.presentToast(msg ? '操作失败，原因：' + msg : '成功修改密码，请重新登录！', code === ResultCode.Success ? 1000 : 2000);
+    this.userService.changePassword(new ChangePassword(oldPassword, newPassword)).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe(() => {
+      this.overlay.presentToast('成功修改密码，请重新登录！', 1000);
 
-      if (code === ResultCode.Success) {
-        this.router.navigateByUrl('/user/login');
-        this.globalData.reset();
-        this.socketService.disconnect();
-        this.dismiss();
-      }
+      this.router.navigateByUrl('/user/login');
+      this.globalData.reset();
+      this.socketService.disconnect();
+      this.dismiss();
     });
   }
 

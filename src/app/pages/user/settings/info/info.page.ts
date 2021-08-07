@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
-import { Gender, Mood, ResultCode } from 'src/app/common/enum';
+import { Gender, Mood } from 'src/app/common/enum';
 import { ValidationFeedback } from 'src/app/common/interface';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { UserInfo } from 'src/app/models/form.model';
@@ -142,13 +142,9 @@ export class InfoPage implements OnInit, OnDestroy {
     this.userInfo.birthday = Date.parse(birthday);
     this.userInfo.gender = +gender;
 
-    this.userService.saveUserInfo(this.userInfo).subscribe(({ code, data }: Result<UserInfo>) => {
-      this.loading = false;
-
-      if (code !== ResultCode.Success) {
-        return this.overlay.presentToast('用户信息修改失败！', 2000);
-      }
-
+    this.userService.saveUserInfo(this.userInfo).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe(({ data }: Result<UserInfo>) => {
       const { user } = this.globalData;
 
       this.globalData.user = { ...user, ...data };
