@@ -5,10 +5,10 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EmailBinderComponent } from '../components/modals/email-binder/email-binder.component';
 import { ChatRequest, ChatSession, FriendRequest, Result } from '../models/onchat.model';
+import { AuthService } from './apis/auth.service';
 import { ChatSessionService } from './apis/chat-session.service';
 import { ChatService } from './apis/chat.service';
 import { FriendService } from './apis/friend.service';
-import { UserService } from './apis/user.service';
 import { GlobalData } from './global-data.service';
 import { Overlay } from './overlay.service';
 import { SocketService } from './socket.service';
@@ -22,7 +22,7 @@ export class OnChatService {
     private router: Router,
     private overlay: Overlay,
     private globalData: GlobalData,
-    private userService: UserService,
+    private authService: AuthService,
     private chatService: ChatService,
     private chatSessionService: ChatSessionService,
     private friendService: FriendService,
@@ -49,10 +49,10 @@ export class OnChatService {
       confirmHandler: () => this.overlay.presentModal({
         component: EmailBinderComponent
       }),
-      cancelHandler: () => this.userService.logout().subscribe(() => {
-        this.router.navigateByUrl('/user/login');
+      cancelHandler: () => this.authService.logout().subscribe(() => {
         this.globalData.reset();
         this.socketService.disconnect();
+        this.router.navigateByUrl('/user/login');
       })
     });
   }

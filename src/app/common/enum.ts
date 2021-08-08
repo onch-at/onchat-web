@@ -1,9 +1,11 @@
 export enum ResultCode {
   /** 访问频率过高 */
-  AccessOverclock = -5,
+  AccessOverclock = -6,
   /** 权限不足 */
-  NoPermission = -4,
-  /** 未认证 */
+  NoPermission = -5,
+  /** 授权过期 */
+  AuthExpires = -4,
+  /** 未授权 */
   Unauthorized = -3,
   /** 参数错误 */
   ParamError = -2,

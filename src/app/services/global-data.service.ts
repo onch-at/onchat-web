@@ -75,7 +75,11 @@ export class GlobalData {
   constructor(
     private localStorage: LocalStorage,
     @Inject(NAVIGATOR) private navigator: Navigator
-  ) { }
+  ) {
+    // 首先加载出缓存数据，保证用户体验
+    const data = this.localStorage.get<ChatSession[]>(LocalStorageKey.ChatSessions, null);
+    this.chatSessions = data;
+  }
 
   /** 计算未读消息总数 */
   unreadMsgCount = () => {

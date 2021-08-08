@@ -13,7 +13,6 @@ import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
-import { OnChatService } from '../../../services/onchat.service';
 
 @Component({
   selector: 'app-login',
@@ -50,7 +49,6 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
   constructor(
     public globalData: GlobalData,
     private router: Router,
-    private onChatService: OnChatService,
     private userService: UserService,
     private overlay: Overlay,
     private socketService: SocketService,

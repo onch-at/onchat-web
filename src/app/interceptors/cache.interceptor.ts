@@ -4,9 +4,7 @@ import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CacheService } from '../services/cache.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CacheInterceptor implements HttpInterceptor {
   constructor(private cacheService: CacheService) { }
 

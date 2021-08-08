@@ -1,17 +1,16 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { filter, mergeMap } from 'rxjs/operators';
-import { AudioName, ChatSessionType, FriendRequestStatus, LocalStorageKey, MessageType, ResultCode, SocketEvent } from './common/enum';
+import { filter } from 'rxjs/operators';
+import { AudioName, ChatSessionType, FriendRequestStatus, MessageType, ResultCode, SocketEvent } from './common/enum';
 import { RevokeMessageTipsMessage } from './models/msg.model';
-import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
+import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result } from './models/onchat.model';
 import { MessageDescPipe } from './pipes/message-desc.pipe';
 import { UserService } from './services/apis/user.service';
 import { AppService } from './services/app.service';
 import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
 import { GlobalData } from './services/global-data.service';
-import { LocalStorage } from './services/local-storage.service';
 import { OnChatService } from './services/onchat.service';
 import { Overlay } from './services/overlay.service';
 import { SocketService } from './services/socket.service';
@@ -31,7 +30,6 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private appService: AppService,
     private cacheService: CacheService,
-    private localStorage: LocalStorage,
     private socketService: SocketService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
@@ -39,18 +37,8 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // 首先加载出缓存数据，保证用户体验
-    const data = this.localStorage.get<ChatSession[]>(LocalStorageKey.ChatSessions, null);
-    if (data) {
-      this.globalData.chatSessions = data;
-    }
-
     // 连接打通时
-    this.socketService.on(SocketEvent.Connect).pipe(
-      mergeMap(() => this.userService.checkLogin())
-    ).subscribe(({ data }: Result<false | User>) => {
-      this.globalData.user = data || null;
-
+    this.socketService.on(SocketEvent.Connect).subscribe(() => {
       this.socketService.init();
       this.onChatService.init();
     });

@@ -16,6 +16,27 @@ export interface TokenFolder {
   refresh: string;
 }
 
+export interface TokenPayload {
+  /** Issuer 签发者 */
+  iss: string;
+  /** Audience 接收者 */
+  aud: string;
+  /** Expire 过期时间 */
+  exp: number;
+  /** Issued At 签发时间 */
+  iat: number;
+  /** JWT ID */
+  jti: string;
+  /** Not Before 开始时间 */
+  nbf: number;
+  /** Subject 拥有者（用户ID） */
+  sub: number;
+  /** 存活时间 */
+  ttl: number;
+  /** 用户数据 */
+  usr?: { username: string };
+}
+
 /** 唯一基础实体类 */
 export interface IEntity {
   id: number;

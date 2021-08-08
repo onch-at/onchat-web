@@ -1,32 +1,43 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enum';
-import { TokenFolder } from '../models/onchat.model';
+import { TokenFolder, TokenPayload } from '../models/onchat.model';
 import { LocalStorage } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
+  folder: TokenFolder;
 
-  constructor(private localStorage: LocalStorage) { }
+  constructor(private localStorage: LocalStorage) {
+    this.folder = this.localStorage.get<TokenFolder>(LocalStorageKey.TokenFolder, {
+      access: null,
+      refresh: null
+    });
+  }
 
   /**
    * 存储令牌
    * @param access
    * @param refresh
    */
-  store(access: string, refresh: string) {
-    this.localStorage.set<TokenFolder>(LocalStorageKey.TokenFolder, { access, refresh });
+  store(access: string, refresh?: string) {
+    this.folder.access = access;
+
+    if (refresh) {
+      this.folder.refresh = refresh;
+    }
+
+    this.localStorage.set<TokenFolder>(LocalStorageKey.TokenFolder, this.folder);
+  }
+
+  parse(token: string): TokenPayload {
+    return JSON.parse(token.split('.')[1]) as TokenPayload;
   }
 
   clear() {
+    this.folder.access = null;
+    this.folder.refresh = null;
     this.localStorage.remove(LocalStorageKey.TokenFolder);
-  }
-
-  get(): TokenFolder {
-    return this.localStorage.get<TokenFolder>(LocalStorageKey.TokenFolder, {
-      access: null,
-      refresh: null
-    });
   }
 }

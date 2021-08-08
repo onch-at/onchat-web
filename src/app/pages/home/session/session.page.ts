@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
+import { finalize } from 'rxjs/operators';
 import { ChatSessionType, MessageType } from 'src/app/common/enum';
 import { SafeAny } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
@@ -44,9 +45,9 @@ export class SessionPage {
    * @param event
    */
   refresh(event: SafeAny) {
-    this.onChatService.initChatSession().subscribe(() => {
-      event.target.complete();
-    });
+    this.onChatService.initChatSession().pipe(
+      finalize(() => event.target.complete())
+    ).subscribe();
   }
 
   canShowTime(date: number) {

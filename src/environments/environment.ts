@@ -6,6 +6,7 @@ export const environment = {
   production: false,
 
   indexUrl: '/onchat/index/',
+  authUrl: '/onchat/auth/',
   userUrl: '/onchat/user/',
   chatUrl: '/onchat/chat/',
   chatroomUrl: '/onchat/chatroom/',

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { ChangePassword, Login, Register, ResetPassword, UserInfo } from 'src/app/models/form.model';
 import { ChatSession, Result, TokenFolder, User } from 'src/app/models/onchat.model';
@@ -30,23 +30,6 @@ export class UserService {
         this.tokenService.store(data.access, data.refresh)
       ))
     );
-  }
-
-  /**
-   * 登出
-   */
-  logout(): Observable<null> {
-    return this.http.get<null>(environment.userUrl + 'logout').pipe(
-      finalize(() => this.tokenService.clear())
-    );
-  }
-
-  /**
-   * 检测是否已经登录
-   * 成功登录,则返回User；否则返回false
-   */
-  checkLogin(): Observable<Result<false | User>> {
-    return this.http.get<Result<false | User>>(environment.userUrl + 'checklogin');
   }
 
   /**
