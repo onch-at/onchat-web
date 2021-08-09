@@ -6,6 +6,7 @@ import { ResultCode, SocketEvent } from '../common/enum';
 import { SafeAny } from '../common/interface';
 import { Message, Result } from '../models/onchat.model';
 import { Overlay } from './overlay.service';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class SocketService {
 
   constructor(
     private socket: Socket,
-    private overlay: Overlay
+    private overlay: Overlay,
+    private tokenService: TokenService,
   ) { }
 
   onInit(): Observable<void> {
@@ -172,6 +174,10 @@ export class SocketService {
   }
 
   connect() {
+    this.socket.ioSocket.io.opts.query = {
+      token: this.tokenService.folder.access
+    };
+
     return this.socket.connect();
   }
 

@@ -1,8 +1,9 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, filter, switchMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, finalize, share, switchMap, tap } from 'rxjs/operators';
+import { ResultCode } from '../common/enum';
 import { Result } from '../models/onchat.model';
 import { AuthService } from '../services/apis/auth.service';
 import { GlobalData } from '../services/global-data.service';
@@ -11,9 +12,7 @@ import { TokenService } from '../services/token.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  /** 刷新令牌中 */
-  private refreshing: boolean = false;
-  private refresher: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  private refresher: Observable<Result<string>>;
 
   constructor(
     private tokenService: TokenService,
@@ -35,7 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) { // 401 Unauthorized
-          if (this.refreshing) {
+          if (this.refresher) {
             return this.waitRefresh(request, next);
           }
 
@@ -57,17 +56,17 @@ export class AuthInterceptor implements HttpInterceptor {
    * @param token 续签令牌
    */
   private refreshToken(token: string) {
-    this.refreshing = true;
-    this.refresher.next(null);
-
-    this.authService.refresh(token).subscribe(({ data }: Result<string>) => {
-      this.refresher.next(data);
-      this.tokenService.store(data);
-    }, () => {
-      this.redirect();
-    }, () => {
-      this.refreshing = false;
-    });
+    this.refresher = this.authService.refresh(token).pipe(
+      share(),
+      tap(({ code, data }: Result<string>) => {
+        code === ResultCode.Success ? this.tokenService.store(data) : this.redirect();
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.redirect();
+        return throwError(error);
+      }),
+      finalize(() => this.refresher = null)
+    );
   }
 
   /**
@@ -77,10 +76,9 @@ export class AuthInterceptor implements HttpInterceptor {
    */
   private waitRefresh(request: HttpRequest<unknown>, next: HttpHandler) {
     return this.refresher.pipe(
-      filter(o => o !== null),
-      switchMap(o => {
+      switchMap(({ data }: Result<string>) => {
         request = request.clone({
-          headers: request.headers.set('Authorization', o)
+          headers: request.headers.set('Authorization', data)
         });
 
         return next.handle(request)
