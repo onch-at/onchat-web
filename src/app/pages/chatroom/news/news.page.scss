@@ -29,7 +29,6 @@ ion-header {
 :host ::ng-deep {
     ion-item {
         position: relative;
-        touch-action: auto !important;
         --padding-start: 1rem;
         --padding-end: 0;
         --padding-top: 0.25rem;

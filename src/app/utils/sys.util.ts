@@ -33,10 +33,6 @@ export class SysUtil {
         observer.error(event);
         complete();
       };
-
-      input.oncancel = () => {
-        complete();
-      };
     });
   }
 

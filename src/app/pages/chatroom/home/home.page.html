@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <ion-item (click)="presentChatMemberList()" detail lines="none" mode="md" class="pointer">
+  <ion-item detail lines="none" mode="md" class="pointer" (click)="presentChatMemberList()">
     <ion-label>聊天室成员</ion-label>
   </ion-item>
 
@@ -59,7 +59,7 @@
   </div>
 
   <ion-item-group *ngIf="isMember">
-    <ion-item *ngIf="isManager || isHost" (click)="changeChatroomName()" detail lines="none" button mode="md">
+    <ion-item *ngIf="isManager || isHost" detail lines="none" button mode="md" (click)="changeChatroomName()">
       <ion-label>聊天室名称</ion-label>
       <div class="value" slot="end">{{ chatroom.name }}</div>
     </ion-item>

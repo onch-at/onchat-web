@@ -48,6 +48,28 @@ export class GlobalData {
 
   get groupChatrooms(): ChatSession[] { return this._groupChatrooms; }
 
+  /** 计算未读消息总数 */
+  get unreadMessageCount(): number {
+    this.totalUnreadChatRequestCount();
+
+    const count = this.chatSessions?.reduce((count, o) => (
+      count + (o.unread || 0)
+    ), 0);
+
+    (this.navigator as any).setAppBadge?.(count);
+
+    return count;
+  }
+
+  /** 未读的好友请求 */
+  get unreadFriendRequestCount(): number {
+    return this.receiveFriendRequests?.reduce((count, o) => (
+      o.targetReaded ? count : count + 1
+    ), 0) + this.sendFriendRequests?.reduce((count, o) => (
+      o.requesterReaded ? count : count + 1
+    ), 0);
+  }
+
   /** 当前用户 */
   user: User;
   /** 记录当前所在的聊天室ID */
@@ -77,29 +99,8 @@ export class GlobalData {
     @Inject(NAVIGATOR) private navigator: Navigator
   ) {
     // 首先加载出缓存数据，保证用户体验
-    const data = this.localStorage.get<ChatSession[]>(LocalStorageKey.ChatSessions, null);
-    this.chatSessions = data;
+    this.chatSessions = this.localStorage.get<ChatSession[]>(LocalStorageKey.ChatSessions, null);
   }
-
-  /** 计算未读消息总数 */
-  unreadMsgCount = () => {
-    this.totalUnreadChatRequestCount();
-
-    const count = this.chatSessions?.reduce((count, o) => (
-      count + (o.unread || 0)
-    ), 0);
-
-    (this.navigator as any).setAppBadge?.(count);
-
-    return count;
-  }
-
-  /** 未读的好友请求 */
-  unreadFriendRequestCount = () => this.receiveFriendRequests?.reduce((count, o) => (
-    o.targetReaded ? count : count + 1
-  ), 0) + this.sendFriendRequests?.reduce((count, o) => (
-    o.requesterReaded ? count : count + 1
-  ), 0);
 
   reset() {
     this.user = null;

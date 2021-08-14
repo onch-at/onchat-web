@@ -20,8 +20,8 @@
 				</ion-item-option>
 			</ion-item-options>
 
-			<ion-item [ngSwitch]="item.type" class="chat-session-item" [class.sticky]="item.sticky" lines="none" [detail]="false"
-								[button]="true" (tap)="onTap(item)">
+			<ion-item [ngSwitch]="item.type" class="chat-session-item" [class.chat-session-item-sticky]="item.sticky" lines="none"
+								[detail]="false" [button]="true" (click)="onTap(item)">
 
 				<!-- 聊天室类型 -->
 				<ng-container *ngSwitchCase="chatSessionType.Chatroom">

@@ -11,12 +11,12 @@
 
   <main>
     <ion-item-group>
-      <ion-item detail lines="none" button mode="md" (tap)="bindEmail()">
+      <ion-item detail lines="none" button mode="md" (click)="bindEmail()">
         <ion-icon name="mail" slot="start"></ion-icon>
         <ion-label>电子邮箱</ion-label>
         <div class="value">{{ globalData.user?.email || '立即绑定' }}</div>
       </ion-item>
-      <ion-item detail lines="none" button mode="md" (tap)="changePassword()">
+      <ion-item detail lines="none" button mode="md" (click)="changePassword()">
         <ion-icon name="key" slot="start"></ion-icon>
         <ion-label>修改密码</ion-label>
       </ion-item>

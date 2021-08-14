@@ -1,14 +1,13 @@
 .chat-session-item {
   position: relative;
   height: 4.425rem;
-  touch-action: auto !important;
   --padding-start: 1rem;
   --padding-end: 0;
   --padding-top: 0.25rem;
   --padding-bottom: 0.25rem;
   --min-height: auto;
 
-  &.sticky::before {
+  &.chat-session-item-sticky::before {
     content: "";
     position: absolute;
     top: -0.25rem;
