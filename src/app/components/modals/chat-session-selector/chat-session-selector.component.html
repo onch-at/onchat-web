@@ -2,14 +2,14 @@
   <ion-header slot="fixed">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-button (tap)="dismiss()">
+        <ion-button (click)="dismiss()">
           <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
 
       <ion-title>{{ title }}（{{ checkedChatSessions.length }}/{{ limit }}）</ion-title>
 
-      <ion-buttons slot="end" *ngIf="!loading && canSubmit()" (tap)="submit()">
+      <ion-buttons slot="end" *ngIf="!loading && canSubmit()" (click)="submit()">
         <ion-button>
           <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>

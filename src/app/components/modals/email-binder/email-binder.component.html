@@ -2,14 +2,14 @@
   <ion-header slot="fixed">
     <ion-toolbar>
       <ion-buttons *ngIf="globalData.user.email" slot="start">
-        <ion-button (tap)="dismiss()">
+        <ion-button (click)="dismiss()">
           <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
         </ion-button>
       </ion-buttons>
 
       <ion-title>绑定电子邮箱</ion-title>
 
-      <ion-buttons slot="end" *ngIf="!loading && form.valid" (tap)="submit()">
+      <ion-buttons slot="end" *ngIf="!loading && form.valid" (click)="submit()">
         <ion-button>
           <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
         </ion-button>
@@ -37,7 +37,7 @@
                placeholder="请输入验证码" maxlength="6" required style="padding-right: 40%">
 
         <button appRipple appActiveClass [disabled]="form.controls.email.errors || countdownTimer" class="btn-primary"
-                (tap)="sendCaptcha()">
+                (click)="sendCaptcha()">
           {{countdownTimer ? countdown + '秒后再试' : '邮箱验证'}}
         </button>
 
