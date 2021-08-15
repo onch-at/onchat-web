@@ -44,6 +44,8 @@ export enum SocketEvent {
   ReconnectError = 'reconnect_error',
   /** 初始化 */
   Init = 'init',
+  /** 刷新令牌 */
+  RefreshToken = 'refresh_token',
   /** 接收到消息时 */
   Message = 'message',
   /** 收到撤回消息 */

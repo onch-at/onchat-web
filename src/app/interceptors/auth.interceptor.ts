@@ -12,6 +12,7 @@ import { TokenService } from '../services/token.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  /** 令牌刷新器 */
   private refresher: Observable<Result<string>>;
 
   constructor(

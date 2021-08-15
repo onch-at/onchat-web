@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { SocketEvent } from '../common/enum';
 import { LOCATION, WINDOW } from '../common/token';
 import { FeedbackService } from './feedback.service';
@@ -38,6 +38,7 @@ export class AppService {
 
         case event instanceof NavigationCancel:
           this.feedbackService.slightVibrate(); // 如果路由返回被取消，就震动一下，表示阻止
+
         case event instanceof NavigationEnd:
         case event instanceof NavigationError:
           this.globalData.navigating = false;
@@ -52,6 +53,7 @@ export class AppService {
   detectSocketConnectStatus() {
     // 连接断开时
     this.socketService.on(SocketEvent.Disconnect).pipe(
+      tap(() => this.socketService.stopRefreshTokenTask()),
       filter(() => this.globalData.user !== null)
     ).subscribe(() => {
       this.overlay.presentToast('OnChat: 与服务器断开连接！');
