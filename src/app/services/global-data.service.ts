@@ -49,7 +49,7 @@ export class GlobalData {
   get groupChatrooms(): ChatSession[] { return this._groupChatrooms; }
 
   /** 计算未读消息总数 */
-  get unreadMessageCount(): number {
+  get unreadMessage(): number {
     this.totalUnreadChatRequestCount();
 
     const count = this.chatSessions?.reduce((count, o) => (
@@ -62,7 +62,7 @@ export class GlobalData {
   }
 
   /** 未读的好友请求 */
-  get unreadFriendRequestCount(): number {
+  get unreadFriendRequest(): number {
     return this.receiveFriendRequests?.reduce((count, o) => (
       o.targetReaded ? count : count + 1
     ), 0) + this.sendFriendRequests?.reduce((count, o) => (

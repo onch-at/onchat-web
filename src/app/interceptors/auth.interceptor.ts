@@ -6,6 +6,7 @@ import { catchError, finalize, share, switchMap, tap } from 'rxjs/operators';
 import { ResultCode } from '../common/enum';
 import { Result } from '../models/onchat.model';
 import { AuthService } from '../services/apis/auth.service';
+import { AppService } from '../services/app.service';
 import { GlobalData } from '../services/global-data.service';
 import { SocketService } from '../services/socket.service';
 import { TokenService } from '../services/token.service';
@@ -16,11 +17,12 @@ export class AuthInterceptor implements HttpInterceptor {
   private refresher: Observable<Result<string>>;
 
   constructor(
-    private tokenService: TokenService,
-    private authService: AuthService,
-    private socketService: SocketService,
-    private globalData: GlobalData,
     private router: Router,
+    private globalData: GlobalData,
+    private appService: AppService,
+    private authService: AuthService,
+    private tokenService: TokenService,
+    private socketService: SocketService,
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -44,7 +46,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return this.waitRefresh(request, next);
           }
 
-          this.redirect();
+          this.signOut();
         }
 
         return throwError(error);
@@ -60,10 +62,19 @@ export class AuthInterceptor implements HttpInterceptor {
     this.refresher = this.authService.refresh(token).pipe(
       share(),
       tap(({ code, data }: Result<string>) => {
-        code === ResultCode.Success ? this.tokenService.store(data) : this.redirect();
+        if (code !== ResultCode.Success) {
+          return this.signOut();
+        }
+
+        const playload = this.tokenService.parse(data);
+
+        this.tokenService.store(data);
+        // 续签成功，重启刷新令牌任务
+        this.appService.stopRefreshTokenTask();
+        this.appService.startRefreshTokenTask(playload);
       }),
       catchError((error: HttpErrorResponse) => {
-        this.redirect();
+        this.signOut();
         return throwError(error);
       }),
       finalize(() => this.refresher = null)
@@ -90,7 +101,7 @@ export class AuthInterceptor implements HttpInterceptor {
   /**
    * 跳转到登录页
    */
-  private redirect() {
+  private signOut() {
     this.globalData.reset();
     this.tokenService.clear();
     this.socketService.disconnect();

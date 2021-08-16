@@ -10,6 +10,7 @@ import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { TokenService } from 'src/app/services/token.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { SyncValidator } from 'src/app/validators/sync.validator';
 import { ModalComponent } from '../modal.component';
@@ -58,6 +59,7 @@ export class PasswordModifierComponent extends ModalComponent {
     private socketService: SocketService,
     private formBuilder: FormBuilder,
     private userService: UserService,
+    private tokenService: TokenService,
     protected overlay: Overlay,
     protected router: Router,
   ) {
@@ -77,8 +79,9 @@ export class PasswordModifierComponent extends ModalComponent {
       this.overlay.presentToast('成功修改密码，请重新登录！', 1000);
 
       this.globalData.reset();
-      this.router.navigateByUrl('/user/login');
       this.socketService.disconnect();
+      this.tokenService.clear();
+      this.router.navigateByUrl('/user/login');
       this.dismiss();
     });
   }

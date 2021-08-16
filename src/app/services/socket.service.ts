@@ -1,11 +1,10 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { filter, share, tap } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enum';
 import { SafeAny } from '../common/interface';
-import { WINDOW } from '../common/token';
 import { Message, Result } from '../models/onchat.model';
 import { GlobalData } from './global-data.service';
 import { Overlay } from './overlay.service';
@@ -15,63 +14,20 @@ import { TokenService } from './token.service';
   providedIn: 'root'
 })
 export class SocketService {
-  /** 令牌刷新器 */
-  private refresher: number = null;
   /** 初始化后的可观察对象 */
   readonly initialized: Observable<Result<{ tokenTime: number }>>;
 
   constructor(
     private socket: Socket,
-    private overlay: Overlay,
     private router: Router,
+    private overlay: Overlay,
     private globalData: GlobalData,
     private tokenService: TokenService,
-    @Inject(WINDOW) private window: Window,
   ) {
     this.initialized = this.on(SocketEvent.Init).pipe(
       share(),
       filter(({ code }: Result) => code === ResultCode.Success)
     );
-
-    this.initialized.subscribe(({ data }: Result<{ tokenTime: number }>) => {
-      this.startRefreshTokenTask(data.tokenTime);
-    });
-
-    this.on(SocketEvent.RefreshToken).subscribe(({ code, data }: Result<{ accessToken: string, tokenTime: number }>) => {
-      if (code !== ResultCode.Success) {
-        return this.redirect();
-      }
-
-      this.tokenService.store(data.accessToken);
-      this.startRefreshTokenTask(data.tokenTime);
-    });
-  }
-
-  /**
-   * 开启令牌刷新任务
-   * @param tokenTime
-   */
-  private startRefreshTokenTask(tokenTime: number) {
-    this.refresher = this.window.setTimeout(() => {
-      this.refreshToken();
-    }, tokenTime - 60000); // 提前一分钟
-  }
-
-  /**
-   * 跳转到登录页
-   */
-  private redirect() {
-    this.globalData.reset();
-    this.tokenService.clear();
-    this.disconnect();
-    this.router.navigateByUrl('/user/login');
-  }
-
-  /**
-   * 关闭令牌刷新任务
-   */
-  stopRefreshTokenTask() {
-    this.refresher && this.window.clearTimeout(this.refresher);
   }
 
   /**
@@ -228,7 +184,10 @@ export class SocketService {
 
         case ResultCode.Unauthorized:
           this.overlay.presentToast('OnChat：授权令牌过期，请重新登录');
-          this.redirect();
+          this.globalData.reset();
+          this.tokenService.clear();
+          this.disconnect();
+          this.router.navigateByUrl('/user/login');
           break;
       }
     }));

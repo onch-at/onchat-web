@@ -8,9 +8,7 @@ import { Component, Input } from '@angular/core';
 export class ConstellationIconComponent {
   @Input() value: number;
 
-  constructor() { }
-
-  className() {
+  get className() {
     return 'icon-constellation-' + {
       1: 'aquarius',
       2: 'pisces',
@@ -20,11 +18,13 @@ export class ConstellationIconComponent {
       6: 'cancer',
       7: 'leo',
       8: 'virgo',
-      9: 'virgo',
+      9: 'libra',
       10: 'scorpio',
       11: 'sagittarius',
       12: 'capricorn',
     }[this.value];
   }
+
+  constructor() { }
 
 }

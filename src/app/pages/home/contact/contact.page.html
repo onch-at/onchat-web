@@ -3,8 +3,8 @@
         <button routerLink="/home/contact/new" routerLinkActive="active" [skipLocationChange]="true">
             <ion-icon name="person-add-outline"></ion-icon>
             <div>新朋友</div>
-            <ion-badge [hidden]="!globalData.unreadFriendRequestCount" class="bg-danger">
-                {{ globalData.unreadFriendRequestCount | numLimit }}
+            <ion-badge [hidden]="!globalData.unreadFriendRequest" class="bg-danger">
+                {{ globalData.unreadFriendRequest | numLimit }}
             </ion-badge>
         </button>
 

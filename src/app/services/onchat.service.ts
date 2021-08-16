@@ -12,6 +12,7 @@ import { FriendService } from './apis/friend.service';
 import { GlobalData } from './global-data.service';
 import { Overlay } from './overlay.service';
 import { SocketService } from './socket.service';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,10 @@ export class OnChatService {
     private globalData: GlobalData,
     private authService: AuthService,
     private chatService: ChatService,
-    private chatSessionService: ChatSessionService,
+    private tokenService: TokenService,
     private friendService: FriendService,
     private socketService: SocketService,
+    private chatSessionService: ChatSessionService,
   ) { }
 
   init(): void {
@@ -51,6 +53,7 @@ export class OnChatService {
       }),
       cancelHandler: () => this.authService.logout().subscribe(() => {
         this.globalData.reset();
+        this.tokenService.clear();
         this.socketService.disconnect();
         this.router.navigateByUrl('/user/login');
       })

@@ -10,6 +10,8 @@ import { ResetPassword } from 'src/app/models/form.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
+import { SocketService } from 'src/app/services/socket.service';
+import { TokenService } from 'src/app/services/token.service';
 import { StrUtil } from 'src/app/utils/str.util';
 import { SyncValidator } from 'src/app/validators/sync.validator';
 
@@ -67,10 +69,12 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
 
   constructor(
     public globalData: GlobalData,
+    private router: Router,
+    private overlay: Overlay,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private overlay: Overlay,
-    private router: Router,
+    private tokenService: TokenService,
+    private socketService: SocketService,
     private routerOutlet: IonRouterOutlet,
     @Inject(WINDOW) private window: Window,
   ) { }
@@ -109,7 +113,10 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
     this.userService.resetPassword(new ResetPassword(username, password, captcha)).subscribe(() => {
       this.overlay.presentToast('密码重置成功，请重新登录！', 1000);
 
-      setTimeout(() => {
+      this.window.setTimeout(() => {
+        this.globalData.reset();
+        this.tokenService.clear();
+        this.socketService.disconnect();
         this.router.navigateByUrl('/user/login');
       }, 500);
     });
