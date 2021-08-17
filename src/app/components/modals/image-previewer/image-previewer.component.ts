@@ -61,7 +61,7 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
     const buttons: ActionSheetButton[] = [{ text: '取消', role: 'cancel' }];
 
     if (StrUtil.isString(item.data.url)) {
-      buttons.unshift({ text: '保存图片', handler: () => SysUtil.downLoadFile((item.data as ImageMessage).url) })
+      buttons.unshift({ text: '保存图片', handler: () => SysUtil.downloadFile((item.data as ImageMessage).url) })
     }
 
     this.overlay.presentActionSheet(buttons);

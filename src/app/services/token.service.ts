@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enum';
+import { WINDOW } from '../common/token';
 import { TokenFolder, TokenPayload } from '../models/onchat.model';
 import { LocalStorage } from './local-storage.service';
 
@@ -9,7 +10,10 @@ import { LocalStorage } from './local-storage.service';
 export class TokenService {
   folder: TokenFolder;
 
-  constructor(private localStorage: LocalStorage) {
+  constructor(
+    private localStorage: LocalStorage,
+    @Inject(WINDOW) private window: Window,
+  ) {
     this.folder = this.localStorage.get<TokenFolder>(LocalStorageKey.TokenFolder, {
       access: null,
       refresh: null
@@ -31,8 +35,9 @@ export class TokenService {
     this.localStorage.set<TokenFolder>(LocalStorageKey.TokenFolder, this.folder);
   }
 
-  parse(token: string): TokenPayload {
-    return JSON.parse(token.split('.')[1]) as TokenPayload;
+  parse(jwt: string): TokenPayload {
+    const payload = jwt.split('.')[1];
+    return JSON.parse(window.atob(payload)) as TokenPayload;
   }
 
   clear() {

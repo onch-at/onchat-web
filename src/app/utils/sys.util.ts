@@ -40,7 +40,7 @@ export class SysUtil {
    * 通过URL下载文件
    * @param url
    */
-  static async downLoadFile(url: string) {
+  static async downloadFile(url: string) {
     const response = await fetch(url)
     const blob = await response.blob();
     const anchor = document.createElement('a');

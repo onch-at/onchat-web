@@ -55,7 +55,7 @@ export class AvatarPage implements OnInit {
 
   presentActionSheet() {
     const buttons = [
-      { text: '保存图片', handler: () => { SysUtil.downLoadFile(this.user.avatar) } },
+      { text: '保存图片', handler: () => { SysUtil.downloadFile(this.user.avatar) } },
       { text: '取消', role: 'cancel' }
     ];
 

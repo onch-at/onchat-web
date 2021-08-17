@@ -1,20 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { Result, User } from 'src/app/models/onchat.model';
 import { environment } from 'src/environments/environment';
-import { TokenService } from '../token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(
-    private http: HttpClient,
-    private tokenService: TokenService,
-  ) { }
+  constructor(private http: HttpClient) { }
 
   /**
    * 续签访问令牌
@@ -35,8 +30,6 @@ export class AuthService {
    * 登出
    */
   logout(): Observable<null> {
-    return this.http.get<null>(environment.authUrl + 'logout').pipe(
-      finalize(() => this.tokenService.clear())
-    );
+    return this.http.get<null>(environment.authUrl + 'logout');
   }
 }

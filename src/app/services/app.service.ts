@@ -52,9 +52,9 @@ export class AppService {
   * @param playload
   */
   startRefreshTokenTask(playload: TokenPayload) {
-    this.refresher = this.window.setTimeout(() => {
-      this.socketService.refreshToken();
-    }, playload.exp * 1000 - Date.now() - 60000); // 提前一分钟
+    // this.refresher = this.window.setTimeout(() => {
+    //   this.socketService.refreshToken();
+    // }, playload.exp * 1000 - Date.now() - 60000); // 提前一分钟
   }
 
   /**
