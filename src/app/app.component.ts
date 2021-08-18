@@ -7,7 +7,7 @@ import { RevokeMessageTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result } from './models/onchat.model';
 import { MessageDescPipe } from './pipes/message-desc.pipe';
 import { UserService } from './services/apis/user.service';
-import { AppService } from './services/app.service';
+import { Application } from './services/app.service';
 import { CacheService } from './services/cache.service';
 import { FeedbackService } from './services/feedback.service';
 import { GlobalData } from './services/global-data.service';
@@ -25,10 +25,10 @@ export class AppComponent implements OnInit {
 
   constructor(
     public globalData: GlobalData,
+    private app: Application,
     private overlay: Overlay,
     private navCtrl: NavController,
     private userService: UserService,
-    private appService: AppService,
     private cacheService: CacheService,
     private socketService: SocketService,
     private onChatService: OnChatService,
@@ -39,7 +39,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // 连接打通时
     this.socketService.on(SocketEvent.Connect).subscribe(() => {
-      this.socketService.init();
       this.onChatService.init();
     });
 
@@ -317,10 +316,10 @@ export class AppComponent implements OnInit {
       this.overlay.presentToast('操作成功，已拒绝该申请！');
     });
 
-    this.appService.detectUpdate();
-    this.appService.detectNavigation();
-    this.appService.detectSocketConnectStatus();
-    this.appService.initNotification();
+    this.app.detectUpdate();
+    this.app.detectNavigation();
+    this.app.detectSocketConnectStatus();
+    this.app.initNotification();
   }
 
 }

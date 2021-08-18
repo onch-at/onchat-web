@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -9,10 +8,9 @@ import { AuthService } from './apis/auth.service';
 import { ChatSessionService } from './apis/chat-session.service';
 import { ChatService } from './apis/chat.service';
 import { FriendService } from './apis/friend.service';
+import { Application } from './app.service';
 import { GlobalData } from './global-data.service';
 import { Overlay } from './overlay.service';
-import { SocketService } from './socket.service';
-import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +18,12 @@ import { TokenService } from './token.service';
 export class OnChatService {
 
   constructor(
-    private router: Router,
+    private app: Application,
     private overlay: Overlay,
     private globalData: GlobalData,
     private authService: AuthService,
     private chatService: ChatService,
-    private tokenService: TokenService,
     private friendService: FriendService,
-    private socketService: SocketService,
     private chatSessionService: ChatSessionService,
   ) { }
 
@@ -52,10 +48,7 @@ export class OnChatService {
         component: EmailBinderComponent
       }),
       cancelHandler: () => this.authService.logout().subscribe(() => {
-        this.globalData.reset();
-        this.tokenService.clear();
-        this.socketService.disconnect();
-        this.router.navigateByUrl('/user/login');
+        this.app.logout();
       })
     });
   }

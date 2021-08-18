@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enum';
-import { WINDOW } from '../common/token';
 import { TokenFolder, TokenPayload } from '../models/onchat.model';
 import { LocalStorage } from './local-storage.service';
 
@@ -10,10 +9,7 @@ import { LocalStorage } from './local-storage.service';
 export class TokenService {
   folder: TokenFolder;
 
-  constructor(
-    private localStorage: LocalStorage,
-    @Inject(WINDOW) private window: Window,
-  ) {
+  constructor(private localStorage: LocalStorage) {
     this.folder = this.localStorage.get<TokenFolder>(LocalStorageKey.TokenFolder, {
       access: null,
       refresh: null

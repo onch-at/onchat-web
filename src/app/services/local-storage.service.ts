@@ -26,7 +26,7 @@ export class LocalStorage {
    * @param key 键名
    * @param defaults 默认值
    */
-  get<T = any>(key: LocalStorageKey, defaults: T): T {
+  get<T = any>(key: LocalStorageKey, defaults: T = null): T {
     const data = this.storage.getItem(key);
     return data ? JSON.parse(data) : defaults;
   }

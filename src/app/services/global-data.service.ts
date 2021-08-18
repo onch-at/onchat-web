@@ -10,43 +10,44 @@ import { LocalStorage } from './local-storage.service';
   providedIn: 'root'
 })
 export class GlobalData {
+  get receiveChatRequests() { return this._receiveChatRequests; }
   set receiveChatRequests(requests: ChatRequest[]) {
     this._receiveChatRequests = requests;
     this.sortReceiveChatRequests();
   }
 
-  get receiveChatRequests() { return this._receiveChatRequests; }
-
+  get sendChatRequests() { return this._sendChatRequests; }
   set sendChatRequests(requests: ChatRequest[]) {
     this._sendChatRequests = requests;
     this.sortSendChatRequests();
   }
 
-  get sendChatRequests() { return this._sendChatRequests; }
-
+  get chatSessions(): ChatSession[] { return this._chatSessions; }
   set chatSessions(chatSessions: ChatSession[]) {
     this._chatSessions = chatSessions;
     this.sortChatSessions();
     this.localStorage.set(LocalStorageKey.ChatSessions, this.chatSessions);
   }
 
-  get chatSessions(): ChatSession[] { return this._chatSessions; }
-
+  get privateChatrooms(): ChatSession[] { return this._privateChatrooms; }
   set privateChatrooms(chatrooms: ChatSession[]) {
     this._privateChatrooms = chatrooms?.sort((a: ChatSession, b: ChatSession) => (
       a.title.localeCompare(b.title)
     ));
   }
 
-  get privateChatrooms(): ChatSession[] { return this._privateChatrooms; }
-
+  get groupChatrooms(): ChatSession[] { return this._groupChatrooms; }
   set groupChatrooms(chatrooms: ChatSession[]) {
     this._groupChatrooms = chatrooms?.sort((a: ChatSession, b: ChatSession) => (
       a.title.localeCompare(b.title)
     ));
   }
 
-  get groupChatrooms(): ChatSession[] { return this._groupChatrooms; }
+  get chatRichTextMap(): { [chatroomId: number]: string } { return this._chatRichTextMap; }
+  set chatRichTextMap(map: { [chatroomId: number]: string }) {
+    this._chatRichTextMap = map;
+    this.localStorage.set(LocalStorageKey.ChatRichTextMap, map);
+  }
 
   /** 计算未读消息总数 */
   get unreadMessage(): number {
@@ -93,13 +94,15 @@ export class GlobalData {
   private _sendChatRequests: ChatRequest[];
   /** 缓存聊天列表 */
   private _chatSessions: ChatSession[];
+  /** 聊天富文本缓存 */
+  private _chatRichTextMap: { [chatroomId: number]: string };
 
   constructor(
     private localStorage: LocalStorage,
     @Inject(NAVIGATOR) private navigator: Navigator
   ) {
-    // 首先加载出缓存数据，保证用户体验
-    this.chatSessions = this.localStorage.get<ChatSession[]>(LocalStorageKey.ChatSessions, null);
+    this.chatSessions = this.localStorage.get<ChatSession[]>(LocalStorageKey.ChatSessions);
+    this.chatRichTextMap = this.localStorage.get<{ [chatroomId: number]: string }>(LocalStorageKey.ChatRichTextMap, {});
   }
 
   reset() {
@@ -111,6 +114,7 @@ export class GlobalData {
     this.sendFriendRequests = null;
     this.privateChatrooms = null;
     this.groupChatrooms = null;
+    this.chatRichTextMap = {};
   }
 
   /**

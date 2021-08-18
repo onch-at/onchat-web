@@ -137,7 +137,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     // 重连时，自动重发
     this.socketService.initialized.pipe(
       takeUntil(this.destroy$),
-      filter(() => this.msgList.some(o => o.loading))
+      filter(({ code }: Result) => code === ResultCode.Success && this.msgList.some(o => o.loading)),
     ).subscribe(() => {
       this.msgList.filter(o => o.loading).forEach(o => {
         (o as MessageEntity).send();

@@ -1,12 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
-import { filter, tap } from 'rxjs/operators';
+import { filter, mergeMap } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enum';
 import { LOCATION, WINDOW } from '../common/token';
-import { Result, TokenPayload } from '../models/onchat.model';
+import { Result } from '../models/onchat.model';
+import { AuthService } from './apis/auth.service';
 import { FeedbackService } from './feedback.service';
 import { GlobalData } from './global-data.service';
+import { LocalStorage } from './local-storage.service';
 import { Overlay } from './overlay.service';
 import { SocketService } from './socket.service';
 import { TokenService } from './token.service';
@@ -14,9 +16,7 @@ import { TokenService } from './token.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AppService {
-  /** 令牌刷新器 */
-  private refresher: number = null;
+export class Application {
 
   constructor(
     private router: Router,
@@ -24,50 +24,28 @@ export class AppService {
     private swUpdate: SwUpdate,
     private overlay: Overlay,
     private globalData: GlobalData,
+    private authService: AuthService,
+    private localStorage: LocalStorage,
     private tokenService: TokenService,
     private socketService: SocketService,
     private feedbackService: FeedbackService,
     @Inject(WINDOW) private window: Window,
     @Inject(LOCATION) private location: Location,
   ) {
-    this.socketService.initialized.subscribe(() => {
-      const playload = this.tokenService.parse(this.tokenService.folder.access);
-      this.startRefreshTokenTask(playload);
-    });
-
-    this.socketService.on(SocketEvent.RefreshToken).subscribe(({ code, data }: Result<string>) => {
+    this.socketService.initialized.pipe(
+      filter(({ code }: Result) => code === ResultCode.Unauthorized),
+      mergeMap(() => this.authService.refresh(this.tokenService.folder.refresh))
+    ).subscribe(({ code, data }: Result<string>) => {
       if (code !== ResultCode.Success) {
-        return this.signOut();
+        return this.logout();
       }
 
-      const playload = this.tokenService.parse(data);
-
       this.tokenService.store(data);
-      this.startRefreshTokenTask(playload);
+      this.socketService.connect();
     });
   }
 
-  /**
-  * 开启令牌刷新任务
-  * @param playload
-  */
-  startRefreshTokenTask(playload: TokenPayload) {
-    // this.refresher = this.window.setTimeout(() => {
-    //   this.socketService.refreshToken();
-    // }, playload.exp * 1000 - Date.now() - 60000); // 提前一分钟
-  }
-
-  /**
-   * 关闭令牌刷新任务
-   */
-  stopRefreshTokenTask() {
-    this.refresher && this.window.clearTimeout(this.refresher);
-  }
-
-  /**
-  * 跳转到登录页
-  */
-  signOut() {
+  logout() {
     this.globalData.reset();
     this.tokenService.clear();
     this.socketService.disconnect();
@@ -101,7 +79,6 @@ export class AppService {
   detectSocketConnectStatus() {
     // 连接断开时
     this.socketService.on(SocketEvent.Disconnect).pipe(
-      tap(() => this.stopRefreshTokenTask()),
       filter(() => this.globalData.user !== null)
     ).subscribe(() => {
       this.overlay.presentToast('OnChat: 与服务器断开连接！');

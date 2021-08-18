@@ -4,12 +4,11 @@ import { ContentChange } from 'ngx-quill';
 import { filter, take } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
-import { LocalStorageKey, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RichTextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { LocalStorage } from 'src/app/services/local-storage.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { StrUtil } from 'src/app/utils/str.util';
@@ -41,9 +40,8 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
   canSend = () => this.text && StrUtil.trimAll(this.text).length > 0;
 
   constructor(
-    private globalData: GlobalData,
     private injector: Injector,
-    private localStorage: LocalStorage,
+    private globalData: GlobalData,
     private socketService: SocketService,
     protected overlay: Overlay,
     protected router: Router,
@@ -53,7 +51,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.html = this.localStorage.getItemFromMap(LocalStorageKey.ChatRichTextMap, this.globalData.chatroomId);
+    this.html = this.globalData.chatRichTextMap[this.globalData.chatroomId];
     this.text = StrUtil.html(this.html);
   }
 
@@ -66,7 +64,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
     }
 
     const loading = await this.overlay.presentLoading('Sending…');
-    const { chatroomId, user } = this.globalData;
+    const { chatroomId, user, chatRichTextMap } = this.globalData;
     const msg = new MessageEntity(MessageType.RichText).inject(this.injector);
     msg.chatroomId = chatroomId;
     msg.userId = user.id;
@@ -82,7 +80,8 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
       )),
       take(1)
     ).subscribe(() => {
-      this.localStorage.removeItemFromMap(LocalStorageKey.ChatRichTextMap, chatroomId);
+      chatRichTextMap[chatroomId] = null;
+      this.globalData.chatRichTextMap = chatRichTextMap;
     });
   }
 
@@ -98,11 +97,11 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
    */
   @Throttle(500)
   cache() {
-    StrUtil.trimAll(this.text).length && this.localStorage.setItemToMap(
-      LocalStorageKey.ChatRichTextMap,
-      this.globalData.chatroomId,
-      this.html
-    );
+    if (StrUtil.trimAll(this.text).length) {
+      const { chatroomId, chatRichTextMap } = this.globalData;
+      chatRichTextMap[chatroomId] = this.html;
+      this.globalData.chatRichTextMap = chatRichTextMap;
+    }
   }
 
 }

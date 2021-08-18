@@ -1,14 +1,11 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize, share, switchMap, tap } from 'rxjs/operators';
 import { ResultCode } from '../common/enum';
 import { Result } from '../models/onchat.model';
 import { AuthService } from '../services/apis/auth.service';
-import { AppService } from '../services/app.service';
-import { GlobalData } from '../services/global-data.service';
-import { SocketService } from '../services/socket.service';
+import { Application } from '../services/app.service';
 import { TokenService } from '../services/token.service';
 
 @Injectable()
@@ -17,12 +14,9 @@ export class AuthInterceptor implements HttpInterceptor {
   private refresher: Observable<Result<string>>;
 
   constructor(
-    private router: Router,
-    private globalData: GlobalData,
-    private appService: AppService,
+    private app: Application,
     private authService: AuthService,
     private tokenService: TokenService,
-    private socketService: SocketService,
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -46,7 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return this.waitRefresh(request, next);
           }
 
-          this.signOut();
+          this.app.logout();
         }
 
         return throwError(error);
@@ -63,18 +57,13 @@ export class AuthInterceptor implements HttpInterceptor {
       share(),
       tap(({ code, data }: Result<string>) => {
         if (code !== ResultCode.Success) {
-          return this.signOut();
+          return this.app.logout();
         }
 
-        const playload = this.tokenService.parse(data);
-
         this.tokenService.store(data);
-        // 续签成功，重启刷新令牌任务
-        this.appService.stopRefreshTokenTask();
-        this.appService.startRefreshTokenTask(playload);
       }),
       catchError((error: HttpErrorResponse) => {
-        this.signOut();
+        this.app.logout();
         return throwError(error);
       }),
       finalize(() => this.refresher = null)
@@ -96,16 +85,6 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(request)
       })
     );
-  }
-
-  /**
-   * 跳转到登录页
-   */
-  private signOut() {
-    this.globalData.reset();
-    this.tokenService.clear();
-    this.socketService.disconnect();
-    this.router.navigateByUrl('/user/login');
   }
 
 }

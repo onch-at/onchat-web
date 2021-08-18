@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
-import { filter, share, tap } from 'rxjs/operators';
+import { share, tap } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enum';
 import { SafeAny } from '../common/interface';
 import { Message, Result } from '../models/onchat.model';
-import { GlobalData } from './global-data.service';
 import { Overlay } from './overlay.service';
 import { TokenService } from './token.service';
 
@@ -15,28 +13,14 @@ import { TokenService } from './token.service';
 })
 export class SocketService {
   /** 初始化后的可观察对象 */
-  readonly initialized: Observable<Result<{ tokenTime: number }>>;
+  readonly initialized: Observable<Result>;
 
   constructor(
     private socket: Socket,
-    private router: Router,
     private overlay: Overlay,
-    private globalData: GlobalData,
     private tokenService: TokenService,
   ) {
-    this.initialized = this.on(SocketEvent.Init).pipe(
-      share(),
-      filter(({ code }: Result) => code === ResultCode.Success)
-    );
-  }
-
-  /**
-   * 初始化时执行，让后端把用户加入相应的房间
-   */
-  init() {
-    this.emit(SocketEvent.Init, {
-      accessToken: this.tokenService.folder.access
-    });
+    this.initialized = this.on<Result>(SocketEvent.Init).pipe(share());
   }
 
   /**
@@ -175,19 +159,11 @@ export class SocketService {
    * 监听事件
    * @param eventName 事件名
    */
-  on(eventName: string | SocketEvent): Observable<unknown> {
+  on<T = unknown>(eventName: string | SocketEvent): Observable<T> {
     return this.socket.fromEvent(eventName).pipe(tap((data: SafeAny) => {
       switch (data?.code) {
         case ResultCode.AccessOverclock:
           this.overlay.presentToast('OnChat：请求频率过高，请稍后再试');
-          break;
-
-        case ResultCode.Unauthorized:
-          this.overlay.presentToast('OnChat：授权令牌过期，请重新登录');
-          this.globalData.reset();
-          this.tokenService.clear();
-          this.disconnect();
-          this.router.navigateByUrl('/user/login');
           break;
       }
     }));
@@ -197,6 +173,10 @@ export class SocketService {
    * 建立套接字连接
    */
   connect() {
+    this.socket.ioSocket.io.opts.query = {
+      token: this.tokenService.folder.access
+    };
+
     return this.socket.connect();
   }
 
