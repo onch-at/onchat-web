@@ -123,6 +123,11 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
     });
   }
 
+  @HostListener('touchmove', ['$event'])
+  onTouchMove(event: TouchEvent) {
+    event.preventDefault();
+  }
+
   /**
    * 滚动结束时
    */

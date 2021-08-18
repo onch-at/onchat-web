@@ -8,7 +8,6 @@ import { Result } from '../models/onchat.model';
 import { AuthService } from './apis/auth.service';
 import { FeedbackService } from './feedback.service';
 import { GlobalData } from './global-data.service';
-import { LocalStorage } from './local-storage.service';
 import { Overlay } from './overlay.service';
 import { SocketService } from './socket.service';
 import { TokenService } from './token.service';
@@ -25,7 +24,6 @@ export class Application {
     private overlay: Overlay,
     private globalData: GlobalData,
     private authService: AuthService,
-    private localStorage: LocalStorage,
     private tokenService: TokenService,
     private socketService: SocketService,
     private feedbackService: FeedbackService,

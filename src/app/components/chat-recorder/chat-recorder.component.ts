@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnDestroy, Output, ViewChild } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
-import { catchError, filter, mergeMap, take } from 'rxjs/operators';
+import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError, filter, mergeMap, take, tap } from 'rxjs/operators';
 import { Vector2 } from 'src/app/common/class';
+import { SafeAny } from 'src/app/common/interface';
 import { WINDOW } from 'src/app/common/token';
 import { VoiceMessage } from 'src/app/models/msg.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -75,23 +76,17 @@ export class ChatRecorderComponent implements OnDestroy {
     this.startTime = Date.now();
 
     this.recorder.record().pipe(
-      catchError(() => {
+      catchError((error: SafeAny) => {
         this.startTime = null;
         this.overlay.presentToast('OnChat: 录音权限授权失败！');
-        return of(null);
+        return throwError(error);
       }),
-      filter(() => this.startTime !== null),
-      mergeMap(() => {
-        this.appStart.emit();
-        return this.recorder.start();
-      }),
+      tap(() => this.appStart.emit()),
+      mergeMap(() => this.recorder.start()),
       take(1),
-      filter(() => {
-        // 如果录音中途被中断，即startTime被置空，则取消录音
-        this.startTime || this.recorder.cancel();
-        return this.startTime !== null;
-      }),
-      mergeMap(() => {
+      tap(() => this.startTime || this.recorder.cancel()), // 如果录音中途被中断，即startTime被置空，则取消录音
+      filter(() => this.startTime !== null),
+      tap(() => {
         this.startTime = Date.now(); // 校准录音起始时间
         this.operateState = OperateState.Send;
         this.clearTimer();
@@ -109,9 +104,8 @@ export class ChatRecorderComponent implements OnDestroy {
             this.clearTimer();
           }
         }, 1000);
-
-        return this.recorder.available;
       }),
+      mergeMap(() => this.recorder.available),
       take(1),
       filter(({ data }: BlobEvent) => data.size > 0)
     ).subscribe(({ data }: BlobEvent) => {
@@ -207,10 +201,9 @@ export class ChatRecorderComponent implements OnDestroy {
 
   /** 发送语音 */
   send() {
-    if (this.operateState === OperateState.Play) {
-      this.audio.pause();
-      this.operateState = OperateState.None;
-    }
+    this.operateState === OperateState.Play && this.audio.pause();
+
+    this.operateState = OperateState.None;
 
     this.launcher.pipe(
       filter(([voice]) => voice !== null),
