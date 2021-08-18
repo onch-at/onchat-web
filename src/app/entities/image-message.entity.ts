@@ -1,12 +1,11 @@
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { of } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { MessageType, ResultCode } from '../common/enum';
+import { MessageType } from '../common/enum';
 import { ImageMessage } from '../models/msg.model';
 import { Message, Result } from '../models/onchat.model';
 import { ChatRecordService } from '../services/apis/chat-record.service';
 import { ImageService } from '../services/image.service';
-import { Overlay } from '../services/overlay.service';
 import { MessageEntity } from './message.entity';
 
 export class ImageMessageEntity extends MessageEntity {
@@ -47,11 +46,7 @@ export class ImageMessageEntity extends MessageEntity {
           break;
 
         case HttpEventType.Response:
-          const { code, msg } = event.body;
-
-          if (code !== ResultCode.Success) {
-            this.injector.get(Overlay).presentToast('图片上传失败，原因：' + msg);
-          }
+          // do something...
           break;
       }
     });

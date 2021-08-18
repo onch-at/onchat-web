@@ -1,11 +1,12 @@
 import { KeyValue } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { WINDOW } from 'src/app/common/token';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -25,36 +26,30 @@ export class HandlePage implements OnInit, OnDestroy {
   request: FriendRequest;
 
   constructor(
-    private friendService: FriendService,
-    private socketService: SocketService,
-    private overlay: Overlay,
-    private route: ActivatedRoute,
-    private navCtrl: NavController,
     public globalData: GlobalData,
+    private overlay: Overlay,
+    private navCtrl: NavController,
+    private route: ActivatedRoute,
+    private socketService: SocketService,
+    private friendService: FriendService,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ngOnInit() {
     this.route.data.subscribe(({ user, request }: { user: User, request: Result<FriendRequest> }) => {
       this.user = user;
-
-      const { code, msg, data } = request;
-      if (code !== ResultCode.Success) {
-        this.overlay.presentToast(msg);
-        return this.navCtrl.back();
-      }
-
-      this.request = data;
+      this.request = request.data;
     });
 
     this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.destroy$)).subscribe(({ code, data }: Result<any>) => {
       if (code === ResultCode.Success && data.requesterId === this.user.id) {
-        setTimeout(() => this.navCtrl.back(), 250);
+        this.window.setTimeout(() => this.navCtrl.back(), 250);
       }
     });
 
     this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.destroy$)).subscribe(({ code, data }: Result<FriendRequest>) => {
       if (code === ResultCode.Success && data.requesterId === this.user.id) {
-        setTimeout(() => this.navCtrl.back(), 250);
+        this.window.setTimeout(() => this.navCtrl.back(), 250);
       }
     });
 

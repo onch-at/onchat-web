@@ -3,7 +3,6 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
 import { Observable } from 'rxjs';
-import { ResultCode } from 'src/app/common/enum';
 import { SafeAny } from 'src/app/common/interface';
 import { Result } from 'src/app/models/onchat.model';
 import { ImageService } from 'src/app/services/image.service';
@@ -196,13 +195,6 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
 
     this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
       (await this.ionLoading).dismiss();
-
-      const { code, msg } = result;
-
-      if (code !== ResultCode.Success) {
-        return this.overlay.presentToast(msg);
-      }
-
       this.handler(result);
       this.dismiss(imageSrc);
       this.overlay.presentToast('头像上传成功！');

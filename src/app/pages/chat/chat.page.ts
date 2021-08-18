@@ -262,10 +262,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
         if (data['alias'] === this.chatroomName) { return; }
 
         this.friendService.setAlias(this.chatroomId, data['alias']).subscribe(({ code, data, msg }: Result<string>) => {
-          if (code !== ResultCode.Success) {
-            return this.overlay.presentToast(msg);
-          }
-
           this.chatroomName = data;
           this.overlay.presentToast('成功修改好友别名！', 1000);
 

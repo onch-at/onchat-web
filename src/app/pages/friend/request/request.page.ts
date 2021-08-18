@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
 import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { WINDOW } from 'src/app/common/token';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -38,7 +39,8 @@ export class RequestPage implements OnInit, OnDestroy {
     private friendService: FriendService,
     private overlay: Overlay,
     private route: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ngOnInit() {
@@ -71,7 +73,7 @@ export class RequestPage implements OnInit, OnDestroy {
     ).subscribe(({ code, msg }: Result<FriendRequest | FriendRequest[]>) => {
       this.overlay.presentToast(code === ResultCode.Success ? '好友申请已发出，等待对方验证…' : msg);
 
-      code === ResultCode.Success && setTimeout(() => {
+      code === ResultCode.Success && this.window.setTimeout(() => {
         this.navCtrl.back();
       }, 250);
     });

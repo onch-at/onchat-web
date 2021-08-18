@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonRouterOutlet, NavController } from '@ionic/angular';
+import { IonRouterOutlet } from '@ionic/angular';
 import { of, Subject } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CHATROOM_NAME_MAX_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT, NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constant';
@@ -46,7 +46,6 @@ export class HomePage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private chatroomService: ChatroomService,
     private userService: UserService,
-    private navCtrl: NavController,
     private cacheService: CacheService,
     private socketService: SocketService,
     private routerOutlet: IonRouterOutlet
@@ -54,11 +53,6 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.data.subscribe(({ chatroom, chatMembers }: { chatroom: Result<Chatroom>, chatMembers: Result<ChatMember[]> }) => {
-      if (chatroom.code !== ResultCode.Success) {
-        this.overlay.presentToast('聊天室不存在！');
-        return this.navCtrl.back();
-      }
-
       this.chatroom = chatroom.data;
       const members = chatMembers.data;
       const host = members.find(o => o.role === ChatMemberRole.Host);
@@ -122,11 +116,7 @@ export class HomePage implements OnInit, OnDestroy {
         const { id, name } = this.chatroom;
         if (!StrUtil.trimAll(data['name']).length || data['name'] === name) { return; }
 
-        this.chatroomService.setName(id, data['name']).subscribe(({ code, msg }: Result) => {
-          if (code !== ResultCode.Success) {
-            return this.overlay.presentToast(msg);
-          }
-
+        this.chatroomService.setName(id, data['name']).subscribe(() => {
           this.chatroom.name = data['name'];
           this.overlay.presentToast('成功修改聊天室名称！', 1000);
           this.cacheService.revoke('/chatroom/' + id);
@@ -157,11 +147,7 @@ export class HomePage implements OnInit, OnDestroy {
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['nickname'] === this.member.nickname) { return; }
 
-        this.chatroomService.setMemberNickname(this.chatroom.id, data['nickname']).subscribe(({ code, data, msg }: Result<string>) => {
-          if (code !== ResultCode.Success) {
-            return this.overlay.presentToast(msg);
-          }
-
+        this.chatroomService.setMemberNickname(this.chatroom.id, data['nickname']).subscribe(({ data }: Result<string>) => {
           const member = this.members.find(o => o.userId === this.globalData.user.id);
           member.nickname = data;
           this.member.nickname = data;
