@@ -62,7 +62,7 @@
 
       <div class="cloud-block-item dp-flex justify-between align-center">
         <span>年 龄</span>
-        <span>{{ user.age || 0 }}岁</span>
+        <span>{{ user.birthday ? (user.birthday | age) : 0 }}岁</span>
       </div>
 
       <div class="cloud-block-item dp-flex justify-between align-center">
