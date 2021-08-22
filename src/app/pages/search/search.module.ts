@@ -1,3 +1,4 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { UserComponent } from './user/user.component';
     SkeletonItemModule,
     EmptyModule,
     SharedModule,
+    ScrollingModule,
     SearchPageRoutingModule
   ],
   declarations: [

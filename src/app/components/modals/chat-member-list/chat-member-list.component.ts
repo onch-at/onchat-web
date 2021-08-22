@@ -22,8 +22,8 @@ export class ChatMemberListComponent extends ModalComponent implements OnInit {
   /** 虚拟列表项目高度 */
   itemHeight: number = CssUtil.rem2px(3.55);
 
-  get minBufferPx() { return this.window.innerHeight + this.window.innerHeight / 2 };
-  get maxBufferPx() { return this.window.innerHeight * 2; };
+  minBufferPx: number = this.window.innerHeight * 1.5;
+  maxBufferPx: number = this.window.innerHeight * 2;
 
   trackByFn = EntityUtil.trackBy;
 

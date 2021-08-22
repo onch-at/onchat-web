@@ -32,8 +32,8 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
   /** 虚拟列表项目高度 */
   itemHeight: number = CssUtil.rem2px(3.55);
 
-  get minBufferPx() { return this.window.innerHeight + this.window.innerHeight / 2 };
-  get maxBufferPx() { return this.window.innerHeight * 2; };
+  minBufferPx: number = this.window.innerHeight * 1.5;
+  maxBufferPx: number = this.window.innerHeight * 2;
   /** 已选会话列表 */
   get checkedChatSessions() { return this.chatSessions.filter(o => o.checked); }
   get disabled() { return this.checkedChatSessions.length >= this.limit; }

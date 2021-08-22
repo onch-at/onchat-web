@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Throttle } from 'src/app/common/decorator';
 import { SafeAny } from 'src/app/common/interface';
+import { WINDOW } from 'src/app/common/token';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';
+import { CssUtil } from 'src/app/utils/css.util';
+import { EntityUtil } from 'src/app/utils/entity.util';
 
 @Component({
   selector: 'app-chatroom',
@@ -14,8 +17,17 @@ export class ChatroomComponent {
   keyword: string;
   chatrooms: Chatroom[] = [];
 
+  /** 虚拟列表项目高度 */
+  itemHeight: number = CssUtil.rem2px(4.425);
+
+  minBufferPx: number = this.window.innerHeight * 1.5;
+  maxBufferPx: number = this.window.innerHeight * 2;
+
+  trackByFn = EntityUtil.trackBy;
+
   constructor(
-    private chatroomService: ChatroomService
+    private chatroomService: ChatroomService,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   @Throttle(300)

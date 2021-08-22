@@ -22,9 +22,8 @@ import { EntityUtil } from 'src/app/utils/entity.util';
 export class SessionPage {
   /** 虚拟列表项目高度 */
   itemHeight: number = CssUtil.rem2px(4.425);
-
-  get minBufferPx() { return this.window.innerHeight + this.window.innerHeight / 2 };
-  get maxBufferPx() { return this.window.innerHeight * 2; };
+  minBufferPx: number = this.window.innerHeight * 1.5;
+  maxBufferPx: number = this.window.innerHeight * 2;
 
   readonly msgType: typeof MessageType = MessageType;
   readonly chatSessionType: typeof ChatSessionType = ChatSessionType;

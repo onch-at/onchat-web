@@ -2,24 +2,26 @@
   <ion-searchbar animated placeholder="搜索" (ionChange)="search()" [(ngModel)]="keyword"></ion-searchbar>
 
   <app-empty *ngIf="users?.length === 0"></app-empty>
-
   <ng-container *ngIf="!users">
     <app-skeleton-item *ngFor="let _ of 10 | fill"></app-skeleton-item>
   </ng-container>
 
-  <ion-list class="friend-list">
-    <ion-item mode="md" lines="none" [detail]="false" *ngFor="let item of users; let i = index;"
-              [routerLink]="['/user', item.id]">
-      <ion-img slot="start" class="overflow-hidden" [src]="item.avatarThumbnail"></ion-img>
+  <cdk-virtual-scroll-viewport *ngIf="users?.length > 0" [itemSize]="itemHeight" [minBufferPx]="minBufferPx"
+                               [maxBufferPx]="maxBufferPx">
+    <ion-list class="friend-list">
+      <ion-item mode="md" lines="none" [detail]="false" *cdkVirtualFor="let item of users; let i = index; trackBy: trackByFn"
+                [routerLink]="['/user', item.id]">
+        <ion-img slot="start" class="overflow-hidden" [src]="item.avatarThumbnail"></ion-img>
 
-      <ion-label class="item-content">
-        <h2 class="font-bold">{{ item.nickname }}</h2>
-        <p class="mg-0">[个性签名] {{ item.signature || '这个人很懒，什么都没写~' }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+        <ion-label class="item-content">
+          <h2 class="font-bold">{{ item.nickname }}</h2>
+          <p class="mg-0">[个性签名] {{ item.signature || '这个人很懒，什么都没写~' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="loadData($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    <ion-infinite-scroll (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </cdk-virtual-scroll-viewport>
 </ion-content>
