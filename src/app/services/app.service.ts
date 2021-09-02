@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { SwPush, SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
@@ -28,6 +29,7 @@ export class Application {
     private socketService: SocketService,
     private feedbackService: FeedbackService,
     @Inject(WINDOW) private window: Window,
+    @Inject(DOCUMENT) private document: Document,
     @Inject(LOCATION) private location: Location,
   ) {
     this.socketService.initialized.pipe(
@@ -77,7 +79,8 @@ export class Application {
   detectSocketConnectStatus() {
     // 连接断开时
     this.socketService.on(SocketEvent.Disconnect).pipe(
-      filter(() => this.globalData.user !== null)
+      // 用户登录后且客户端在前台
+      filter(() => this.globalData.user !== null && !this.document.hidden),
     ).subscribe(() => {
       this.overlay.presentToast('OnChat: 与服务器断开连接！');
     });
