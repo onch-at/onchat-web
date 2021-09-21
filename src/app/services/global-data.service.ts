@@ -142,20 +142,20 @@ export class GlobalData {
    * 按照时间/置顶顺序排序聊天列表
    */
   sortChatSessions() {
-    this.chatSessions?.sort(EntityUtil.sortByUpdateTime)?.sort((a, b) => +b.sticky || 0 - +a.sticky || 0);
+    this._chatSessions &&= [...this.chatSessions.sort(EntityUtil.sortByUpdateTime).sort((a, b) => +b.sticky || 0 - +a.sticky || 0)];
   }
 
   /**
    * 排序收到的入群申请
    */
   sortReceiveChatRequests() {
-    this.receiveChatRequests?.sort(EntityUtil.sortByUpdateTime);
+    this._receiveChatRequests &&= [...this.receiveChatRequests.sort(EntityUtil.sortByUpdateTime)];
   }
 
   /**
    * 排序发送的入群申请
    */
   sortSendChatRequests() {
-    this.sendChatRequests?.sort(EntityUtil.sortByUpdateTime);
+    this._sendChatRequests &&= [...this.sendChatRequests.sort(EntityUtil.sortByUpdateTime)];
   }
 }
