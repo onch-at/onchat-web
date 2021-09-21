@@ -15,12 +15,19 @@
 
       <li *ngSwitchCase="msgType.Text" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
-
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
           <span #bubble appRipple class="msg-bubble" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
-                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)" [innerHTML]="item.data['content'] | hyperlink">
+                (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
+            <!-- 回复消息 -->
+            <blockquote *ngIf="item.replyId">
+              <ng-container *ngIf="item.reply">{{ item.reply.userId === globalData.user?.id ? '我' : item.reply.nickname }}: {{
+                item.reply | messageDesc }}</ng-container>
+              <ng-container *ngIf="!item.reply">找不到被回复的消息</ng-container>
+            </blockquote>
+
+            <span [innerHTML]="item.data['content'] | hyperlink"></span>
           </span>
 
           <ng-container *ngTemplateOutlet="loading; context: item"></ng-container>
@@ -29,7 +36,6 @@
 
       <li *ngSwitchCase="msgType.RichText" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
-
         <div class="ql-container ql-snow">
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
@@ -43,7 +49,6 @@
 
       <li *ngSwitchCase="msgType.ChatInvitation" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
-
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
@@ -61,7 +66,6 @@
 
       <li *ngSwitchCase="msgType.Image" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
-
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
@@ -75,7 +79,6 @@
 
       <li *ngSwitchCase="msgType.Voice" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
         <ng-container *ngTemplateOutlet="avatar; context: item"></ng-container>
-
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 

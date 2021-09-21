@@ -69,17 +69,21 @@
   white-space: pre-wrap;
   touch-action: auto !important;
 
-  @media (prefers-color-scheme: dark) {
-    color: var(--color-white);
+  blockquote {
+    margin: 0.35rem 0;
+    padding: 0.3rem 0.5rem;
+    background: rgba(#fff, 0.4);
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 0.9em;
   }
 
-  &.ql-editor ::ng-deep {
+  &.ql-editor::ng-deep {
     blockquote {
-      display: inline-block;
-      width: 100%;
+      display: block;
       border: none;
       background: rgba(#fff, 0.4);
-      padding: 0.3rem 0.75rem;
+      padding: 0.3rem 0.5rem;
     }
 
     ol,
@@ -99,6 +103,20 @@
     pre.ql-syntax {
       margin: 0.35rem 0;
       border-radius: 0.5rem;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--color-white);
+
+    blockquote {
+      background: rgba(#fff, 0.25);
+    }
+
+    &.ql-editor::ng-deep {
+      blockquote {
+        background: rgba(#fff, 0.25);
+      }
     }
   }
 }
