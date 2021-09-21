@@ -17,7 +17,7 @@
   </ion-header>
 
   <main>
-    <div class="header overflow-hidden dp-flex justify-center align-center" [class.show-mask]="showMask">
+    <div class="header clip dp-flex justify-center align-center" [class.show-mask]="showMask">
       <img class="header-bg" src="https://blog.hypergo.net/api/bing/image.php">
       <div class="header-mask"></div>
       <img class="avatar dp-block" [src]="globalData.user.avatarThumbnail" (tap)="presentActionSheet()">

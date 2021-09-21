@@ -15,12 +15,12 @@
     <img class="avatar" [src]="request.requesterAvatarThumbnail" [routerLink]="['/user', request.requesterId]">
     <h1 class="font-bold">{{ request.requesterNickname }}</h1>
 
-    <ion-item class="overflow-hidden" lines="none">
+    <ion-item class="clip" lines="none">
       <ion-label position="stacked">申请原因</ion-label>
       <p>{{ request.requestReason || (request.requesterNickname + ' 申请加入 ' + request.chatroomName) }}</p>
     </ion-item>
 
-    <ion-item class="overflow-hidden" lines="none">
+    <ion-item class="clip" lines="none">
       <ion-label position="stacked">相关信息</ion-label>
       <ul>
         <li>

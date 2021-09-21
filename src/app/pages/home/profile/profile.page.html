@@ -1,5 +1,5 @@
 <ion-content *ngIf="globalData.user">
-  <div appRipple class="profile-card overflow-hidden" [routerLink]="['/user/', globalData.user.id]">
+  <div appRipple class="profile-card clip" [routerLink]="['/user/', globalData.user.id]">
     <img class="profile-card-bg-img" [src]="'https://blog.hypergo.net/api/bing/image.php'">
 
     <div class="profile-card-content">

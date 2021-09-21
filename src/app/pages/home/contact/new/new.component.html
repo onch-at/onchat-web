@@ -7,7 +7,7 @@
 		</ion-item-options>
 
 		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/handle', item.requesterId]">
-			<ion-img slot="start" class="overflow-hidden" [src]="item.requesterAvatarThumbnail"></ion-img>
+			<ion-img slot="start" class="clip" [src]="item.requesterAvatarThumbnail"></ion-img>
 
 			<ion-label class="item-content">
 				<h2 class="font-bold">{{ item.requesterNickname }}</h2>
@@ -30,7 +30,7 @@
 
 	<ion-item-sliding mode="md" *ngFor="let item of globalData.sendFriendRequests;">
 		<ion-item lines="none" [detail]="false" [routerLink]="['/friend/request', item.targetId]">
-			<ion-img slot="start" class="overflow-hidden" [src]="item.targetAvatarThumbnail"></ion-img>
+			<ion-img slot="start" class="clip" [src]="item.targetAvatarThumbnail"></ion-img>
 
 			<ion-label>
 				<h2 class="font-bold">{{ item.targetNickname }}</h2>

@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetButton } from '@ionic/angular';
+import { WINDOW } from 'src/app/common/token';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -40,13 +41,14 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
   constructor(
     private feedbackService: FeedbackService,
     protected overlay: Overlay,
-    protected router: Router
+    protected router: Router,
+    @Inject(WINDOW) private window: Window
   ) {
     super();
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
+    this.window.setTimeout(() => {
       this.swiper.setIndex(this.index, 0, true);
       this.swiper.swiperRef.update();
     }, 500);

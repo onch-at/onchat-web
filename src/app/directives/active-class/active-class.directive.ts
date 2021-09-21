@@ -1,4 +1,5 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Inject, Input, Renderer2 } from '@angular/core';
+import { WINDOW } from 'src/app/common/token';
 
 /**
  * 在宿主元素被Active时（tap）添加一个CSS类名，并且在指定时间后移除
@@ -14,7 +15,8 @@ export class ActiveClassDirective {
 
   constructor(
     private elementRef: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    @Inject(WINDOW) private window: Window
   ) { }
 
   @HostListener('tap')
@@ -23,7 +25,7 @@ export class ActiveClassDirective {
     const className = this.appActiveClass || 'active';
     this.renderer.addClass(nativeElement, className);
 
-    setTimeout(() => {
+    this.window.setTimeout(() => {
       this.renderer.removeClass(nativeElement, className);
     }, this.appActiveClassDuration || 300);
   }

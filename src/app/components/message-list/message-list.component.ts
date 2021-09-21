@@ -1,5 +1,6 @@
-import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, Inject, Input, QueryList, ViewChildren } from '@angular/core';
 import { ChatMemberRole, ChatroomType, MessageType } from 'src/app/common/enum';
+import { WINDOW } from 'src/app/common/token';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -43,6 +44,7 @@ export class MessageListComponent {
     private overlay: Overlay,
     private feedbackService: FeedbackService,
     public globalData: GlobalData,
+    @Inject(WINDOW) private window: Window
   ) { }
 
   /**
@@ -71,7 +73,7 @@ export class MessageListComponent {
 
     this.feedbackService.slightVibrate();
     // 延迟300ms后才打开点击背景关闭popover
-    setTimeout(() => {
+    this.window.setTimeout(() => {
       popover.backdropDismiss = true;
     }, 300);
   }

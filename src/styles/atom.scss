@@ -49,6 +49,12 @@
 .flex-col {
     flex-direction: column !important;
 }
+.flex-nowrap {
+    flex-wrap: nowrap !important;
+}
+.flex-wrap {
+    flex-wrap: wrap !important;
+}
 .text-left {
     text-align: left !important;
 }
@@ -79,7 +85,7 @@
 .pointer {
     cursor: pointer !important;
 }
-.overflow-hidden {
+.clip {
     overflow: hidden !important;
 }
 .line-hg-0 {

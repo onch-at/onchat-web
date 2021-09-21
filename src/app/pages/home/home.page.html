@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-header slot="fixed" class="overflow-hidden" [style.border-radius]="sharp ? 0 : '0 0 1.5rem 0'">
+  <ion-header slot="fixed" class="clip" [style.border-radius]="sharp ? 0 : '0 0 1.5rem 0'">
     <ion-toolbar>
       <span class="onchat-brand"></span>
 
@@ -11,7 +11,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <aside class="sidebar overflow-hidden" slot="fixed">
+  <aside class="sidebar clip" slot="fixed">
     <img *ngIf="globalData.user" class="avatar pointer" [src]="globalData.user.avatarThumbnail"
          [routerLink]="['/user', globalData.user.id]">
 

@@ -25,7 +25,7 @@
 
 				<!-- 聊天室类型 -->
 				<ng-container *ngSwitchCase="chatSessionType.Chatroom">
-					<ion-img slot="start" [src]="item.avatarThumbnail" class="chat-session-item-img overflow-hidden"></ion-img>
+					<ion-img slot="start" [src]="item.avatarThumbnail" class="chat-session-item-img clip"></ion-img>
 
 					<ion-label class="item-content">
 						<h2 class="chat-session-item-title font-bold">{{ item.title }}</h2>

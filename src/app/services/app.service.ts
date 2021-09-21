@@ -104,7 +104,7 @@ export class Application {
       header: '应用程序已损坏',
       message: '即将重启以更新到新版本！',
       backdropDismiss: false,
-    }).then(() => setTimeout(() => this.location.reload(), 2000)));
+    }).then(() => this.window.setTimeout(() => this.location.reload(), 2000)));
 
     this.swUpdate.available.subscribe((event: UpdateAvailableEvent) => {
       console.log('current version is', event.current);

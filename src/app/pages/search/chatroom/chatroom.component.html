@@ -12,7 +12,7 @@
     <ion-list class="friend-list">
       <ion-item mode="md" lines="none" [detail]="false" *cdkVirtualFor="let item of chatrooms; let i = index; trackBy: trackByFn"
                 [routerLink]="['/chatroom', item.id]">
-        <ion-img slot="start" class="overflow-hidden" [src]="item.avatarThumbnail"></ion-img>
+        <ion-img slot="start" class="clip" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label class="item-content">
           <h2 class="font-bold">{{ item.name }}</h2>

@@ -3,8 +3,8 @@
   <div *ngIf="!isLink()" class="notification-icon dp-flex justify-center align-center">
     <ion-icon [name]="icon"></ion-icon>
   </div>
-  <div class="notification-body flex-auto overflow-hidden">
+  <div class="notification-body flex-auto clip">
     <h1 class="notification-title text-ellipsis font-bold">{{ title }}</h1>
-    <p class="notification-description mg-0 overflow-hidden">{{ description }}</p>
+    <p class="notification-description mg-0 clip">{{ description }}</p>
   </div>
 </aside>

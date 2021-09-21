@@ -13,7 +13,7 @@ export class BaseInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (![200, 401].includes(error.status)) {
+        if (error.status !== 401) {
           if (error.error.code === ResultCode.AuthExpires) {
             this.overlay.presentToast('OnChat：授权令牌过期，请重新登录');
           } else {

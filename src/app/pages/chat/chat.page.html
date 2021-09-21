@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true" [scrollEvents]="bottomBar.hasUnreadMsg" (ionScrollEnd)="bottomBar.onIonScrollEnd()">
   <ion-header slot="fixed">
-    <ion-toolbar class="overflow-hidden">
+    <ion-toolbar class="clip">
       <ion-buttons slot="start">
         <ion-back-button [text]="(globalData.unreadMessage | numLimit) || ''" defaultHref="home">
         </ion-back-button>

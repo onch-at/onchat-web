@@ -7,7 +7,7 @@
 <cdk-virtual-scroll-viewport [itemSize]="itemHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
 	<ion-item-sliding mode="md" *cdkVirtualFor="let item of globalData.privateChatrooms; trackBy: trackByFn">
 		<ion-item lines="none" [detail]="false" [routerLink]="['/chat', item.data.chatroomId]">
-			<ion-img slot="start" class="overflow-hidden" [src]="item.avatarThumbnail"></ion-img>
+			<ion-img slot="start" class="clip" [src]="item.avatarThumbnail"></ion-img>
 
 			<ion-label class="item-content">
 				<h2 class="font-bold">{{ item.title }}</h2>

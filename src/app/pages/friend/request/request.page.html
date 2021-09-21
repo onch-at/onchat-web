@@ -21,19 +21,19 @@
     <img class="avatar" [src]="user.avatarThumbnail" [routerLink]="['/user', user.id]">
     <h1 class="font-bold">{{ user.nickname }}</h1>
 
-    <ion-item *ngIf="rejectReason" class="overflow-hidden" lines="none">
+    <ion-item *ngIf="rejectReason" class="clip" lines="none">
       <ion-label position="stacked">对方的拒绝原因</ion-label>
       <p>{{ rejectReason }}</p>
     </ion-item>
 
-    <ion-item class="overflow-hidden" lines="none">
+    <ion-item class="clip" lines="none">
       <ion-label position="stacked">好友别名</ion-label>
       <ion-input [(ngModel)]="targetAlias" [disabled]="status === requestStatus.Agree" clearInput [maxlength]="nicknameMaxLength"
                  placeholder="给对方起个好听的别名吧">
       </ion-input>
     </ion-item>
 
-    <ion-item class="overflow-hidden" lines="none">
+    <ion-item class="clip" lines="none">
       <ion-label position="stacked">申请原因</ion-label>
       <ion-textarea [(ngModel)]="requestReason" [disabled]="status === requestStatus.Agree" clearInput
                     [maxlength]="reasonMaxLength" rows="4" autoGrow placeholder="告诉对方你的好友申请原因">

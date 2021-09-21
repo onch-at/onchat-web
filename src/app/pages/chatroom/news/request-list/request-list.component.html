@@ -2,7 +2,7 @@
 <ion-list class="chat-request-list">
   <ion-item-sliding mode="md" *ngFor="let item of globalData.sendChatRequests; let i = index;">
     <ion-item lines="none" [detail]="false" [routerLink]="['/chatroom/request', item.id]">
-      <ion-img slot="start" class="overflow-hidden" [src]="item.chatroomAvatarThumbnail"></ion-img>
+      <ion-img slot="start" class="clip" [src]="item.chatroomAvatarThumbnail"></ion-img>
 
       <ion-label class="item-content">
         <h2 class="font-bold">{{ item.chatroomName }}</h2>
