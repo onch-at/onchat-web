@@ -29,7 +29,7 @@ export class FeedbackService {
    * 轻微震动：50ms
    */
   slightVibrate() {
-    this.navigator.vibrate?.(25);
+    this.navigator.vibrate?.(20);
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Inject, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { ChatMemberRole, ChatroomType, MessageType } from 'src/app/common/enum';
 import { WINDOW } from 'src/app/common/token';
 import { ImageMessage } from 'src/app/models/msg.model';
@@ -27,6 +27,8 @@ export class MessageListComponent {
   @Input() ended: boolean;
   /** 聊天室类型 */
   @Input() chatroomType: ChatroomType;
+  /** 进行回复 */
+  @Output() reply: EventEmitter<Message> = new EventEmitter<Message>();
 
   @ViewChildren(VoiceMessageComponent) voiceMsgList: QueryList<VoiceMessageComponent>;
 
@@ -69,6 +71,14 @@ export class MessageListComponent {
       showBackdrop: false,
       keyboardClose: false,
       backdropDismiss: false
+    });
+
+    popover.onWillDismiss().then(({ role, data }) => {
+      switch (role) {
+        case 'reply':
+          this.reply.emit(data);
+          break;
+      }
     });
 
     this.feedbackService.slightVibrate();

@@ -47,6 +47,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
   msgList: Message[] = [];
   /** 聊天记录是否查到末尾了 */
   ended: boolean = false;
+  /** 回复的消息 */
+  replyMessage: Message;
 
   constructor(
     public globalData: GlobalData,

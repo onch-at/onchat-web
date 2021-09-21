@@ -13,26 +13,48 @@
     padding: 0.45rem;
   }
 
-  > .tips-btn {
-    position: fixed;
-    left: 50%;
-    top: -2.5rem;
-    transform: translateX(-50%);
+  > .float-tips-bar {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 0.75rem);
+    width: 100%;
+    padding: 0 0.75rem;
+  }
+}
+
+.tips-btn {
+  font-size: 0.8rem;
+  line-height: 1.25em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 1rem;
+
+  > ion-icon {
+    animation: jitter 0.75s linear infinite;
+  }
+}
+
+.reply-msg-tiles {
+  padding: 0.3rem;
+  background: rgba(var(--color-white-rgb), 0.75);
+  backdrop-filter: blur(15px) saturate(175%);
+  border-radius: 1.5rem;
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
+
+  > img,
+  > ion-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    color: var(--color-muted);
+  }
+
+  > div {
     font-size: 0.8rem;
-    line-height: 1.25em;
-    padding: 0.3rem 0.75rem;
-    border-radius: 1rem;
-    opacity: 0;
-    visibility: hidden;
-
-    &.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    > ion-icon {
-      animation: jitter 0.75s linear infinite;
-    }
+    padding: 0 0.5rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 }
 

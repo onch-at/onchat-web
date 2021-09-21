@@ -33,8 +33,12 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
 
   /** 页面内容 */
   @Input() ionContent: IonContent;
+  /** 回复的消息 */
+  @Input() replyMessage: Message;
 
   @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
+  /** 进行回复 */
+  @Output() reply: EventEmitter<Message> = new EventEmitter<Message>();
 
   /** 抽屉 */
   @ViewChild(ChatDrawerComponent, { static: true }) drawer: ChatDrawerComponent;
@@ -222,6 +226,11 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
     msg.avatarThumbnail = avatarThumbnail;
     msg.data = new TextMessage(this.msg);
 
+    if (this.replyMessage) {
+      msg.replyId = this.replyMessage.id;
+      this.reply.emit(null);
+    }
+
     this.msgpush.emit(msg);
 
     this.msg = '';
@@ -267,5 +276,9 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
   viewUnreadMessage() {
     this.ionContent.scrollToBottom(300);
     this.hasUnreadMsg = false;
+  }
+
+  cancelReply() {
+    this.reply.emit(null);
   }
 }

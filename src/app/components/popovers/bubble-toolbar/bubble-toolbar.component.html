@@ -1,23 +1,23 @@
-<ul class="bubble-toolbar mg-0 dp-flex" (touchend)="$event.preventDefault()">
+<ul class="bubble-toolbar mg-0 dp-flex">
   <li *ngIf="msgItem.type === msgType.Text || msgItem.type === msgType.RichText" appRipple
-      class="bubble-toolbar-item dp-flex align-center justify-center flex-col" (tap)="copyText()">
+      class="bubble-toolbar-item dp-flex align-center justify-center flex-col" (click)="copyText()">
     <ion-icon class="dp-block" name="copy-outline"></ion-icon>
     复制
   </li>
 
   <li *ngIf="msgItem.type === msgType.Text || msgItem.type === msgType.RichText" appRipple
-      class="bubble-toolbar-item dp-flex align-center justify-center flex-col" (tap)="copyText()">
+      class="bubble-toolbar-item dp-flex align-center justify-center flex-col" (click)="dismiss()">
     <ion-icon class="dp-block" name="arrow-redo-outline"></ion-icon>
     转发
   </li>
 
   <li *ngIf="globalData?.user.id === msgItem.userId && now <= (msgItem.createTime + 120000)" appRipple
-      class="bubble-toolbar-item dp-flex align-center justify-center flex-col" (tap)="revokeMessage()">
+      class="bubble-toolbar-item dp-flex align-center justify-center flex-col" (click)="revokeMessage()">
     <ion-icon class="dp-block" name="arrow-undo-outline"></ion-icon>
     撤回
   </li>
 
-  <li class="bubble-toolbar-item dp-flex align-center justify-center flex-col" appRipple (tap)="dismiss()">
+  <li class="bubble-toolbar-item dp-flex align-center justify-center flex-col" appRipple (click)="reply()">
     <ion-icon class="dp-block" name="chatbubble-ellipses-outline"></ion-icon>
     回复
   </li>

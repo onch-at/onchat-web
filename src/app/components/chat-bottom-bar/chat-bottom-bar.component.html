@@ -1,7 +1,15 @@
-<button appActiveClass class="tips-btn btn-primary" [class.show]="hasUnreadMsg" (tap)="viewUnreadMessage()">
-  收到新消息
-  <ion-icon name="arrow-down-outline"></ion-icon>
-</button>
+<div class="float-tips-bar dp-flex flex-col justify-center">
+  <button *ngIf="hasUnreadMsg" appActiveClass class="tips-btn btn-primary" (tap)="viewUnreadMessage()">
+    收到新消息
+    <ion-icon name="arrow-down-outline"></ion-icon>
+  </button>
+
+  <div *ngIf="replyMessage" class="reply-msg-tiles dp-flex align-center">
+    <img [src]="replyMessage.avatarThumbnail">
+    <div class="flex-auto">回复消息：{{ replyMessage | messageDesc }}</div>
+    <ion-icon name="close-circle-outline" (click)="cancelReply()"></ion-icon>
+  </div>
+</div>
 
 <div class="dp-flex align-center">
   <button appRipple appActiveClass class="btn-secondary fn-btn dp-flex justify-center align-center" (click)="toggleDrawer()">

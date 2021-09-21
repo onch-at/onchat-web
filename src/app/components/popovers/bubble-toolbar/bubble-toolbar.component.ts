@@ -37,6 +37,13 @@ export class BubbleToolbarComponent {
   }
 
   /**
+   * 回复
+   */
+  reply() {
+    this.dismiss(this.msgItem, 'reply');
+  }
+
+  /**
    * 撤回消息
    */
   revokeMessage() {
@@ -47,8 +54,8 @@ export class BubbleToolbarComponent {
   /**
    * 关闭气泡消息工具条
    */
-  dismiss() {
-    this.overlay.dismissPopover();
+  dismiss(data?: any, role?: string) {
+    this.overlay.dismissPopover(data, role);
   }
 
 }
