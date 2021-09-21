@@ -149,7 +149,7 @@ export class InfoPage implements OnInit, OnDestroy {
 
       this.globalData.user = { ...user, ...data };
 
-      this.overlay.presentToast('用户信息修改成功！', 1000).then(() => {
+      this.overlay.toast('用户信息修改成功！', 1000).then(() => {
         this.navCtrl.back();
       });
     });
@@ -160,7 +160,7 @@ export class InfoPage implements OnInit, OnDestroy {
       {
         text: '更换头像',
         handler: () => {
-          SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.presentModal({
+          SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
             component: AvatarCropperComponent,
             componentProps: {
               imageChangedEvent: event,
@@ -178,7 +178,7 @@ export class InfoPage implements OnInit, OnDestroy {
       { text: '取消', role: 'cancel' }
     ];
 
-    this.overlay.presentActionSheet(buttons);
+    this.overlay.actionSheet(buttons);
   }
 
   onScroll({ detail }) {

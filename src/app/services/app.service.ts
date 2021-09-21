@@ -82,17 +82,17 @@ export class Application {
       // 用户登录后且客户端在前台
       filter(() => this.globalData.user !== null && !this.document.hidden),
     ).subscribe(() => {
-      this.overlay.presentToast('OnChat: 与服务器断开连接！');
+      this.overlay.toast('OnChat: 与服务器断开连接！');
     });
 
     // 连接失败时
     this.socketService.on(SocketEvent.ReconnectError).subscribe(() => {
-      this.overlay.presentToast('OnChat: 服务器连接失败！');
+      this.overlay.toast('OnChat: 服务器连接失败！');
     });
 
     // 重连成功时
     this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
-      this.overlay.presentToast('OnChat: 与服务器重连成功！');
+      this.overlay.toast('OnChat: 与服务器重连成功！');
     });
   }
 
@@ -100,7 +100,7 @@ export class Application {
    * 检测更新
    */
   detectUpdate() {
-    this.swUpdate.unrecoverable.subscribe(() => this.overlay.presentAlert({
+    this.swUpdate.unrecoverable.subscribe(() => this.overlay.alert({
       header: '应用程序已损坏',
       message: '即将重启以更新到新版本！',
       backdropDismiss: false,
@@ -109,12 +109,12 @@ export class Application {
     this.swUpdate.available.subscribe((event: UpdateAvailableEvent) => {
       console.log('current version is', event.current);
       console.log('available version is', event.available);
-      this.overlay.presentAlert({
+      this.overlay.alert({
         header: '新版本已就绪',
         message: '是否立即重启以更新到新版本？',
         backdropDismiss: false,
         confirmHandler: () => {
-          this.overlay.presentLoading('Installing…');
+          this.overlay.loading('Installing…');
           this.swUpdate.activateUpdate().then(() => this.location.reload());
         }
       })
@@ -128,7 +128,7 @@ export class Application {
     if ('Notification' in this.window) {
       const granted = 'granted';
       Notification.permission !== granted && Notification.requestPermission().then((permission: string) => {
-        permission === granted && this.overlay.presentToast('OnChat: 通知权限授权成功！');
+        permission === granted && this.overlay.toast('OnChat: 通知权限授权成功！');
       });
 
       this.swPush.notificationClicks.subscribe(event => {

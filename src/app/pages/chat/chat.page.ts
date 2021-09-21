@@ -256,14 +256,14 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     // 只有私聊才可改好友别名
     if (this.chatroomType !== ChatroomType.Private) { return; }
 
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '好友别名',
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['alias'] === this.chatroomName) { return; }
 
         this.friendService.setAlias(this.chatroomId, data['alias']).subscribe(({ code, data, msg }: Result<string>) => {
           this.chatroomName = data;
-          this.overlay.presentToast('成功修改好友别名！', 1000);
+          this.overlay.toast('成功修改好友别名！', 1000);
 
           const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === this.chatroomId);
           if (chatSession) {

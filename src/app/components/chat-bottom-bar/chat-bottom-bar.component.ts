@@ -171,7 +171,7 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
 
     const file = item.getAsFile();
 
-    this.imageService.isImage(file) && this.overlay.presentAlert({
+    this.imageService.isImage(file) && this.overlay.alert({
       header: '发送图片',
       message: '你确定要发送粘贴板中的图片吗？',
       cancelText: '原图发送',

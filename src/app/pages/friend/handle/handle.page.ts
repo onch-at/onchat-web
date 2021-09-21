@@ -70,7 +70,7 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   agree() {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestAgree(this.request.id, data['requesterAlias']);
@@ -88,7 +88,7 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   reject() {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestReject(this.request.id, data['rejectReason']);

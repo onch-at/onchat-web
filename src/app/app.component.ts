@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
           this.globalData.receiveFriendRequests.unshift(data);
         }
 
-        this.overlay.presentNotification({
+        this.overlay.notification({
           icon: data.requesterAvatarThumbnail,
           title: '收到好友申请',
           description: '用户 ' + data.requesterNickname + ' 申请添加你为好友',
@@ -90,7 +90,7 @@ export class AppComponent implements OnInit {
         // 去我收到的申请列表里面通过找这条FriendRequest，并删除
         this.globalData.receiveFriendRequests = receiveFriendRequests.filter(o => o.requesterId !== data.targetId);
 
-        this.overlay.presentNotification({
+        this.overlay.notification({
           icon: data.targetAvatarThumbnail,
           title: '好友申请已同意',
           description: '已和 ' + data.targetNickname + ' 成为好友',
@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
           request.status = FriendRequestStatus.Agree;
           request.targetReaded = true;
         }
-        this.overlay.presentToast('成功添加新好友！');
+        this.overlay.toast('成功添加新好友！');
       }
 
       // 更新一下聊天列表
@@ -130,7 +130,7 @@ export class AppComponent implements OnInit {
           this.globalData.sendFriendRequests.unshift(data);
         }
 
-        this.overlay.presentNotification({
+        this.overlay.notification({
           icon: data.targetAvatarThumbnail,
           title: '好友申请被拒绝',
           description: '用户 ' + data.targetNickname + ' 拒绝了你的好友申请',
@@ -145,7 +145,7 @@ export class AppComponent implements OnInit {
           this.globalData.receiveFriendRequests.unshift(data);
         }
 
-        this.overlay.presentToast('已拒绝该好友申请！');
+        this.overlay.toast('已拒绝该好友申请！');
       }
     });
 
@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
 
         // 并且不在同一个房间，就弹出通知
         if (data.chatroomId !== chatroomId || this.document.hidden) {
-          this.overlay.presentNotification({
+          this.overlay.notification({
             icon: chatSession ? chatSession.avatarThumbnail : data.avatarThumbnail,
             title: chatroomName,
             description: (chatroomName !== data.nickname ? data.nickname + '：' : '') + content,
@@ -243,7 +243,7 @@ export class AppComponent implements OnInit {
       const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
-        return this.overlay.presentToast('操作失败，原因：' + msg);
+        return this.overlay.toast('操作失败，原因：' + msg);
       }
 
       const [request, chatSession] = data;
@@ -253,7 +253,7 @@ export class AppComponent implements OnInit {
 
       // 如果是同意我入群
       if (chatSession.userId === user.id) {
-        this.overlay.presentNotification({
+        this.overlay.notification({
           icon: chatSession.avatarThumbnail,
           title: '聊天室申请加入成功',
           description: '你已加入 ' + chatSession.title,
@@ -279,7 +279,7 @@ export class AppComponent implements OnInit {
 
       // 如果我是处理人
       if (request.handlerId === user.id) {
-        this.overlay.presentToast('操作成功，已同意该申请！');
+        this.overlay.toast('操作成功，已同意该申请！');
         this.navCtrl.back();
       }
     });
@@ -289,7 +289,7 @@ export class AppComponent implements OnInit {
       const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
-        return this.overlay.presentToast('操作失败，原因：' + msg);
+        return this.overlay.toast('操作失败，原因：' + msg);
       }
 
       // 如果我是申请人，我被拒绝了
@@ -299,7 +299,7 @@ export class AppComponent implements OnInit {
           this.globalData.sendChatRequests[index] = data;
         }
 
-        this.overlay.presentNotification({
+        this.overlay.notification({
           icon: data.chatroomAvatarThumbnail,
           title: '聊天室申请加入失败',
           description: data.handlerNickname + ' 拒绝让你加入 ' + data.chatroomName,
@@ -313,7 +313,7 @@ export class AppComponent implements OnInit {
       if (index >= 0) {
         this.globalData.receiveChatRequests[index] = data;
       }
-      this.overlay.presentToast('操作成功，已拒绝该申请！');
+      this.overlay.toast('操作成功，已拒绝该申请！');
     });
 
     this.app.detectUpdate();

@@ -77,11 +77,11 @@ export class HomePage implements OnInit, OnDestroy {
       debounceTime(100)
     ).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
       if (code !== ResultCode.Success) {
-        return this.overlay.presentToast('申请失败，原因：' + msg);
+        return this.overlay.toast('申请失败，原因：' + msg);
       }
 
       if (data.requesterId === this.globalData.user.id) {
-        this.overlay.presentToast('入群申请已发出，等待管理员处理…');
+        this.overlay.toast('入群申请已发出，等待管理员处理…');
 
         const index = this.globalData.sendChatRequests.findIndex(o => o.id === data.id);
         if (index >= 0) {
@@ -99,7 +99,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   presentChatMemberList() {
-    this.overlay.presentModal({
+    this.overlay.modal({
       component: ChatMemberListComponent,
       componentProps: {
         chatMembers: this.members
@@ -110,7 +110,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   changeChatroomName() {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '聊天室名称',
       confirmHandler: (data: KeyValue<string, any>) => {
         const { id, name } = this.chatroom;
@@ -118,7 +118,7 @@ export class HomePage implements OnInit, OnDestroy {
 
         this.chatroomService.setName(id, data['name']).subscribe(() => {
           this.chatroom.name = data['name'];
-          this.overlay.presentToast('成功修改聊天室名称！', 1000);
+          this.overlay.toast('成功修改聊天室名称！', 1000);
           this.cacheService.revoke('/chatroom/' + id);
 
           const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === id);
@@ -142,7 +142,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   changeNickname() {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '我的昵称',
       confirmHandler: (data: KeyValue<string, any>) => {
         if (data['nickname'] === this.member.nickname) { return; }
@@ -151,7 +151,7 @@ export class HomePage implements OnInit, OnDestroy {
           const member = this.members.find(o => o.userId === this.globalData.user.id);
           member.nickname = data;
           this.member.nickname = data;
-          this.overlay.presentToast('成功修改我的昵称！', 1000);
+          this.overlay.toast('成功修改我的昵称！', 1000);
           this.cacheService.revoke('/chatroom/' + this.chatroom.id + '/members');
         });
       },
@@ -173,7 +173,7 @@ export class HomePage implements OnInit, OnDestroy {
    * 申请加入群聊
    */
   request() {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '申请加入',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.chatRequset(this.chatroom.id, StrUtil.trimAll(data['reason']).length ? data['reason'] : undefined);
@@ -208,7 +208,7 @@ export class HomePage implements OnInit, OnDestroy {
       })
     );
 
-    observable.subscribe(() => this.overlay.presentModal({
+    observable.subscribe(() => this.overlay.modal({
       component: ChatSessionSelectorComponent,
       componentProps: {
         title: '邀请好友',
@@ -218,7 +218,7 @@ export class HomePage implements OnInit, OnDestroy {
         handler: (data: ChatSessionCheckbox[]) => {
           const observable = this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
             switchMap(({ code, msg }: Result<number[]>) => {
-              this.overlay.presentToast(code === ResultCode.Success ? '邀请消息已发出！' : '邀请失败，原因：' + msg);
+              this.overlay.toast(code === ResultCode.Success ? '邀请消息已发出！' : '邀请失败，原因：' + msg);
               return of(null);
             })
           );
@@ -250,7 +250,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     // 如果是群主、管理员
     (this.isHost || this.isManager) && buttons.unshift({
-      text: '更换头像', handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.presentModal({
+      text: '更换头像', handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
@@ -270,7 +270,7 @@ export class HomePage implements OnInit, OnDestroy {
       }))
     });
 
-    this.overlay.presentActionSheet(buttons);
+    this.overlay.actionSheet(buttons);
   }
 
 }

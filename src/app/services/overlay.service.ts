@@ -36,9 +36,9 @@ export class Overlay {
    * 弹出消息通知
    * @param opts
    */
-  presentNotification(opts: NotificationOptions) {
+  notification(opts: NotificationOptions) {
     if (this.document.hidden) {
-      this.presentNativeNotification(opts);
+      this.nativeNotification(opts);
     } else {
       this.notificationCtrl.create(opts).present();
     }
@@ -48,7 +48,7 @@ export class Overlay {
    * 弹出原生通知
    * @param opts
    */
-  presentNativeNotification(opts: NotificationOptions) {
+  private nativeNotification(opts: NotificationOptions) {
     if ('Notification' in window && Notification.permission === 'granted') {
       const { title, description, icon, url } = opts;
       this.navigator.serviceWorker.ready.then((registration: ServiceWorkerRegistration) => registration.showNotification(title, {
@@ -69,7 +69,7 @@ export class Overlay {
    * Present Toast
    * @param message 文字
    */
-  async presentToast(message: string, duration: number = 2000): Promise<HTMLIonToastElement> {
+  async toast(message: string, duration: number = 2000): Promise<HTMLIonToastElement> {
     const toast = await this.toastCtrl.create({
       message,
       duration
@@ -83,7 +83,7 @@ export class Overlay {
    * Present Alert
    * @param opts 提示框参数
    */
-  async presentAlert(opts: AlertOptions) {
+  async alert(opts: AlertOptions) {
     const { header, message, confirmHandler, cancelHandler, inputs, backdropDismiss } = opts;
     const alert = await this.alertCtrl.create({
       header,
@@ -113,7 +113,7 @@ export class Overlay {
    * @param buttons 按钮组
    * @param header 标头文字
    */
-  async presentActionSheet(buttons: ActionSheetOptions['buttons'], header?: string): Promise<HTMLIonActionSheetElement> {
+  async actionSheet(buttons: ActionSheetOptions['buttons'], header?: string): Promise<HTMLIonActionSheetElement> {
     const actionSheet = await this.actionSheetCtrl.create({
       header,
       cssClass: 'ion-action-sheet',
@@ -129,7 +129,7 @@ export class Overlay {
    * Present Loading
    * @param message 文字
    */
-  async presentLoading(message: string = 'Loading…') {
+  async loading(message: string = 'Loading…') {
     const loading = await this.loadingCtrl.create({
       cssClass: 'ion-loading',
       spinner: 'crescent',
@@ -144,7 +144,7 @@ export class Overlay {
    * Present Modal
    * @param opts 选项
    */
-  async presentModal(opts: ModalOptions) {
+  async modal(opts: ModalOptions) {
     const modal = await this.modalCtrl.create(opts);
     await modal.present();
     return modal;
@@ -155,7 +155,7 @@ export class Overlay {
    * @param opts 选项
    * @returns
    */
-  async presentPopover(opts: PopoverOptions) {
+  async popover(opts: PopoverOptions) {
     const popover = await this.popoverCtrl.create(opts);
     popover.present();
     return popover;

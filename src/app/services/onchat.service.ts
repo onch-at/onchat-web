@@ -40,11 +40,11 @@ export class OnChatService {
 
     // 如果还没绑定邮箱
     // 因为之前有一批用户不需要绑定邮箱即可注册账号
-    !this.globalData.user?.email && environment.production && this.overlay.presentAlert({
+    !this.globalData.user?.email && environment.production && this.overlay.alert({
       header: '绑定电子邮箱',
       message: '绑定电子邮箱后方可继续使用',
       backdropDismiss: false,
-      confirmHandler: () => this.overlay.presentModal({
+      confirmHandler: () => this.overlay.modal({
         component: EmailBinderComponent
       }),
       cancelHandler: () => this.authService.logout().subscribe(() => {

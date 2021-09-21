@@ -53,7 +53,7 @@ export class ChatDrawerComponent {
   }
 
   editRichText() {
-    this.overlay.presentModal({
+    this.overlay.modal({
       component: RichTextEditorComponent,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl
@@ -77,7 +77,7 @@ export class ChatDrawerComponent {
         }
       }
 
-      this.overlay.presentAlert({
+      this.overlay.alert({
         header: '发送图片',
         message: '温馨提示：每次最多发送10张图片',
         cancelText: '原图发送',

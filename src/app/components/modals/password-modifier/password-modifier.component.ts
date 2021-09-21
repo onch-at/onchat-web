@@ -74,7 +74,7 @@ export class PasswordModifierComponent extends ModalComponent {
     this.userService.changePassword(new ChangePassword(oldPassword, newPassword)).pipe(
       finalize(() => this.loading = false)
     ).subscribe(() => {
-      this.overlay.presentToast('成功修改密码，请重新登录！', 1000);
+      this.overlay.toast('成功修改密码，请重新登录！', 1000);
       this.app.logout();
       this.dismiss();
     });

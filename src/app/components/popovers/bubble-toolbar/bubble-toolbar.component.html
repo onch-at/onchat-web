@@ -5,6 +5,12 @@
     复制
   </li>
 
+  <li *ngIf="msgItem.type === msgType.Text || msgItem.type === msgType.RichText" appRipple
+      class="bubble-toolbar-item dp-flex align-center justify-center flex-col" (tap)="copyText()">
+    <ion-icon class="dp-block" name="arrow-redo-outline"></ion-icon>
+    转发
+  </li>
+
   <li *ngIf="globalData?.user.id === msgItem.userId && now <= (msgItem.createTime + 120000)" appRipple
       class="bubble-toolbar-item dp-flex align-center justify-center flex-col" (tap)="revokeMessage()">
     <ion-icon class="dp-block" name="arrow-undo-outline"></ion-icon>

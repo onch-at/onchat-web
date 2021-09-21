@@ -67,7 +67,7 @@ export class EmailBinderComponent extends ModalComponent {
     if (ctrl.errors || this.countdownTimer) { return; }
 
     this.systemService.sendEmailCaptcha(ctrl.value).subscribe(() => {
-      this.overlay.presentToast('验证码发送至邮箱！');
+      this.overlay.toast('验证码发送至邮箱！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {
@@ -88,7 +88,7 @@ export class EmailBinderComponent extends ModalComponent {
     this.userService.bindEmail(email, captcha).pipe(
       finalize(() => this.loading = false)
     ).subscribe(({ data }: Result<string>) => {
-      this.overlay.presentToast('成功绑定电子邮箱！', 1000);
+      this.overlay.toast('成功绑定电子邮箱！', 1000);
 
       this.globalData.user.email = data;
       this.dismiss();

@@ -66,7 +66,7 @@ export class ImagePreviewerComponent extends ModalComponent implements AfterView
       buttons.unshift({ text: '保存图片', handler: () => SysUtil.downloadFile((item.data as ImageMessage).url) })
     }
 
-    this.overlay.presentActionSheet(buttons);
+    this.overlay.actionSheet(buttons);
   }
 
 }

@@ -27,7 +27,7 @@ export class NewComponent {
     event.preventDefault();
     event.stopPropagation();
 
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestAgree(id, data['requesterAlias']);
@@ -45,7 +45,7 @@ export class NewComponent {
   }
 
   reject(id: number) {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.friendRequestReject(id, data['rejectReason']);

@@ -19,7 +19,7 @@ export class SafetyPage {
   ) { }
 
   bindEmail() {
-    this.overlay.presentModal({
+    this.overlay.modal({
       component: EmailBinderComponent,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl
@@ -27,7 +27,7 @@ export class SafetyPage {
   }
 
   changePassword() {
-    this.overlay.presentModal({
+    this.overlay.modal({
       component: PasswordModifierComponent,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl

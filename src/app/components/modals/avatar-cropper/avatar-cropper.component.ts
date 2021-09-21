@@ -43,7 +43,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.ionLoading = this.overlay.presentLoading();
+    this.ionLoading = this.overlay.loading();
   }
 
   /**
@@ -59,7 +59,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
    */
   uploadImage() {
     SysUtil.selectFile('image/*').subscribe((event: SafeAny) => {
-      this.ionLoading = this.overlay.presentLoading();
+      this.ionLoading = this.overlay.loading();
       this.error = false;
       this.imageCropper.imageQuality = 90;
       this.imageChangedEvent = event;
@@ -79,7 +79,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
   async onLoadImageFailed() {
     this.error = true;
     (await this.ionLoading).dismiss();
-    this.overlay.presentToast('图像加载失败！');
+    this.overlay.toast('图像加载失败！');
   }
 
   async crop(): Promise<ImageCropData> {
@@ -167,7 +167,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
    * 提交
    */
   async submit() {
-    const loading = await this.overlay.presentLoading('Parsing…');
+    const loading = await this.overlay.loading('Parsing…');
 
     const { imageBlob, imageSrc } = await this.crop();
 
@@ -184,20 +184,20 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
       if (this.imageCropper.imageQuality >= 5) {
         this.imageCropper.imageQuality -= 5;
 
-        await this.overlay.presentToast('图片文件体积过大，正在尝试进一步压缩…');
+        await this.overlay.toast('图片文件体积过大，正在尝试进一步压缩…');
         return this.submit();
       }
 
-      return this.overlay.presentToast(`文件体积过大（${(size / 1048576).toFixed(2)} MB），仅接受体积为1MB以内的文件`);
+      return this.overlay.toast(`文件体积过大（${(size / 1048576).toFixed(2)} MB），仅接受体积为1MB以内的文件`);
     }
 
-    this.ionLoading = this.overlay.presentLoading('Uploading…');
+    this.ionLoading = this.overlay.loading('Uploading…');
 
     this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
       (await this.ionLoading).dismiss();
       this.handler(result);
       this.dismiss(imageSrc);
-      this.overlay.presentToast('头像上传成功！');
+      this.overlay.toast('头像上传成功！');
     });
   }
 

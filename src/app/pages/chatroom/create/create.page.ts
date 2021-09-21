@@ -94,13 +94,13 @@ export class CreatePage implements OnInit, OnDestroy {
       this.loading = false;
 
       if (code !== ResultCode.Success) {
-        return this.overlay.presentToast('聊天室创建失败，原因：' + msg);
+        return this.overlay.toast('聊天室创建失败，原因：' + msg);
       }
 
       this.globalData.chatSessions.push(data);
       this.globalData.sortChatSessions();
 
-      this.overlay.presentToast('聊天室创建成功！');
+      this.overlay.toast('聊天室创建成功！');
       // 得到邀请的好友的聊天室ID
       const chatroomIdList = this.getCheckedChatSessions().map(o => o.data.chatroomId);
       this.socketService.inviteJoinChatroom(data.data.chatroomId, chatroomIdList);

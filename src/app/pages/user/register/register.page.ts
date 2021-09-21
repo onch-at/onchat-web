@@ -114,7 +114,7 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
 
     const { username, password, email, captcha } = this.form.value;
     this.userService.register(new Register(username, password, email, captcha)).subscribe(({ data }: Result<User>) => {
-      this.overlay.presentToast('注册成功！即将跳转…', 1000);
+      this.overlay.toast('注册成功！即将跳转…', 1000);
       this.globalData.user = data;
       this.socketService.connect();
 
@@ -129,9 +129,9 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
     if (ctrl.errors || this.countdownTimer) { return; }
 
     this.systemService.sendEmailCaptcha(ctrl.value).subscribe(({ code }: Result<boolean>) => {
-      this.overlay.presentToast('验证码发送至邮箱！', 1000);
+      this.overlay.toast('验证码发送至邮箱！', 1000);
     }, () => {
-      this.overlay.presentToast('验证码发送失败！');
+      this.overlay.toast('验证码发送失败！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {

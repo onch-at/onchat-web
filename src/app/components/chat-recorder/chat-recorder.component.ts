@@ -78,7 +78,7 @@ export class ChatRecorderComponent implements OnDestroy {
     this.recorder.record().pipe(
       catchError((error: SafeAny) => {
         this.startTime = null;
-        this.overlay.presentToast('OnChat: 录音权限授权失败！');
+        this.overlay.toast('OnChat: 录音权限授权失败！');
         return throwError(error);
       }),
       tap(() => this.appStart.emit()),
@@ -94,7 +94,7 @@ export class ChatRecorderComponent implements OnDestroy {
           const time = Date.now() - this.startTime;
 
           if (time >= 55000) {
-            this.overlay.presentToast(`语音还可继续录制${Math.round((60000 - time) / 1000)}秒！`, 1000);
+            this.overlay.toast(`语音还可继续录制${Math.round((60000 - time) / 1000)}秒！`, 1000);
           }
 
           if (time >= 60000) {

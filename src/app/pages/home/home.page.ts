@@ -39,7 +39,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   presenHomeMenutPopover(event: Event) {
-    this.overlay.presentPopover({
+    this.overlay.popover({
       component: HomeMenuComponent,
       event: event,
       cssClass: 'home-menu-popover'

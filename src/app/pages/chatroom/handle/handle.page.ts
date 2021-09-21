@@ -34,7 +34,7 @@ export class HandlePage implements OnInit, OnDestroy {
       if (request) {
         this.request = request;
       } else {
-        this.overlay.presentToast('参数错误！');
+        this.overlay.toast('参数错误！');
         this.navCtrl.back();
       }
     });
@@ -56,7 +56,7 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   agree() {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '同意申请',
       message: '你确定同意该请求吗？',
       confirmHandler: () => this.socketService.chatRequsetAgree(this.request.id)
@@ -64,7 +64,7 @@ export class HandlePage implements OnInit, OnDestroy {
   }
 
   reject() {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.chatRequestReject(this.request.id, data['rejectReason'] || null);

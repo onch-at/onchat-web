@@ -69,7 +69,7 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
    * 提交
    */
   async submit() {
-    const loading = await this.overlay.presentLoading();
+    const loading = await this.overlay.loading();
     this.handler(this.checkedChatSessions).subscribe(() => {
       this.overlay.dismissModal();
       loading.dismiss();

@@ -163,7 +163,7 @@ export class SocketService {
     return this.socket.fromEvent(eventName).pipe(tap((data: SafeAny) => {
       switch (data?.code) {
         case ResultCode.AccessOverclock:
-          this.overlay.presentToast('OnChat：请求频率过高，请稍后再试');
+          this.overlay.toast('OnChat：请求频率过高，请稍后再试');
           break;
       }
     }));

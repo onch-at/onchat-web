@@ -60,10 +60,10 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
    */
   async send() {
     if (this.text.length > TEXT_MSG_MAX_LENGTH) {
-      return this.overlay.presentToast('字数超出上限！');
+      return this.overlay.toast('字数超出上限！');
     }
 
-    const loading = await this.overlay.presentLoading('Sending…');
+    const loading = await this.overlay.loading('Sending…');
     const { chatroomId, user, chatRichTextMap } = this.globalData;
     const msg = new MessageEntity(MessageType.RichText).inject(this.injector);
     msg.chatroomId = chatroomId;

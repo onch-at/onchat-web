@@ -42,7 +42,7 @@ export class AvatarPage implements OnInit {
       if (user) {
         this.user = user;
       } else {
-        this.overlay.presentToast('用户不存在！');
+        this.overlay.toast('用户不存在！');
         this.navCtrl.back();
       }
     });
@@ -62,7 +62,7 @@ export class AvatarPage implements OnInit {
     // 如果是自己的头像
     (this.user.id === this.globalData.user?.id) && buttons.unshift({
       text: '更换头像',
-      handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.presentModal({
+      handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
@@ -77,7 +77,7 @@ export class AvatarPage implements OnInit {
       }))
     });
 
-    this.overlay.presentActionSheet(buttons);
+    this.overlay.actionSheet(buttons);
   }
 
 }

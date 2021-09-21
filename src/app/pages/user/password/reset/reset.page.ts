@@ -87,9 +87,9 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
     if (this.countdownTimer) { return; }
 
     this.userService.sendEmailCaptchaByUsername(this.form.value.username).subscribe(() => {
-      this.overlay.presentToast('验证码发送至邮箱！', 1000);
+      this.overlay.toast('验证码发送至邮箱！', 1000);
     }, () => {
-      this.overlay.presentToast('验证码发送失败！');
+      this.overlay.toast('验证码发送失败！');
     });
 
     this.countdownTimer = this.window.setInterval(() => {
@@ -107,7 +107,7 @@ export class ResetPage implements ViewWillLeave, ViewWillEnter {
     const { username, password, captcha } = this.form.value;
 
     this.userService.resetPassword(new ResetPassword(username, password, captcha)).subscribe(() => {
-      this.overlay.presentToast('密码重置成功，请重新登录！', 1000);
+      this.overlay.toast('密码重置成功，请重新登录！', 1000);
 
       this.window.setTimeout(() => this.app.logout(), 500);
     });

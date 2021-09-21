@@ -21,7 +21,7 @@ export class ProfilePage {
   ) { }
 
   logout() {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '退出登录',
       message: ' 你确定要退出登录吗？',
       confirmHandler: () => this.authService.logout().subscribe(() => {

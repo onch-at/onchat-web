@@ -30,7 +30,7 @@ export class NoticeListComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '同意申请',
       message: '你确定同意该请求吗？',
       confirmHandler: () => this.socketService.chatRequsetAgree(requestId)
@@ -38,7 +38,7 @@ export class NoticeListComponent implements OnInit {
   }
 
   rejectChatRequest(requestId: number) {
-    this.overlay.presentAlert({
+    this.overlay.alert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
         this.socketService.chatRequestReject(requestId, data['rejectReason']);

@@ -34,7 +34,7 @@ export class HomePage implements OnInit {
       if (user) {
         this.user = user;
       } else {
-        this.overlay.presentToast('用户不存在！');
+        this.overlay.toast('用户不存在！');
         this.navCtrl.back();
       }
     });

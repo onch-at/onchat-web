@@ -36,7 +36,7 @@ export class RequestPage implements OnInit, OnDestroy {
         this.request = request;
         this.requestReason = this.request.requestReason;
       } else {
-        this.overlay.presentToast('参数错误！');
+        this.overlay.toast('参数错误！');
         this.navCtrl.back();
       }
     });
@@ -46,11 +46,11 @@ export class RequestPage implements OnInit, OnDestroy {
       debounceTime(100)
     ).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
       if (code !== ResultCode.Success) {
-        return this.overlay.presentToast('申请失败，原因：' + msg);
+        return this.overlay.toast('申请失败，原因：' + msg);
       }
 
       if (data.requesterId === this.globalData.user.id) {
-        this.overlay.presentToast('入群申请已发出，等待管理员处理…');
+        this.overlay.toast('入群申请已发出，等待管理员处理…');
 
         const index = this.globalData.sendChatRequests.findIndex(o => o.id === data.id);
         if (index >= 0) {

@@ -58,7 +58,7 @@ export class MessageListComponent {
 
     if (!msgItem.id) { return; }
 
-    const popover = await this.overlay.presentPopover({
+    const popover = await this.overlay.popover({
       component: BubbleToolbarComponent,
       componentProps: {
         element,
@@ -91,7 +91,7 @@ export class MessageListComponent {
     const data = this.data.filter(o => o.type === MessageType.Image);
     const index = data.findIndex(o => o === item);
 
-    this.overlay.presentModal({
+    this.overlay.modal({
       component: ImagePreviewerComponent,
       componentProps: {
         data: data,
