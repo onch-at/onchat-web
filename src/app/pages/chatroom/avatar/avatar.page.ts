@@ -4,7 +4,10 @@ import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
-import { SwiperOptions } from 'swiper';
+import Swiper, { Zoom } from 'swiper';
+import { ZoomOptions } from 'swiper/types';
+
+Swiper.use([Zoom]);
 
 @Component({
   selector: 'app-avatar',
@@ -14,14 +17,11 @@ import { SwiperOptions } from 'swiper';
 export class AvatarPage implements OnInit {
   /** 聊天室 */
   chatroom: Chatroom;
-  /** swiperjs options: https://swiperjs.com/api/ */
-  slideOpts: SwiperOptions = {
-    initialSlide: 0,
-    zoom: {
-      maxRatio: 3,
-      minRatio: 0.75,
-      toggle: true
-    }
+
+  zoom: ZoomOptions = {
+    maxRatio: 5,
+    minRatio: 0.75,
+    toggle: true
   };
 
   constructor(

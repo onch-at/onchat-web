@@ -29,7 +29,7 @@
     </app-message-list>
 
     <app-chat-bottom-bar #bottomBar class="dp-block" [ionContent]="ionContent" [replyMessage]="replyMessage"
-                         (msgpush)="onMessagePush($event)" (reply)="replyMessage = $event">
+                         [chatroomType]="chatroomType" (msgpush)="onMessagePush($event)" (reply)="replyMessage = $event">
     </app-chat-bottom-bar>
   </main>
 </ion-content>

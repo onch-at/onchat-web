@@ -86,12 +86,16 @@ export class Application {
     });
 
     // 连接失败时
-    this.socketService.on(SocketEvent.ReconnectError).subscribe(() => {
+    this.socketService.on(SocketEvent.ReconnectError).pipe(
+      filter(() => !this.document.hidden)
+    ).subscribe(() => {
       this.overlay.toast('OnChat: 服务器连接失败！');
     });
 
     // 重连成功时
-    this.socketService.on(SocketEvent.Reconnect).subscribe(() => {
+    this.socketService.on(SocketEvent.Reconnect).pipe(
+      filter(() => !this.document.hidden)
+    ).subscribe(() => {
       this.overlay.toast('OnChat: 与服务器重连成功！');
     });
   }

@@ -13,7 +13,8 @@ export class CacheInterceptor implements HttpInterceptor {
     if (!this.cacheService.isCachable(request)) {
       return next.handle(request);
     }
-    // 获取请求对应的缓存对象，若存在则直接返回该请求对象对应的缓存对象
+
+    // 缓存命中则直接返回
     const response = this.cacheService.get(request);
     if (response) { return of(response); }
 

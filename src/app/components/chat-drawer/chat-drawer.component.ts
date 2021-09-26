@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { IonRouterOutlet, IonSlides } from '@ionic/angular';
+import { IonRouterOutlet } from '@ionic/angular';
 import { SafeAny } from 'src/app/common/interface';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { MessageEntity } from 'src/app/entities/message.entity';
@@ -10,8 +10,11 @@ import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtil } from 'src/app/utils/sys.util';
-import { SwiperOptions } from 'swiper';
+import Swiper, { Pagination } from 'swiper';
+import { SwiperComponent } from 'swiper/angular';
 import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-editor.component';
+
+Swiper.use([Pagination]);
 
 @Component({
   selector: 'app-chat-drawer',
@@ -19,10 +22,11 @@ import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-ed
   styleUrls: ['./chat-drawer.component.scss'],
 })
 export class ChatDrawerComponent {
-  @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
-  @ViewChild(IonSlides, { static: true }) ionSlides: IonSlides;
+  get activeIndex() { return this.swiper.swiperRef.activeIndex };
 
-  slideOpts: SwiperOptions = { initialSlide: 1 };
+  @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
+
+  @ViewChild(SwiperComponent) swiper: SwiperComponent;
 
   constructor(
     private globalData: GlobalData,
@@ -33,12 +37,8 @@ export class ChatDrawerComponent {
     private injector: Injector,
   ) { }
 
-  setIndex(index: number, speed?: number) {
-    this.ionSlides.slideTo(index, speed);
-  }
-
-  getIndex() {
-    return this.ionSlides.getActiveIndex();
+  slideTo(index: number, speed?: number) {
+    this.swiper.swiperRef.slideTo(index, speed);
   }
 
   onVoiceOutput([voice, data]: [Blob, VoiceMessage]) {

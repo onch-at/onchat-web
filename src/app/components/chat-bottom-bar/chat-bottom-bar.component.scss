@@ -25,6 +25,7 @@
 .tips-btn {
   font-size: 0.8rem;
   line-height: 1.25em;
+  margin: 0 auto;
   padding: 0.3rem 0.75rem;
   border-radius: 1rem;
 
@@ -34,8 +35,9 @@
 }
 
 .reply-msg-tiles {
-  padding: 0.3rem;
-  background: rgba(var(--color-white-rgb), 0.75);
+  margin-left: auto;
+  padding: 0.375rem;
+  background: rgba(var(--color-light-rgb), 0.5);
   backdrop-filter: blur(15px) saturate(175%);
   border-radius: 1.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);

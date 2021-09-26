@@ -13,9 +13,11 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-slides [options]="slideOpts">
-    <ion-slide>
-      <img [src]="chatroom.avatar" (press)="onPress()">
-    </ion-slide>
-  </ion-slides>
+  <swiper class="swiper" [zoom]="zoom">
+    <ng-template swiperSlide>
+      <div class="swiper-zoom-container dp-flex align-center justify-center min-hg-full">
+        <img [src]="chatroom.avatar" (press)="onPress()">
+      </div>
+    </ng-template>
+  </swiper>
 </ion-content>

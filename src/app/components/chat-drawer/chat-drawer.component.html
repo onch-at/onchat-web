@@ -1,17 +1,21 @@
-<ion-slides [pager]="true" [options]="slideOpts">
-  <ion-slide>
-    <app-chat-recorder (appOutput)="onVoiceOutput($event)"></app-chat-recorder>
-  </ion-slide>
-
-  <ion-slide>
-    <div class="grid-container">
-      <button appRipple appActiveClass class="btn-white" (tap)="selectImage()">
-        <ion-icon name="image"></ion-icon>
-      </button>
-
-      <button appRipple appActiveClass class="btn-white" (tap)="editRichText()">
-        <ion-icon name="brush"></ion-icon>
-      </button>
+<swiper class="swiper" [initialSlide]="1" [pagination]="true">
+  <ng-template swiperSlide>
+    <div class="swiper-slide">
+      <app-chat-recorder (appOutput)="onVoiceOutput($event)"></app-chat-recorder>
     </div>
-  </ion-slide>
-</ion-slides>
+  </ng-template>
+
+  <ng-template swiperSlide>
+    <div class="swiper-slide">
+      <div class="grid-container">
+        <button appRipple appActiveClass class="btn-white" (tap)="selectImage()">
+          <ion-icon name="image"></ion-icon>
+        </button>
+
+        <button appRipple appActiveClass class="btn-white" (tap)="editRichText()">
+          <ion-icon name="brush"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</swiper>

@@ -4,7 +4,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constant';
 import { Throttle } from 'src/app/common/decorator';
-import { ResultCode, SocketEvent } from 'src/app/common/enum';
+import { ChatroomType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
@@ -28,13 +28,20 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
   private contentClientHeight: number;
   /** 抽屉容器可视高度 */
   private drawerClientHeight: number;
+  private _replyMessage: Message;
 
   readonly textMsgMaxLength: number = TEXT_MSG_MAX_LENGTH;
 
   /** 页面内容 */
   @Input() ionContent: IonContent;
   /** 回复的消息 */
-  @Input() replyMessage: Message;
+  @Input() set replyMessage(value: Message) {
+    this._replyMessage = value;
+    value && this.textarea.nativeElement.focus();
+  };
+  get replyMessage(): Message { return this._replyMessage };
+  /** 聊天室类型 */
+  @Input() chatroomType: ChatroomType;
 
   @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
   /** 进行回复 */
@@ -241,13 +248,11 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
   /**
    * 打开录音抽屉
    */
-  async record() {
-    const index = await this.drawer.getIndex();
-
-    if (this.showDrawer && index > 0) {
-      this.drawer.setIndex(0);
+  record() {
+    if (this.showDrawer && this.drawer.activeIndex > 0) {
+      this.drawer.slideTo(0);
     } else {
-      this.drawer.setIndex(0, 0);
+      this.drawer.slideTo(0, 0);
       this.showDrawer = !this.showDrawer;
     }
   }
@@ -262,13 +267,11 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
   /**
    * 显示/隐藏抽屉
    */
-  async toggleDrawer() {
-    const index = await this.drawer.getIndex();
-
-    if (this.showDrawer && index < 1) {
-      this.drawer.setIndex(1);
+  toggleDrawer() {
+    if (this.showDrawer && this.drawer.activeIndex < 1) {
+      this.drawer.slideTo(1);
     } else {
-      this.drawer.setIndex(1, 0);
+      this.drawer.slideTo(1, 0);
       this.showDrawer = !this.showDrawer;
     }
   }
