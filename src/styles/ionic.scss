@@ -1,4 +1,16 @@
-/* 覆盖Ionic的样式 */
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+/* Optional CSS utils that can be commented out */
+// @import "~@ionic/angular/css/padding.css";
+// @import "~@ionic/angular/css/float-elements.css";
+// @import "~@ionic/angular/css/text-alignment.css";
+// @import "~@ionic/angular/css/text-transformation.css";
+// @import "~@ionic/angular/css/flex-utils.css";
 
 ion-header {
     > ion-toolbar {
@@ -349,11 +361,6 @@ ion-progress-bar {
     .action-sheet-icon {
         font-size: 1.125rem !important;
     }
-}
-
-ion-slides.swiper-container {
-    --bullet-background-active: var(--color-primary);
-    --bullet-background: var(--color-primary);
 }
 
 // 警告框

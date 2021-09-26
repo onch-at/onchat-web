@@ -41,7 +41,9 @@
               "src/styles/base.scss",
               "src/styles/font.scss",
               "src/styles/atom.scss",
-              "src/styles/override.scss",
+              "src/styles/ionic.scss",
+              "src/styles/quill.scss",
+              "src/styles/swiper.scss",
               "src/styles/animation.scss",
               "src/styles/themes/original.scss"
             ],

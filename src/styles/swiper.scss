@@ -1,0 +1,7 @@
+@import "~swiper/scss";
+@import "~swiper/scss/zoom";
+@import "~swiper/scss/pagination";
+
+swiper {
+  --swiper-pagination-color: var(--color-primary);
+}
