@@ -6,7 +6,7 @@
 
   <div *ngIf="replyMessage" class="reply-msg-tiles dp-inline-flex align-center">
     <img [src]="replyMessage.avatarThumbnail">
-    <div class="flex-auto">[回复]{{ replyMessage | sender: chatroomType }}{{ replyMessage | messageDesc }}</div>
+    <div class="flex-auto">[回复] {{ replyMessage | sender: chatroomType }}{{ replyMessage | messageDesc }}</div>
     <ion-icon name="close-circle-outline" (click)="cancelReply()"></ion-icon>
   </div>
 </div>

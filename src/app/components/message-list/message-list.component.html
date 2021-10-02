@@ -22,8 +22,9 @@
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <!-- 回复消息 -->
             <blockquote *ngIf="item.replyId">
-              <ng-container *ngIf="item.reply">{{ item.reply.userId === globalData.user?.id ? '我' : item.reply.nickname }}: {{
-                item.reply | messageDesc }}</ng-container>
+              <ng-container *ngIf="item.reply">
+                {{ item.reply | sender: chatroomType }}{{ item.reply | messageDesc }}
+              </ng-container>
               <ng-container *ngIf="!item.reply">找不到被回复的消息</ng-container>
             </blockquote>
 

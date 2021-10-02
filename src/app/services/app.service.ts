@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { SwPush, SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
+import { SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
 import { filter, mergeMap } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enum';
 import { LOCATION, WINDOW } from '../common/token';
@@ -20,7 +20,6 @@ export class Application {
 
   constructor(
     private router: Router,
-    private swPush: SwPush,
     private swUpdate: SwUpdate,
     private overlay: Overlay,
     private globalData: GlobalData,
@@ -133,12 +132,6 @@ export class Application {
       const granted = 'granted';
       Notification.permission !== granted && Notification.requestPermission().then((permission: string) => {
         permission === granted && this.overlay.toast('OnChat: 通知权限授权成功！');
-      });
-
-      this.swPush.notificationClicks.subscribe(event => {
-        const { url } = event.notification.data;
-        this.router.navigateByUrl(url);
-        this.window.focus();
       });
     }
   }

@@ -34,23 +34,23 @@ export class Overlay {
 
   /**
    * 弹出消息通知
-   * @param opts
+   * @param options
    */
-  notification(opts: NotificationOptions) {
+  notification(options: NotificationOptions) {
     if (this.document.hidden) {
-      this.nativeNotification(opts);
+      this.nativeNotification(options);
     } else {
-      this.notificationCtrl.create(opts).present();
+      this.notificationCtrl.create(options).present();
     }
   }
 
   /**
    * 弹出原生通知
-   * @param opts
+   * @param options
    */
-  private nativeNotification(opts: NotificationOptions) {
+  private nativeNotification(options: NotificationOptions) {
     if ('Notification' in window && Notification.permission === 'granted') {
-      const { title, description, icon, url } = opts;
+      const { title, description, icon, url } = options;
       this.navigator.serviceWorker.ready.then((registration: ServiceWorkerRegistration) => registration.showNotification(title, {
         tag: title,
         body: description,
@@ -59,7 +59,9 @@ export class Overlay {
         requireInteraction: true,
         vibrate: [150, 75, 150],
         data: {
-          url
+          onActionClick: {
+            default: { operation: 'navigateLastFocusedOrOpen', url: url }
+          }
         }
       }));
     }
@@ -81,10 +83,10 @@ export class Overlay {
 
   /**
    * Present Alert
-   * @param opts 提示框参数
+   * @param options 提示框参数
    */
-  async alert(opts: AlertOptions) {
-    const { header, message, confirmHandler, cancelHandler, inputs, backdropDismiss } = opts;
+  async alert(options: AlertOptions) {
+    const { header, message, confirmHandler, cancelHandler, inputs, backdropDismiss } = options;
     const alert = await this.alertCtrl.create({
       header,
       message,
@@ -92,11 +94,11 @@ export class Overlay {
       inputs,
       buttons: [
         {
-          text: opts.cancelText || '取消',
+          text: options.cancelText || '取消',
           handler: data => cancelHandler?.(data)
         },
         {
-          text: opts.confirmText || '确认',
+          text: options.confirmText || '确认',
           handler: data => confirmHandler?.(data)
         }
       ]
@@ -142,21 +144,21 @@ export class Overlay {
 
   /**
    * Present Modal
-   * @param opts 选项
+   * @param options 选项
    */
-  async modal(opts: ModalOptions) {
-    const modal = await this.modalCtrl.create(opts);
+  async modal(options: ModalOptions) {
+    const modal = await this.modalCtrl.create(options);
     await modal.present();
     return modal;
   }
 
   /**
    * Present Popover
-   * @param opts 选项
+   * @param options 选项
    * @returns
    */
-  async popover(opts: PopoverOptions) {
-    const popover = await this.popoverCtrl.create(opts);
+  async popover(options: PopoverOptions) {
+    const popover = await this.popoverCtrl.create(options);
     popover.present();
     return popover;
   }
