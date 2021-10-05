@@ -3,8 +3,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, MessageType, ResultCode, SocketEvent } from './common/enum';
+import { RtcComponent } from './components/modals/rtc/rtc.component';
 import { RevokeMessageTipsMessage } from './models/msg.model';
-import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result } from './models/onchat.model';
+import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
 import { MessageDescPipe } from './pipes/message-desc.pipe';
 import { UserService } from './services/apis/user.service';
 import { Application } from './services/app.service';
@@ -315,6 +316,18 @@ export class AppComponent implements OnInit {
       }
       this.overlay.toast('操作成功，已拒绝该申请！');
     });
+
+    // 收到 RTC 请求
+    this.socketService.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall).pipe(
+      filter(({ code }) => code === ResultCode.Success),
+      filter(({ data: [_, target] }) => this.globalData.user.id === target.id),
+    ).subscribe(({ data: [requester] }) => this.overlay.modal({
+      component: RtcComponent,
+      componentProps: {
+        user: requester,
+        isRequester: false
+      }
+    }));
 
     this.app.detectUpdate();
     this.app.detectNavigation();

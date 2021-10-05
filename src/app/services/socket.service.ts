@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { share, tap } from 'rxjs/operators';
-import { ResultCode, SocketEvent } from '../common/enum';
+import { ResultCode, RtcDataType, SocketEvent } from '../common/enum';
 import { SafeAny } from '../common/interface';
 import { Message, Result } from '../models/onchat.model';
 import { Overlay } from './overlay.service';
@@ -144,6 +144,36 @@ export class SocketService {
       requestId,
       reason
     });
+  }
+
+  /**
+   * 发送 RTC 相关数据
+   * @param targetId
+   * @param type
+   * @param value
+   */
+  rtcData<T extends RTCSessionDescriptionInit | RTCIceCandidate>(targetId: number, type: RtcDataType, value: T) {
+    this.emit(SocketEvent.RtcData, {
+      targetId,
+      type,
+      value
+    });
+  }
+
+  /**
+   * RTC 呼叫
+   * @param chatroomId
+   */
+  rtcCall(chatroomId: number) {
+    this.emit(SocketEvent.RtcCall, { chatroomId });
+  }
+
+  /**
+   * RTC 挂断
+   * @param targetId
+   */
+  rtcHangUp(targetId: number) {
+    this.emit(SocketEvent.RtcHangUp, { targetId });
   }
 
   /**

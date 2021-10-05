@@ -1,0 +1,27 @@
+<ion-content [fullscreen]="true" [scrollY]="false">
+  <video #video class="bg-video" [poster]="user.avatar" (loadedmetadata)="onLoadedmetadata()"></video>
+
+  <main class="dp-flex flex-col min-hg-full align-center" [class.wait]="wait">
+    <ng-container *ngIf="wait">
+      <img class="avatar" [src]="user.avatar">
+      <h1 class="font-bold">{{ user.nickname }}</h1>
+      <div class="tips">正在向{{ isRequester ? ' Ta ' : '我' }}发起视频通话</div>
+    </ng-container>
+
+    <div class="flex-auto"></div>
+
+    <div class="bottom-bar dp-flex align-center justify-center min-wd-full">
+      <button appRipple appActiveClass class="hangup-btn btn-danger" (click)="hangUp()">
+        <ion-icon name="call"></ion-icon>
+      </button>
+
+      <ng-container *ngIf="!isRequester && wait">
+        <div class="flex-auto"></div>
+
+        <button appActiveClass class="call-btn btn-info" (click)="call()">
+          <ion-icon name="call"></ion-icon>
+        </button>
+      </ng-container>
+    </div>
+  </main>
+</ion-content>

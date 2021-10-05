@@ -15,8 +15,10 @@ import { SocketIoModule } from 'ngx-socket-io';
 import { environment as env } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RtcComponent } from './components/modals/rtc/rtc.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { ActiveClassModule } from './directives/active-class/active-class.module';
+import { RippleModule } from './directives/ripple/ripple.module';
 import { GlobalErrorHandler } from './handlers/global-error.handler';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { BaseInterceptor } from './interceptors/base.interceptor';
@@ -28,9 +30,11 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
 @NgModule({
   declarations: [
     AppComponent,
-    NotificationComponent
+    RtcComponent,
+    NotificationComponent,
   ],
   imports: [
+    RippleModule,
     SharedModule,
     ActiveClassModule,
     OverlayModule,

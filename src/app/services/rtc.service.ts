@@ -21,6 +21,10 @@ export class Rtc {
     this.pc = null;
   }
 
+  negotiationNeeded() {
+    return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'negotiationneeded');
+  }
+
   iceCandidate() {
     return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'icecandidate');
   }

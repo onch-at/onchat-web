@@ -15,6 +15,17 @@
         <button appRipple appActiveClass class="btn-white" (tap)="editRichText()">
           <ion-icon name="brush"></ion-icon>
         </button>
+
+        <!-- 只有私聊可以视频通话 -->
+        <ng-container *ngIf="chatroomType === chatroomTypes.Private">
+          <button appRipple appActiveClass class="btn-white">
+            <ion-icon name="call"></ion-icon>
+          </button>
+
+          <button appRipple appActiveClass class="btn-white" (tap)="rtc()">
+            <ion-icon name="videocam"></ion-icon>
+          </button>
+        </ng-container>
       </div>
     </div>
   </ng-template>

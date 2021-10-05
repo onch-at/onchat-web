@@ -1,18 +1,24 @@
-import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet } from '@ionic/angular';
+import { filter, mergeMap, take, tap } from 'rxjs/operators';
+import { ChatroomType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { SafeAny } from 'src/app/common/interface';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
+import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';
+import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
+import { SocketService } from 'src/app/services/socket.service';
 import { SysUtil } from 'src/app/utils/sys.util';
 import Swiper, { Pagination } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-editor.component';
+import { RtcComponent } from '../modals/rtc/rtc.component';
 
 Swiper.use([Pagination]);
 
@@ -23,18 +29,21 @@ Swiper.use([Pagination]);
 })
 export class ChatDrawerComponent {
   get activeIndex() { return this.swiper.swiperRef.activeIndex };
-
+  readonly chatroomTypes: typeof ChatroomType = ChatroomType;
+  /** 聊天室类型 */
+  @Input() chatroomType: ChatroomType;
   @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
-
   @ViewChild(SwiperComponent) swiper: SwiperComponent;
 
   constructor(
+    private overlay: Overlay,
+    private injector: Injector,
     private globalData: GlobalData,
     private sanitizer: DomSanitizer,
-    private overlay: Overlay,
+    private mediaDevice: MediaDevice,
     private imageService: ImageService,
+    private socketService: SocketService,
     private routerOutlet: IonRouterOutlet,
-    private injector: Injector,
   ) { }
 
   slideTo(index: number, speed?: number) {
@@ -85,6 +94,33 @@ export class ChatDrawerComponent {
         cancelHandler: () => handle(true),
         confirmHandler: () => handle(false)
       });
+    });
+  }
+
+  rtc() {
+    let mediaStream: MediaStream;
+    this.overlay.loading();
+
+    this.mediaDevice.getUserMedia({ video: true }).pipe(
+      tap(stream => {
+        mediaStream = stream;
+        this.socketService.rtcCall(this.globalData.chatroomId);
+      }),
+      mergeMap(() => this.socketService.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall)),
+      take(1),
+      filter(({ code }) => code === ResultCode.Success),
+      filter(({ data: [requester] }) => this.globalData.user.id === requester.id),
+    ).subscribe(({ data: [_, target] }) => {
+      this.overlay.modal({
+        component: RtcComponent,
+        componentProps: {
+          user: target,
+          isRequester: true,
+          mediaStream: mediaStream,
+        }
+      });
+
+      this.overlay.dismissLoading();
     });
   }
 

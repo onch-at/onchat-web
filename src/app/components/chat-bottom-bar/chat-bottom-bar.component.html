@@ -36,5 +36,5 @@
 
 <div #drawerContainer class="drawer-container clip"
      [style.height]="showDrawer ? (keyboardHeight ? keyboardHeight + 'px' : '17.5rem') : 0">
-  <app-chat-drawer (msgpush)="onMessagePush($event)"></app-chat-drawer>
+  <app-chat-drawer [chatroomType]="chatroomType" (msgpush)="onMessagePush($event)"></app-chat-drawer>
 </div>

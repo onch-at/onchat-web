@@ -1,0 +1,95 @@
+ion-content {
+  --background: #000;
+  height: 100vh;
+}
+
+.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  padding: 5rem 3rem calc(var(--ion-safe-area-bottom, 0) + 3rem);
+  transition: all ease-in-out 0.5s;
+
+  &.wait {
+    background: linear-gradient(to bottom, transparent, rgba(#000, 0.5));
+    backdrop-filter: blur(15px) saturate(175%);
+  }
+}
+
+.avatar {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 5rem;
+  border: 0.3rem solid rgba(#fff, 0.5);
+  object-fit: cover;
+}
+
+h1 {
+  color: #fff;
+  font-size: 1.25rem;
+  text-shadow: 0 0 0.5rem rgba(#000, 0.75);
+  margin: 1rem 0 1.25rem;
+}
+
+.tips {
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.15rem 0.75rem;
+  border-radius: 1rem;
+  background: rgba(#fff, 0.25);
+}
+
+.bottom-bar {
+  padding: 0 1rem;
+
+  > button {
+    font-size: 1.75rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+  }
+}
+
+.call-btn {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(var(--color-info-rgb), 0.75);
+    z-index: -1;
+    animation: wave 1.25s ease-out infinite;
+  }
+}
+
+.hangup-btn {
+  transform: rotate(135deg);
+}
+
+@keyframes wave {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.25);
+    opacity: 0;
+  }
+}

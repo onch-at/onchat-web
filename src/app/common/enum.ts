@@ -65,7 +65,19 @@ export enum SocketEvent {
   /** 同意加群申请 */
   ChatRequestAgree = 'chat_request_agree',
   /** 拒绝加群申请 */
-  ChatRequestReject = 'chat_request_reject'
+  ChatRequestReject = 'chat_request_reject',
+  /** RTC 呼叫 */
+  RtcCall = 'rtc_call',
+  /** RTC 相关数据 */
+  RtcData = 'rtc_data',
+  /** RTC 挂断 */
+  RtcHangUp = 'rtc_hang_up',
+}
+
+/** RTC 数据类型 */
+export enum RtcDataType {
+  IceCandidate,
+  Description
 }
 
 /** 枚举消息类型 */
