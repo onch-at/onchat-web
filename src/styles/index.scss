@@ -142,6 +142,24 @@
 }
 
 .btn-danger {
+  color: var(--color-white);
+  background-color: var(--color-danger);
+
+  &.active {
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-danger-rgb), 0.5);
+  }
+}
+
+.btn-info {
+  color: var(--color-white);
+  background-color: var(--color-info);
+
+  &.active {
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-info-rgb), 0.5);
+  }
+}
+
+.btn-txt-danger {
   color: var(--color-danger);
   background-color: var(--color-white);
 
@@ -155,7 +173,9 @@
 .btn-white,
 .btn-light,
 .btn-secondary,
-.btn-danger {
+.btn-info,
+.btn-danger,
+.btn-txt-danger {
   padding: 0;
   margin: 0;
 
@@ -170,9 +190,12 @@
 .ipt-primary,
 .btn-primary,
 .btn-ghost-primary,
+.btn-white,
+.btn-light,
 .btn-secondary,
+.btn-info,
 .btn-danger,
-.btn-light {
+.btn-txt-danger {
   box-shadow: none;
   transition: all 0.15s ease-in-out, box-shadow 0.25s ease-in;
 }

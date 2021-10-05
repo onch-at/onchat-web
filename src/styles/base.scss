@@ -15,7 +15,9 @@ body {
 }
 
 img,
-ion-img {
+ion-img::part(image) {
+    user-select: none;
+
     @media (prefers-color-scheme: dark) {
         filter: brightness(0.75);
     }
