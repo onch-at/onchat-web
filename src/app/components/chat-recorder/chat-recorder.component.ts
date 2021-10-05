@@ -78,7 +78,6 @@ export class ChatRecorderComponent implements OnDestroy {
     this.recorder.record().pipe(
       catchError((error: SafeAny) => {
         this.startTime = null;
-        this.overlay.toast('OnChat: 录音权限授权失败！');
         return throwError(error);
       }),
       tap(() => this.appStart.emit()),

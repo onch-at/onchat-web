@@ -1,8 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { from, fromEvent, merge, Observable, of, Subject } from 'rxjs';
-import { filter, mergeMap, take } from 'rxjs/operators';
-import { NAVIGATOR } from '../common/token';
+import { fromEvent, merge, Observable, of, Subject } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
+import { MediaDevice } from './media-device.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +26,8 @@ export class Recorder {
   }
 
   constructor(
+    private mediaDevice: MediaDevice,
     @Inject(DOCUMENT) private document: Document,
-    @Inject(NAVIGATOR) private navigator: Navigator
   ) {
     // 在页面隐藏的时候，关闭媒体流
     merge(
@@ -55,8 +55,8 @@ export class Recorder {
       return of(this.recorder);
     }
 
-    return from(this.navigator.mediaDevices.getUserMedia({ audio: true })).pipe(
-      mergeMap(stream => of(this.recorder = new MediaRecorder(stream)))
+    return this.mediaDevice.getUserMedia({ audio: true }).pipe(
+      map(stream => this.recorder = new MediaRecorder(stream))
     );
   }
 
