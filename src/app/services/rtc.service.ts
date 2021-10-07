@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class Rtc {
   private pc: RTCPeerConnection = null;
+  private stream: MediaStream = null;
 
   constructor() { }
 
@@ -19,6 +20,8 @@ export class Rtc {
   close() {
     this.pc?.close();
     this.pc = null;
+    this.stream?.getTracks().forEach(o => o.stop());
+    this.stream = null;
   }
 
   negotiationNeeded() {
@@ -34,6 +37,7 @@ export class Rtc {
   }
 
   setTrack(stream: MediaStream) {
+    this.stream = stream;
     stream.getTracks().forEach(track => this.pc.addTrack(track, stream));
   }
 

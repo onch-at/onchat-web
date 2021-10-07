@@ -5,6 +5,7 @@ import { filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators';
 import { ResultCode, RtcDataType, SocketEvent } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
 import { RtcData } from 'src/app/models/rtc.model';
+import { GlobalData } from 'src/app/services/global-data.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { Rtc } from 'src/app/services/rtc.service';
@@ -20,11 +21,13 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() isRequester: boolean;
   @Input() mediaStream?: MediaStream;
-  @ViewChild('video', { static: true }) video: ElementRef<HTMLVideoElement>;
+  @ViewChild('remoteVideo', { static: true }) remoteVideo: ElementRef<HTMLVideoElement>;
+  @ViewChild('localVideo', { static: true }) localVideo: ElementRef<HTMLVideoElement>;
 
   wait: boolean = true;
 
   constructor(
+    public globalData: GlobalData,
     private rtc: Rtc,
     private mediaDevice: MediaDevice,
     private socketService: SocketService,
@@ -50,13 +53,8 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     this.rtc.close();
   }
 
-  onLoadedmetadata() {
-    this.video.nativeElement.play();
-    this.wait = false;
-  }
-
   prepare() {
-    return (this.mediaStream ? of(this.mediaStream) : this.mediaDevice.getUserMedia({ video: true })).pipe(
+    return (this.mediaStream ? of(this.mediaStream) : this.mediaDevice.getUserMedia({ video: true, audio: true })).pipe(
       tap(stream => {
         this.rtc.create();
 
@@ -73,7 +71,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
             case RtcDataType.Description:
               this.rtc.setRemoteDescription(value as RTCSessionDescriptionInit);
 
-              this.isRequester && this.rtc.createAnswer({ offerToReceiveVideo: true }).subscribe(description => {
+              this.isRequester && this.rtc.createAnswer({ offerToReceiveVideo: true, offerToReceiveAudio: true }).subscribe(description => {
                 this.rtc.setLocalDescription(description);
                 // 让对方设置我的远程描述
                 this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
@@ -91,11 +89,13 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
 
         this.rtc.track().pipe(takeUntil(this.destroy$)).subscribe(({ streams }) => {
-          this.video.nativeElement.srcObject = streams[0];
+          this.remoteVideo.nativeElement.srcObject = streams[0];
           this.overlay.dismissLoading();
+          this.wait = false;
         });
 
         this.rtc.setTrack(stream);
+        this.localVideo.nativeElement.srcObject = stream;
       })
     );
   }
@@ -104,7 +104,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     this.overlay.loading();
     this.prepare().pipe(
       mergeMap(() => this.rtc.negotiationNeeded().pipe(takeUntil(this.destroy$))),
-      mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true }))
+      mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true }))
     ).subscribe(description => {
       this.rtc.setLocalDescription(description);
       // 让对方设置我的远程描述

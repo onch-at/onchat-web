@@ -37,6 +37,7 @@
     "rxjs": "^6.6.7",
     "swiper": "^7.0.6",
     "tslib": "^2.3.1",
+    "webrtc-adapter": "^8.1.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

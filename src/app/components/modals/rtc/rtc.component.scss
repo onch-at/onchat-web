@@ -3,13 +3,24 @@ ion-content {
   height: 100vh;
 }
 
-.bg-video {
+.remote-video {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   object-fit: cover;
+}
+
+.local-video {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 20vw;
+  height: 20vh;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
 }
 
 main {
@@ -20,7 +31,7 @@ main {
   height: 100%;
   z-index: 1;
   padding: 5rem 3rem calc(var(--ion-safe-area-bottom, 0) + 3rem);
-  transition: all ease-in-out 0.5s;
+  transition: all ease-in 0.5s;
 
   &.wait {
     background: linear-gradient(to bottom, transparent, rgba(#000, 0.5));

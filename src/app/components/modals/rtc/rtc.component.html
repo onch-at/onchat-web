@@ -1,5 +1,7 @@
 <ion-content [fullscreen]="true" [scrollY]="false">
-  <video #video class="bg-video" [poster]="user.avatar" (loadedmetadata)="onLoadedmetadata()"></video>
+  <video #remoteVideo class="remote-video" [poster]="user.avatar" autoplay playsinline></video>
+  <video #localVideo class="local-video clip" [poster]="globalData.user.avatarThumbnail" [hidden]="wait" muted autoplay
+         playsinline></video>
 
   <main class="dp-flex flex-col min-hg-full align-center" [class.wait]="wait">
     <ng-container *ngIf="wait">
