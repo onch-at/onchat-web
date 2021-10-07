@@ -7,8 +7,8 @@ ion-content {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -16,8 +16,8 @@ ion-content {
   position: fixed;
   top: 0.5rem;
   right: 0.5rem;
-  width: 20vw;
-  height: 20vh;
+  width: 20%;
+  height: 20%;
   border-radius: 0.75rem;
   object-fit: cover;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);

@@ -54,7 +54,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   }
 
   prepare() {
-    return (this.mediaStream ? of(this.mediaStream) : this.mediaDevice.getUserMedia({ video: true, audio: true })).pipe(
+    return (this.mediaStream ? of(this.mediaStream) : this.mediaDevice.getUserMedia({ video: true, audio: { echoCancellation: true } })).pipe(
       tap(stream => {
         this.rtc.create();
 
@@ -91,10 +91,10 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         this.rtc.track().pipe(takeUntil(this.destroy$)).subscribe(({ streams }) => {
           this.remoteVideo.nativeElement.srcObject = streams[0];
           this.overlay.dismissLoading();
-          this.wait = false;
         });
 
         this.rtc.setTrack(stream);
+        this.localVideo.nativeElement.volume = 0;
         this.localVideo.nativeElement.srcObject = stream;
       })
     );

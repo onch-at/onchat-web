@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true" [scrollY]="false">
-  <video #remoteVideo class="remote-video" [poster]="user.avatar" autoplay playsinline></video>
+  <video #remoteVideo class="remote-video" [poster]="user.avatar" autoplay playsinline (play)="wait = false"></video>
   <video #localVideo class="local-video clip" [poster]="globalData.user.avatarThumbnail" [hidden]="wait" muted autoplay
          playsinline></video>
 

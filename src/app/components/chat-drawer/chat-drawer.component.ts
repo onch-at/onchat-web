@@ -101,7 +101,7 @@ export class ChatDrawerComponent {
     let mediaStream: MediaStream;
     this.overlay.loading();
 
-    this.mediaDevice.getUserMedia({ video: true, audio: true }).pipe(
+    this.mediaDevice.getUserMedia({ video: true, audio: { echoCancellation: true } }).pipe(
       tap(stream => {
         mediaStream = stream;
         this.socketService.rtcCall(this.globalData.chatroomId);
