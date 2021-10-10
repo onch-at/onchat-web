@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Mood } from 'src/app/common/enum';
+import { Mood } from 'src/app/common/enums';
 
 @Component({
   selector: 'app-mood-icon',

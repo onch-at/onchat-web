@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { Gender, Mood } from 'src/app/common/enum';
+import { Gender, Mood } from 'src/app/common/enums';
 import { Result, User } from 'src/app/models/onchat.model';
 import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';

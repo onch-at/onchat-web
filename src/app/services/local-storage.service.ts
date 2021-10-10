@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { LocalStorageKey } from '../common/enum';
-import { STORAGE } from '../common/token';
+import { LocalStorageKey } from '../common/enums';
+import { STORAGE } from '../common/tokens';
 
 /** 本地存储服务 */
 @Injectable({

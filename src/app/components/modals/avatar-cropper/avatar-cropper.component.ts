@@ -3,7 +3,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
 import { Observable } from 'rxjs';
-import { SafeAny } from 'src/app/common/interface';
+import { SafeAny } from 'src/app/common/interfaces';
 import { Result } from 'src/app/models/onchat.model';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';

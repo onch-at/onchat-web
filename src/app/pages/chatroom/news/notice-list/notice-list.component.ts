@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ChatRequestStatus, ChatSessionType } from 'src/app/common/enum';
+import { ChatRequestStatus, ChatSessionType } from 'src/app/common/enums';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';

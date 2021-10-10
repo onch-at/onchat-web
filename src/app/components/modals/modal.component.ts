@@ -2,7 +2,7 @@ import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { SafeAny } from 'src/app/common/interface';
+import { SafeAny } from 'src/app/common/interfaces';
 import { Overlay } from 'src/app/services/overlay.service';
 
 /**

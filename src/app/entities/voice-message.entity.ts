@@ -1,4 +1,4 @@
-import { MessageType } from '../common/enum';
+import { MessageType } from '../common/enums';
 import { VoiceMessage } from '../models/msg.model';
 import { ChatRecordService } from '../services/apis/chat-record.service';
 import { MessageEntity } from './message.entity';

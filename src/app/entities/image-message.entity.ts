@@ -1,7 +1,7 @@
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { of } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { MessageType } from '../common/enum';
+import { MessageType } from '../common/enums';
 import { ImageMessage } from '../models/msg.model';
 import { Message, Result } from '../models/onchat.model';
 import { ChatRecordService } from '../services/apis/chat-record.service';

@@ -1,5 +1,5 @@
 import { ErrorHandler, Inject, Injectable } from '@angular/core';
-import { LOCATION } from '../common/token';
+import { LOCATION } from '../common/tokens';
 
 @Injectable({
   providedIn: 'root'

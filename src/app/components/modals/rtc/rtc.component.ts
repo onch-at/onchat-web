@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@ang
 import { Router } from '@angular/router';
 import { merge, of } from 'rxjs';
 import { filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators';
-import { AudioName, RtcDataType, SocketEvent } from 'src/app/common/enum';
+import { AudioName, RtcDataType, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
 import { Result, User } from 'src/app/models/onchat.model';
 import { RtcData } from 'src/app/models/rtc.model';

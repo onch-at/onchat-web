@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/f
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constant';
-import { Gender, Mood } from 'src/app/common/enum';
-import { ValidationFeedback } from 'src/app/common/interface';
+import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATURE_MIN_LENGTH, USERNAME_MAX_LENGTH } from 'src/app/common/constants';
+import { Gender, Mood } from 'src/app/common/enums';
+import { ValidationFeedback } from 'src/app/common/interfaces';
 import { AvatarCropperComponent, AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';

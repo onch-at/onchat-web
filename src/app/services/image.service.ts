@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { base64ToFile } from 'ngx-image-cropper';
 import { from, Observable } from 'rxjs';
-import { WINDOW } from '../common/token';
+import { WINDOW } from '../common/tokens';
 
 @Injectable({
   providedIn: 'root'

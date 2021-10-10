@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { ChatSessionType, LocalStorageKey } from '../common/enum';
-import { NAVIGATOR } from '../common/token';
+import { ChatSessionType, LocalStorageKey } from '../common/enums';
+import { NAVIGATOR } from '../common/tokens';
 import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
 import { EntityUtil } from '../utils/entity.util';
 import { LocalStorage } from './local-storage.service';

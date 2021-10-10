@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input } from '@angular/core';
-import { MessageType } from 'src/app/common/enum';
+import { MessageType } from 'src/app/common/enums';
 import { Message } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';

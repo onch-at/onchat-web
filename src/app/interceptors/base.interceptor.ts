@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ResultCode } from '../common/enum';
+import { ResultCode } from '../common/enums';
 import { Overlay } from '../services/overlay.service';
 
 @Injectable()

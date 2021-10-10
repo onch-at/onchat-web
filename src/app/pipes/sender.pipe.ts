@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ChatroomType, MessageType } from '../common/enum';
+import { ChatroomType, MessageType } from '../common/enums';
 import { Message } from '../models/onchat.model';
 import { GlobalData } from '../services/global-data.service';
 

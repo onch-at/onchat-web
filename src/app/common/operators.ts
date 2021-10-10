@@ -1,5 +1,5 @@
 import { filter } from 'rxjs/operators';
-import { ResultCode } from '../common/enum';
+import { ResultCode } from './enums';
 
 export function success<T>() {
   return filter<T>(({ code }: any) => code === ResultCode.Success);

@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { Throttle } from 'src/app/common/decorator';
-import { SafeAny } from 'src/app/common/interface';
-import { WINDOW } from 'src/app/common/token';
+import { Throttle } from 'src/app/common/decorators';
+import { SafeAny } from 'src/app/common/interfaces';
+import { WINDOW } from 'src/app/common/tokens';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';
 import { CssUtil } from 'src/app/utils/css.util';

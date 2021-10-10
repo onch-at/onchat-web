@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Mood } from '../common/enum';
+import { Mood } from '../common/enums';
 
 @Pipe({
   name: 'mood'

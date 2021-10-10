@@ -3,8 +3,8 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Inject, Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { NotificationOptions } from '../common/interface';
-import { WINDOW } from '../common/token';
+import { NotificationOptions } from '../common/interfaces';
+import { WINDOW } from '../common/tokens';
 import { NotificationComponent } from '../components/notification/notification.component';
 
 @Injectable({

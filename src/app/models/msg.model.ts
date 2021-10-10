@@ -1,4 +1,4 @@
-import { TipsType } from '../common/enum';
+import { TipsType } from '../common/enums';
 
 export type AnyMessage = TipsMessage | TextMessage | RichTextMessage | ChatInvitationMessage | ImageMessage | VoiceMessage;
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, Output, QueryList, ViewChildren } from '@angular/core';
-import { ChatMemberRole, ChatroomType, MessageType } from 'src/app/common/enum';
-import { WINDOW } from 'src/app/common/token';
+import { ChatMemberRole, ChatroomType, MessageType } from 'src/app/common/enums';
+import { WINDOW } from 'src/app/common/tokens';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';

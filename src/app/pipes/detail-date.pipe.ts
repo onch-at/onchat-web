@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Day, WeekDay } from '../common/enum';
+import { Day, WeekDay } from '../common/enums';
 import { DateUtil } from '../utils/date.util';
 
 @Pipe({

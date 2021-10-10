@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostListener, Inject, Input } from '@angular/core';
-import { Throttle } from 'src/app/common/decorator';
-import { WINDOW } from 'src/app/common/token';
+import { Throttle } from 'src/app/common/decorators';
+import { WINDOW } from 'src/app/common/tokens';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 

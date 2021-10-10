@@ -1,6 +1,6 @@
 import { Injector } from '@angular/core';
 import { filter, take } from 'rxjs/operators';
-import { ChatMemberRole, MessageType, ResultCode, SocketEvent } from '../common/enum';
+import { ChatMemberRole, MessageType, ResultCode, SocketEvent } from '../common/enums';
 import { AnyMessage } from '../models/msg.model';
 import { Message, Result } from '../models/onchat.model';
 import { SocketService } from '../services/socket.service';

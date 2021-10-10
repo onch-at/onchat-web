@@ -1,4 +1,4 @@
-import { RtcDataType } from '../common/enum';
+import { RtcDataType } from '../common/enums';
 
 export type RtcData = {
   senderId: number;

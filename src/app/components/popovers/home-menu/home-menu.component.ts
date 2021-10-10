@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SafeAny } from 'src/app/common/interface';
+import { SafeAny } from 'src/app/common/interfaces';
 import { Overlay } from 'src/app/services/overlay.service';
 
 @Component({

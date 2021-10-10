@@ -1,5 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, Inject, Renderer2 } from '@angular/core';
-import { WINDOW } from '../../common/token';
+import { WINDOW } from '../../common/tokens';
 
 /** 为宿主元素添加涟漪效果 */
 @Directive({

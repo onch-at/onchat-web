@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ChatRequestStatus } from 'src/app/common/enum';
+import { ChatRequestStatus } from 'src/app/common/enums';
 import { GlobalData } from 'src/app/services/global-data.service';
 
 @Component({

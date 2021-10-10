@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { AudioName } from '../common/enum';
-import { NAVIGATOR } from '../common/token';
+import { AudioName } from '../common/enums';
+import { NAVIGATOR } from '../common/tokens';
 
 /**
  * 反馈服务（音频，震动等）

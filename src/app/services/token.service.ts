@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageKey } from '../common/enum';
+import { LocalStorageKey } from '../common/enums';
 import { TokenFolder, TokenPayload } from '../models/onchat.model';
 import { LocalStorage } from './local-storage.service';
 

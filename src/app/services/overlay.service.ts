@@ -1,8 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { ActionSheetController, ActionSheetOptions, AlertController, LoadingController, ModalController, ModalOptions, PopoverController, PopoverOptions, ToastController } from '@ionic/angular';
-import { AlertOptions, NotificationOptions, SafeAny } from '../common/interface';
-import { NAVIGATOR } from '../common/token';
+import { AlertOptions, NotificationOptions, SafeAny } from '../common/interfaces';
+import { NAVIGATOR } from '../common/tokens';
 import { NotificationController } from '../controllers/notification.controller';
 import { GlobalData } from './global-data.service';
 

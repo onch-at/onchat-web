@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ChatMemberRole } from 'src/app/common/enum';
-import { WINDOW } from 'src/app/common/token';
+import { ChatMemberRole } from 'src/app/common/enums';
+import { WINDOW } from 'src/app/common/tokens';
 import { ChatMember } from 'src/app/models/onchat.model';
 import { Overlay } from 'src/app/services/overlay.service';
 import { CssUtil } from 'src/app/utils/css.util';

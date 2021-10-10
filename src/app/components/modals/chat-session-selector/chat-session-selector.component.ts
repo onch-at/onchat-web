@@ -1,8 +1,8 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ChatSessionCheckbox } from 'src/app/common/interface';
-import { WINDOW } from 'src/app/common/token';
+import { ChatSessionCheckbox } from 'src/app/common/interfaces';
+import { WINDOW } from 'src/app/common/tokens';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { CssUtil } from 'src/app/utils/css.util';

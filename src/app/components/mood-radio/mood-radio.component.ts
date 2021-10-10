@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Mood } from 'src/app/common/enum';
-import { SafeAny } from 'src/app/common/interface';
+import { Mood } from 'src/app/common/enums';
+import { SafeAny } from 'src/app/common/interfaces';
 
 @Component({
   selector: 'app-mood-radio',

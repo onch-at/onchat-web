@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { ViewWillEnter } from '@ionic/angular';
-import { WINDOW } from 'src/app/common/token';
+import { WINDOW } from 'src/app/common/tokens';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';

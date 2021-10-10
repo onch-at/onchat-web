@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Inject, Input, Renderer2 } from '@angular/core';
-import { WINDOW } from 'src/app/common/token';
+import { WINDOW } from 'src/app/common/tokens';
 
 /**
  * 在宿主元素被Active时（tap）添加一个CSS类名，并且在指定时间后移除

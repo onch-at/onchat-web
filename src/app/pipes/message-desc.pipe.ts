@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MessageType, TipsType } from '../common/enum';
+import { MessageType, TipsType } from '../common/enums';
 import { RichTextMessage, TextMessage, TipsMessage } from '../models/msg.model';
 import { Message } from '../models/onchat.model';
 

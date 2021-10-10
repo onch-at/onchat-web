@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize, share, switchMap, tap } from 'rxjs/operators';
-import { ResultCode } from '../common/enum';
+import { ResultCode } from '../common/enums';
 import { Result } from '../models/onchat.model';
 import { AuthService } from '../services/apis/auth.service';
 import { Application } from '../services/app.service';

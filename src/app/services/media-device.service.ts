@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { from, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { NAVIGATOR } from '../common/token';
+import { NAVIGATOR } from '../common/tokens';
 import { Overlay } from './overlay.service';
 
 @Injectable({

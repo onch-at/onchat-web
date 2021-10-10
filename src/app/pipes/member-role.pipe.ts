@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ChatMemberRole } from '../common/enum';
+import { ChatMemberRole } from '../common/enums';
 
 @Pipe({
   name: 'memberRole'
