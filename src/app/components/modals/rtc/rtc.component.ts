@@ -2,7 +2,8 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@ang
 import { Router } from '@angular/router';
 import { merge, of } from 'rxjs';
 import { filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators';
-import { AudioName, ResultCode, RtcDataType, SocketEvent } from 'src/app/common/enum';
+import { AudioName, RtcDataType, SocketEvent } from 'src/app/common/enum';
+import { success } from 'src/app/common/operators';
 import { Result, User } from 'src/app/models/onchat.model';
 import { RtcData } from 'src/app/models/rtc.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -76,7 +77,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
         this.socketService.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
           takeUntil(this.destroy$),
-          filter(({ code }) => code === ResultCode.Success),
+          success(),
           filter(({ data: { senderId } }) => senderId === this.user.id),
           map(({ data }) => data),
         ).subscribe(({ type, value }) => {

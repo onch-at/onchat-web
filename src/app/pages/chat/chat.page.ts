@@ -7,6 +7,7 @@ import { debounceTime, filter, finalize, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH } from 'src/app/common/constant';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enum';
 import { SafeAny } from 'src/app/common/interface';
+import { success } from 'src/app/common/operators';
 import { WINDOW } from 'src/app/common/token';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
@@ -139,7 +140,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     // 重连时，自动重发
     this.socketService.initialized.pipe(
       takeUntil(this.destroy$),
-      filter(({ code }: Result) => code === ResultCode.Success && this.msgList.some(o => o.loading)),
+      success(),
+      filter(() => this.msgList.some(o => o.loading)),
     ).subscribe(() => {
       this.msgList.filter(o => o.loading).forEach(o => {
         (o as MessageEntity).send();

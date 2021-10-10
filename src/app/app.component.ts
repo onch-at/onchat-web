@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, MessageType, ResultCode, SocketEvent } from './common/enum';
+import { success } from './common/operators';
 import { WINDOW } from './common/token';
 import { RtcComponent } from './components/modals/rtc/rtc.component';
 import { RevokeMessageTipsMessage } from './models/msg.model';
@@ -78,9 +79,7 @@ export class AppComponent implements OnInit {
     });
 
     // 同意好友申请/收到同意好友申请
-    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(
-      filter(({ code }: Result) => code === ResultCode.Success)
-    ).subscribe(({ data }: Result<AgreeFriendRequest>) => {
+    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(success()).subscribe(({ data }: Result<AgreeFriendRequest>) => {
       const { user, receiveFriendRequests } = this.globalData;
       // 如果申请人是自己（我发的好友申请被同意了）
       if (data.requesterId === user.id) {
@@ -120,9 +119,7 @@ export class AppComponent implements OnInit {
     });
 
     // 拒绝好友申请/收到拒绝好友申请
-    this.socketService.on(SocketEvent.FriendRequestReject).pipe(
-      filter(({ code }: Result) => code === ResultCode.Success)
-    ).subscribe(({ data }: Result<FriendRequest>) => {
+    this.socketService.on(SocketEvent.FriendRequestReject).pipe(success()).subscribe(({ data }: Result<FriendRequest>) => {
       const { user } = this.globalData;
       // 如果申请人是自己
       if (data.requesterId === user.id) {
@@ -153,9 +150,7 @@ export class AppComponent implements OnInit {
     });
 
     // 收到消息时
-    this.socketService.on(SocketEvent.Message).pipe(
-      filter(({ code }: Result) => code === ResultCode.Success)
-    ).subscribe(({ data }: Result<Message>) => {
+    this.socketService.on(SocketEvent.Message).pipe(success()).subscribe(({ data }: Result<Message>) => {
       const { chatroomId, user } = this.globalData;
       // 先去聊天列表缓存里面查，看看有没有这个房间的数据
       const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === data.chatroomId);
@@ -195,9 +190,7 @@ export class AppComponent implements OnInit {
     });
 
     // 撤回消息时
-    this.socketService.on(SocketEvent.RevokeMessage).pipe(
-      filter(({ code }: Result) => code === ResultCode.Success)
-    ).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
+    this.socketService.on(SocketEvent.RevokeMessage).pipe(success()).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
       const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === data.chatroomId);
       if (chatSession) {
@@ -321,7 +314,7 @@ export class AppComponent implements OnInit {
 
     // 收到 RTC 请求
     this.socketService.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall).pipe(
-      filter(({ code }) => code === ResultCode.Success),
+      success(),
       filter(({ data: [_, target] }) => this.globalData.user.id === target.id),
     ).subscribe(({ data: [requester] }) => {
       // 如果我已经在实时通信中，则告诉对方我忙线中

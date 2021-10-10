@@ -104,10 +104,10 @@
 
 .btn-ghost-primary {
   color: var(--color-primary);
-  background-color: rgba(var(--color-primary-rgb), 0.25);
+  background-color: rgba(var(--color-primary-rgb), 0.3);
 
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.125);
   }
 }
 

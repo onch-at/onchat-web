@@ -2,8 +2,9 @@ import { Component, EventEmitter, Injector, Input, Output, ViewChild } from '@an
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet } from '@ionic/angular';
 import { filter, mergeMap, take, tap } from 'rxjs/operators';
-import { ChatroomType, ResultCode, SocketEvent } from 'src/app/common/enum';
+import { ChatroomType, SocketEvent } from 'src/app/common/enum';
 import { SafeAny } from 'src/app/common/interface';
+import { success } from 'src/app/common/operators';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
@@ -108,7 +109,7 @@ export class ChatDrawerComponent {
       }),
       mergeMap(() => this.socketService.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall)),
       take(1),
-      filter(({ code }) => code === ResultCode.Success),
+      success(),
       filter(({ data: [requester] }) => this.globalData.user.id === requester.id),
     ).subscribe(({ data: [_, target] }) => {
       this.overlay.modal({
