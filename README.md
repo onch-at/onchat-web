@@ -5,12 +5,21 @@ You can [click here](https://github.com/HyperLife1119/OnChat) to view the OnChat
 
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
+OnChat currently supports the following chat modes:
+
+- Text Message
+- Rich text message
+- Picture message
+- Voice Message
+- Real-time video communication
+- Real-time audio communication (to be implemented)
+
 ## Features
 
 - ⚡️ **Lightning fast** - The server adopts [Swoole](https://www.swoole.co.uk/) programmatic server with asynchronous IO, coroutine and Fibers, with excellent performance.
 - ⛰ **Stable as Mount Tai** - The client is built using [Angular](https://angular.io/), which has better scalability, maintainability and stability.
 - ✨ **Small and exquisite** - There are no complicated functions and focus on online social chat.
-- 🌌 **Progressive** - Compared with ordinary Web App, PWA is faster, more powerful, more reliable and installable.
+- 🔼 **Progressive** - Compared with ordinary Web App, PWA is faster, more powerful, more reliable and installable.
 - 📲 **Mobile first** - The user interface is specifically designed for mobile devices, the interactive experience is good.
 
 ## Quick experience
