@@ -37,24 +37,42 @@ image-cropper::ng-deep {
         background: transparent !important;
     }
 
-    .source-image {
+    // TODO remove this
+    .rounded {
+        outline-color: transparent;
+
+        &:after {
+            border-radius: 100%;
+            box-shadow: 0 0 0 100vw rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 100vw (var(--cropper-outline-color, rgba(255, 255, 255, 0.3)));
+
+            @media (orientation: portrait) {
+                box-shadow: 0 0 0 100vh rgba(255, 255, 255, 0.3);
+                box-shadow: 0 0 0 100vh (var(--cropper-outline-color, rgba(255, 255, 255, 0.3)));
+            }
+        }
+
+        .ngx-ic-move {
+            border-radius: 100%;
+        }
+    }
+
+    .ngx-ic-source-image {
         background: #f0f0f0;
     }
 
-    .move {
+    .ngx-ic-move {
         border: 1px solid #fafafa !important;
     }
 
-    .cropper {
-        &::after {
-            border: none !important;
-            opacity: 0.5 !important;
-        }
+    .ngx-ic-cropper::after {
+        border: none !important;
+        opacity: 0.5 !important;
+    }
 
-        .resize {
-            padding: 10px !important;
-            opacity: 0 !important;
-        }
+    .ngx-ic-resize {
+        padding: 10px !important;
+        opacity: 0 !important;
     }
 }
 

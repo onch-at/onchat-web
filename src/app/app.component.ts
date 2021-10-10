@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { AudioName, ChatSessionType, FriendRequestStatus, MessageType, ResultCode, SocketEvent } from './common/enum';
+import { WINDOW } from './common/token';
 import { RtcComponent } from './components/modals/rtc/rtc.component';
 import { RevokeMessageTipsMessage } from './models/msg.model';
 import { AgreeFriendRequest, ChatRequest, ChatSession, FriendRequest, Message, Result, User } from './models/onchat.model';
@@ -34,7 +35,8 @@ export class AppComponent implements OnInit {
     private socketService: SocketService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window,
   ) { }
 
   ngOnInit() {
@@ -321,13 +323,22 @@ export class AppComponent implements OnInit {
     this.socketService.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall).pipe(
       filter(({ code }) => code === ResultCode.Success),
       filter(({ data: [_, target] }) => this.globalData.user.id === target.id),
-    ).subscribe(({ data: [requester] }) => this.overlay.modal({
-      component: RtcComponent,
-      componentProps: {
-        user: requester,
-        isRequester: false
+    ).subscribe(({ data: [requester] }) => {
+      // 如果我已经在实时通信中，则告诉对方我忙线中
+      if (this.globalData.rtcing) {
+        return this.window.setTimeout(() => {
+          this.socketService.rtcBusy(requester.id)
+        }, 3000);
       }
-    }));
+
+      this.overlay.modal({
+        component: RtcComponent,
+        componentProps: {
+          user: requester,
+          isRequester: false
+        }
+      });
+    });
 
     this.app.detectUpdate();
     this.app.detectNavigation();

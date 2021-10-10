@@ -22,12 +22,16 @@ export class FeedbackService {
     this.ringAudio.loop = true;
   }
 
-  audio(audio: AudioName) {
-    return {
+  audio(audioName: AudioName) {
+    const audio = {
       [AudioName.Boo]: this.booAudio,
       [AudioName.DingDeng]: this.dingDengAudio,
       [AudioName.Ring]: this.ringAudio,
-    }[audio];
+    }[audioName];
+
+    audio.currentTime = 0;
+
+    return audio;
   }
 
   /**

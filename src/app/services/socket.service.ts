@@ -177,11 +177,19 @@ export class SocketService {
   }
 
   /**
+   * RTC 繁忙
+   * @param targetId
+   */
+  rtcBusy(targetId: number) {
+    this.emit(SocketEvent.RtcBusy, { targetId });
+  }
+
+  /**
    * 发送事件
    * @param eventName 事件名
    * @param data 数据
    */
-  emit(eventName: string, data?: unknown) {
+  private emit(eventName: string, data?: unknown) {
     return this.socket.emit(eventName, data);
   }
 

@@ -1,10 +1,11 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { merge, of } from 'rxjs';
 import { filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators';
-import { ResultCode, RtcDataType, SocketEvent } from 'src/app/common/enum';
+import { AudioName, ResultCode, RtcDataType, SocketEvent } from 'src/app/common/enum';
 import { Result, User } from 'src/app/models/onchat.model';
 import { RtcData } from 'src/app/models/rtc.model';
+import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -18,6 +19,7 @@ import { ModalComponent } from '../modal.component';
   styleUrls: ['./rtc.component.scss'],
 })
 export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
+  /** 对方 */
   @Input() user: User;
   @Input() isRequester: boolean;
   @Input() mediaStream?: MediaStream;
@@ -31,6 +33,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     private rtc: Rtc,
     private mediaDevice: MediaDevice,
     private socketService: SocketService,
+    private feedbackService: FeedbackService,
     protected overlay: Overlay,
     protected router: Router,
   ) {
@@ -40,17 +43,30 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     super.ngOnInit();
 
-    this.socketService.on(SocketEvent.RtcHangUp).pipe(
-      takeUntil(this.destroy$)
+    merge(
+      this.socketService.on(SocketEvent.RtcHangUp),
+      this.socketService.on(SocketEvent.RtcBusy).pipe(
+        tap(({ data: { senderId } }) => (
+          senderId === this.user.id && this.overlay.toast('OnChat：对方正在忙线中，请稍后再试…')
+        ))
+      ),
+    ).pipe(
+      takeUntil(this.destroy$),
+      filter(({ data: { senderId } }) => senderId === this.user.id)
     ).subscribe(() => {
       this.dismiss();
     });
 
     this.isRequester && this.prepare().subscribe();
+
+    this.feedbackService.audio(AudioName.Ring).play();
+    this.globalData.rtcing = true;
   }
 
   ngOnDestroy() {
     this.rtc.close();
+    this.feedbackService.audio(AudioName.Ring).pause();
+    this.globalData.rtcing = false;
   }
 
   prepare() {
@@ -61,6 +77,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         this.socketService.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
           takeUntil(this.destroy$),
           filter(({ code }) => code === ResultCode.Success),
+          filter(({ data: { senderId } }) => senderId === this.user.id),
           map(({ data }) => data),
         ).subscribe(({ type, value }) => {
           switch (type) {
@@ -90,6 +107,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
         this.rtc.track().pipe(takeUntil(this.destroy$)).subscribe(({ streams }) => {
           this.remoteVideo.nativeElement.srcObject = streams[0];
+          this.feedbackService.audio(AudioName.Ring).pause();
           this.overlay.dismissLoading();
         });
 

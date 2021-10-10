@@ -79,6 +79,8 @@ export class GlobalData {
   receiveFriendRequests: FriendRequest[];
   /** 我的发起的好友申请列表 */
   sendFriendRequests: FriendRequest[];
+  /** 正在实时通信 */
+  rtcing: boolean = false;
   /** 是否可以销毁（返回上一页） */
   canDeactivate = true;
   /** 路由导航中 */

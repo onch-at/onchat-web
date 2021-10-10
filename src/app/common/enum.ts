@@ -72,6 +72,8 @@ export enum SocketEvent {
   RtcData = 'rtc_data',
   /** RTC 挂断 */
   RtcHangUp = 'rtc_hang_up',
+  /** RTC 繁忙 */
+  RtcBusy = 'rtc_busy',
 }
 
 /** RTC 数据类型 */
