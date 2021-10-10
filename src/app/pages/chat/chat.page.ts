@@ -98,9 +98,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
 
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.destroy$),
-      filter(({ code, data }: Result<Message>) => (
-        code === ResultCode.Success && data.chatroomId === this.chatroomId
-      )),
+      success(),
+      filter(({ data }: Result<Message>) => data.chatroomId === this.chatroomId),
       tap(({ data }: Result<Message>) => {
         // 如果不是自己发的消息
         if (data.userId !== this.globalData.user.id) {
@@ -125,9 +124,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
 
     this.socketService.on(SocketEvent.RevokeMessage).pipe(
       takeUntil(this.destroy$),
-      filter(({ code, data }: Result<{ chatroomId: number, msgId: number }>) => (
-        code === ResultCode.Success && data.chatroomId === this.chatroomId
-      ))
+      success(),
+      filter(({ data }: Result<{ chatroomId: number, msgId: number }>) => data.chatroomId === this.chatroomId)
     ).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
       const msg = this.msgList.find(o => o.id === data.msgId);
       if (msg) {

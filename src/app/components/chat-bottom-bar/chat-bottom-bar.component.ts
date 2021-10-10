@@ -4,7 +4,8 @@ import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constants';
 import { Throttle } from 'src/app/common/decorators';
-import { ChatroomType, ResultCode, SocketEvent } from 'src/app/common/enums';
+import { ChatroomType, SocketEvent } from 'src/app/common/enums';
+import { success } from 'src/app/common/operators';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
@@ -84,10 +85,9 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
     const { chatroomId, user } = this.globalData;
     this.socketService.on(SocketEvent.Message).pipe(
       takeUntil(this.destroy$),
-      filter(({ code, data }: Result<Message>) => (
-        // 如果是这个房间的，且不是我的消息
-        code === ResultCode.Success && data.chatroomId === chatroomId && data.userId !== user.id
-      )),
+      success(),
+      // 如果是这个房间的，且不是我的消息
+      filter(({ data }: Result<Message>) => data.chatroomId === chatroomId && data.userId !== user.id),
       filter(() => {
         const { scrollHeight, scrollTop, clientHeight } = this.contentElement;
         // scrollHeight - scrollTop - clientHeight 得到距离底部的高度

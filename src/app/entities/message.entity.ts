@@ -1,6 +1,7 @@
 import { Injector } from '@angular/core';
 import { filter, take } from 'rxjs/operators';
-import { ChatMemberRole, MessageType, ResultCode, SocketEvent } from '../common/enums';
+import { ChatMemberRole, MessageType, SocketEvent } from '../common/enums';
+import { success } from '../common/operators';
 import { AnyMessage } from '../models/msg.model';
 import { Message, Result } from '../models/onchat.model';
 import { SocketService } from '../services/socket.service';
@@ -46,9 +47,8 @@ export class MessageEntity implements Message {
     const socketService = this.injector.get(SocketService);
 
     socketService.on(SocketEvent.Message).pipe(
-      filter(({ code, data }: Result<Message>) => (
-        code === ResultCode.Success && this.isSelf(data)
-      )),
+      success(),
+      filter(({ data }: Result<Message>) => this.isSelf(data)),
       take(1)
     ).subscribe((result: Result<Message>) => {
       const { avatarThumbnail, data, ...msg } = result.data;

@@ -4,7 +4,8 @@ import { ContentChange } from 'ngx-quill';
 import { filter, take } from 'rxjs/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constants';
 import { Throttle } from 'src/app/common/decorators';
-import { MessageType, ResultCode, SocketEvent } from 'src/app/common/enums';
+import { MessageType, SocketEvent } from 'src/app/common/enums';
+import { success } from 'src/app/common/operators';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RichTextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
@@ -75,9 +76,8 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
     loading.dismiss();
 
     this.socketService.on(SocketEvent.Message).pipe(
-      filter(({ code, data }: Result<Message>) => (
-        code === ResultCode.Success && msg.isSelf(data)
-      )),
+      success(),
+      filter(({ data }: Result<Message>) => msg.isSelf(data)),
       take(1)
     ).subscribe(() => {
       chatRichTextMap[chatroomId] = null;

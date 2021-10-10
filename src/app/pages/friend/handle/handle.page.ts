@@ -3,11 +3,12 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constants';
-import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enums';
+import { FriendRequestStatus, SocketEvent } from 'src/app/common/enums';
+import { success } from 'src/app/common/operators';
 import { WINDOW } from 'src/app/common/tokens';
-import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
+import { AgreeFriendRequest, FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -41,16 +42,20 @@ export class HandlePage implements OnInit, OnDestroy {
       this.request = request.data;
     });
 
-    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(takeUntil(this.destroy$)).subscribe(({ code, data }: Result<any>) => {
-      if (code === ResultCode.Success && data.requesterId === this.user.id) {
-        this.window.setTimeout(() => this.navCtrl.back(), 250);
-      }
+    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(
+      takeUntil(this.destroy$),
+      success(),
+      filter(({ data }: Result<AgreeFriendRequest>) => data.requesterId === this.user.id)
+    ).subscribe(() => {
+      this.window.setTimeout(() => this.navCtrl.back(), 250);
     });
 
-    this.socketService.on(SocketEvent.FriendRequestReject).pipe(takeUntil(this.destroy$)).subscribe(({ code, data }: Result<FriendRequest>) => {
-      if (code === ResultCode.Success && data.requesterId === this.user.id) {
-        this.window.setTimeout(() => this.navCtrl.back(), 250);
-      }
+    this.socketService.on(SocketEvent.FriendRequestReject).pipe(
+      takeUntil(this.destroy$),
+      success(),
+      filter(({ data }: Result<FriendRequest>) => data.requesterId === this.user.id)
+    ).subscribe(() => {
+      this.window.setTimeout(() => this.navCtrl.back(), 250);
     });
 
     // 如果未读，则设置为已读

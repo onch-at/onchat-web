@@ -5,7 +5,8 @@ import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { REASON_MAX_LENGTH } from 'src/app/common/constants';
-import { ChatRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enums';
+import { ChatRequestStatus, SocketEvent } from 'src/app/common/enums';
+import { success } from 'src/app/common/operators';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -41,10 +42,9 @@ export class HandlePage implements OnInit, OnDestroy {
 
     this.socketService.on(SocketEvent.ChatRequestReject).pipe(
       takeUntil(this.destroy$),
-      filter(({ code, data }: Result<ChatRequest>) => (
-        // 操作成功,并且处理人是我
-        code === ResultCode.Success && data.handlerId === this.globalData.user.id
-      ))
+      success(),
+      // 操作成功,并且处理人是我
+      filter(({ data }: Result<ChatRequest>) => data.handlerId === this.globalData.user.id)
     ).subscribe(({ data }: Result<ChatRequest>) => {
       this.request = data;
     });

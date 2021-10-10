@@ -2,9 +2,10 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/common/constants';
 import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enums';
+import { success } from 'src/app/common/operators';
 import { WINDOW } from 'src/app/common/tokens';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { FriendService } from 'src/app/services/apis/friend.service';
@@ -67,13 +68,15 @@ export class RequestPage implements OnInit, OnDestroy {
     this.socketService.on(SocketEvent.FriendRequest).pipe(
       takeUntil(this.destroy$),
       debounceTime(100),
+      tap(({ code, msg }: Result<FriendRequest | FriendRequest[]>) => {
+        this.overlay.toast(code === ResultCode.Success ? '好友申请已发出，等待对方验证…' : msg)
+      }),
+      success(),
       filter(({ data }: Result<FriendRequest | FriendRequest[]>) => (
         !Array.isArray(data) && data.requesterId === this.globalData.user.id && data.targetId === this.user.id
-      ))
-    ).subscribe(({ code, msg }: Result<FriendRequest | FriendRequest[]>) => {
-      this.overlay.toast(code === ResultCode.Success ? '好友申请已发出，等待对方验证…' : msg);
-
-      code === ResultCode.Success && this.window.setTimeout(() => {
+      )),
+    ).subscribe(() => {
+      this.window.setTimeout(() => {
         this.navCtrl.back();
       }, 250);
     });
