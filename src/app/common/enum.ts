@@ -188,6 +188,7 @@ export enum Gender {
 
 /** 枚举音频 */
 export enum AudioName {
-  Boo = 0,
-  DingDeng = 1
+  Boo,
+  DingDeng,
+  Ring
 }

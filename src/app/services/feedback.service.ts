@@ -13,16 +13,21 @@ export class FeedbackService {
   private booAudio: HTMLAudioElement = new Audio('/assets/audios/boo.mp3');
   /** 提示音：叮噔 */
   private dingDengAudio: HTMLAudioElement = new Audio('/assets/audios/ding-deng.mp3');
+  /** 铃声 */
+  private ringAudio: HTMLAudioElement = new Audio('/assets/audios/ring.mp3');
 
   constructor(
     @Inject(NAVIGATOR) private navigator: Navigator
-  ) { }
+  ) {
+    this.ringAudio.loop = true;
+  }
 
-  playAudio(audio: AudioName) {
+  audio(audio: AudioName) {
     return {
       [AudioName.Boo]: this.booAudio,
       [AudioName.DingDeng]: this.dingDengAudio,
-    }[audio].play();
+      [AudioName.Ring]: this.ringAudio,
+    }[audio];
   }
 
   /**

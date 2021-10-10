@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
           description: '用户 ' + data.requesterNickname + ' 申请添加你为好友',
           url: '/friend/handle/' + data.requesterId
         });
-        this.feedbackService.playAudio(AudioName.DingDeng);
+        this.feedbackService.audio(AudioName.DingDeng).play();
       } else if (data.requesterId === user.id) {
         const index = this.globalData.sendFriendRequests.findIndex(o => o.id === data.id);
         // 如果这条好友申请已经在列表里
@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
           description: '已和 ' + data.targetNickname + ' 成为好友',
           url: '/chat/' + data.chatroomId
         });
-        this.feedbackService.playAudio(AudioName.Boo);
+        this.feedbackService.audio(AudioName.Boo).play();
       } else if (data.targetId === user.id) { // 如果自己是被申请人
         const request = this.globalData.receiveFriendRequests.find(o => o.id === data.friendRequestId);
         if (request) {
@@ -137,7 +137,7 @@ export class AppComponent implements OnInit {
           description: '用户 ' + data.targetNickname + ' 拒绝了你的好友申请',
           url: '/friend/request/' + data.targetId
         });
-        this.feedbackService.playAudio(AudioName.DingDeng);
+        this.feedbackService.audio(AudioName.DingDeng).play();
       } else if (data.targetId === user.id) { // 如果自己是被申请人
         const index = this.globalData.receiveFriendRequests.findIndex(o => o.id === data.id);
         if (index >= 0) {
@@ -173,7 +173,7 @@ export class AppComponent implements OnInit {
           });
         }
 
-        this.feedbackService.playAudio(AudioName.Boo);
+        this.feedbackService.audio(AudioName.Boo).play();
       }
 
       if (chatSession) {
@@ -221,7 +221,7 @@ export class AppComponent implements OnInit {
       // 如果列表里没有聊天室通知会话,就需要重新拉取
       if (!chatSession) {
         return this.onChatService.initChatSession().subscribe(() => {
-          this.feedbackService.playAudio(AudioName.Boo);
+          this.feedbackService.audio(AudioName.Boo).play();
         });
       }
 
@@ -232,7 +232,7 @@ export class AppComponent implements OnInit {
         this.globalData.sortReceiveChatRequests();
       } else {
         this.globalData.receiveChatRequests.unshift(data);
-        this.feedbackService.playAudio(AudioName.Boo);
+        this.feedbackService.audio(AudioName.Boo).play();
       }
 
       chatSession.updateTime = Date.now();
@@ -261,7 +261,7 @@ export class AppComponent implements OnInit {
           url: '/chatroom/' + chatSession.data.chatroomId
         });
 
-        this.feedbackService.playAudio(AudioName.Boo);
+        this.feedbackService.audio(AudioName.Boo).play();
 
         const index = this.globalData.sendChatRequests.findIndex(o => o.id === request.id);
         if (index >= 0) {
@@ -306,7 +306,7 @@ export class AppComponent implements OnInit {
           description: data.handlerNickname + ' 拒绝让你加入 ' + data.chatroomName,
           url: '/chatroom/request/' + data.id
         });
-        return this.feedbackService.playAudio(AudioName.Boo);
+        return this.feedbackService.audio(AudioName.Boo).play();
       }
 
       // 如果处理人是我自己
