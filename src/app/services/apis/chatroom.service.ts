@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-cropper.component';
 import { ChatMember, Chatroom, Result } from 'src/app/models/onchat.model';
 import { environment } from '../../../environments/environment';
-import { CacheService } from '../cache.service';
+import { CacheService, HTTP_CACHE_TOKEN } from '../cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,9 @@ export class ChatroomService {
    * @param id 聊天室ID
    */
   getChatroom(id: number): Observable<Result<Chatroom>> {
-    return this.http.get<Result<Chatroom>>(environment.chatroomUrl + id, { headers: this.cacheService.cacheHeader(600000) });
+    return this.http.get<Result<Chatroom>>(environment.chatroomUrl + id, {
+      context: new HttpContext().set(HTTP_CACHE_TOKEN, 600000)
+    });
   }
 
   /**
@@ -37,7 +39,9 @@ export class ChatroomService {
    * @param id 聊天室ID
    */
   getChatMembers(id: number): Observable<Result<ChatMember[]>> {
-    return this.http.get<Result<ChatMember[]>>(environment.chatroomUrl + id + '/members', { headers: this.cacheService.cacheHeader(600000) });
+    return this.http.get<Result<ChatMember[]>>(environment.chatroomUrl + id + '/members', {
+      context: new HttpContext().set(HTTP_CACHE_TOKEN, 600000)
+    });
   }
 
   /**

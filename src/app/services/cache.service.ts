@@ -1,12 +1,15 @@
-import { HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpContextToken, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CacheEntry } from '../models/cache.model';
+
+/** 缓存令牌，值为缓存时间，单位毫秒 */
+export const HTTP_CACHE_TOKEN = new HttpContextToken(() => 0);
 
 @Injectable({
   providedIn: 'root'
 })
 export class CacheService {
-  private cacheMap = new Map<string, CacheEntry>();
+  private cacheMap: Map<string, CacheEntry> = new Map<string, CacheEntry>();
 
   constructor() { }
 
@@ -19,8 +22,7 @@ export class CacheService {
     const entry = this.cacheMap.get(request.urlWithParams);
     if (!entry) { return null; }
     // 若缓存命中，则判断缓存是否过期，若已过期则返回null。否则返回请求对应的响应对象
-    const isExpired = Date.now() > entry.expire;
-    return isExpired ? null : entry.response;
+    return Date.now() > entry.expire ? null : entry.response;
   }
 
   /**
@@ -29,15 +31,19 @@ export class CacheService {
    * @param response
    */
   put(request: HttpRequest<unknown>, response: HttpResponse<unknown>): void {
-    // 创建CacheEntry对象
     const entry: CacheEntry = {
       url: request.urlWithParams,
       response: response,
-      expire: Date.now() + +request.headers.get('Client-Cache')
+      expire: Date.now() + request.context.get(HTTP_CACHE_TOKEN)
     };
     // 以请求url作为键，CacheEntry对象为值，保存到cacheMap中
     this.cacheMap.set(entry.url, entry);
-    this.deleteExpiredCache();
+
+    for (const [key, entry] of this.cacheMap) {
+      if (Date.now() > entry.expire) {
+        this.cacheMap.delete(key);
+      }
+    }
   }
 
   /**
@@ -48,29 +54,6 @@ export class CacheService {
     for (const key of this.cacheMap.keys()) {
       if (mark instanceof RegExp ? mark.test(key) : key.includes(mark)) {
         return this.cacheMap.delete(key);
-      }
-    }
-  }
-
-  /**
-   * 判断当前请求是否可缓存
-   * @param request
-   */
-  isCachable(request: HttpRequest<any>) {
-    return request.headers.has('Client-Cache');
-  }
-
-  cacheHeader(cacheTime: number) {
-    return new HttpHeaders({ 'Client-Cache': cacheTime.toString() });
-  }
-
-  /**
-   * 删除过期缓存
-   */
-  private deleteExpiredCache() {
-    for (const [key, entry] of this.cacheMap) {
-      if (Date.now() > entry.expire) {
-        this.cacheMap.delete(key);
       }
     }
   }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -6,7 +6,7 @@ import { AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-crop
 import { ChangePassword, Login, Register, ResetPassword, UserInfo } from 'src/app/models/form.model';
 import { ChatSession, Result, TokenFolder, User } from 'src/app/models/onchat.model';
 import { environment } from 'src/environments/environment';
-import { CacheService } from '../cache.service';
+import { CacheService, HTTP_CACHE_TOKEN } from '../cache.service';
 import { TokenService } from '../token.service';
 
 @Injectable({
@@ -101,7 +101,9 @@ export class UserService {
    * @param userId 用户ID
    */
   getUser(userId: number): Observable<Result<User>> {
-    return this.http.get<Result<User>>(environment.userUrl + userId, { headers: this.cacheService.cacheHeader(600000) });
+    return this.http.get<Result<User>>(environment.userUrl + userId, {
+      context: new HttpContext().set(HTTP_CACHE_TOKEN, 600000)
+    });
   }
 
   /**

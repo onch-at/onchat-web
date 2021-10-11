@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Result } from 'src/app/models/onchat.model';
 import { environment } from 'src/environments/environment';
-import { CacheService } from '../cache.service';
+import { CacheService, HTTP_CACHE_TOKEN } from '../cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class IndexService {
   checkUsername(username: string): Observable<Result<boolean>> {
     return this.http.get<Result<boolean>>(environment.indexUrl + 'checkusername', {
       params: { username },
-      headers: this.cacheService.cacheHeader(5000)
+      context: new HttpContext().set(HTTP_CACHE_TOKEN, 5000)
     });
   }
 
@@ -41,7 +41,7 @@ export class IndexService {
   checkEmail(email: string): Observable<Result<boolean>> {
     return this.http.get<Result<boolean>>(environment.indexUrl + 'checkemail', {
       params: { email },
-      headers: this.cacheService.cacheHeader(5000)
+      context: new HttpContext().set(HTTP_CACHE_TOKEN, 5000)
     });
   }
 }
