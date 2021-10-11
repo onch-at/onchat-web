@@ -11,30 +11,32 @@ import { NotificationComponent } from '../components/notification/notification.c
   providedIn: 'root'
 })
 export class NotificationController {
-  private overlayConfig = new OverlayConfig();
+  private overlayConfig: OverlayConfig;
   private overlayRef: OverlayRef;
   private componentRef: ComponentRef<NotificationComponent>;
-
-  option: NotificationOptions;
   /** 通知关闭计时器 */
   private dismissTimeout: number;
   /** 一个订阅器 */
   private subscription: Subscription;
 
+  options: NotificationOptions;
+
   constructor(
     private overlay: Overlay,
     @Inject(WINDOW) private window: Window,
   ) {
-    // 全局显示，水平居中，位于顶部
-    this.overlayConfig.positionStrategy = this.overlay.position().global().centerHorizontally().top();
+    this.overlayConfig = new OverlayConfig({
+      // 全局显示，水平居中，位于顶部
+      positionStrategy: this.overlay.position().global().centerHorizontally().top()
+    });
   }
 
   /**
    * 创建一个通知
    * @param opts
    */
-  create(opts: NotificationOptions): NotificationController {
-    this.option = opts;
+  create(options: NotificationOptions): NotificationController {
+    this.options = options;
 
     this.overlayRef ??= this.overlay.create(this.overlayConfig);
 
@@ -52,7 +54,7 @@ export class NotificationController {
     this.componentRef ??= this.overlayRef.attach(new ComponentPortal(NotificationComponent));
     this.componentRef.instance.overlayRef = this.overlayRef;
 
-    const { title, description, icon, duration, url, handler } = this.option;
+    const { title, description, icon, duration, url, handler } = this.options;
 
     this.componentRef.instance.title = title;
     this.componentRef.instance.description = description;

@@ -33,7 +33,7 @@ main {
   padding: 5rem 3rem calc(var(--ion-safe-area-bottom, 0) + 3rem);
   transition: all ease-in 0.5s;
 
-  &.wait {
+  &.waiting {
     background: linear-gradient(to bottom, transparent, rgba(#000, 0.5));
     backdrop-filter: blur(15px) saturate(175%);
   }

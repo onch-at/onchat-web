@@ -169,7 +169,7 @@ export class Overlay {
    * @param id
    */
   dismissLoading(data?: SafeAny, role?: string, id?: string) {
-    this.loadingCtrl.dismiss(data, role, id);
+    return this.loadingCtrl.dismiss(data, role, id);
   }
 
   /**
@@ -179,7 +179,7 @@ export class Overlay {
    * @param id
    */
   dismissPopover(data?: SafeAny, role?: string, id?: string) {
-    this.popoverCtrl.dismiss(data, role, id);
+    return this.popoverCtrl.dismiss(data, role, id);
   }
 
   /**
@@ -189,7 +189,7 @@ export class Overlay {
    * @param id
    */
   dismissModal(data?: SafeAny, role?: string, id?: string) {
-    this.modalCtrl.dismiss(data, role, id);
+    return this.modalCtrl.dismiss(data, role, id);
   }
 
 }

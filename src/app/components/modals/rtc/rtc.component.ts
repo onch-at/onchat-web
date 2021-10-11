@@ -1,9 +1,10 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { merge, of } from 'rxjs';
-import { filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 import { AudioName, RtcDataType, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
+import { WINDOW } from 'src/app/common/tokens';
 import { Result, User } from 'src/app/models/onchat.model';
 import { RtcData } from 'src/app/models/rtc.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -27,7 +28,9 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   @ViewChild('remoteVideo', { static: true }) remoteVideo: ElementRef<HTMLVideoElement>;
   @ViewChild('localVideo', { static: true }) localVideo: ElementRef<HTMLVideoElement>;
 
-  wait: boolean = true;
+  waiting: boolean = true;
+
+  private timer: number;
 
   constructor(
     public globalData: GlobalData,
@@ -35,6 +38,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     private mediaDevice: MediaDevice,
     private socketService: SocketService,
     private feedbackService: FeedbackService,
+    @Inject(WINDOW) private window: Window,
     protected overlay: Overlay,
     protected router: Router,
   ) {
@@ -62,12 +66,26 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
     this.feedbackService.audio(AudioName.Ring).play();
     this.globalData.rtcing = true;
+
+    // 如果三分钟后还没接通，客户端主动挂断
+    this.timer = this.window.setTimeout(() => {
+      if (this.waiting) {
+        this.isRequester && this.overlay.toast('OnChat：对方正在忙线中，请稍后再试…');
+        this.hangUp();
+      }
+    }, 60000 * 3);
   }
 
   ngOnDestroy() {
     this.rtc.close();
     this.feedbackService.audio(AudioName.Ring).pause();
     this.globalData.rtcing = false;
+    this.window.clearTimeout(this.timer);
+  }
+
+  onVideoPlay() {
+    this.overlay.dismissLoading();
+    this.waiting = false;
   }
 
   prepare() {
@@ -106,10 +124,18 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
           this.socketService.rtcData(this.user.id, RtcDataType.IceCandidate, candidate);
         });
 
-        this.rtc.track().pipe(takeUntil(this.destroy$)).subscribe(({ streams }) => {
+        this.rtc.track().pipe(takeUntil(this.destroy$), take(1)).subscribe(async ({ streams }) => {
+          this.overlay.dismissLoading();
+          await this.overlay.loading('Ready…');
+
           this.remoteVideo.nativeElement.srcObject = streams[0];
           this.feedbackService.audio(AudioName.Ring).pause();
-          this.overlay.dismissLoading();
+        });
+
+        this.rtc.connectionStateChange().pipe(
+          filter(({ target }) => ['failed', 'disconnected'].includes(target.connectionState))
+        ).subscribe(() => {
+          this.hangUp();
         });
 
         this.rtc.setTrack(stream);

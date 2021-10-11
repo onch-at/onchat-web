@@ -12,7 +12,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ngcc",
     "clean-cache": "npm cache clean --force"
   },
   "private": true,

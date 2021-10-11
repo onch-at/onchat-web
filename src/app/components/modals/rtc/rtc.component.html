@@ -1,10 +1,10 @@
 <ion-content [fullscreen]="true" [scrollY]="false">
-  <video #remoteVideo class="remote-video" [poster]="user.avatar" autoplay playsinline (play)="wait = false"></video>
-  <video #localVideo class="local-video clip" [poster]="globalData.user.avatarThumbnail" [hidden]="wait" muted autoplay
+  <video #remoteVideo class="remote-video" [poster]="user.avatar" autoplay playsinline (play)="onVideoPlay()"></video>
+  <video #localVideo class="local-video clip" [poster]="globalData.user.avatarThumbnail" [hidden]="waiting" muted autoplay
          playsinline></video>
 
-  <main class="dp-flex flex-col min-hg-full align-center" [class.wait]="wait">
-    <ng-container *ngIf="wait">
+  <main class="dp-flex flex-col min-hg-full align-center" [class.waiting]="waiting">
+    <ng-container *ngIf="waiting">
       <img class="avatar" [src]="user.avatar">
       <h1 class="font-bold">{{ user.nickname }}</h1>
       <div class="tips">正在向{{ isRequester ? ' Ta ' : '我' }}发起视频通话</div>
@@ -17,7 +17,7 @@
         <ion-icon name="call"></ion-icon>
       </button>
 
-      <ng-container *ngIf="!isRequester && wait">
+      <ng-container *ngIf="!isRequester && waiting">
         <div class="flex-auto"></div>
 
         <button appActiveClass class="call-btn btn-info" (click)="call()">

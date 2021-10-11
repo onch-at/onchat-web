@@ -32,6 +32,10 @@ export class Rtc {
     return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'icecandidate');
   }
 
+  connectionStateChange() {
+    return fromEvent<any>(this.pc, 'connectionstatechange');
+  }
+
   track() {
     return fromEvent<RTCTrackEvent>(this.pc, 'track');
   }
