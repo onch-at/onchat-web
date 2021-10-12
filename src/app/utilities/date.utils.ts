@@ -1,4 +1,4 @@
-export class DateUtil {
+export class DateUtils {
   /**
    * 是否在昨天
    * @param date

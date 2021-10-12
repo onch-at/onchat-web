@@ -12,7 +12,7 @@ import { Message, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { StrUtil } from 'src/app/utils/str.util';
+import { StrUtils } from 'src/app/utilities/str.utils';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -38,7 +38,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
     ]
   };
 
-  canSend = () => this.text && StrUtil.trimAll(this.text).length > 0;
+  canSend = () => this.text && StrUtils.trimAll(this.text).length > 0;
 
   constructor(
     private injector: Injector,
@@ -53,7 +53,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
     this.html = this.globalData.chatRichTextMap[this.globalData.chatroomId];
-    this.text = StrUtil.html(this.html);
+    this.text = StrUtils.html(this.html);
   }
 
   /**
@@ -97,7 +97,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
    */
   @Throttle(500)
   cache() {
-    if (StrUtil.trimAll(this.text).length) {
+    if (StrUtils.trimAll(this.text).length) {
       const { chatroomId, chatRichTextMap } = this.globalData;
       chatRichTextMap[chatroomId] = this.html;
       this.globalData.chatRichTextMap = chatRichTextMap;

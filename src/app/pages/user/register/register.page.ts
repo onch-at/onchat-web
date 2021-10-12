@@ -14,7 +14,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { StrUtil } from 'src/app/utils/str.util';
+import { StrUtils } from 'src/app/utilities/str.utils';
 import { AsyncValidator } from 'src/app/validators/async.validator';
 import { SyncValidator } from 'src/app/validators/sync.validator';
 
@@ -155,7 +155,7 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    const value = StrUtil.trimAll(this.form.get(controlName).value);
+    const value = StrUtils.trimAll(this.form.get(controlName).value);
     this.form.controls[controlName].setValue(value);
   }
 

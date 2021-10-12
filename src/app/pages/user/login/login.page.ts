@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { StrUtil } from 'src/app/utils/str.util';
+import { StrUtils } from 'src/app/utilities/str.utils';
 
 @Component({
   selector: 'app-login',
@@ -96,7 +96,7 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    const value = StrUtil.trimAll(this.form.get(controlName).value);
+    const value = StrUtils.trimAll(this.form.get(controlName).value);
     this.form.controls[controlName].setValue(value);
   }
 

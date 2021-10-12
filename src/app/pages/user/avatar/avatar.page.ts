@@ -7,7 +7,7 @@ import { UserService } from 'src/app/services/apis/user.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SysUtil } from 'src/app/utils/sys.util';
+import { SysUtils } from 'src/app/utilities/sys.utils';
 import Swiper, { Zoom } from 'swiper';
 import { ZoomOptions } from 'swiper/types';
 
@@ -55,14 +55,14 @@ export class AvatarPage implements OnInit {
 
   presentActionSheet() {
     const buttons = [
-      { text: '保存图片', handler: () => { SysUtil.downloadFile(this.user.avatar) } },
+      { text: '保存图片', handler: () => { SysUtils.downloadFile(this.user.avatar) } },
       { text: '取消', role: 'cancel' }
     ];
 
     // 如果是自己的头像
     (this.user.id === this.globalData.user?.id) && buttons.unshift({
       text: '更换头像',
-      handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
+      handler: () => SysUtils.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,

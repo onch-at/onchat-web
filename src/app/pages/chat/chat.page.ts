@@ -19,7 +19,7 @@ import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { StrUtil } from 'src/app/utils/str.util';
+import { StrUtils } from 'src/app/utilities/str.utils';
 
 @Component({
   selector: 'app-chat',
@@ -164,7 +164,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     msg.send();
 
     if (msg.data instanceof TextMessage) {
-      msg.data.content = StrUtil.html(msg.data.content);
+      msg.data.content = StrUtils.html(msg.data.content);
     }
 
     this.scrollToBottom(300);

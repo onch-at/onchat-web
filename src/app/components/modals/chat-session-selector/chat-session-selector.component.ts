@@ -5,8 +5,8 @@ import { ChatSessionCheckbox } from 'src/app/common/interfaces';
 import { WINDOW } from 'src/app/common/tokens';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { CssUtil } from 'src/app/utils/css.util';
-import { EntityUtil } from 'src/app/utils/entity.util';
+import { CssUtils } from 'src/app/utilities/css.utils';
+import { EntityUtils } from 'src/app/utilities/entity.utils';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -30,7 +30,7 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
   /** 展示的列表 */
   list: ChatSessionCheckbox[];
   /** 虚拟列表项目高度 */
-  itemHeight: number = CssUtil.rem2px(3.55);
+  itemHeight: number = CssUtils.rem2px(3.55);
 
   minBufferPx: number = this.window.innerHeight * 1.5;
   maxBufferPx: number = this.window.innerHeight * 2;
@@ -38,7 +38,7 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
   get checkedChatSessions() { return this.chatSessions.filter(o => o.checked); }
   get disabled() { return this.checkedChatSessions.length >= this.limit; }
 
-  trackByFn = EntityUtil.trackBy;
+  trackByFn = EntityUtils.trackBy;
 
   constructor(
     public globalData: GlobalData,

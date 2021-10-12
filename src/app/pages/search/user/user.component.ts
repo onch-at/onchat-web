@@ -4,8 +4,8 @@ import { SafeAny } from 'src/app/common/interfaces';
 import { WINDOW } from 'src/app/common/tokens';
 import { Result, User } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
-import { CssUtil } from 'src/app/utils/css.util';
-import { EntityUtil } from 'src/app/utils/entity.util';
+import { CssUtils } from 'src/app/utilities/css.utils';
+import { EntityUtils } from 'src/app/utilities/entity.utils';
 
 @Component({
   selector: 'app-user',
@@ -18,12 +18,12 @@ export class UserComponent {
   users: User[] = [];
 
   /** 虚拟列表项目高度 */
-  itemHeight: number = CssUtil.rem2px(4.425);
+  itemHeight: number = CssUtils.rem2px(4.425);
 
   minBufferPx: number = this.window.innerHeight * 1.5;
   maxBufferPx: number = this.window.innerHeight * 2;
 
-  trackByFn = EntityUtil.trackBy;
+  trackByFn = EntityUtils.trackBy;
 
   constructor(
     private userService: UserService,

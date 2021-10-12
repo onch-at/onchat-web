@@ -12,8 +12,8 @@ import { Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { StrUtil } from 'src/app/utils/str.util';
-import { SysUtil } from 'src/app/utils/sys.util';
+import { StrUtils } from 'src/app/utilities/str.utils';
+import { SysUtils } from 'src/app/utilities/sys.utils';
 
 @Component({
   selector: 'app-settings',
@@ -123,7 +123,7 @@ export class InfoPage implements OnInit, OnDestroy {
    * @param controlName 控件名
    */
   trimAll(controlName: string) {
-    const value = StrUtil.trimAll(this.form.get(controlName).value);
+    const value = StrUtils.trimAll(this.form.get(controlName).value);
     this.form.controls[controlName].setValue(value);
   }
 
@@ -160,7 +160,7 @@ export class InfoPage implements OnInit, OnDestroy {
       {
         text: '更换头像',
         handler: () => {
-          SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
+          SysUtils.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
             component: AvatarCropperComponent,
             componentProps: {
               imageChangedEvent: event,

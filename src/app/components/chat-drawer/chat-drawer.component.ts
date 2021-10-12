@@ -2,6 +2,7 @@ import { Component, EventEmitter, Injector, Input, Output, ViewChild } from '@an
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet } from '@ionic/angular';
 import { filter, mergeMap, take, tap } from 'rxjs/operators';
+import { Throttle } from 'src/app/common/decorators';
 import { ChatroomType, SocketEvent } from 'src/app/common/enums';
 import { SafeAny } from 'src/app/common/interfaces';
 import { success } from 'src/app/common/operators';
@@ -15,7 +16,7 @@ import { ImageService } from 'src/app/services/image.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { SysUtil } from 'src/app/utils/sys.util';
+import { SysUtils } from 'src/app/utilities/sys.utils';
 import Swiper, { Pagination } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-editor.component';
@@ -75,7 +76,7 @@ export class ChatDrawerComponent {
   }
 
   selectImage() {
-    SysUtil.selectFile('image/*', true).subscribe(({ target }) => {
+    SysUtils.selectFile('image/*', true).subscribe(({ target }) => {
       const files: FileList = target.files;
       const length = files.length > 10 ? 10 : files.length;
 
@@ -98,6 +99,7 @@ export class ChatDrawerComponent {
     });
   }
 
+  @Throttle(300)
   rtc() {
     let mediaStream: MediaStream;
     this.overlay.loading();

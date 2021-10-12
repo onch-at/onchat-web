@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ChatSessionType, LocalStorageKey } from '../common/enums';
 import { NAVIGATOR } from '../common/tokens';
 import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
-import { EntityUtil } from '../utils/entity.util';
+import { EntityUtils } from '../utilities/entity.utils';
 import { LocalStorage } from './local-storage.service';
 
 /** 全局数据服务 */
@@ -144,20 +144,20 @@ export class GlobalData {
    * 按照时间/置顶顺序排序聊天列表
    */
   sortChatSessions() {
-    this._chatSessions &&= [...this.chatSessions.sort(EntityUtil.sortByUpdateTime).sort((a, b) => +b.sticky || 0 - +a.sticky || 0)];
+    this._chatSessions &&= [...this.chatSessions.sort(EntityUtils.sortByUpdateTime).sort((a, b) => +b.sticky || 0 - +a.sticky || 0)];
   }
 
   /**
    * 排序收到的入群申请
    */
   sortReceiveChatRequests() {
-    this._receiveChatRequests &&= [...this.receiveChatRequests.sort(EntityUtil.sortByUpdateTime)];
+    this._receiveChatRequests &&= [...this.receiveChatRequests.sort(EntityUtils.sortByUpdateTime)];
   }
 
   /**
    * 排序发送的入群申请
    */
   sortSendChatRequests() {
-    this._sendChatRequests &&= [...this.sendChatRequests.sort(EntityUtil.sortByUpdateTime)];
+    this._sendChatRequests &&= [...this.sendChatRequests.sort(EntityUtils.sortByUpdateTime)];
   }
 }

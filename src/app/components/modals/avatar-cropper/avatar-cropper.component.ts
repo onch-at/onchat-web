@@ -7,7 +7,7 @@ import { SafeAny } from 'src/app/common/interfaces';
 import { Result } from 'src/app/models/onchat.model';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SysUtil } from 'src/app/utils/sys.util';
+import { SysUtils } from 'src/app/utilities/sys.utils';
 import { ModalComponent } from '../modal.component';
 
 type ImageCropData = { imageBlob: Blob, imageSrc: SafeUrl };
@@ -58,7 +58,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
    * 上传图片
    */
   uploadImage() {
-    SysUtil.selectFile('image/*').subscribe((event: SafeAny) => {
+    SysUtils.selectFile('image/*').subscribe((event: SafeAny) => {
       this.ionLoading = this.overlay.loading();
       this.error = false;
       this.imageCropper.imageQuality = 90;

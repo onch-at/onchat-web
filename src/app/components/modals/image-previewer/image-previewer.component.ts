@@ -5,9 +5,9 @@ import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { EntityUtil } from 'src/app/utils/entity.util';
-import { StrUtil } from 'src/app/utils/str.util';
-import { SysUtil } from 'src/app/utils/sys.util';
+import { EntityUtils } from 'src/app/utilities/entity.utils';
+import { StrUtils } from 'src/app/utilities/str.utils';
+import { SysUtils } from 'src/app/utilities/sys.utils';
 import Swiper, { Lazy, Zoom } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import { LazyOptions, ZoomOptions } from 'swiper/types';
@@ -25,7 +25,7 @@ export class ImagePreviewerComponent extends ModalComponent {
   @Input() index: number;
   @ViewChild(SwiperComponent) swiper: SwiperComponent;
 
-  trackByFn = EntityUtil.trackBy;
+  trackByFn = EntityUtils.trackBy;
 
   zoom: ZoomOptions = {
     maxRatio: 5,
@@ -53,8 +53,8 @@ export class ImagePreviewerComponent extends ModalComponent {
   presentActionSheet(item: Message<ImageMessage>) {
     const buttons: ActionSheetButton[] = [{ text: '取消', role: 'cancel' }];
 
-    if (StrUtil.isString(item.data.url)) {
-      buttons.unshift({ text: '保存图片', handler: () => SysUtil.downloadFile((item.data as ImageMessage).url) })
+    if (StrUtils.isString(item.data.url)) {
+      buttons.unshift({ text: '保存图片', handler: () => SysUtils.downloadFile((item.data as ImageMessage).url) })
     }
 
     this.overlay.actionSheet(buttons);

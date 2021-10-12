@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Day, WeekDay } from '../common/enums';
-import { DateUtil } from '../utils/date.util';
+import { DateUtils } from '../utilities/date.utils';
 
 @Pipe({
   name: 'detailDate'
@@ -20,7 +20,7 @@ export class DetailDatePipe implements PipeTransform {
     const now = new Date();
     const date = new Date(value);
 
-    if (DateUtil.isJust(date)) {
+    if (DateUtils.isJust(date)) {
       return '刚刚';
     }
 
@@ -28,16 +28,16 @@ export class DetailDatePipe implements PipeTransform {
       return Day.Today;
     }
 
-    if (DateUtil.isYesterday(date)) { // 如果是昨天
+    if (DateUtils.isYesterday(date)) { // 如果是昨天
       return Day.Yesterday;
     }
 
-    if (DateUtil.isSameWeek(date)) { // 如果在本周
+    if (DateUtils.isSameWeek(date)) { // 如果在本周
       return this.weekDay[date.getDay()];
     }
 
     // 否则将返回年-月-日
-    return (DateUtil.isThisYear(date) ? '' : date.getFullYear() + '年') + (1 + date.getMonth()) + '月' + date.getDate() + '日';
+    return (DateUtils.isThisYear(date) ? '' : date.getFullYear() + '年') + (1 + date.getMonth()) + '月' + date.getDate() + '日';
   }
 
 }

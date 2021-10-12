@@ -10,9 +10,9 @@ import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
 import { ChatService } from 'src/app/services/apis/chat.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
-import { CssUtil } from 'src/app/utils/css.util';
-import { DateUtil } from 'src/app/utils/date.util';
-import { EntityUtil } from 'src/app/utils/entity.util';
+import { CssUtils } from 'src/app/utilities/css.utils';
+import { DateUtils } from 'src/app/utilities/date.utils';
+import { EntityUtils } from 'src/app/utilities/entity.utils';
 
 @Component({
   selector: 'app-session',
@@ -21,14 +21,14 @@ import { EntityUtil } from 'src/app/utils/entity.util';
 })
 export class SessionPage {
   /** 虚拟列表项目高度 */
-  itemHeight: number = CssUtil.rem2px(4.425);
+  itemHeight: number = CssUtils.rem2px(4.425);
   minBufferPx: number = this.window.innerHeight * 1.5;
   maxBufferPx: number = this.window.innerHeight * 2;
 
   readonly msgType: typeof MessageType = MessageType;
   readonly chatSessionType: typeof ChatSessionType = ChatSessionType;
 
-  trackByFn = EntityUtil.trackBy;
+  trackByFn = EntityUtils.trackBy;
 
   constructor(
     private router: Router,
@@ -50,7 +50,7 @@ export class SessionPage {
   }
 
   canShowTime(date: number) {
-    return DateUtil.isSameWeek(new Date(date));
+    return DateUtils.isSameWeek(new Date(date));
   }
 
   /**

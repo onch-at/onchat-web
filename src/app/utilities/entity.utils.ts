@@ -1,6 +1,6 @@
 import { IEntity } from 'src/app/models/onchat.model';
 
-export class EntityUtil {
+export class EntityUtils {
 
   /**
    * 根据更新时间来排序数组:时间越早，排名越高

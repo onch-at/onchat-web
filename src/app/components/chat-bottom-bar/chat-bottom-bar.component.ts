@@ -13,7 +13,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { StrUtil } from 'src/app/utils/str.util';
+import { StrUtils } from 'src/app/utilities/str.utils';
 import { ChatDrawerComponent } from '../chat-drawer/chat-drawer.component';
 
 @Component({
@@ -55,7 +55,7 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
   /** 文本框 */
   @ViewChild('textarea', { static: true }) textarea: ElementRef<HTMLTextAreaElement>;
 
-  textareaId: string = 'message-' + StrUtil.random();
+  textareaId: string = 'message-' + StrUtils.random();
   /** 文字消息 */
   msg: string = '';
   /** 是否显示抽屉 */
@@ -68,7 +68,7 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
   /** 是否禁用发送按钮 */
   disableSendBtn = () => this.msg.length > TEXT_MSG_MAX_LENGTH;
   /** 是否显示发送按钮 */
-  canSend = () => StrUtil.trimAll(this.msg).length > 0;
+  canSend = () => StrUtils.trimAll(this.msg).length > 0;
 
   constructor(
     public globalData: GlobalData,

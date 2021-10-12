@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SysUtil } from 'src/app/utils/sys.util';
+import { SysUtils } from 'src/app/utilities/sys.utils';
 import Swiper, { Zoom } from 'swiper';
 import { ZoomOptions } from 'swiper/types';
 
@@ -43,7 +43,7 @@ export class AvatarPage implements OnInit {
 
   presentActionSheet() {
     const buttons = [
-      { text: '保存图片', handler: () => SysUtil.downloadFile(this.chatroom.avatar) },
+      { text: '保存图片', handler: () => SysUtils.downloadFile(this.chatroom.avatar) },
       { text: '取消', role: 'cancel' }
     ];
 

@@ -1,6 +1,6 @@
 import { Renderer2 } from '@angular/core';
 
-export class CssUtil {
+export class CssUtils {
   private static sizeMap: Map<string, number> = new Map<string, number>();
 
   /**
@@ -8,8 +8,8 @@ export class CssUtil {
    * @param rem
    */
   static rem2px(rem: number): number {
-    const px = CssUtil.size('1rem') || parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
-    CssUtil.sizeMap.set('1rem', px);
+    const px = CssUtils.size('1rem') || parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
+    CssUtils.sizeMap.set('1rem', px);
 
     return rem * px;
   }
@@ -19,15 +19,15 @@ export class CssUtil {
    * @param size
    */
   static size(size: string): number {
-    if (!CssUtil.sizeMap.has(size)) {
+    if (!CssUtils.sizeMap.has(size)) {
       const div = document.createElement('div');
       div.style.height = size;
       document.body.appendChild(div);
-      div.offsetHeight && CssUtil.sizeMap.set(size, div.offsetHeight);
+      div.offsetHeight && CssUtils.sizeMap.set(size, div.offsetHeight);
       document.body.removeChild(div);
     }
 
-    return CssUtil.sizeMap.get(size) || 0;
+    return CssUtils.sizeMap.get(size) || 0;
   }
 
   /**

@@ -1,4 +1,4 @@
-export class StrUtil {
+export class StrUtils {
   /**
    * 剔除字符串中所有空格及换行
    * @param str

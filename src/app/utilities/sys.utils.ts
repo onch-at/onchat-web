@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-export class SysUtil {
+export class SysUtils {
 
   /**
    * 选择文件

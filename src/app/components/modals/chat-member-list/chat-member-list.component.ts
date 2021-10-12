@@ -4,8 +4,8 @@ import { ChatMemberRole } from 'src/app/common/enums';
 import { WINDOW } from 'src/app/common/tokens';
 import { ChatMember } from 'src/app/models/onchat.model';
 import { Overlay } from 'src/app/services/overlay.service';
-import { CssUtil } from 'src/app/utils/css.util';
-import { EntityUtil } from 'src/app/utils/entity.util';
+import { CssUtils } from 'src/app/utilities/css.utils';
+import { EntityUtils } from 'src/app/utilities/entity.utils';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -20,12 +20,12 @@ export class ChatMemberListComponent extends ModalComponent implements OnInit {
   /** 搜索关键字 */
   keyword: string = '';
   /** 虚拟列表项目高度 */
-  itemHeight: number = CssUtil.rem2px(3.55);
+  itemHeight: number = CssUtils.rem2px(3.55);
 
   minBufferPx: number = this.window.innerHeight * 1.5;
   maxBufferPx: number = this.window.innerHeight * 2;
 
-  trackByFn = EntityUtil.trackBy;
+  trackByFn = EntityUtils.trackBy;
 
   readonly chatMemberRole: typeof ChatMemberRole = ChatMemberRole;
 

@@ -17,8 +17,8 @@ import { CacheService } from 'src/app/services/cache.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { StrUtil } from 'src/app/utils/str.util';
-import { SysUtil } from 'src/app/utils/sys.util';
+import { StrUtils } from 'src/app/utilities/str.utils';
+import { SysUtils } from 'src/app/utilities/sys.utils';
 
 @Component({
   selector: 'app-chatroom-home',
@@ -114,7 +114,7 @@ export class HomePage implements OnInit, OnDestroy {
       header: '聊天室名称',
       confirmHandler: (data: KeyValue<string, any>) => {
         const { id, name } = this.chatroom;
-        if (!StrUtil.trimAll(data['name']).length || data['name'] === name) { return; }
+        if (!StrUtils.trimAll(data['name']).length || data['name'] === name) { return; }
 
         this.chatroomService.setName(id, data['name']).subscribe(() => {
           this.chatroom.name = data['name'];
@@ -176,7 +176,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.overlay.alert({
       header: '申请加入',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.chatRequset(this.chatroom.id, StrUtil.trimAll(data['reason']).length ? data['reason'] : undefined);
+        this.socketService.chatRequset(this.chatroom.id, StrUtils.trimAll(data['reason']).length ? data['reason'] : undefined);
       },
       inputs: [
         {
@@ -250,7 +250,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     // 如果是群主、管理员
     (this.isHost || this.isManager) && buttons.unshift({
-      text: '更换头像', handler: () => SysUtil.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
+      text: '更换头像', handler: () => SysUtils.selectFile('image/*').subscribe((event: Event) => this.overlay.modal({
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,

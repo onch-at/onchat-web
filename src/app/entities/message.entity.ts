@@ -5,7 +5,7 @@ import { success } from '../common/operators';
 import { AnyMessage } from '../models/msg.model';
 import { Message, Result } from '../models/onchat.model';
 import { SocketService } from '../services/socket.service';
-import { StrUtil } from '../utils/str.util';
+import { StrUtils } from '../utilities/str.utils';
 
 export class MessageEntity implements Message {
   id: number;
@@ -26,7 +26,7 @@ export class MessageEntity implements Message {
 
   constructor(type: MessageType = MessageType.Text, tempId?: string) {
     this.type = type;
-    this.tempId = tempId ?? StrUtil.random();
+    this.tempId = tempId ?? StrUtils.random();
     this.createTime = Date.now();
     this.loading = true;
   }
