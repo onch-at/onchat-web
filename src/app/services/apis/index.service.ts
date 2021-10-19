@@ -20,7 +20,7 @@ export class IndexService {
    * @param email 邮箱
    */
   sendEmailCaptcha(email: string): Observable<Result> {
-    return this.http.post<Result>(environment.indexUrl + 'emailcaptcha', { email });
+    return this.http.post<Result>(environment.indexCtx + '/emailcaptcha', { email });
   }
 
   /**
@@ -28,7 +28,7 @@ export class IndexService {
    * @param username 用户名
    */
   checkUsername(username: string): Observable<Result<boolean>> {
-    return this.http.get<Result<boolean>>(environment.indexUrl + 'checkusername', {
+    return this.http.get<Result<boolean>>(environment.indexCtx + '/checkusername', {
       params: { username },
       context: new HttpContext().set(HTTP_CACHE_TOKEN, 5000)
     });
@@ -39,7 +39,7 @@ export class IndexService {
    * @param email 邮箱
    */
   checkEmail(email: string): Observable<Result<boolean>> {
-    return this.http.get<Result<boolean>>(environment.indexUrl + 'checkemail', {
+    return this.http.get<Result<boolean>>(environment.indexCtx + '/checkemail', {
       params: { email },
       context: new HttpContext().set(HTTP_CACHE_TOKEN, 5000)
     });

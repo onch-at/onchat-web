@@ -16,20 +16,20 @@ export class AuthService {
    * @param token 续签令牌
    */
   refresh(token: string) {
-    return this.http.get<Result<string>>(environment.authUrl + 'refresh', { params: { token } });
+    return this.http.get<Result<string>>(environment.authCtx + '/refresh', { params: { token } });
   }
 
   /**
    * 获取令牌的用户信息
    */
   info() {
-    return this.http.get<Result<User>>(environment.authUrl + 'info');
+    return this.http.get<Result<User>>(environment.authCtx + '/info');
   }
 
   /**
    * 登出
    */
   logout(): Observable<null> {
-    return this.http.get<null>(environment.authUrl + 'logout');
+    return this.http.get<null>(environment.authCtx + '/logout');
   }
 }

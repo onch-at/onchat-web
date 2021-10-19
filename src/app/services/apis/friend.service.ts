@@ -15,14 +15,14 @@ export class FriendService {
    * 获取我的收到好友申请
    */
   getReceiveRequests(): Observable<Result<FriendRequest[]>> {
-    return this.http.get<Result<FriendRequest[]>>(environment.friendUrl + 'requests/receive');
+    return this.http.get<Result<FriendRequest[]>>(environment.friendCtx + '/requests/receive');
   }
 
   /**
    * 获取我的发起的好友申请（不包含已经同意的）
    */
   getSendRequests(): Observable<Result<FriendRequest[]>> {
-    return this.http.get<Result<FriendRequest[]>>(environment.friendUrl + 'requests/send');
+    return this.http.get<Result<FriendRequest[]>>(environment.friendCtx + '/requests/send');
   }
 
   /**
@@ -30,7 +30,7 @@ export class FriendService {
    * @param targetId 被申请人的ID
    */
   getRequestByTargetId(targetId: number): Observable<Result<FriendRequest>> {
-    return this.http.get<Result<FriendRequest>>(environment.friendUrl + 'request/target/' + targetId);
+    return this.http.get<Result<FriendRequest>>(environment.friendCtx + '/request/target/' + targetId);
   }
 
   /**
@@ -38,7 +38,7 @@ export class FriendService {
    * @param requesterId 申请人的UID
    */
   getRequestByRequesterId(requesterId: number): Observable<Result<FriendRequest>> {
-    return this.http.get<Result<FriendRequest>>(environment.friendUrl + 'request/requester/' + requesterId);
+    return this.http.get<Result<FriendRequest>>(environment.friendCtx + '/request/requester/' + requesterId);
   }
 
   /**
@@ -46,7 +46,7 @@ export class FriendService {
    * @param id FriendRequest Id
    */
   getRequestById(id: number): Observable<Result<FriendRequest>> {
-    return this.http.get<Result<FriendRequest>>(environment.friendUrl + 'request/' + id);
+    return this.http.get<Result<FriendRequest>>(environment.friendCtx + '/request/' + id);
   }
 
   /**
@@ -55,7 +55,7 @@ export class FriendService {
    * @param alias 别名
    */
   setAlias(chatroomId: number, alias: string): Observable<Result> {
-    return this.http.put<Result>(environment.friendUrl + 'alias/' + chatroomId, { alias });
+    return this.http.put<Result>(environment.friendCtx + '/alias/' + chatroomId, { alias });
   }
 
   /**
@@ -64,7 +64,7 @@ export class FriendService {
    * @param targetId 对方UserId
    */
   isFriend(targetId: number): Observable<Result<number>> {
-    return this.http.get<Result<number>>(environment.friendUrl + targetId + '/isfriend');
+    return this.http.get<Result<number>>(`${environment.friendCtx}/${targetId}/isfriend`);
   }
 
   /**
@@ -72,7 +72,7 @@ export class FriendService {
    * @param id 好友请求ID
    */
   readedReceiveRequest(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.friendUrl}request/receive/readed/${id}`, null);
+    return this.http.put<Result>(`${environment.friendCtx}/request/receive/readed/${id}`, null);
   }
 
   /**
@@ -80,6 +80,6 @@ export class FriendService {
    * @param id 好友请求ID
    */
   readedSendRequest(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.friendUrl}request/send/readed/${id}`, null);
+    return this.http.put<Result>(`${environment.friendCtx}/request/send/readed/${id}`, null);
   }
 }

@@ -19,7 +19,7 @@ export class ChatRecordService {
    */
   getChatRecords(id: number, chatroomId: number): Observable<Result<Message[]>> {
     const params = { id: id.toString() };
-    return this.http.get<Result<Message[]>>(`${environment.chatRecordUrl}records/${chatroomId}`, { params });
+    return this.http.get<Result<Message[]>>(`${environment.chatRecordCtx}/records/${chatroomId}`, { params });
   }
 
   /**
@@ -33,7 +33,7 @@ export class ChatRecordService {
     formData.append('image', image);
     formData.append('tempId', tempId);
 
-    return this.http.post<Result<Message<ImageMessage>>>(`${environment.chatRecordUrl}image/${id}`, formData, {
+    return this.http.post<Result<Message<ImageMessage>>>(`${environment.chatRecordCtx}/image/${id}`, formData, {
       reportProgress: true,
       observe: 'events'
     });
@@ -50,6 +50,6 @@ export class ChatRecordService {
     formData.append('voice', voice);
     formData.append('tempId', tempId);
 
-    return this.http.post<Result<Message<VoiceMessage>>>(`${environment.chatRecordUrl}voice/${id}`, formData);
+    return this.http.post<Result<Message<VoiceMessage>>>(`${environment.chatRecordCtx}/voice/${id}`, formData);
   }
 }

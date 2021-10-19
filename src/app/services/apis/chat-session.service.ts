@@ -15,7 +15,7 @@ export class ChatSessionService {
    * 获取用户的聊天列表
    */
   getChatSession(): Observable<Result<ChatSession[]>> {
-    return this.http.get<Result<ChatSession[]>>(environment.chatSessionUrl);
+    return this.http.get<Result<ChatSession[]>>(environment.chatSessionCtx);
   }
 
   /**
@@ -23,7 +23,7 @@ export class ChatSessionService {
    * @param id 聊天会话ID
    */
   sticky(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.chatSessionUrl}/sticky/${id}`, null);
+    return this.http.put<Result>(`${environment.chatSessionCtx}/sticky/${id}`, null);
   }
 
   /**
@@ -31,7 +31,7 @@ export class ChatSessionService {
    * @param id 聊天会话ID
    */
   unsticky(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.chatSessionUrl}/unsticky/${id}`, null);
+    return this.http.put<Result>(`${environment.chatSessionCtx}/unsticky/${id}`, null);
   }
 
   /**
@@ -39,7 +39,7 @@ export class ChatSessionService {
    * @param id 聊天会话ID
    */
   readed(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.chatSessionUrl}/readed/${id}`, null);
+    return this.http.put<Result>(`${environment.chatSessionCtx}/readed/${id}`, null);
   }
 
   /**
@@ -47,7 +47,7 @@ export class ChatSessionService {
    * @param id 聊天会话ID
    */
   unread(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.chatSessionUrl}/unread/${id}`, null);
+    return this.http.put<Result>(`${environment.chatSessionCtx}/unread/${id}`, null);
   }
 
   /**
@@ -55,6 +55,6 @@ export class ChatSessionService {
    * @param id 聊天会话ID
    */
   hide(id: number): Observable<Result> {
-    return this.http.put<Result>(`${environment.chatSessionUrl}/hide/${id}`, null);
+    return this.http.put<Result>(`${environment.chatSessionCtx}/hide/${id}`, null);
   }
 }

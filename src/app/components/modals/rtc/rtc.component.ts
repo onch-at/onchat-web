@@ -92,6 +92,8 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     return (this.mediaStream ? of(this.mediaStream) : this.mediaDevice.getUserMedia({ video: true, audio: { echoCancellation: true } })).pipe(
       tap(stream => {
         this.rtc.create();
+        this.rtc.addTransceiver('audio');
+        this.rtc.addTransceiver('video');
 
         this.socketService.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
           takeUntil(this.destroy$),

@@ -15,7 +15,7 @@ export class ChatService {
    * 获得我收到的入群申请
    */
   getReceiveRequests(): Observable<Result<ChatRequest[]>> {
-    return this.http.get<Result<ChatRequest[]>>(environment.chatUrl + 'requests/receive');
+    return this.http.get<Result<ChatRequest[]>>(environment.chatCtx + '/requests/receive');
   }
 
   /**
@@ -23,14 +23,14 @@ export class ChatService {
    * @param id 入群申请ID
    */
   getReceiveChatRequestById(id: number): Observable<Result<ChatRequest>> {
-    return this.http.get<Result<ChatRequest>>(environment.chatUrl + 'requests/receive/' + id);
+    return this.http.get<Result<ChatRequest>>(environment.chatCtx + '/requests/receive/' + id);
   }
 
   /**
    * 已读入群申请
    */
   readedRequests(): Observable<Result> {
-    return this.http.put<Result>(environment.chatUrl + 'requests/readed', null);
+    return this.http.put<Result>(environment.chatCtx + '/requests/readed', null);
   }
 
   /**
@@ -38,13 +38,13 @@ export class ChatService {
    * @param id 入群申请ID
    */
   getSendRequestById(id: number): Observable<Result<ChatRequest>> {
-    return this.http.get<Result<ChatRequest>>(environment.chatUrl + 'requests/send/' + id);
+    return this.http.get<Result<ChatRequest>>(environment.chatCtx + '/requests/send/' + id);
   }
 
   /**
    * 获取我发送的所有入群申请
    */
   getSendRequests(): Observable<Result<ChatRequest[]>> {
-    return this.http.get<Result<ChatRequest[]>>(environment.chatUrl + 'requests/send');
+    return this.http.get<Result<ChatRequest[]>>(environment.chatCtx + '/requests/send');
   }
 }

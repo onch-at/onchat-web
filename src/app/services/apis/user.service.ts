@@ -6,7 +6,7 @@ import { AvatarData } from 'src/app/components/modals/avatar-cropper/avatar-crop
 import { ChangePassword, Login, Register, ResetPassword, UserInfo } from 'src/app/models/form.model';
 import { ChatSession, Result, TokenFolder, User } from 'src/app/models/onchat.model';
 import { environment } from 'src/environments/environment';
-import { CacheService, HTTP_CACHE_TOKEN } from '../cache.service';
+import { HTTP_CACHE_TOKEN } from '../cache.service';
 import { TokenService } from '../token.service';
 
 @Injectable({
@@ -17,7 +17,6 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private tokenService: TokenService,
-    private cacheService: CacheService
   ) { }
 
   /**
@@ -25,7 +24,7 @@ export class UserService {
    * @param o
    */
   login(o: Login): Observable<Result<User & TokenFolder>> {
-    return this.http.post<Result<User & TokenFolder>>(environment.userUrl + 'login', o).pipe(
+    return this.http.post<Result<User & TokenFolder>>(environment.userCtx + '/login', o).pipe(
       tap(({ data }: Result<User & TokenFolder>) => (
         this.tokenService.store(data.access, data.refresh)
       ))
@@ -37,7 +36,7 @@ export class UserService {
    * @param o
    */
   register(o: Register): Observable<Result<User & TokenFolder>> {
-    return this.http.post<Result<User & TokenFolder>>(environment.userUrl + 'register', o).pipe(
+    return this.http.post<Result<User & TokenFolder>>(environment.userCtx + '/register', o).pipe(
       tap(({ data }: Result<User & TokenFolder>) => (
         this.tokenService.store(data.access, data.refresh)
       ))
@@ -49,7 +48,7 @@ export class UserService {
    * @param o
    */
   changePassword(o: ChangePassword): Observable<Result> {
-    return this.http.put<Result>(environment.userUrl + 'password', o);
+    return this.http.put<Result>(environment.userCtx + '/password', o);
   }
 
   /**
@@ -57,7 +56,7 @@ export class UserService {
    * @param username 用户名
    */
   sendEmailCaptchaByUsername(username: string): Observable<Result<boolean>> {
-    return this.http.post<Result<boolean>>(environment.userUrl + 'emailcaptcha', { username });
+    return this.http.post<Result<boolean>>(environment.userCtx + '/emailcaptcha', { username });
   }
 
   /**
@@ -65,7 +64,7 @@ export class UserService {
    * @param o
    */
   resetPassword(o: ResetPassword): Observable<Result> {
-    return this.http.put<Result>(environment.userUrl + 'password/reset', o);
+    return this.http.put<Result>(environment.userCtx + '/password/reset', o);
   }
 
   /**
@@ -76,7 +75,7 @@ export class UserService {
     const formData: FormData = new FormData();
     formData.append('image', avatar);
 
-    return this.http.post<Result<AvatarData>>(environment.userUrl + 'avatar', formData);
+    return this.http.post<Result<AvatarData>>(environment.userCtx + '/avatar', formData);
   }
 
   /**
@@ -84,7 +83,7 @@ export class UserService {
    * @param userInfo
    */
   saveUserInfo(userInfo: UserInfo): Observable<Result<UserInfo>> {
-    return this.http.put<Result<UserInfo>>(environment.userUrl + 'info', userInfo);
+    return this.http.put<Result<UserInfo>>(environment.userCtx + '/info', userInfo);
   }
 
   /**
@@ -93,7 +92,7 @@ export class UserService {
    * @param captcha 验证码
    */
   bindEmail(email: string, captcha: string): Observable<Result<string>> {
-    return this.http.put<Result<string>>(environment.userUrl + 'bindemail', { email, captcha });
+    return this.http.put<Result<string>>(environment.userCtx + '/bindemail', { email, captcha });
   }
 
   /**
@@ -101,7 +100,7 @@ export class UserService {
    * @param userId 用户ID
    */
   getUser(userId: number): Observable<Result<User>> {
-    return this.http.get<Result<User>>(environment.userUrl + userId, {
+    return this.http.get<Result<User>>(`${environment.userCtx}/${userId}`, {
       context: new HttpContext().set(HTTP_CACHE_TOKEN, 600000)
     });
   }
@@ -110,14 +109,14 @@ export class UserService {
    * 获取私聊聊天室列表
    */
   getPrivateChatrooms(): Observable<Result<ChatSession[]>> {
-    return this.http.get<Result<ChatSession[]>>(environment.userUrl + 'chatrooms/private');
+    return this.http.get<Result<ChatSession[]>>(environment.userCtx + '/chatrooms/private');
   }
 
   /**
    * 获取群聊聊天室列表
    */
   getGroupChatrooms(): Observable<Result<ChatSession[]>> {
-    return this.http.get<Result<ChatSession[]>>(environment.userUrl + 'chatrooms/group');
+    return this.http.get<Result<ChatSession[]>>(environment.userCtx + '/chatrooms/group');
   }
 
   /**
@@ -126,6 +125,6 @@ export class UserService {
    * @param page
    */
   search(keyword: string, page: number) {
-    return this.http.post<Result<User[]>>(`${environment.userUrl}search`, { keyword, page: page.toString() });
+    return this.http.post<Result<User[]>>(`${environment.userCtx}/search`, { keyword, page: page.toString() });
   }
 }

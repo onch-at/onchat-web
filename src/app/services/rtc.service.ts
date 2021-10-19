@@ -64,4 +64,8 @@ export class Rtc {
   createAnswer(options?: RTCAnswerOptions) {
     return from(this.pc.createAnswer(options));
   }
+
+  addTransceiver(trackOrKind: string | MediaStreamTrack, init?: RTCRtpTransceiverInit) {
+    return this.pc.addTransceiver(trackOrKind, init);
+  }
 }
