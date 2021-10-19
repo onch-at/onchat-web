@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonRouterOutlet, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/common/constants';
 import { captchaFeedback, passwordFeedback, usernameFeedback } from 'src/app/common/feedback';
 import { ValidationFeedback } from 'src/app/common/interfaces';
 import { WINDOW } from 'src/app/common/tokens';
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, USERNAME_PATTERN } from 'src/app/constants';
 import { ResetPassword } from 'src/app/models/form.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { Application } from 'src/app/services/app.service';

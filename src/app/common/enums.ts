@@ -1,4 +1,4 @@
-export enum ResultCode {
+export const enum ResultCode {
   /** 访问频率过高 */
   AccessOverclock = -6,
   /** 权限不足 */
@@ -16,7 +16,7 @@ export enum ResultCode {
 }
 
 /** 枚举周 */
-export enum WeekDay {
+export const enum WeekDay {
   Sunday = '周日',
   Monday = '周一',
   Tuesday = '周二',
@@ -27,13 +27,13 @@ export enum WeekDay {
 }
 
 /** 枚举天 */
-export enum Day {
+export const enum Day {
   Today = '今天',
   Yesterday = '昨天'
 }
 
 /** 枚举Socket事件 */
-export enum SocketEvent {
+export const enum SocketEvent {
   /** 连接打通时 */
   Connect = 'connect',
   /** 连接断开时 */
@@ -77,13 +77,13 @@ export enum SocketEvent {
 }
 
 /** RTC 数据类型 */
-export enum RtcDataType {
+export const enum RtcDataType {
   IceCandidate,
   Description
 }
 
 /** 枚举消息类型 */
-export enum MessageType {
+export const enum MessageType {
   /** 系统消息 */
   System = 0,
   /** 文本 */
@@ -101,7 +101,7 @@ export enum MessageType {
 }
 
 /** 枚举文字提示类型 */
-export enum TipsType {
+export const enum TipsType {
   /** 撤回消息 */
   RevokeMessage = 0,
   /** 加入房间 */
@@ -109,7 +109,7 @@ export enum TipsType {
 }
 
 /** 枚举聊天会话类型 */
-export enum ChatSessionType {
+export const enum ChatSessionType {
   /** 聊天室 */
   Chatroom = 0,
   /** 聊天室通知 */
@@ -117,7 +117,7 @@ export enum ChatSessionType {
 }
 
 /** 好友申请的状态 */
-export enum FriendRequestStatus {
+export const enum FriendRequestStatus {
   /** 等待验证 */
   Wait = 0,
   /** 同意 */
@@ -127,7 +127,7 @@ export enum FriendRequestStatus {
 }
 
 /** 聊天申请的状态 */
-export enum ChatRequestStatus {
+export const enum ChatRequestStatus {
   /** 等待验证 */
   Wait = 0,
   /** 同意 */
@@ -137,7 +137,7 @@ export enum ChatRequestStatus {
 }
 
 /** 聊天室类型 */
-export enum ChatroomType {
+export const enum ChatroomType {
   /** 聊天室类型：群聊 */
   Group = 0,
   /** 聊天室类型：私聊 */
@@ -147,7 +147,7 @@ export enum ChatroomType {
 }
 
 /** 聊天室成员角色 */
-export enum ChatMemberRole {
+export const enum ChatMemberRole {
   /** 成员角色：普通 */
   Normal = 0,
   /** 成员角色：管理 */
@@ -157,7 +157,7 @@ export enum ChatMemberRole {
 }
 
 /** 枚举本地储存的KEY */
-export enum LocalStorageKey {
+export const enum LocalStorageKey {
   /** 聊天会话列表缓存 */
   ChatSessions = 'chat_sessions',
   /** 聊天富文本草稿 */
@@ -167,7 +167,7 @@ export enum LocalStorageKey {
 }
 
 /** 枚举心情 */
-export enum Mood {
+export const enum Mood {
   /** 喜 */
   Joy = 0,
   /** 怒 */
@@ -179,7 +179,7 @@ export enum Mood {
 }
 
 /** 枚举性别 */
-export enum Gender {
+export const enum Gender {
   /** 男性 */
   Male = 0,
   /** 女性 */
@@ -189,7 +189,7 @@ export enum Gender {
 }
 
 /** 枚举音频 */
-export enum AudioName {
+export const enum AudioName {
   Boo,
   DingDeng,
   Ring

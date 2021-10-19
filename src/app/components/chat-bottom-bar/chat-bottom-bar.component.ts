@@ -2,10 +2,10 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Injec
 import { IonContent, Platform } from '@ionic/angular';
 import { fromEvent, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { TEXT_MSG_MAX_LENGTH } from 'src/app/common/constants';
 import { Throttle } from 'src/app/common/decorators';
 import { ChatroomType, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
+import { TEXT_MSG_MAX_LENGTH } from 'src/app/constants';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
