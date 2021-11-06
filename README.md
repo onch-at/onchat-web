@@ -4,6 +4,7 @@ A simple, beautiful, mobile-first instant messaging progressive web application 
 You can [click here](https://github.com/HyperLife1119/OnChat) to view the OnChat back-end code repository.
 
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
+[![Angular](https://img.shields.io/badge/Powered%20By-Angular-red?logo=angular)](https://www.github.com/angular/angular)
 
 OnChat currently supports the following chat modes:
 
