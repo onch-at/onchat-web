@@ -24,7 +24,7 @@
 
   <cdk-virtual-scroll-viewport [itemSize]="itemHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
     <ion-list class="chat-session-list">
-      <ion-item *cdkVirtualFor="let item of chatSessions; trackBy: trackByFn" mode="md" lines="none" [detail]="false">
+      <ion-item *cdkVirtualFor="let item of list; trackBy: trackByFn" mode="md" lines="none" [detail]="false">
         <ion-img class="clip" slot="start" [src]="item.avatarThumbnail"></ion-img>
 
         <ion-label>{{ item.title }}</ion-label>
