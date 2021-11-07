@@ -173,20 +173,4 @@ export class ImageService {
     }));
   }
 
-  /**
-   * 是否为动图
-   * @param image
-   */
-  isAnimation(image: Blob): boolean {
-    return ['image/apng', 'image/gif'].includes(image.type);
-  }
-
-  /**
-   * 是否为图片
-   * @param blob
-   */
-  isImage(blob: Blob): boolean {
-    return blob.size > 0 && blob.type.startsWith('image/');
-  }
-
 }

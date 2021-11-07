@@ -12,10 +12,10 @@ import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
 import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { ImageService } from 'src/app/services/image.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { BlobUtils } from 'src/app/utilities/blob.utils';
 import { SysUtils } from 'src/app/utilities/sys.utils';
 import Swiper, { Pagination } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
@@ -43,7 +43,6 @@ export class ChatDrawerComponent {
     private globalData: GlobalData,
     private sanitizer: DomSanitizer,
     private mediaDevice: MediaDevice,
-    private imageService: ImageService,
     private socketService: SocketService,
     private routerOutlet: IonRouterOutlet,
   ) { }
@@ -82,7 +81,7 @@ export class ChatDrawerComponent {
 
       const handle = async (original: boolean) => {
         for (let index = 0; index < length; index++) {
-          if (this.imageService.isImage(files[index])) {
+          if (BlobUtils.isImage(files[index])) {
             await this.createImageMessage(files[index], original);
           }
         }
@@ -128,7 +127,7 @@ export class ChatDrawerComponent {
   }
 
   createImageMessage(file: File, original: boolean) {
-    original ||= this.imageService.isAnimation(file);
+    original ||= BlobUtils.isAnimation(file);
     const { user, chatroomId } = this.globalData;
     const url = URL.createObjectURL(file);
     const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url) as string;

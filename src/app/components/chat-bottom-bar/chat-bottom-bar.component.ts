@@ -10,9 +10,9 @@ import { MessageEntity } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
-import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { BlobUtils } from 'src/app/utilities/blob.utils';
 import { StrUtils } from 'src/app/utilities/str.utils';
 import { ChatDrawerComponent } from '../chat-drawer/chat-drawer.component';
 
@@ -75,7 +75,6 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
     public elementRef: ElementRef<HTMLElement>,
     private socketService: SocketService,
     private overlay: Overlay,
-    private imageService: ImageService,
     private renderer: Renderer2,
     private platform: Platform,
     private injector: Injector,
@@ -182,7 +181,7 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
 
     const file = item.getAsFile();
 
-    this.imageService.isImage(file) && this.overlay.alert({
+    BlobUtils.isImage(file) && this.overlay.alert({
       header: '发送图片',
       message: '你确定要发送粘贴板中的图片吗？',
       cancelText: '原图发送',

@@ -150,7 +150,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   call() {
     this.overlay.loading();
     this.prepare().pipe(
-      mergeMap(() => this.rtc.negotiationNeeded().pipe(takeUntil(this.destroy$))),
+      // mergeMap(() => this.rtc.negotiationNeeded().pipe(takeUntil(this.destroy$))),
       mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true }))
     ).subscribe(description => {
       this.rtc.setLocalDescription(description);

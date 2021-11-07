@@ -1,16 +1,16 @@
 export const environment = {
   production: true,
 
-  indexCtx: '/onchat/http/index',
-  authCtx: '/onchat/http/auth',
-  userCtx: '/onchat/http/user',
-  chatCtx: '/onchat/http/chat',
-  chatroomCtx: '/onchat/http/chatroom',
-  chatRecordCtx: '/onchat/http/chat-record',
-  chatSessionCtx: '/onchat/http/chatsession',
-  friendCtx: '/onchat/http/friend',
+  indexCtx: '/onchat/index',
+  authCtx: '/onchat/auth',
+  userCtx: '/onchat/user',
+  chatCtx: '/onchat/chat',
+  chatroomCtx: '/onchat/chatroom',
+  chatRecordCtx: '/onchat/chat-record',
+  chatSessionCtx: '/onchat/chatsession',
+  friendCtx: '/onchat/friend',
 
-  socketioPath: '/onchat/ws/socket.io',
+  socketioPath: '/onchat/socket.io',
 
   iceServers: [
     {
