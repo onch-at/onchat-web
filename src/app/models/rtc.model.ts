@@ -4,7 +4,7 @@ export type RtcData = {
   senderId: number;
   targetId: number;
   type: RtcDataType.IceCandidate;
-  value: RTCIceCandidate;
+  value: RTCIceCandidateInit;
 } | {
   senderId: number;
   targetId: number;
