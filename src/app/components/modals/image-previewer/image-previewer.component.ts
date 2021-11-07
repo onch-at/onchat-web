@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetButton } from '@ionic/angular';
+import { ActionSheetButton, Platform } from '@ionic/angular';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -39,13 +39,20 @@ export class ImagePreviewerComponent extends ModalComponent {
 
   constructor(
     private feedbackService: FeedbackService,
+    private platform: Platform,
     protected overlay: Overlay,
     protected router: Router,
   ) {
     super();
   }
 
-  onPress(item: Message<ImageMessage>) {
+  doMore(item: Message<ImageMessage>, event: Event) {
+    event.preventDefault();
+
+    if (event.type === 'press' && this.platform.is('desktop')) {
+      return;
+    }
+
     this.feedbackService.slightVibrate();
     this.presentActionSheet(item);
   }

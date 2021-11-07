@@ -78,6 +78,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.rtc.close();
+    this.overlay.dismissLoading();
     this.feedbackService.audio(AudioName.Ring).pause();
     this.globalData.rtcing = false;
     this.window.clearTimeout(this.timer);

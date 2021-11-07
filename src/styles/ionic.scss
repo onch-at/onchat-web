@@ -333,7 +333,7 @@ ion-progress-bar {
     --button-background-selected: var(--color-medium);
 
     .action-sheet-group {
-        border-radius: 1.5rem;
+        border-radius: 1.25rem;
         backdrop-filter: saturate(250%) blur(15px);
     }
 
@@ -534,7 +534,7 @@ ion-toast {
     --start: 10px;
     --end: 10px;
     --height: 3rem;
-    --border-radius: 1.5rem;
+    --border-radius: 1.25rem;
     --color: var(--color-light);
     --background: var(--color-black);
 
