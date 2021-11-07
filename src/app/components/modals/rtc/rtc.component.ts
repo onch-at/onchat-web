@@ -120,7 +120,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
 
         // 将自己的候选发送给对方
-        this.rtc.iceCandidate().pipe(
+        this.rtc.iceCandidate.pipe(
           takeUntil(this.destroy$),
           filter(({ candidate }) => candidate !== null)
         ).subscribe(({ candidate }) => {
@@ -129,7 +129,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
 
         // 侦听轨道
-        this.rtc.track().pipe(takeUntil(this.destroy$), take(1)).subscribe(async ({ streams }) => {
+        this.rtc.track.pipe(takeUntil(this.destroy$), take(1)).subscribe(async ({ streams }) => {
           this.overlay.dismissLoading();
           await this.overlay.loading('Ready…');
 
@@ -138,7 +138,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
 
         // 侦听连接状态
-        this.rtc.connectionStateChange().pipe(
+        this.rtc.connectionStateChange.pipe(
           filter(({ target }) => ['closed', 'failed', 'disconnected'].includes(target.connectionState))
         ).subscribe(() => {
           this.hangUp();
@@ -154,7 +154,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   call() {
     this.overlay.loading();
     this.prepare().pipe(
-      mergeMap(() => this.rtc.negotiationNeeded().pipe(takeUntil(this.destroy$))),
+      mergeMap(() => this.rtc.negotiationNeeded.pipe(takeUntil(this.destroy$))),
       filter(({ target }) => (target as RTCPeerConnection).signalingState === 'stable'),
       mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true }))
     ).subscribe(description => {

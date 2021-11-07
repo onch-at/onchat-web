@@ -9,6 +9,22 @@ export class Rtc {
   private pc: RTCPeerConnection = null;
   private stream: MediaStream = null;
 
+  get iceCandidate() {
+    return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'icecandidate');
+  }
+
+  get negotiationNeeded() {
+    return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'negotiationneeded');
+  }
+
+  get connectionStateChange() {
+    return fromEvent<any>(this.pc, 'connectionstatechange');
+  }
+
+  get track() {
+    return fromEvent<RTCTrackEvent>(this.pc, 'track');
+  }
+
   constructor() { }
 
   create() {
@@ -22,22 +38,6 @@ export class Rtc {
     this.pc = null;
     this.stream?.getTracks().forEach(o => o.stop());
     this.stream = null;
-  }
-
-  negotiationNeeded() {
-    return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'negotiationneeded');
-  }
-
-  iceCandidate() {
-    return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'icecandidate');
-  }
-
-  connectionStateChange() {
-    return fromEvent<any>(this.pc, 'connectionstatechange');
-  }
-
-  track() {
-    return fromEvent<RTCTrackEvent>(this.pc, 'track');
   }
 
   setTrack(stream: MediaStream) {
