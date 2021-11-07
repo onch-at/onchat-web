@@ -21,7 +21,7 @@ export class BaseInterceptor implements HttpInterceptor {
           }
         }
 
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

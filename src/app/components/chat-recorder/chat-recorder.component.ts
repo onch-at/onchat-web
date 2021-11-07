@@ -78,7 +78,7 @@ export class ChatRecorderComponent implements OnDestroy {
     this.recorder.record().pipe(
       catchError((error: SafeAny) => {
         this.startTime = null;
-        return throwError(error);
+        return throwError(() => error);
       }),
       tap(() => this.appStart.emit()),
       mergeMap(() => this.recorder.start()),

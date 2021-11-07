@@ -43,7 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
           this.app.logout();
         }
 
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
@@ -64,7 +64,7 @@ export class AuthInterceptor implements HttpInterceptor {
       }),
       catchError((error: HttpErrorResponse) => {
         this.app.logout();
-        return throwError(error);
+        return throwError(() => error);
       }),
       finalize(() => this.refresher = null)
     );

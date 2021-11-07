@@ -18,7 +18,7 @@ export class MediaDevice {
     return from(this.navigator.mediaDevices.getUserMedia(constraints)).pipe(
       catchError(error => {
         this.overlay.toast(`OnChat：${constraints.audio ? '麦克风' : constraints.video ? '摄像头' : ''}权限授权失败！`);
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
