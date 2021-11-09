@@ -20,6 +20,18 @@ enum OperateState {
   Cancel
 };
 
+/**
+ * 某坐标点是否在矩形内
+ * @param pos
+ * @param rect
+ */
+const isInsideRect = ({ x, y }: Vector2, rect: DOMRect) => (
+  x >= rect.x &&
+  x <= rect.x + rect.width &&
+  y >= rect.y &&
+  y <= rect.y + rect.height
+);
+
 @Component({
   selector: 'app-chat-recorder',
   templateUrl: './chat-recorder.component.html',
@@ -122,7 +134,7 @@ export class ChatRecorderComponent implements OnDestroy {
 
     switch (true) {
       // 拖动到播放按钮
-      case this.isInsideRect(pos, playBtn.getBoundingClientRect()):
+      case isInsideRect(pos, playBtn.getBoundingClientRect()):
         if (this.operateState !== OperateState.Play) {
           this.feedbackService.slightVibrate();
           this.operateState = OperateState.Play;
@@ -130,7 +142,7 @@ export class ChatRecorderComponent implements OnDestroy {
         break;
 
       // 拖动到取消按钮
-      case this.isInsideRect(pos, cancelBtn.getBoundingClientRect()):
+      case isInsideRect(pos, cancelBtn.getBoundingClientRect()):
         if (this.operateState !== OperateState.Cancel) {
           this.feedbackService.slightVibrate();
           this.operateState = OperateState.Cancel;
@@ -240,24 +252,6 @@ export class ChatRecorderComponent implements OnDestroy {
   private clearTimer() {
     this.timer && clearInterval(this.timer);
     this.timer = null;
-  }
-
-  /**
-   * 某坐标点是否在矩形内
-   * @param pos
-   * @param rect
-   */
-  private isInsideRect(pos: Vector2, rect: DOMRect) {
-    const { x, y } = pos;
-
-    if (
-      x < rect.x || x > rect.x + rect.width ||
-      y < rect.y || y > rect.y + rect.height
-    ) {
-      return false;
-    }
-
-    return true;
   }
 
 }

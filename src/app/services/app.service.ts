@@ -79,7 +79,8 @@ export class Application {
     // 连接断开时
     this.socketService.on(SocketEvent.Disconnect).pipe(
       // 用户登录后且客户端在前台
-      filter(() => this.globalData.user !== null && !this.document.hidden),
+      filter(() => this.globalData.user !== null),
+      filter(() => !this.document.hidden)
     ).subscribe(() => {
       this.overlay.toast('OnChat: 与服务器断开连接！');
     });

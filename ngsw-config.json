@@ -22,7 +22,8 @@
       "resources": {
         "files": [
           "/assets/**",
-          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|bmp|ani|mp3|css)"
+          "/svg/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|bmp|ani|mp3)"
         ]
       }
     }
