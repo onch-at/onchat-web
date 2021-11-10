@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port=4200",
-    "build": "ionic build --configuration production --aot --build-optimizer --engine=browser",
+    "build": "ng build --configuration production --aot --build-optimizer",
     "bundle-report": "ng build --configuration production --aot --build-optimizer --stats-json && webpack-bundle-analyzer --port=9111 www/stats.json",
     "test": "ng test",
     "lint": "ng lint",
