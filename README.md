@@ -5,6 +5,7 @@ You can [click here](https://github.com/HyperLife1119/OnChat) to view the OnChat
 
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 [![Angular](https://img.shields.io/badge/Powered%20By-Angular-red?logo=angular)](https://www.github.com/angular/angular)
+[![Node.js CI](https://github.com/HyperLife1119/OnChat-Web/actions/workflows/node.js.yml/badge.svg)](https://github.com/HyperLife1119/OnChat-Web/actions/workflows/node.js.yml)
 
 OnChat currently supports the following chat modes:
 
