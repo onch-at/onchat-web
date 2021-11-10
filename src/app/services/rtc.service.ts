@@ -29,7 +29,9 @@ export class Rtc {
 
   create() {
     this.pc = new RTCPeerConnection({
-      iceServers: environment.iceServers
+      iceServers: environment.iceServers,
+      bundlePolicy: 'max-bundle',
+      rtcpMuxPolicy: 'require'
     });
   }
 

@@ -122,8 +122,11 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         // 将自己的候选发送给对方
         this.rtc.iceCandidate.pipe(
           takeUntil(this.destroy$),
-          filter(({ candidate }) => candidate !== null)
-        ).subscribe(({ candidate }) => {
+          map(({ candidate }) => candidate),
+          filter(candidate => candidate !== null),
+          // 不使用 TCP 流，只使用 UDP 流
+          filter(({ candidate }) => !candidate.includes('tcp')),
+        ).subscribe(candidate => {
           // 让对方添加我的候选
           this.socketService.rtcData(this.user.id, RtcDataType.IceCandidate, candidate);
         });
