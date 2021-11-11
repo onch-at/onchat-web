@@ -51,17 +51,14 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     merge(
       this.socketService.on(SocketEvent.RtcHangUp),
       this.socketService.on(SocketEvent.RtcBusy).pipe(
-        tap(({ data: { senderId } }) => (
-          senderId === this.user.id && this.overlay.toast('OnChat：对方正在忙线中，请稍后再试…')
-        ))
+        tap(({ data: { senderId } }) => senderId === this.user.id && this.busy())
       ),
     ).pipe(
       takeUntil(this.destroy$),
       filter(({ data: { senderId } }) => senderId === this.user.id)
-    ).subscribe(() => {
-      this.dismiss();
-    });
+    ).subscribe(() => this.dismiss());
 
+    // 如果自己是申请人，自己先准备好 RTC
     this.isRequester && this.prepare().subscribe();
 
     this.feedbackService.audio(AudioName.Ring).play();
@@ -70,7 +67,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     // 如果三分钟后还没接通，客户端主动挂断
     this.timer = this.window.setTimeout(() => {
       if (this.waiting) {
-        this.isRequester && this.overlay.toast('OnChat：对方正在忙线中，请稍后再试…');
+        this.isRequester && this.busy();
         this.hangUp();
       }
     }, 60000 * 3);
@@ -89,10 +86,15 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     this.waiting = false;
   }
 
+  busy() {
+    this.overlay.toast('OnChat：对方正在忙线中，请稍后再试…');
+  }
+
   prepare() {
     return (this.mediaStream ? of(this.mediaStream) : this.mediaDevice.getUserMedia({ video: true, audio: { echoCancellation: true } })).pipe(
-      tap(stream => {
+      tap(() => {
         this.rtc.create();
+
         // 侦听 RTC 数据
         this.socketService.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
           takeUntil(this.destroy$),
@@ -110,13 +112,24 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
             case RtcDataType.Description:
               this.rtc.setRemoteDescription(new RTCSessionDescription(value as RTCSessionDescriptionInit));
               // 如果我是请求者，那么 RTC 连接是被请求者发起的，对方是 Offer，我是 Answer
-              this.isRequester && this.rtc.createAnswer({ offerToReceiveVideo: true, offerToReceiveAudio: true }).subscribe(description => {
-                this.rtc.setLocalDescription(description);
-                // 让对方设置我的远程描述
-                this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
+              this.isRequester && this.rtc.createAnswer().subscribe({
+                next: description => {
+                  this.rtc.setLocalDescription(description);
+                  // 让对方设置我的远程描述
+                  this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
+                },
+                error: error => {
+                  this.overlay.toast('OnChat：RTC 对等连接应答创建失败！');
+                  console.error(error);
+                }
               });
               break;
           }
+        });
+
+        this.rtc.iceCandidateError.pipe(takeUntil(this.destroy$)).subscribe(error => {
+          this.overlay.toast('OnChat：对等连接 ICE 协商失败！');
+          console.error(error);
         });
 
         // 将自己的候选发送给对方
@@ -143,27 +156,34 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         // 侦听连接状态
         this.rtc.connectionStateChange.pipe(
           filter(({ target }) => ['closed', 'failed', 'disconnected'].includes(target.connectionState))
-        ).subscribe(() => {
-          this.hangUp();
-        });
-
-        this.rtc.setTrack(stream);
+        ).subscribe(() => this.hangUp());
+      }),
+      tap(stream => {
+        this.rtc.setTracks(stream);
         this.localVideo.nativeElement.volume = 0;
         this.localVideo.nativeElement.srcObject = stream;
       })
     );
   }
 
+  /** 被申请人发起连接 */
   call() {
     this.overlay.loading();
     this.prepare().pipe(
-      mergeMap(() => this.rtc.negotiationNeeded.pipe(takeUntil(this.destroy$))),
-      filter(({ target }) => (target as RTCPeerConnection).signalingState === 'stable'),
+      // Safari 暂不支持 negotiationNeeded
+      // mergeMap(() => this.rtc.negotiationNeeded.pipe(takeUntil(this.destroy$))),
+      // filter(({ target }) => (target as RTCPeerConnection).signalingState === 'stable'),
       mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true }))
-    ).subscribe(description => {
-      this.rtc.setLocalDescription(description);
-      // 让对方设置我的远程描述
-      this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
+    ).subscribe({
+      next: description => {
+        this.rtc.setLocalDescription(description);
+        // 让对方设置我的远程描述
+        this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
+      },
+      error: error => {
+        this.overlay.toast('OnChat：RTC 对等连接提供创建失败！');
+        console.error(error);
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-<ion-list>
+<ion-list class="min-hg-full">
 	<ion-item-sliding #ionItemSliding mode="md" *ngFor="let item of globalData.receiveFriendRequests;">
 		<ion-item-options *ngIf="!item.targetReaded" side="start">
 			<ion-item-option class="bg-primary" (tap)="readedReceiveRequest(item.id, ionItemSliding)">

@@ -13,6 +13,10 @@ export class Rtc {
     return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'icecandidate');
   }
 
+  get iceCandidateError() {
+    return fromEvent<Error>(this.pc, 'icecandidateerror');
+  }
+
   get negotiationNeeded() {
     return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'negotiationneeded');
   }
@@ -42,7 +46,7 @@ export class Rtc {
     this.stream = null;
   }
 
-  setTrack(stream: MediaStream) {
+  setTracks(stream: MediaStream) {
     this.stream = stream;
     stream.getTracks().forEach(track => this.pc.addTrack(track, stream));
   }
