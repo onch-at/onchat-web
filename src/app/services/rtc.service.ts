@@ -13,10 +13,6 @@ export class Rtc {
     return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'icecandidate');
   }
 
-  get iceCandidateError() {
-    return fromEvent<Error>(this.pc, 'icecandidateerror');
-  }
-
   get negotiationNeeded() {
     return fromEvent<RTCPeerConnectionIceEvent>(this.pc, 'negotiationneeded');
   }
@@ -41,8 +37,8 @@ export class Rtc {
 
   close() {
     this.pc?.close();
-    this.pc = null;
     this.stream?.getTracks().forEach(o => o.stop());
+    this.pc = null;
     this.stream = null;
   }
 
@@ -52,15 +48,27 @@ export class Rtc {
   }
 
   setLocalDescription(description: RTCSessionDescriptionInit) {
+    if (!(description instanceof RTCSessionDescription)) {
+      description = new RTCSessionDescription(description);
+    }
+
     return from(this.pc.setLocalDescription(description));
   }
 
   setRemoteDescription(description: RTCSessionDescriptionInit) {
+    if (!(description instanceof RTCSessionDescription)) {
+      description = new RTCSessionDescription(description);
+    }
+
     return from(this.pc.setRemoteDescription(description));
   }
 
-  addIceCandidate(candidateInitDict?: RTCIceCandidateInit) {
-    return from(this.pc.addIceCandidate(new RTCIceCandidate(candidateInitDict)));
+  addIceCandidate(candidate: RTCIceCandidateInit) {
+    if (!(candidate instanceof RTCIceCandidate)) {
+      candidate = new RTCIceCandidate(candidate);
+    }
+
+    return from(this.pc.addIceCandidate(candidate));
   }
 
   createOffer(options?: RTCOfferOptions) {

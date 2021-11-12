@@ -38,9 +38,9 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     private mediaDevice: MediaDevice,
     private socketService: SocketService,
     private feedbackService: FeedbackService,
-    @Inject(WINDOW) private window: Window,
     protected overlay: Overlay,
     protected router: Router,
+    @Inject(WINDOW) private window: Window,
   ) {
     super();
   }
@@ -105,12 +105,13 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
           switch (type) {
             // 添加候选
             case RtcDataType.IceCandidate:
-              this.rtc.addIceCandidate(new RTCIceCandidate(value as RTCIceCandidateInit));
+              const { sdpMLineIndex, candidate } = value as RTCIceCandidateInit;
+              this.rtc.addIceCandidate({ sdpMLineIndex, candidate });
               break;
 
             // 设置远程描述
             case RtcDataType.Description:
-              this.rtc.setRemoteDescription(new RTCSessionDescription(value as RTCSessionDescriptionInit));
+              this.rtc.setRemoteDescription(value as RTCSessionDescriptionInit);
               // 如果我是请求者，那么 RTC 连接是被请求者发起的，对方是 Offer，我是 Answer
               this.isRequester && this.rtc.createAnswer().subscribe({
                 next: description => {
@@ -125,11 +126,6 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
               });
               break;
           }
-        });
-
-        this.rtc.iceCandidateError.pipe(takeUntil(this.destroy$)).subscribe(error => {
-          this.overlay.toast('OnChat：对等连接 ICE 协商失败！');
-          console.error(error);
         });
 
         // 将自己的候选发送给对方
