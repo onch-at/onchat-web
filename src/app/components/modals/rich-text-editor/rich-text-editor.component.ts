@@ -9,6 +9,7 @@ import { TEXT_MSG_MAX_LENGTH } from 'src/app/constants';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { RichTextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -19,6 +20,7 @@ import { ModalComponent } from '../modal.component';
   selector: 'app-rich-text-editor',
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.scss'],
+  providers: [Destroyer]
 })
 export class RichTextEditorComponent extends ModalComponent implements OnInit {
   html: string = '';
@@ -46,6 +48,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
     private socketService: SocketService,
     protected overlay: Overlay,
     protected router: Router,
+    protected destroyer: Destroyer,
   ) {
     super();
   }

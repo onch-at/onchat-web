@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ChatRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enums';
 import { REASON_MAX_LENGTH } from 'src/app/constants';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -14,9 +14,9 @@ import { SocketService } from 'src/app/services/socket.service';
   selector: 'app-request',
   templateUrl: './request.page.html',
   styleUrls: ['./request.page.scss'],
+  providers: [Destroyer]
 })
-export class RequestPage implements OnInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+export class RequestPage implements OnInit {
   readonly requestStatus: typeof ChatRequestStatus = ChatRequestStatus;
   readonly reasonMaxLength = REASON_MAX_LENGTH;
   request: ChatRequest;
@@ -27,7 +27,8 @@ export class RequestPage implements OnInit, OnDestroy {
     private overlay: Overlay,
     private globalData: GlobalData,
     private route: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private destroyer: Destroyer,
   ) { }
 
   ngOnInit() {
@@ -42,7 +43,7 @@ export class RequestPage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.ChatRequest).pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       debounceTime(100)
     ).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
       if (code !== ResultCode.Success) {
@@ -61,11 +62,6 @@ export class RequestPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/');
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   /**

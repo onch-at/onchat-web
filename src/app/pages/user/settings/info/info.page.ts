@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { Gender, Mood } from 'src/app/common/enums';
 import { ValidationFeedback } from 'src/app/common/interfaces';
@@ -10,6 +9,7 @@ import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, SIGNATURE_MAX_LENGTH, SIGNATU
 import { UserInfo } from 'src/app/models/form.model';
 import { Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtils } from 'src/app/utilities/str.utils';
@@ -19,9 +19,9 @@ import { SysUtils } from 'src/app/utilities/sys.utils';
   selector: 'app-settings',
   templateUrl: './info.page.html',
   styleUrls: ['./info.page.scss'],
+  providers: [Destroyer]
 })
-export class InfoPage implements OnInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+export class InfoPage implements OnInit {
   /** 昵称最大长度 */
   readonly nicknameMaxLength: number = USERNAME_MAX_LENGTH;
   /** 个性签名最大长度 */
@@ -91,10 +91,11 @@ export class InfoPage implements OnInit, OnDestroy {
 
   constructor(
     public globalData: GlobalData,
-    private formBuilder: FormBuilder,
+    private overlay: Overlay,
     private navCtrl: NavController,
+    private formBuilder: FormBuilder,
     private userService: UserService,
-    private overlay: Overlay
+    private destroyer: Destroyer,
   ) { }
 
   ngOnInit() {
@@ -108,14 +109,9 @@ export class InfoPage implements OnInit, OnDestroy {
       gender: user.gender ?? Gender.Secret
     });
 
-    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.form.valueChanges.pipe(takeUntil(this.destroyer)).subscribe(() => {
       this.dirty = true;
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   /**

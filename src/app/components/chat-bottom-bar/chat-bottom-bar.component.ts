@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Injector, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Injector, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { IonContent, Platform } from '@ionic/angular';
-import { fromEvent, Subject } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Throttle } from 'src/app/common/decorators';
 import { ChatroomType, SocketEvent } from 'src/app/common/enums';
@@ -9,6 +9,7 @@ import { TEXT_MSG_MAX_LENGTH } from 'src/app/constants';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { TextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -20,9 +21,9 @@ import { ChatDrawerComponent } from '../chat-drawer/chat-drawer.component';
   selector: 'app-chat-bottom-bar',
   templateUrl: './chat-bottom-bar.component.html',
   styleUrls: ['./chat-bottom-bar.component.scss'],
+  providers: [Destroyer]
 })
-export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit {
-  private destroy$: Subject<void> = new Subject<void>();
+export class ChatBottomBarComponent implements OnInit, AfterViewInit {
   /** IonContent滚动元素 */
   private contentElement: HTMLElement;
   /** IonContent滚动元素初始可视高度 */
@@ -78,12 +79,13 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
     private renderer: Renderer2,
     private platform: Platform,
     private injector: Injector,
+    private destroyer: Destroyer,
   ) { }
 
   ngOnInit() {
     const { chatroomId, user } = this.globalData;
     this.socketService.on(SocketEvent.Message).pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       success(),
       // 如果是这个房间的，且不是我的消息
       filter(({ data }: Result<Message>) => data.chatroomId === chatroomId && data.userId !== user.id),
@@ -98,11 +100,6 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
     });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   ngAfterViewInit() {
     this.ionContent.getScrollElement().then((element: HTMLElement) => {
       this.contentElement = element;
@@ -112,7 +109,7 @@ export class ChatBottomBarComponent implements OnInit, OnDestroy, AfterViewInit 
     const drawerContainerElement = this.drawerContainer.nativeElement;
 
     fromEvent(drawerContainerElement, 'transitionend').pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       filter(({ target, propertyName }: TransitionEvent) => (
         target === drawerContainerElement && propertyName === 'height'
       ))

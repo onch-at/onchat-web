@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ChatSessionCheckbox } from 'src/app/common/interfaces';
 import { WINDOW } from 'src/app/common/tokens';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { CssUtils } from 'src/app/utilities/css.utils';
@@ -13,6 +14,7 @@ import { ModalComponent } from '../modal.component';
   selector: 'app-chat-session-selector',
   templateUrl: './chat-session-selector.component.html',
   styleUrls: ['./chat-session-selector.component.scss'],
+  providers: [Destroyer]
 })
 export class ChatSessionSelectorComponent extends ModalComponent implements OnInit {
   /** 标题 */
@@ -44,6 +46,7 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
     public globalData: GlobalData,
     protected overlay: Overlay,
     protected router: Router,
+    protected destroyer: Destroyer,
     @Inject(WINDOW) private window: Window,
   ) {
     super();

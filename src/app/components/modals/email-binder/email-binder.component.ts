@@ -9,6 +9,7 @@ import { EMAIL_MAX_LENGTH } from 'src/app/constants';
 import { Result } from 'src/app/models/onchat.model';
 import { IndexService } from 'src/app/services/apis/index.service';
 import { UserService } from 'src/app/services/apis/user.service';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtils } from 'src/app/utilities/str.utils';
@@ -19,6 +20,7 @@ import { ModalComponent } from '../modal.component';
   selector: 'app-email-binder',
   templateUrl: './email-binder.component.html',
   styleUrls: ['./email-binder.component.scss'],
+  providers: [Destroyer]
 })
 export class EmailBinderComponent extends ModalComponent {
   form: FormGroup = this.formBuilder.group({
@@ -57,6 +59,7 @@ export class EmailBinderComponent extends ModalComponent {
     private userService: UserService,
     protected overlay: Overlay,
     protected router: Router,
+    protected destroyer: Destroyer,
     @Inject(WINDOW) private window: Window,
   ) {
     super();

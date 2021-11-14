@@ -1,8 +1,8 @@
 import { KeyValue } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
-import { of, Subject } from 'rxjs';
+import { of } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ChatMemberRole, ResultCode, SocketEvent } from 'src/app/common/enums';
 import { ChatSessionCheckbox, SafeAny } from 'src/app/common/interfaces';
@@ -14,6 +14,7 @@ import { ChatMember, ChatRequest, Chatroom, ChatSession, Result } from 'src/app/
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';
 import { UserService } from 'src/app/services/apis/user.service';
 import { CacheService } from 'src/app/services/cache.service';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -24,9 +25,9 @@ import { SysUtils } from 'src/app/utilities/sys.utils';
   selector: 'app-chatroom-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
+  providers: [Destroyer]
 })
-export class HomePage implements OnInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+export class HomePage implements OnInit {
   chatroom: Chatroom;
   members: ChatMember[];
   /** 在群成员中的我 */
@@ -48,7 +49,8 @@ export class HomePage implements OnInit, OnDestroy {
     private userService: UserService,
     private cacheService: CacheService,
     private socketService: SocketService,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    private destroyer: Destroyer,
   ) { }
 
   ngOnInit() {
@@ -73,7 +75,7 @@ export class HomePage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.ChatRequest).pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       debounceTime(100)
     ).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
       if (code !== ResultCode.Success) {
@@ -91,11 +93,6 @@ export class HomePage implements OnInit, OnDestroy {
         }
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   presentChatMemberList() {

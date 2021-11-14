@@ -1,19 +1,19 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IonRouterOutlet } from '@ionic/angular';
-import { merge, Subject } from 'rxjs';
+import { merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { VoiceMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { Recorder } from 'src/app/services/recorder.service';
 
 @Component({
   selector: 'app-voice-message',
   templateUrl: './voice-message.component.html',
   styleUrls: ['./voice-message.component.scss'],
+  providers: [Destroyer]
 })
 export class VoiceMessageComponent implements OnInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
-
   @Input() msg: Message<VoiceMessage>;
 
   audio: HTMLAudioElement;
@@ -21,20 +21,19 @@ export class VoiceMessageComponent implements OnInit, OnDestroy {
   constructor(
     private recorder: Recorder,
     private routerOutlet: IonRouterOutlet,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private destroyer: Destroyer,
   ) { }
 
   ngOnInit() {
     merge(
       this.recorder.action,
       this.routerOutlet.activateEvents
-    ).pipe(takeUntil(this.destroy$)).subscribe(() => this.pause());
+    ).pipe(takeUntil(this.destroyer)).subscribe(() => this.pause());
   }
 
   ngOnDestroy() {
     this.pause();
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   play() {

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ActionSheetButton, Platform } from '@ionic/angular';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { EntityUtils } from 'src/app/utilities/entity.utils';
@@ -19,6 +20,7 @@ Swiper.use([Lazy, Zoom]);
   selector: 'app-image-previewer',
   templateUrl: './image-previewer.component.html',
   styleUrls: ['./image-previewer.component.scss'],
+  providers: [Destroyer]
 })
 export class ImagePreviewerComponent extends ModalComponent {
   @Input() data: Message<ImageMessage>[] = [];
@@ -42,6 +44,7 @@ export class ImagePreviewerComponent extends ModalComponent {
     private platform: Platform,
     protected overlay: Overlay,
     protected router: Router,
+    protected destroyer: Destroyer,
   ) {
     super();
   }

@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from 'src/app/common/enums';
 import { ChatSessionCheckbox, SafeAny, ValidationFeedback } from 'src/app/common/interfaces';
 import { CHATROOM_DESCRIPTION_MAX_LENGTH, CHATROOM_DESCRIPTION_MIN_LENGTH, CHATROOM_NAME_MAX_LENGTH, CHATROOM_NAME_MIN_LENGTH, MSG_BROADCAST_QUANTITY_LIMIT } from 'src/app/constants';
 import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -18,9 +18,9 @@ const ITEM_ROWS: number = 10;
   selector: 'app-create',
   templateUrl: './create.page.html',
   styleUrls: ['./create.page.scss'],
+  providers: [Destroyer]
 })
-export class CreatePage implements OnInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+export class CreatePage implements OnInit {
   /** 群名最大长度 */
   readonly nameMaxLength: number = CHATROOM_NAME_MAX_LENGTH;
   /** 群简介最大长度 */
@@ -70,10 +70,11 @@ export class CreatePage implements OnInit, OnDestroy {
   constructor(
     public globalData: GlobalData,
     private router: Router,
+    private overlay: Overlay,
     private userService: UserService,
     private formBuilder: FormBuilder,
     private socketService: SocketService,
-    private overlay: Overlay,
+    private destroyer: Destroyer,
   ) { }
 
   ngOnInit() {
@@ -90,7 +91,7 @@ export class CreatePage implements OnInit, OnDestroy {
       });
     }
 
-    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.destroy$)).subscribe(({ code, data, msg }: Result<ChatSession>) => {
+    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.destroyer)).subscribe(({ code, data, msg }: Result<ChatSession>) => {
       this.loading = false;
 
       if (code !== ResultCode.Success) {
@@ -107,11 +108,6 @@ export class CreatePage implements OnInit, OnDestroy {
 
       this.router.navigate(['/chatroom', data.data.chatroomId]);
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   submit() {

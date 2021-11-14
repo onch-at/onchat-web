@@ -5,6 +5,7 @@ import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cro
 import { Observable } from 'rxjs';
 import { SafeAny } from 'src/app/common/interfaces';
 import { Result } from 'src/app/models/onchat.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SysUtils } from 'src/app/utilities/sys.utils';
@@ -17,6 +18,7 @@ export type AvatarData = { avatar: string; avatarThumbnail: string };
   selector: 'app-avatar-cropper',
   templateUrl: './avatar-cropper.component.html',
   styleUrls: ['./avatar-cropper.component.scss'],
+  providers: [Destroyer]
 })
 export class AvatarCropperComponent extends ModalComponent implements OnInit {
   /** 文件变更事件 */
@@ -36,7 +38,8 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
     public imageService: ImageService,
     private sanitizer: DomSanitizer,
     protected overlay: Overlay,
-    protected router: Router
+    protected router: Router,
+    protected destroyer: Destroyer,
   ) {
     super();
   }

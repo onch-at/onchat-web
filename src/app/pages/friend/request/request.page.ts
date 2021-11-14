@@ -1,7 +1,6 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 import { FriendRequestStatus, ResultCode, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
@@ -9,6 +8,7 @@ import { WINDOW } from 'src/app/common/tokens';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/constants';
 import { FriendRequest, Result, User } from 'src/app/models/onchat.model';
 import { FriendService } from 'src/app/services/apis/friend.service';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -17,9 +17,9 @@ import { SocketService } from 'src/app/services/socket.service';
   selector: 'app-request',
   templateUrl: './request.page.html',
   styleUrls: ['./request.page.scss'],
+  providers: [Destroyer]
 })
-export class RequestPage implements OnInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+export class RequestPage implements OnInit {
   readonly requestStatus: typeof FriendRequestStatus = FriendRequestStatus;
   readonly nicknameMaxLength = NICKNAME_MAX_LENGTH;
   readonly reasonMaxLength = REASON_MAX_LENGTH;
@@ -41,6 +41,7 @@ export class RequestPage implements OnInit, OnDestroy {
     private overlay: Overlay,
     private route: ActivatedRoute,
     private navCtrl: NavController,
+    private destroyer: Destroyer,
     @Inject(WINDOW) private window: Window,
   ) { }
 
@@ -66,7 +67,7 @@ export class RequestPage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.FriendRequest).pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       debounceTime(100),
       tap(({ code, msg }: Result<FriendRequest | FriendRequest[]>) => {
         this.overlay.toast(code === ResultCode.Success ? '好友申请已发出，等待对方验证…' : msg)
@@ -80,11 +81,6 @@ export class RequestPage implements OnInit, OnDestroy {
         this.navCtrl.back();
       }, 250);
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   friendRequest() {

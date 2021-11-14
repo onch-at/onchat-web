@@ -2,7 +2,6 @@ import { KeyValue } from '@angular/common';
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, NavController, Platform, ViewWillEnter } from '@ionic/angular';
-import { Subject } from 'rxjs';
 import { debounceTime, filter, finalize, takeUntil, tap } from 'rxjs/operators';
 import { ChatroomType, MessageType, ResultCode, SocketEvent } from 'src/app/common/enums';
 import { SafeAny } from 'src/app/common/interfaces';
@@ -16,6 +15,7 @@ import { ChatRecordService } from 'src/app/services/apis/chat-record.service';
 import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';
 import { FriendService } from 'src/app/services/apis/friend.service';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -25,9 +25,9 @@ import { StrUtils } from 'src/app/utilities/str.utils';
   selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
+  providers: [Destroyer]
 })
 export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter {
-  private destroy$: Subject<void> = new Subject<void>();
   /** IonContent滚动元素 */
   private contentElement: HTMLElement;
 
@@ -63,6 +63,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     private router: Router,
     private overlay: Overlay,
     private navCtrl: NavController,
+    private destroyer: Destroyer,
     @Inject(WINDOW) private window: Window,
   ) { }
 
@@ -97,7 +98,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     }
 
     this.socketService.on(SocketEvent.Message).pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       success(),
       filter(({ data }: Result<Message>) => data.chatroomId === this.chatroomId),
       tap(({ data }: Result<Message>) => {
@@ -123,7 +124,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     });
 
     this.socketService.on(SocketEvent.RevokeMessage).pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       success(),
       filter(({ data }: Result<{ chatroomId: number, msgId: number }>) => data.chatroomId === this.chatroomId)
     ).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
@@ -137,7 +138,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
 
     // 重连时，自动重发
     this.socketService.initialized.pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       success(),
       filter(() => this.msgList.some(o => o.loading)),
     ).subscribe(() => {
@@ -149,8 +150,6 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
 
   ngOnDestroy() {
     this.globalData.chatroomId = null;
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   ngAfterViewInit() {

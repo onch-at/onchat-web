@@ -8,6 +8,7 @@ import { success } from 'src/app/common/operators';
 import { WINDOW } from 'src/app/common/tokens';
 import { Result, User } from 'src/app/models/onchat.model';
 import { RtcData } from 'src/app/models/rtc.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
@@ -20,6 +21,7 @@ import { ModalComponent } from '../modal.component';
   selector: 'app-rtc',
   templateUrl: './rtc.component.html',
   styleUrls: ['./rtc.component.scss'],
+  providers: [Destroyer]
 })
 export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   /** 对方 */
@@ -41,6 +43,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     private feedbackService: FeedbackService,
     protected overlay: Overlay,
     protected router: Router,
+    protected destroyer: Destroyer,
     @Inject(WINDOW) private window: Window,
   ) {
     super();
@@ -55,7 +58,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         tap(({ data: { senderId } }) => senderId === this.user.id && this.busy())
       ),
     ).pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       filter(({ data: { senderId } }) => senderId === this.user.id)
     ).subscribe(() => this.dismiss());
 
@@ -75,6 +78,8 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
+
     this.rtc.close();
     this.overlay.dismissLoading();
     this.feedbackService.audio(AudioName.Ring).pause();
@@ -98,7 +103,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
         // 侦听 RTC 数据
         this.socketService.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
-          takeUntil(this.destroy$),
+          takeUntil(this.destroyer),
           success(),
           filter(({ data: { senderId } }) => senderId === this.user.id),
           map(({ data }) => data),
@@ -125,7 +130,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
         // 将自己的候选发送给对方
         this.rtc.iceCandidate.pipe(
-          takeUntil(this.destroy$),
+          takeUntil(this.destroyer),
           map(({ candidate }) => candidate),
           filter(candidate => candidate !== null),
           // 只使用 UDP 流
@@ -136,7 +141,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
 
         // 侦听轨道
-        this.rtc.track.pipe(takeUntil(this.destroy$), take(1)).subscribe(async ({ streams }) => {
+        this.rtc.track.pipe(takeUntil(this.destroyer), take(1)).subscribe(async ({ streams }) => {
           this.overlay.dismissLoading();
           await this.overlay.loading('Connecting…');
 
@@ -166,7 +171,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     this.overlay.loading('Preparing…');
 
     this.prepare().pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       mergeMap(() => this.rtc.negotiationNeeded),
       filter(({ target }) => (target as RTCPeerConnection).signalingState === 'stable'),
       mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true, iceRestart: true }))

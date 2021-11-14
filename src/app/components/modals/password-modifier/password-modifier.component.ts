@@ -8,6 +8,7 @@ import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/constants';
 import { ChangePassword } from 'src/app/models/form.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { Application } from 'src/app/services/app.service';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { StrUtils } from 'src/app/utilities/str.utils';
@@ -18,6 +19,7 @@ import { ModalComponent } from '../modal.component';
   selector: 'app-password-modifier',
   templateUrl: './password-modifier.component.html',
   styleUrls: ['./password-modifier.component.scss'],
+  providers: [Destroyer]
 })
 export class PasswordModifierComponent extends ModalComponent {
   /** 密码框类型 */
@@ -60,6 +62,7 @@ export class PasswordModifierComponent extends ModalComponent {
     private userService: UserService,
     protected overlay: Overlay,
     protected router: Router,
+    protected destroyer: Destroyer,
   ) {
     super();
   }

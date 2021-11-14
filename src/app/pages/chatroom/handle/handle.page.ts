@@ -1,13 +1,13 @@
 import { KeyValue } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ChatRequestStatus, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
 import { REASON_MAX_LENGTH } from 'src/app/constants';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { SocketService } from 'src/app/services/socket.service';
@@ -16,18 +16,19 @@ import { SocketService } from 'src/app/services/socket.service';
   selector: 'app-handle',
   templateUrl: './handle.page.html',
   styleUrls: ['./handle.page.scss'],
+  providers: [Destroyer]
 })
-export class HandlePage implements OnInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+export class HandlePage implements OnInit {
   readonly requestStatus: typeof ChatRequestStatus = ChatRequestStatus;
   request: ChatRequest;
 
   constructor(
     private socketService: SocketService,
+    private route: ActivatedRoute,
     private overlay: Overlay,
     private globalData: GlobalData,
-    private route: ActivatedRoute,
     private navCtrl: NavController,
+    private destroyer: Destroyer,
   ) { }
 
   ngOnInit() {
@@ -41,18 +42,13 @@ export class HandlePage implements OnInit, OnDestroy {
     });
 
     this.socketService.on(SocketEvent.ChatRequestReject).pipe(
-      takeUntil(this.destroy$),
+      takeUntil(this.destroyer),
       success(),
       // 操作成功,并且处理人是我
       filter(({ data }: Result<ChatRequest>) => data.handlerId === this.globalData.user.id)
     ).subscribe(({ data }: Result<ChatRequest>) => {
       this.request = data;
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   agree() {

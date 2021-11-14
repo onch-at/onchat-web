@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ChatMemberRole } from 'src/app/common/enums';
 import { WINDOW } from 'src/app/common/tokens';
 import { ChatMember } from 'src/app/models/onchat.model';
+import { Destroyer } from 'src/app/services/destroyer.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { CssUtils } from 'src/app/utilities/css.utils';
 import { EntityUtils } from 'src/app/utilities/entity.utils';
@@ -12,6 +13,7 @@ import { ModalComponent } from '../modal.component';
   selector: 'app-chat-member-list',
   templateUrl: './chat-member-list.component.html',
   styleUrls: ['./chat-member-list.component.scss'],
+  providers: [Destroyer]
 })
 export class ChatMemberListComponent extends ModalComponent implements OnInit {
   @Input() chatMembers: ChatMember[];
@@ -32,6 +34,7 @@ export class ChatMemberListComponent extends ModalComponent implements OnInit {
   constructor(
     protected overlay: Overlay,
     protected router: Router,
+    protected destroyer: Destroyer,
     @Inject(WINDOW) private window: Window,
   ) {
     super();
