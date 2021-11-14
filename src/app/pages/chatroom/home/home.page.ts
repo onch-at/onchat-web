@@ -251,7 +251,7 @@ export class HomePage implements OnInit {
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
-          uploader: (avatar: Blob) => this.chatroomService.avatar(this.chatroom.id, avatar),
+          uploader: (avatar: File) => this.chatroomService.avatar(this.chatroom.id, avatar),
           handler: ({ data }: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = data;
             const id = this.chatroom.id;

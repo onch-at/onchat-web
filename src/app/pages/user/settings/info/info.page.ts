@@ -160,7 +160,7 @@ export class InfoPage implements OnInit {
             component: AvatarCropperComponent,
             componentProps: {
               imageChangedEvent: event,
-              uploader: (avatar: Blob) => this.userService.avatar(avatar),
+              uploader: (avatar: File) => this.userService.avatar(avatar),
               handler: ({ data }: Result<AvatarData>) => {
                 const { avatar, avatarThumbnail } = data;
                 this.globalData.user.avatar = avatar;

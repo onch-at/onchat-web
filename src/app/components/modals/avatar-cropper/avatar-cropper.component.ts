@@ -2,16 +2,20 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { SafeAny } from 'src/app/common/interfaces';
 import { Result } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { ImageService } from 'src/app/services/image.service';
 import { Overlay } from 'src/app/services/overlay.service';
+import { BlobUtils } from 'src/app/utilities/blob.utils';
 import { SysUtils } from 'src/app/utilities/sys.utils';
 import { ModalComponent } from '../modal.component';
 
-type ImageCropData = { imageBlob: Blob, imageSrc: SafeUrl };
+interface ImageCropData {
+  blob: Blob;
+  src: string | SafeUrl;
+};
 export type AvatarData = { avatar: string; avatarThumbnail: string };
 
 @Component({
@@ -24,13 +28,13 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
   /** 文件变更事件 */
   @Input() imageChangedEvent: Event;
   /** 上传器 */
-  @Input() uploader: (avatar: Blob) => Observable<Result<AvatarData>>;
+  @Input() uploader: (avatar: File) => Observable<Result<AvatarData>>;
   /** 处理程序 */
   @Input() handler: (result: Result<AvatarData>) => unknown;
   /** 图片裁剪组件 */
   @ViewChild(ImageCropperComponent, { static: true }) imageCropper: ImageCropperComponent;
   /** 加载中 */
-  ionLoading: Promise<HTMLIonLoadingElement>;
+  private ionLoading: Promise<HTMLIonLoadingElement>;
   /** 无法加载图片 */
   error: boolean = false;
 
@@ -86,7 +90,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
   }
 
   async crop(): Promise<ImageCropData> {
-    let imageBlob: Blob, imageSrc: string | SafeUrl;
+    let blob: Blob, src: string | SafeUrl;
 
     // 此处需要调用imageCropper的一些私有方法，使用 any 绕过编译器检查
     const imageCropper = this.imageCropper as any;
@@ -117,24 +121,24 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
 
       let imageBitmap: ImageBitmap;
       try {
-        imageBitmap = await this.imageService.createImageBitmap(transformedImage).toPromise();
+        imageBitmap = await lastValueFrom(this.imageService.createImageBitmap(transformedImage));
       } catch (e) {
         worker.terminate();
-        return { imageBlob, imageSrc };
+        return { blob, src };
       }
 
       return new Promise<ImageCropData>((resolve, reject) => {
         worker.onmessage = ({ data }) => {
-          imageBlob = data.blob;
-          imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(imageBlob));
+          blob = data.blob;
+          src = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
           this.imageCropper.imageCropped.emit(data);
           worker.terminate();
-          resolve({ imageBlob, imageSrc });
+          resolve({ blob, src });
         };
 
         worker.onerror = () => {
           worker.terminate();
-          reject({ imageBlob, imageSrc });
+          reject({ blob, src });
         }
 
         worker.postMessage({
@@ -160,10 +164,10 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
 
     const { base64 } = this.imageCropper.crop();
 
-    imageBlob = base64ToFile(base64);
-    imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(imageBlob));
+    blob = base64ToFile(base64);
+    src = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
 
-    return { imageBlob, imageSrc };
+    return { blob, src };
   }
 
   /**
@@ -172,14 +176,14 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
   async submit() {
     const loading = await this.overlay.loading('Parsing…');
 
-    const { imageBlob, imageSrc } = await this.crop();
+    const { blob, src } = await this.crop();
 
-    if (!imageBlob) {
+    if (!blob) {
       return this.onLoadImageFailed();
     }
 
     loading.dismiss();
-    const size = imageBlob.size;
+    const size = blob.size;
 
     // 如果文件大于1MB
     if (size > 1048576) {
@@ -196,10 +200,17 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
 
     this.ionLoading = this.overlay.loading('Uploading…');
 
-    this.uploader(imageBlob).subscribe(async (result: Result<AvatarData>) => {
+    const { name, lastModified } = (this.imageChangedEvent.target as HTMLInputElement).files[0];
+    const array = name.split('.');
+    array.pop();
+    // 拼接出新的文件名
+    const fileName = array.join() + '.' + this.imageService.format;
+    const file = BlobUtils.toFile(blob, fileName, lastModified);
+
+    this.uploader(file).subscribe(async (result: Result<AvatarData>) => {
       (await this.ionLoading).dismiss();
       this.handler(result);
-      this.dismiss(imageSrc);
+      this.dismiss(src);
       this.overlay.toast('头像上传成功！');
     });
   }

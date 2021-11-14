@@ -46,7 +46,7 @@ export class ImageService {
    * @param src 图片URL
    * @param quality 质量
    */
-  compress(src: string, quality: number = 0.85) {
+  compress(src: string, quality: number = 0.85): Observable<Blob> {
     const format = this.format;
     const img = new Image();
     img.crossOrigin = 'anonymous';

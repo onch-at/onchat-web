@@ -46,7 +46,7 @@ export class ChatroomService {
    * @param id 聊天室ID
    * @param avatar 头像
    */
-  avatar(id: number, avatar: Blob): Observable<Result<AvatarData>> {
+  avatar(id: number, avatar: File): Observable<Result<AvatarData>> {
     const formData: FormData = new FormData();
     formData.append('image', avatar);
 

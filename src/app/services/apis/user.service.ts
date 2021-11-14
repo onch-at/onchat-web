@@ -71,7 +71,7 @@ export class UserService {
    * 上传用户头像
    * @param avatar 头像
    */
-  avatar(avatar: Blob): Observable<Result<AvatarData>> {
+  avatar(avatar: File): Observable<Result<AvatarData>> {
     const formData: FormData = new FormData();
     formData.append('image', avatar);
 

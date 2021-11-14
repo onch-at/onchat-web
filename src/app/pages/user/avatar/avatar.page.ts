@@ -66,7 +66,7 @@ export class AvatarPage implements OnInit {
         component: AvatarCropperComponent,
         componentProps: {
           imageChangedEvent: event,
-          uploader: (avatar: Blob) => this.userService.avatar(avatar),
+          uploader: (avatar: File) => this.userService.avatar(avatar),
           handler: ({ data }: Result<AvatarData>) => {
             const { avatar, avatarThumbnail } = data;
             this.user.avatar = avatar;
