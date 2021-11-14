@@ -14,4 +14,14 @@ export class BlobUtils {
   static isAnimation(image: Blob): boolean {
     return ['image/apng', 'image/gif'].includes(image.type);
   }
+
+  /**
+   * Blob to File
+   * @param blob
+   * @param fileName
+   * @param lastModified
+   */
+  static toFile(blob: Blob, fileName: string, lastModified?: number): File {
+    return new File([blob], fileName, { type: blob.type, lastModified });
+  }
 }
