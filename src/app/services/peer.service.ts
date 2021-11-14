@@ -6,7 +6,7 @@ import { Overlay } from './overlay.service';
 @Injectable({
   providedIn: 'root'
 })
-export class Rtc {
+export class Peer {
   private pc: RTCPeerConnection = null;
   private stream: MediaStream = null;
 

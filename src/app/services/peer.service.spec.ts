@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { Rtc } from './rtc.service';
+import { Peer } from './peer.service';
 
-describe('Rtc', () => {
-  let service: Rtc;
+describe('Peer', () => {
+  let service: Peer;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Rtc);
+    service = TestBed.inject(Peer);
   });
 
   it('should be created', () => {

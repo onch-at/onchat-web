@@ -13,7 +13,7 @@ import { FeedbackService } from 'src/app/services/feedback.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { Rtc } from 'src/app/services/rtc.service';
+import { Peer } from 'src/app/services/peer.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { ModalComponent } from '../modal.component';
 
@@ -37,7 +37,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
   constructor(
     public globalData: GlobalData,
-    private rtc: Rtc,
+    private peer: Peer,
     private mediaDevice: MediaDevice,
     private socketService: SocketService,
     private feedbackService: FeedbackService,
@@ -80,7 +80,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     super.ngOnDestroy();
 
-    this.rtc.close();
+    this.peer.close();
     this.overlay.dismissLoading();
     this.feedbackService.audio(AudioName.Ring).pause();
     this.globalData.rtcing = false;
@@ -99,7 +99,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   prepare() {
     return (this.mediaStream ? of(this.mediaStream) : this.mediaDevice.getUserMedia({ video: true, audio: { echoCancellation: true } })).pipe(
       tap(() => {
-        this.rtc.create();
+        this.peer.create();
 
         // 侦听 RTC 数据
         this.socketService.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
@@ -112,15 +112,15 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
             // 添加候选
             case RtcDataType.IceCandidate:
               const { sdpMLineIndex, candidate } = value as RTCIceCandidateInit;
-              this.rtc.addIceCandidate({ sdpMLineIndex, candidate });
+              this.peer.addIceCandidate({ sdpMLineIndex, candidate });
               break;
 
             // 设置远程描述
             case RtcDataType.Description:
-              this.rtc.setRemoteDescription(value as RTCSessionDescriptionInit);
+              this.peer.setRemoteDescription(value as RTCSessionDescriptionInit);
               // 如果我是请求者，那么 RTC 连接是被请求者发起的，对方是 Offer，我是 Answer
-              this.isRequester && this.rtc.createAnswer().subscribe(description => {
-                this.rtc.setLocalDescription(description);
+              this.isRequester && this.peer.createAnswer().subscribe(description => {
+                this.peer.setLocalDescription(description);
                 // 让对方设置我的远程描述
                 this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
               });
@@ -129,7 +129,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
 
         // 将自己的候选发送给对方
-        this.rtc.iceCandidate.pipe(
+        this.peer.iceCandidate.pipe(
           takeUntil(this.destroyer),
           map(({ candidate }) => candidate),
           filter(candidate => candidate !== null),
@@ -141,7 +141,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
 
         // 侦听轨道
-        this.rtc.track.pipe(takeUntil(this.destroyer), take(1)).subscribe(async ({ streams }) => {
+        this.peer.track.pipe(takeUntil(this.destroyer), take(1)).subscribe(async ({ streams }) => {
           this.overlay.dismissLoading();
           await this.overlay.loading('Connecting…');
 
@@ -150,7 +150,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
 
         // 侦听连接状态
-        this.rtc.connectionStateChange.pipe(
+        this.peer.connectionStateChange.pipe(
           filter(({ target }) => ['closed', 'failed', 'disconnected'].includes(target.connectionState))
         ).subscribe(() => {
           this.overlay.toast('OnChat: WebRTC 连接断开！');
@@ -158,7 +158,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         });
       }),
       tap(stream => {
-        this.rtc.setTracks(stream);
+        this.peer.setTracks(stream);
         this.localVideo.nativeElement.volume = 0;
         this.localVideo.nativeElement.srcObject = stream;
       })
@@ -172,11 +172,11 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
     this.prepare().pipe(
       takeUntil(this.destroyer),
-      mergeMap(() => this.rtc.negotiationNeeded),
+      mergeMap(() => this.peer.negotiationNeeded),
       filter(({ target }) => (target as RTCPeerConnection).signalingState === 'stable'),
-      mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true, iceRestart: true }))
+      mergeMap(() => this.peer.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true, iceRestart: true }))
     ).subscribe(description => {
-      this.rtc.setLocalDescription(description);
+      this.peer.setLocalDescription(description);
       // 让对方设置我的远程描述
       this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
     });
