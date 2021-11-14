@@ -55,9 +55,14 @@ export class ImageMessageEntity extends MessageEntity {
    * 压缩图像
    */
   private compress(): Observable<Blob> {
-    return this.injector.get(ImageService).compress(this.url).pipe(
+    const imageService = this.injector.get(ImageService);
+    return imageService.compress(this.url).pipe(
       tap((blob: Blob) => {
-        this.file = BlobUtils.toFile(blob, this.file.name, this.file.lastModified);
+        const array = this.file.name.split('.');
+        array.pop();
+        // 拼接出新的文件名
+        const fileName = array.join() + '.' + imageService.format;
+        this.file = BlobUtils.toFile(blob, fileName, this.file.lastModified);
       })
     );
   }
