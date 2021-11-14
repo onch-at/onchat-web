@@ -4,7 +4,6 @@ import { catchError, filter, mergeMap, take, tap } from 'rxjs/operators';
 import { Vector2 } from 'src/app/common/classes';
 import { SafeAny } from 'src/app/common/interfaces';
 import { WINDOW } from 'src/app/common/tokens';
-import { VoiceMessage } from 'src/app/models/msg.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { Recorder } from 'src/app/services/recorder.service';
@@ -19,6 +18,15 @@ enum OperateState {
   /** 取消发送 */
   Cancel
 };
+
+export interface ChatRecorderOutputEvent {
+  /** 语音文件 */
+  blob: Blob;
+  /** 语音音频的 URL */
+  src: string;
+  /** 语音音频的持续时间 */
+  duration: number;
+}
 
 /**
  * 某坐标点是否在矩形内
@@ -43,7 +51,7 @@ export class ChatRecorderComponent implements OnDestroy {
   /** 一分钟录音计时器 */
   private timer: number;
   /** 发射器 */
-  private launcher: BehaviorSubject<[Blob, VoiceMessage]>;
+  private launcher: BehaviorSubject<ChatRecorderOutputEvent>;
 
   /** 操作状态 */
   operateState: OperateState = OperateState.None;
@@ -59,14 +67,16 @@ export class ChatRecorderComponent implements OnDestroy {
   /** 开始录音 */
   @Output() appStart: EventEmitter<void> = new EventEmitter();
   /** 录音完成 */
-  @Output() appOutput: EventEmitter<[Blob, VoiceMessage]> = new EventEmitter();
+  @Output() appOutput: EventEmitter<ChatRecorderOutputEvent> = new EventEmitter();
 
-  tips = () => ({
-    [OperateState.None]: '按住讲话',
-    [OperateState.Send]: '松开发送',
-    [OperateState.Play]: '试听录音',
-    [OperateState.Cancel]: '取消发送',
-  }[this.operateState]);
+  get tips(): string {
+    return {
+      [OperateState.None]: '按住讲话',
+      [OperateState.Send]: '松开发送',
+      [OperateState.Play]: '试听录音',
+      [OperateState.Cancel]: '取消发送',
+    }[this.operateState];
+  }
 
   constructor(
     private overlay: Overlay,
@@ -83,8 +93,8 @@ export class ChatRecorderComponent implements OnDestroy {
 
   onStart() {
     this.feedbackService.slightVibrate();
-    this.launcher ??= new BehaviorSubject([null, null]);
-    this.launcher.value[0] && this.launcher.next([null, null]);
+    this.launcher ??= new BehaviorSubject(null);
+    this.launcher.value && this.launcher.next(null);
     this.startTime = Date.now();
 
     this.recorder.record().pipe(
@@ -123,7 +133,11 @@ export class ChatRecorderComponent implements OnDestroy {
       this.audio = new Audio(URL.createObjectURL(data));
       // 手动触发数据检查
       this.audio.onended = () => this.changeDetectorRef.detectChanges();
-      this.launcher.next([data, new VoiceMessage(this.audio.src, this.duration)]);
+      this.launcher.next({
+        blob: data,
+        src: this.audio.src,
+        duration: this.duration
+      });
     });
   }
 
@@ -217,10 +231,10 @@ export class ChatRecorderComponent implements OnDestroy {
     this.operateState = OperateState.None;
 
     this.launcher.pipe(
-      filter(([voice]) => voice !== null),
+      filter(o => o !== null),
       take(1)
-    ).subscribe((value: [Blob, VoiceMessage]) => {
-      this.launcher.next([null, null]);
+    ).subscribe((value: ChatRecorderOutputEvent) => {
+      this.launcher.next(null);
       this.appOutput.emit(value);
     });
   }

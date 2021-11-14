@@ -19,6 +19,7 @@ import { BlobUtils } from 'src/app/utilities/blob.utils';
 import { SysUtils } from 'src/app/utilities/sys.utils';
 import Swiper, { Pagination } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
+import { ChatRecorderOutputEvent } from '../chat-recorder/chat-recorder.component';
 import { RichTextEditorComponent } from '../modals/rich-text-editor/rich-text-editor.component';
 import { RtcComponent } from '../modals/rtc/rtc.component';
 
@@ -51,10 +52,10 @@ export class ChatDrawerComponent {
     this.swiper.swiperRef.slideTo(index, speed);
   }
 
-  onVoiceOutput([voice, data]: [Blob, VoiceMessage]) {
+  onVoiceOutput({ blob, src, duration }: ChatRecorderOutputEvent) {
     const { user, chatroomId } = this.globalData;
 
-    const msg = new VoiceMessageEntity(voice, data).inject(this.injector);
+    const msg = new VoiceMessageEntity(blob, new VoiceMessage(src, duration)).inject(this.injector);
     msg.chatroomId = chatroomId;
     msg.userId = user.id;
     msg.avatarThumbnail = user.avatarThumbnail;

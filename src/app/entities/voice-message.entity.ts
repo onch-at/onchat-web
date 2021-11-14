@@ -4,14 +4,12 @@ import { ChatRecordService } from '../services/apis/chat-record.service';
 import { MessageEntity } from './message.entity';
 
 export class VoiceMessageEntity extends MessageEntity {
-  /** 语音文件 */
-  file: Blob;
-  data: VoiceMessage;
-
-  constructor(file: Blob, data: VoiceMessage) {
+  /**
+   * @param file 语音文件
+   * @param data 语音消息数据
+   */
+  constructor(private file: Blob, public data: VoiceMessage) {
     super(MessageType.Voice);
-    this.file = file;
-    this.data = data;
   }
 
   send() {
