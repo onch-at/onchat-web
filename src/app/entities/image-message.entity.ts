@@ -1,32 +1,31 @@
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
 import { MessageType } from '../common/enums';
 import { ImageMessage } from '../models/msg.model';
 import { Message, Result } from '../models/onchat.model';
 import { ChatRecordService } from '../services/apis/chat-record.service';
 import { ImageService } from '../services/image.service';
+import { BlobUtils } from '../utilities/blob.utils';
 import { MessageEntity } from './message.entity';
 
 export class ImageMessageEntity extends MessageEntity {
-  /** 图像文件 */
-  file: Blob;
-  /** 是否为原图 */
-  original: boolean;
-  /** 图像原URL */
-  url: string;
   /** 上传进度 */
-  percent: number;
-
+  percent: number = 0;
+  /** 图像消息数据 */
   data: ImageMessage;
 
-  constructor(file: Blob, url: string, original?: boolean) {
+  /**
+   * @param file 图像文件
+   * @param url 图像原URL
+   * @param original 是否为原图
+   */
+  constructor(
+    private file: File,
+    private url: string,
+    private original?: boolean
+  ) {
     super(MessageType.Image);
-
-    this.file = file;
-    this.url = url;
-    this.original = original;
-    this.percent = 0;
   }
 
   send() {
@@ -55,9 +54,11 @@ export class ImageMessageEntity extends MessageEntity {
   /**
    * 压缩图像
    */
-  private compress() {
+  private compress(): Observable<Blob> {
     return this.injector.get(ImageService).compress(this.url).pipe(
-      tap((file: Blob) => this.file = file)
+      tap((blob: Blob) => {
+        this.file = BlobUtils.toFile(blob, this.file.name, this.file.lastModified);
+      })
     );
   }
 }

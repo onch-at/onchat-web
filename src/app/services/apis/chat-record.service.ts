@@ -28,7 +28,7 @@ export class ChatRecordService {
    * @param image 图片
    * @param tempId 临时ID
    */
-  sendImage(id: number, image: Blob, tempId: string) {
+  sendImage(id: number, image: File, tempId: string) {
     const formData: FormData = new FormData();
     formData.append('image', image);
     formData.append('tempId', tempId);
