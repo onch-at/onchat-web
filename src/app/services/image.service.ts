@@ -12,11 +12,7 @@ export class ImageService {
 
   /** 最佳图片格式，优先级：webp -> jpeg -> png */
   get format() {
-    if (this._format) {
-      return this._format;
-    }
-
-    return this._format = this.isSupportWEBP ? 'webp' : this.isSupportJPEG ? 'jpeg' : 'png';
+    return this._format || (this._format = this.isSupportWEBP ? 'webp' : this.isSupportJPEG ? 'jpeg' : 'png');
   }
   /**
    * 是否支持WebP格式
@@ -41,8 +37,8 @@ export class ImageService {
   }
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
     @Inject(WINDOW) private window: Window,
+    @Inject(DOCUMENT) private document: Document,
   ) { }
 
   /**
