@@ -2,6 +2,7 @@ import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild } fr
 import { Router } from '@angular/router';
 import { merge, of } from 'rxjs';
 import { filter, map, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
+import { Throttle } from 'src/app/common/decorators';
 import { AudioName, RtcDataType, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
 import { WINDOW } from 'src/app/common/tokens';
@@ -113,16 +114,10 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
             case RtcDataType.Description:
               this.rtc.setRemoteDescription(value as RTCSessionDescriptionInit);
               // 如果我是请求者，那么 RTC 连接是被请求者发起的，对方是 Offer，我是 Answer
-              this.isRequester && this.rtc.createAnswer().subscribe({
-                next: description => {
-                  this.rtc.setLocalDescription(description);
-                  // 让对方设置我的远程描述
-                  this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
-                },
-                error: error => {
-                  this.overlay.toast('OnChat：RTC 对等连接应答创建失败！');
-                  console.error(error);
-                }
+              this.isRequester && this.rtc.createAnswer().subscribe(description => {
+                this.rtc.setLocalDescription(description);
+                // 让对方设置我的远程描述
+                this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
               });
               break;
           }
@@ -133,8 +128,8 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
           takeUntil(this.destroy$),
           map(({ candidate }) => candidate),
           filter(candidate => candidate !== null),
-          // 不使用 TCP 流，只使用 UDP 流
-          filter(({ candidate }) => !candidate.includes('tcp')),
+          // 只使用 UDP 流
+          // filter(({ candidate }) => candidate.includes('udp')),
         ).subscribe(candidate => {
           // 让对方添加我的候选
           this.socketService.rtcData(this.user.id, RtcDataType.IceCandidate, candidate);
@@ -143,7 +138,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         // 侦听轨道
         this.rtc.track.pipe(takeUntil(this.destroy$), take(1)).subscribe(async ({ streams }) => {
           this.overlay.dismissLoading();
-          await this.overlay.loading('Ready…');
+          await this.overlay.loading('Connecting…');
 
           this.remoteVideo.nativeElement.srcObject = streams[0];
           this.feedbackService.audio(AudioName.Ring).pause();
@@ -152,7 +147,10 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         // 侦听连接状态
         this.rtc.connectionStateChange.pipe(
           filter(({ target }) => ['closed', 'failed', 'disconnected'].includes(target.connectionState))
-        ).subscribe(() => this.hangUp());
+        ).subscribe(() => {
+          this.overlay.toast('OnChat: WebRTC 连接断开！');
+          this.hangUp();
+        });
       }),
       tap(stream => {
         this.rtc.setTracks(stream);
@@ -163,23 +161,19 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   }
 
   /** 被申请人发起连接 */
+  @Throttle(300)
   call() {
-    this.overlay.loading();
+    this.overlay.loading('Preparing…');
+
     this.prepare().pipe(
-      // Safari 暂不支持 negotiationNeeded
-      // mergeMap(() => this.rtc.negotiationNeeded.pipe(takeUntil(this.destroy$))),
-      // filter(({ target }) => (target as RTCPeerConnection).signalingState === 'stable'),
-      mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true }))
-    ).subscribe({
-      next: description => {
-        this.rtc.setLocalDescription(description);
-        // 让对方设置我的远程描述
-        this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
-      },
-      error: error => {
-        this.overlay.toast('OnChat：RTC 对等连接提供创建失败！');
-        console.error(error);
-      }
+      takeUntil(this.destroy$),
+      mergeMap(() => this.rtc.negotiationNeeded),
+      filter(({ target }) => (target as RTCPeerConnection).signalingState === 'stable'),
+      mergeMap(() => this.rtc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true, iceRestart: true }))
+    ).subscribe(description => {
+      this.rtc.setLocalDescription(description);
+      // 让对方设置我的远程描述
+      this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
     });
   }
 

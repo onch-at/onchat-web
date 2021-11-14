@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { from, fromEvent } from 'rxjs';
+import { catchError, from, fromEvent, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Overlay } from './overlay.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class Rtc {
     return fromEvent<RTCTrackEvent>(this.pc, 'track');
   }
 
-  constructor() { }
+  constructor(private overlay: Overlay) { }
 
   create() {
     this.pc = new RTCPeerConnection({
@@ -52,7 +53,10 @@ export class Rtc {
       description = new RTCSessionDescription(description);
     }
 
-    return from(this.pc.setLocalDescription(description));
+    return this.pc.setLocalDescription(description).catch(error => {
+      this.overlay.toast('OnChat：WebRTC 本地描述设置失败！');
+      throw error;
+    });
   }
 
   setRemoteDescription(description: RTCSessionDescriptionInit) {
@@ -60,7 +64,7 @@ export class Rtc {
       description = new RTCSessionDescription(description);
     }
 
-    return from(this.pc.setRemoteDescription(description));
+    return this.pc.setRemoteDescription(description);
   }
 
   addIceCandidate(candidate: RTCIceCandidateInit) {
@@ -68,14 +72,28 @@ export class Rtc {
       candidate = new RTCIceCandidate(candidate);
     }
 
-    return from(this.pc.addIceCandidate(candidate));
+    return this.pc.addIceCandidate(candidate);
   }
 
   createOffer(options?: RTCOfferOptions) {
-    return from(this.pc.createOffer(options));
+    return from(this.pc.createOffer(options)).pipe(
+      catchError(error => {
+        this.overlay.toast('OnChat：WebRTC Offer 创建失败！');
+        console.error(error);
+
+        return throwError(() => error);
+      })
+    );
   }
 
   createAnswer(options?: RTCAnswerOptions) {
-    return from(this.pc.createAnswer(options));
+    return from(this.pc.createAnswer(options)).pipe(
+      catchError(error => {
+        this.overlay.toast('OnChat：WebRTC Answer 创建失败！');
+        console.error(error);
+
+        return throwError(() => error);
+      })
+    );
   }
 }
