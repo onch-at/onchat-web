@@ -200,12 +200,12 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
 
     this.ionLoading = this.overlay.loading('Uploading…');
 
-    const { name, lastModified } = (this.imageChangedEvent.target as HTMLInputElement).files[0];
+    const { name } = (this.imageChangedEvent.target as HTMLInputElement).files[0];
     const array = name.split('.');
     array.pop();
     // 拼接出新的文件名
     const fileName = array.join() + '.' + this.imageService.format;
-    const file = BlobUtils.toFile(blob, fileName, lastModified);
+    const file = BlobUtils.toFile(blob, fileName);
 
     this.uploader(file).subscribe(async (result: Result<AvatarData>) => {
       (await this.ionLoading).dismiss();

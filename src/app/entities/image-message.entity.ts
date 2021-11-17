@@ -62,7 +62,7 @@ export class ImageMessageEntity extends MessageEntity {
         array.pop();
         // 拼接出新的文件名
         const fileName = array.join() + '.' + imageService.format;
-        this.file = BlobUtils.toFile(blob, fileName, this.file.lastModified);
+        this.file = BlobUtils.toFile(blob, fileName);
       })
     );
   }
