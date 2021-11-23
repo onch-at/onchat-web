@@ -264,7 +264,7 @@ export class ChatRecorderComponent implements OnDestroy {
    * 清理定时器
    */
   private clearTimer() {
-    this.timer && clearInterval(this.timer);
+    this.timer && this.window.clearInterval(this.timer);
     this.timer = null;
   }
 

@@ -10,6 +10,10 @@ import { VoiceMessageComponent } from '../messages/voice-message/voice-message.c
 import { ImagePreviewerComponent } from '../modals/image-previewer/image-previewer.component';
 import { BubbleToolbarComponent } from '../popovers/bubble-toolbar/bubble-toolbar.component';
 
+type Foo<T extends 1 | 2> = {}
+
+let foo: Foo<1 | 2> = {} as Foo<1>;
+
 @Component({
   selector: 'app-message-list',
   templateUrl: './message-list.component.html',

@@ -10,7 +10,7 @@
 
     <ng-container [ngSwitch]="item.type">
       <li *ngSwitchCase="msgType.Tips" class="tips-item text-center">
-        <app-tips-message [msg]="item"></app-tips-message>
+        <app-tips-message [msg]="$any(item)"></app-tips-message>
       </li>
 
       <li *ngSwitchCase="msgType.Text" class="msg-item dp-flex" [ngClass]="msgItemClass(item.userId)">
@@ -70,10 +70,10 @@
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
-          <span #bubble appRipple class="msg-bubble msg-bubble-img line-hg-0 pd-0" (tap)="previewImage(item)"
+          <span #bubble appRipple class="msg-bubble msg-bubble-img line-hg-0 pd-0" (tap)="previewImage($any(item))"
                 (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
-            <app-image-message [msg]="item"></app-image-message>
+            <app-image-message [msg]="$any(item)"></app-image-message>
           </span>
         </div>
       </li>
@@ -85,7 +85,7 @@
 
           <span #bubble appRipple class="msg-bubble msg-bubble-voice" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)" (tap)="playVoice(voiceMsg)">
-            <app-voice-message #voiceMsg [msg]="item"></app-voice-message>
+            <app-voice-message #voiceMsg [msg]="$any(item)"></app-voice-message>
           </span>
 
           <ng-container *ngTemplateOutlet="loading; context: item"></ng-container>

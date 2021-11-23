@@ -8,7 +8,7 @@ import { WINDOW } from '../common/tokens';
   providedIn: 'root'
 })
 export class ImageService {
-  private _format: string;
+  private _format: 'webp' | 'jpeg' | 'png';
 
   /** 最佳图片格式，优先级：webp -> jpeg -> png */
   get format() {

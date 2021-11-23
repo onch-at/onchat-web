@@ -177,8 +177,9 @@ export class InfoPage implements OnInit {
     this.overlay.actionSheet(buttons);
   }
 
-  onScroll({ detail }) {
-    this.showMask = detail.scrollTop > 125;
+  // TODO ionic v6 has CustomEvent
+  onScroll(event: Event) {
+    this.showMask = (event as CustomEvent).detail.scrollTop > 125;
   }
 
 }

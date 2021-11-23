@@ -197,30 +197,33 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
 
     this.chatRecordService.getChatRecords(this.msgId, this.chatroomId).pipe(
       finalize(() => complete?.())
-    ).subscribe(({ data }: Result<Message[]>) => {
-      // 按照ID排序
-      // result.data.sort((a: Message, b: Message) => {
-      //   return a.id - b.id;
-      // });
-      // this.msgList = result.data.concat(this.msgList);
+    ).subscribe({
+      next: ({ data }: Result<Message[]>) => {
+        // 按照ID排序
+        // result.data.sort((a: Message, b: Message) => {
+        //   return a.id - b.id;
+        // });
+        // this.msgList = result.data.concat(this.msgList);
 
-      for (const msgItem of data) {
-        this.msgList.unshift(msgItem);
+        for (const msgItem of data) {
+          this.msgList.unshift(msgItem);
+        }
+
+        // 如果返回的消息里少于15条，则代表这是最后一段消息了
+        if (data.length < 15) {
+          this.ended = true;
+        }
+
+        // 如果是第一次查记录，就执行滚动
+        this.msgId || this.scrollToBottom(0);
+
+        if (data.length) {
+          this.msgId = this.msgList[0].id;
+        }
+      },
+      error: ({ error }: { error: Result }) => {
+        error.code === ResultCode.NoPermission && this.navCtrl.back();
       }
-
-      // 如果返回的消息里少于15条，则代表这是最后一段消息了
-      if (data.length < 15) {
-        this.ended = true;
-      }
-
-      // 如果是第一次查记录，就执行滚动
-      this.msgId || this.scrollToBottom(0);
-
-      if (data.length) {
-        this.msgId = this.msgList[0].id;
-      }
-    }, ({ error }: { error: Result }) => {
-      error.code === ResultCode.NoPermission && this.navCtrl.back();
     });
   }
 

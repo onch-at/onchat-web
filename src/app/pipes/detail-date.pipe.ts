@@ -24,7 +24,7 @@ export class DetailDatePipe implements PipeTransform {
       return '刚刚';
     }
 
-    if (date.toLocaleDateString() == now.toLocaleDateString()) { // 如果是今天
+    if (date.toLocaleDateString() === now.toLocaleDateString()) { // 如果是今天
       return Day.Today;
     }
 
