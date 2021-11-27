@@ -1,15 +1,18 @@
-import { Renderer2 } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 
+@Injectable()
 export class CssUtils {
   private static sizeMap: Map<string, number> = new Map<string, number>();
+
+  constructor(private renderer: Renderer2) { }
 
   /**
    * rem 转 px
    * @param rem
    */
   static rem2px(rem: number): number {
-    const px = CssUtils.size('1rem') || parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
-    CssUtils.sizeMap.set('1rem', px);
+    const px = this.size('1rem') || parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('font-size'));
+    this.sizeMap.set('1rem', px);
 
     return rem * px;
   }
@@ -19,15 +22,15 @@ export class CssUtils {
    * @param size
    */
   static size(size: string): number {
-    if (!CssUtils.sizeMap.has(size)) {
+    if (!this.sizeMap.has(size)) {
       const div = document.createElement('div');
       div.style.height = size;
       document.body.appendChild(div);
-      div.offsetHeight && CssUtils.sizeMap.set(size, div.offsetHeight);
+      div.offsetHeight && this.sizeMap.set(size, div.offsetHeight);
       document.body.removeChild(div);
     }
 
-    return CssUtils.sizeMap.get(size) || 0;
+    return this.sizeMap.get(size) || 0;
   }
 
   /**
@@ -37,7 +40,7 @@ export class CssUtils {
    * @param styleSheet CSS样式
    * @param shadowRoot 是否注入到shadowRoot元素
    */
-  static injectStyle(renderer: Renderer2, target: HTMLElement, styleSheet: string, shadowRoot: boolean = true): void {
+  injectStyle(target: HTMLElement, styleSheet: string, shadowRoot: boolean = true): void {
     const element = shadowRoot ? target.shadowRoot : target;
     const styleElement = element.querySelector('style');
 
@@ -45,7 +48,7 @@ export class CssUtils {
       return styleElement.append(styleSheet);
     }
 
-    const style = renderer.createElement('style');
+    const style = this.renderer.createElement('style');
     style.innerHTML = styleSheet;
     element.appendChild(style);
   }
