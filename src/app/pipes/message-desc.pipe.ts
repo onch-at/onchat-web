@@ -1,16 +1,17 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import { MessageType, TipsType } from '../common/enums';
 import { RichTextMessage, TextMessage, TipsMessage } from '../models/msg.model';
 import { Message } from '../models/onchat.model';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Pipe({
   name: 'messageDesc'
 })
 export class MessageDescPipe implements PipeTransform {
 
-  transform(value: Message): string {
-    const { type, data, nickname } = value;
-
+  transform({ type, data, nickname }: Message): string {
     return {
       [MessageType.Text]: (data as TextMessage).content,
       [MessageType.RichText]: (data as RichTextMessage).text,

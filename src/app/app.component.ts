@@ -24,8 +24,6 @@ import { SocketService } from './services/socket.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  private messageDescPipe: MessageDescPipe = new MessageDescPipe();
-
   constructor(
     public globalData: GlobalData,
     private app: Application,
@@ -36,8 +34,9 @@ export class AppComponent implements OnInit {
     private socketService: SocketService,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
-    @Inject(DOCUMENT) private document: Document,
+    private messageDescPipe: MessageDescPipe,
     @Inject(WINDOW) private window: Window,
+    @Inject(DOCUMENT) private document: Document,
   ) { }
 
   ngOnInit() {
@@ -314,7 +313,7 @@ export class AppComponent implements OnInit {
     // 收到 RTC 请求
     this.socketService.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall).pipe(
       success(),
-      filter(({ data: [_, target] }) => this.globalData.user.id === target.id),
+      filter(({ data: [, target] }) => this.globalData.user.id === target.id),
     ).subscribe(({ data: [requester] }) => {
       // 如果我已经在实时通信中，则告诉对方我忙线中
       if (this.globalData.rtcing) {
