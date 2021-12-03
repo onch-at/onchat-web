@@ -40,3 +40,6 @@ OnChat mainly includes the following code repositories:
 - [OnChat-Web](https://github.com/HyperLife1119/OnChat-Web) (Client)
 
 If you like OnChat, please give a star to the above code repository ⭐.
+
+## Stats
+![Stats](https://repobeats.axiom.co/api/embed/5829c1eee99974fd3d4f87bd297b357225b923e5.svg)
