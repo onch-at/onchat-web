@@ -45,7 +45,7 @@
       <div class="cloud-block-item dp-flex justify-between align-center">
         <span>心 情</span>
         <span class="dp-flex align-center">
-          <app-mood-icon [value]="(user.mood != null ? user.mood : mood.Joy)"></app-mood-icon>
+          <app-mood-icon [value]="(user.mood !== null ? user.mood : mood.Joy)"></app-mood-icon>
           <span>{{ (user.mood !== null ? user.mood : mood.Joy) | mood }}</span>
         </span>
       </div>
@@ -57,7 +57,7 @@
 
       <div class="cloud-block-item dp-flex justify-between align-center">
         <span>性 别</span>
-        <span>{{ (user.gender != null ? user.gender : gender.Secret) | gender }}</span>
+        <span>{{ (user.gender !== null ? user.gender : gender.Secret) | gender }}</span>
       </div>
 
       <div class="cloud-block-item dp-flex justify-between align-center">
