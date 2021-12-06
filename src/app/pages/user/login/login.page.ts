@@ -72,15 +72,18 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
 
     const { username, password } = this.form.value;
 
-    this.userService.login(new Login(username, password)).subscribe(({ data }: Result<User>) => {
-      this.overlay.toast('登录成功！即将跳转…', 1000);
+    this.userService.login(new Login(username, password)).subscribe({
+      next: ({ data }: Result<User>) => {
+        this.overlay.toast('登录成功！即将跳转…', 1000);
 
-      this.globalData.user = data;
-      this.socketService.connect();
+        this.globalData.user = data;
+        this.socketService.connect();
 
-      this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
-    }, () => {
-      this.globalData.navigating = false;
+        this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
+      },
+      error: () => {
+        this.globalData.navigating = false;
+      }
     });
   }
 

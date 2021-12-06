@@ -113,14 +113,17 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
     this.globalData.navigating = true;
 
     const { username, password, email, captcha } = this.form.value;
-    this.userService.register(new Register(username, password, email, captcha)).subscribe(({ data }: Result<User>) => {
-      this.overlay.toast('注册成功！即将跳转…', 1000);
-      this.globalData.user = data;
-      this.socketService.connect();
+    this.userService.register(new Register(username, password, email, captcha)).subscribe({
+      next: ({ data }: Result<User>) => {
+        this.overlay.toast('注册成功！即将跳转…', 1000);
+        this.globalData.user = data;
+        this.socketService.connect();
 
-      this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
-    }, () => {
-      this.globalData.navigating = false;
+        this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
+      },
+      error: () => {
+        this.globalData.navigating = false;
+      }
     });
   }
 
