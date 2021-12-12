@@ -16,6 +16,7 @@ import { FeedbackService } from './services/feedback.service';
 import { GlobalData } from './services/global-data.service';
 import { OnChatService } from './services/onchat.service';
 import { Overlay } from './services/overlay.service';
+import { Peer } from './services/peer.service';
 import { SocketService } from './services/socket.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
   constructor(
     public globalData: GlobalData,
     private app: Application,
+    private peer: Peer,
     private overlay: Overlay,
     private navCtrl: NavController,
     private userService: UserService,
@@ -318,14 +320,14 @@ export class AppComponent implements OnInit {
       // 如果我已经在实时通信中，则告诉对方我忙线中
       if (this.globalData.rtcing) {
         return this.window.setTimeout(() => {
-          this.socketService.rtcBusy(requester.id)
+          this.peer.busy(requester.id);
         }, 3000);
       }
 
       this.overlay.modal({
         component: RtcComponent,
         componentProps: {
-          user: requester,
+          target: requester,
           isRequester: false
         }
       });

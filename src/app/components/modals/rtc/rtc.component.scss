@@ -1,3 +1,10 @@
+ion-header {
+  ion-buttons ion-button {
+    --color: var(--color-white);
+    filter: drop-shadow(0 0 0.5rem var(--color-black));
+  }
+}
+
 ion-content {
   --background: #000;
   height: 100vh;
@@ -14,13 +21,12 @@ ion-content {
 
 .local-video {
   position: fixed;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.3rem;
+  right: 0.3rem;
   width: 20%;
   height: 20%;
   border-radius: 0.75rem;
   object-fit: cover;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
 }
 
 main {

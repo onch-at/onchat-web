@@ -1,12 +1,22 @@
 <ion-content [fullscreen]="true" [scrollY]="false">
-  <video #remoteVideo class="remote-video" [poster]="user.avatar" autoplay playsinline (play)="onVideoPlay()"></video>
+  <ion-header slot="fixed">
+    <ion-toolbar>
+      <ion-buttons *ngIf="!waiting" slot="start">
+        <ion-button (click)="toggleFullscreen()">
+          <ion-icon slot="icon-only" [name]="isFullscreen ? 'contract-outline' : 'expand-outline'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <video #remoteVideo class="remote-video" [poster]="target.avatar" autoplay playsinline (play)="onVideoPlay()"></video>
   <video #localVideo class="local-video clip" [poster]="globalData.user.avatarThumbnail" [hidden]="waiting" muted autoplay
          playsinline></video>
 
   <main class="dp-flex flex-col min-hg-full align-center" [class.waiting]="waiting">
     <ng-container *ngIf="waiting">
-      <img class="avatar" [src]="user.avatar">
-      <h1 class="font-bold">{{ user.nickname }}</h1>
+      <img class="avatar" [src]="target.avatar">
+      <h1 class="font-bold">{{ target.nickname }}</h1>
       <div class="tips">正在向{{ isRequester ? ' Ta ' : '我' }}发起视频通话</div>
     </ng-container>
 

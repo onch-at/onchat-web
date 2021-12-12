@@ -14,6 +14,7 @@ import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
+import { Peer } from 'src/app/services/peer.service';
 import { SocketService } from 'src/app/services/socket.service';
 import { BlobUtils } from 'src/app/utilities/blob.utils';
 import { SysUtils } from 'src/app/utilities/sys.utils';
@@ -39,6 +40,7 @@ export class ChatDrawerComponent {
   @ViewChild(SwiperComponent) swiper: SwiperComponent;
 
   constructor(
+    private peer: Peer,
     private overlay: Overlay,
     private injector: Injector,
     private globalData: GlobalData,
@@ -107,7 +109,7 @@ export class ChatDrawerComponent {
     this.mediaDevice.getUserMedia({ video: true, audio: { echoCancellation: true } }).pipe(
       tap(stream => {
         mediaStream = stream;
-        this.socketService.rtcCall(this.globalData.chatroomId);
+        this.peer.call(this.globalData.chatroomId);
       }),
       mergeMap(() => this.socketService.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall)),
       take(1),
@@ -117,9 +119,9 @@ export class ChatDrawerComponent {
       this.overlay.modal({
         component: RtcComponent,
         componentProps: {
-          user: target,
+          target,
+          mediaStream,
           isRequester: true,
-          mediaStream: mediaStream,
         }
       });
 

@@ -10,6 +10,7 @@ import { Result, User } from 'src/app/models/onchat.model';
 import { RtcData } from 'src/app/models/rtc.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
+import { FullscreenService } from 'src/app/services/fullscreen.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
@@ -25,7 +26,7 @@ import { ModalComponent } from '../modal.component';
 })
 export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   /** 对方 */
-  @Input() user: User;
+  @Input() target: User;
   @Input() isRequester: boolean;
   @Input() mediaStream?: MediaStream;
   @ViewChild('remoteVideo', { static: true }) remoteVideo: ElementRef<HTMLVideoElement>;
@@ -33,14 +34,20 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
 
   waiting: boolean = true;
 
+  get isFullscreen(): boolean {
+    return this.fullscreenService.isFullscreen(this.elementRef.nativeElement);
+  }
+
   private timer: number;
 
   constructor(
     public globalData: GlobalData,
     private peer: Peer,
+    private elementRef: ElementRef,
     private mediaDevice: MediaDevice,
     private socketService: SocketService,
     private feedbackService: FeedbackService,
+    private fullscreenService: FullscreenService,
     protected overlay: Overlay,
     protected router: Router,
     protected destroyer: Destroyer,
@@ -55,11 +62,11 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     merge(
       this.socketService.on(SocketEvent.RtcHangUp),
       this.socketService.on(SocketEvent.RtcBusy).pipe(
-        tap(({ data: { senderId } }) => senderId === this.user.id && this.busy())
+        tap(({ data: { senderId } }) => senderId === this.target.id && this.busy())
       ),
     ).pipe(
       takeUntil(this.destroyer),
-      filter(({ data: { senderId } }) => senderId === this.user.id)
+      filter(({ data: { senderId } }) => senderId === this.target.id)
     ).subscribe(() => this.dismiss());
 
     // 如果自己是申请人，自己先准备好 RTC
@@ -105,7 +112,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         this.socketService.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
           takeUntil(this.destroyer),
           success(),
-          filter(({ data: { senderId } }) => senderId === this.user.id),
+          filter(({ data: { senderId } }) => senderId === this.target.id),
           map(({ data }) => data),
         ).subscribe(({ type, value }) => {
           switch (type) {
@@ -122,7 +129,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
               this.isRequester && this.peer.createAnswer().subscribe(description => {
                 this.peer.setLocalDescription(description);
                 // 让对方设置我的远程描述
-                this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
+                this.peer.data(this.target.id, RtcDataType.Description, description);
               });
               break;
           }
@@ -137,7 +144,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
           // filter(({ candidate }) => candidate.includes('udp')),
         ).subscribe(candidate => {
           // 让对方添加我的候选
-          this.socketService.rtcData(this.user.id, RtcDataType.IceCandidate, candidate);
+          this.peer.data(this.target.id, RtcDataType.IceCandidate, candidate);
         });
 
         // 侦听轨道
@@ -178,13 +185,17 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     ).subscribe(description => {
       this.peer.setLocalDescription(description);
       // 让对方设置我的远程描述
-      this.socketService.rtcData(this.user.id, RtcDataType.Description, description);
+      this.peer.data(this.target.id, RtcDataType.Description, description);
     });
   }
 
   hangUp() {
-    this.socketService.rtcHangUp(this.user.id);
+    this.peer.hangUp(this.target.id);
     this.dismiss();
+  }
+
+  toggleFullscreen() {
+    this.fullscreenService.toggle(this.elementRef.nativeElement);
   }
 
 }
