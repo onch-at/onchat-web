@@ -6,7 +6,9 @@ export type AnyMessage = TipsMessage | TextMessage | RichTextMessage | ChatInvit
 export class TextMessage {
   constructor(
     /** 内容 */
-    public content: string
+    public content: string,
+    /** 是否为表情符号 */
+    public emoji?: boolean
   ) { }
 }
 

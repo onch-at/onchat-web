@@ -18,7 +18,8 @@
         <div>
           <ng-container *ngTemplateOutlet="nickname; context: item"></ng-container>
 
-          <span #bubble appRipple class="msg-bubble" (press)="presentBubbleToolbarPopover(item, bubble, $event)"
+          <span #bubble appRipple class="msg-bubble" [class.msg-bubble-emoji]="item.data['emoji']"
+                (press)="presentBubbleToolbarPopover(item, bubble, $event)"
                 (contextmenu)="presentBubbleToolbarPopover(item, bubble, $event)">
             <!-- 回复消息 -->
             <blockquote *ngIf="item.replyId">
