@@ -3,8 +3,8 @@
     <span>没有更多消息</span>
   </li>
 
-  <ng-container *ngFor="let item of data; let index = index; trackBy: trackByFn">
-    <li class="tips-item text-center" *ngIf="index === 0 || canShowTime(item.createTime, data[index - 1].createTime)">
+  <ng-container *ngFor="let item of data; index as index; first as first; trackBy: trackByFn">
+    <li class="tips-item text-center" *ngIf="first || canShowTime(item, data[index - 1])">
       <span>{{ item.createTime | detailDate }} {{ item.createTime | date: 'BBBBhh:mm' }}</span>
     </li>
 

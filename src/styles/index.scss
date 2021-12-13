@@ -104,7 +104,8 @@
 
 .btn-ghost-primary {
   color: var(--color-primary);
-  background-color: rgba(var(--color-primary-rgb), 0.3);
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  border: 0.5px dashed currentColor;
 
   &.active {
     box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.125);

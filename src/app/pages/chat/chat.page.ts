@@ -42,8 +42,8 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
   chatroomType: ChatroomType;
   /** 会话列表中对应的会话 */
   chatSession: ChatSession;
-  /** 消息ID，用于查询指定消息段 */
-  msgId: number = 0;
+  /** 最先的消息，用于查询指定消息段 */
+  firstMsg?: Message;
   /** 聊天记录 */
   msgList: Message[] = [];
   /** 聊天记录是否查到末尾了 */
@@ -174,7 +174,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
    * @param event
    */
   async loadMoreRecords({ target }: SafeAny) {
-    if (!this.msgId) {
+    if (!this.firstMsg) {
       await this.scrollToBottom();
       return target.complete();
     }
@@ -195,18 +195,12 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
   loadRecords(complete?: () => void) {
     if (this.ended) { return complete?.(); }
 
-    this.chatRecordService.getChatRecords(this.msgId, this.chatroomId).pipe(
+    this.chatRecordService.getChatRecords(this.firstMsg?.id || 0, this.chatroomId).pipe(
       finalize(() => complete?.())
     ).subscribe({
       next: ({ data }: Result<Message[]>) => {
-        // 按照ID排序
-        // result.data.sort((a: Message, b: Message) => {
-        //   return a.id - b.id;
-        // });
-        // this.msgList = result.data.concat(this.msgList);
-
-        for (const msgItem of data) {
-          this.msgList.unshift(msgItem);
+        for (const msg of data) {
+          this.msgList.unshift(msg);
         }
 
         // 如果返回的消息里少于15条，则代表这是最后一段消息了
@@ -215,10 +209,12 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
         }
 
         // 如果是第一次查记录，就执行滚动
-        this.msgId || this.scrollToBottom(0);
+        this.firstMsg || this.window.setTimeout(() => {
+          this.scrollToBottom(0);
+        }, 10);
 
         if (data.length) {
-          this.msgId = this.msgList[0].id;
+          this.firstMsg = data[0];
         }
       },
       error: ({ error }: { error: Result }) => {

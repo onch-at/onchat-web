@@ -93,8 +93,8 @@ export class MessageListComponent {
    * @param time 当前时间
    * @param otherTime 上一个时间
    */
-  canShowTime(time: number, otherTime: number): boolean {
-    return (time - otherTime) > 90000; // 一分半钟
+  canShowTime(current: Message, other: Message): boolean {
+    return (current.createTime - other.createTime) > 90000; // 一分半钟
   }
 
   previewImage(item: Message<ImageMessage>) {
