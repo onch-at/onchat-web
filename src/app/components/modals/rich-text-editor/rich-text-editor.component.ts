@@ -12,7 +12,7 @@ import { Message, Result } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 import { StrUtils } from 'src/app/utilities/str.utils';
 import { ModalComponent } from '../modal.component';
 
@@ -45,7 +45,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
   constructor(
     private injector: Injector,
     private globalData: GlobalData,
-    private socketService: SocketService,
+    private socket: Socket,
     protected overlay: Overlay,
     protected router: Router,
     protected destroyer: Destroyer,
@@ -78,7 +78,7 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
     this.dismiss(msg);
     loading.dismiss();
 
-    this.socketService.on(SocketEvent.Message).pipe(
+    this.socket.on(SocketEvent.Message).pipe(
       success(),
       filter(({ data }: Result<Message>) => msg.isSelf(data)),
       take(1)

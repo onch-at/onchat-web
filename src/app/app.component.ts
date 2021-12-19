@@ -17,7 +17,7 @@ import { GlobalData } from './services/global-data.service';
 import { OnChatService } from './services/onchat.service';
 import { Overlay } from './services/overlay.service';
 import { Peer } from './services/peer.service';
-import { SocketService } from './services/socket.service';
+import { Socket } from './services/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     private navCtrl: NavController,
     private userService: UserService,
     private cacheService: CacheService,
-    private socketService: SocketService,
+    private socket: Socket,
     private onChatService: OnChatService,
     private feedbackService: FeedbackService,
     private messageDescPipe: MessageDescPipe,
@@ -43,12 +43,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // 连接打通时
-    this.socketService.on(SocketEvent.Connect).subscribe(() => {
+    this.socket.on(SocketEvent.Connect).subscribe(() => {
       this.onChatService.init();
     });
 
     // 发起/收到好友申请时
-    this.socketService.on(SocketEvent.FriendRequest).subscribe(({ code, data }: Result<FriendRequest>) => {
+    this.socket.on(SocketEvent.FriendRequest).subscribe(({ code, data }: Result<FriendRequest>) => {
       if (code !== ResultCode.Success) { return; } //TODO
       const { user } = this.globalData;
       // 收到好友申请提示，如果自己是被申请人
@@ -80,7 +80,7 @@ export class AppComponent implements OnInit {
     });
 
     // 同意好友申请/收到同意好友申请
-    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(success()).subscribe(({ data }: Result<AgreeFriendRequest>) => {
+    this.socket.on(SocketEvent.FriendRequestAgree).pipe(success()).subscribe(({ data }: Result<AgreeFriendRequest>) => {
       const { user, receiveFriendRequests } = this.globalData;
       // 如果申请人是自己（我发的好友申请被同意了）
       if (data.requesterId === user.id) {
@@ -120,7 +120,7 @@ export class AppComponent implements OnInit {
     });
 
     // 拒绝好友申请/收到拒绝好友申请
-    this.socketService.on(SocketEvent.FriendRequestReject).pipe(success()).subscribe(({ data }: Result<FriendRequest>) => {
+    this.socket.on(SocketEvent.FriendRequestReject).pipe(success()).subscribe(({ data }: Result<FriendRequest>) => {
       const { user } = this.globalData;
       // 如果申请人是自己
       if (data.requesterId === user.id) {
@@ -151,7 +151,7 @@ export class AppComponent implements OnInit {
     });
 
     // 收到消息时
-    this.socketService.on(SocketEvent.Message).pipe(success()).subscribe(({ data }: Result<Message>) => {
+    this.socket.on(SocketEvent.Message).pipe(success()).subscribe(({ data }: Result<Message>) => {
       const { chatroomId, user } = this.globalData;
       // 先去聊天列表缓存里面查，看看有没有这个房间的数据
       const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === data.chatroomId);
@@ -191,7 +191,7 @@ export class AppComponent implements OnInit {
     });
 
     // 撤回消息时
-    this.socketService.on(SocketEvent.RevokeMessage).pipe(success()).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
+    this.socket.on(SocketEvent.RevokeMessage).pipe(success()).subscribe(({ data }: Result<{ chatroomId: number, msgId: number }>) => {
       // 收到撤回消息的信号，去聊天列表里面找，找的到就更新一下，最新消息
       const chatSession = this.globalData.chatSessions.find(o => o.data.chatroomId === data.chatroomId);
       if (chatSession) {
@@ -207,7 +207,7 @@ export class AppComponent implements OnInit {
     });
 
     // 收到入群申请时
-    this.socketService.on(SocketEvent.ChatRequest).pipe(
+    this.socket.on(SocketEvent.ChatRequest).pipe(
       success(),
       // 如果申请人不是自己
       filter(({ data }: Result<ChatRequest>) => data?.requesterId !== this.globalData.user.id)
@@ -235,7 +235,7 @@ export class AppComponent implements OnInit {
     });
 
     // 同意别人入群/同意我入群
-    this.socketService.on(SocketEvent.ChatRequestAgree).subscribe(({ code, data, msg }: Result<[ChatRequest, ChatSession]>) => {
+    this.socket.on(SocketEvent.ChatRequestAgree).subscribe(({ code, data, msg }: Result<[ChatRequest, ChatSession]>) => {
       const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
@@ -281,7 +281,7 @@ export class AppComponent implements OnInit {
     });
 
     // 拒绝别人的入群申请/入群申请被拒绝
-    this.socketService.on(SocketEvent.ChatRequestReject).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
+    this.socket.on(SocketEvent.ChatRequestReject).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
       const { user } = this.globalData;
 
       if (code !== ResultCode.Success) {
@@ -313,7 +313,7 @@ export class AppComponent implements OnInit {
     });
 
     // 收到 RTC 请求
-    this.socketService.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall).pipe(
+    this.socket.on<Result<[requester: User, target: User]>>(SocketEvent.RtcCall).pipe(
       success(),
       filter(({ data: [, target] }) => this.globalData.user.id === target.id),
     ).subscribe(({ data: [requester] }) => {

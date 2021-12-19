@@ -11,7 +11,7 @@ import { FriendService } from 'src/app/services/apis/friend.service';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-request',
@@ -36,7 +36,7 @@ export class RequestPage implements OnInit {
 
   constructor(
     public globalData: GlobalData,
-    private socketService: SocketService,
+    private socket: Socket,
     private friendService: FriendService,
     private overlay: Overlay,
     private route: ActivatedRoute,
@@ -66,7 +66,7 @@ export class RequestPage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.FriendRequest).pipe(
+    this.socket.on(SocketEvent.FriendRequest).pipe(
       takeUntil(this.destroyer),
       debounceTime(100),
       tap(({ code, msg }: Result<FriendRequest | FriendRequest[]>) => {
@@ -84,7 +84,7 @@ export class RequestPage implements OnInit {
   }
 
   friendRequest() {
-    this.socketService.friendRequest(this.user.id, this.targetAlias, this.requestReason);
+    this.socket.friendRequest(this.user.id, this.targetAlias, this.requestReason);
   }
 
 }

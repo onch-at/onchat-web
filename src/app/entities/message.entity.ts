@@ -4,7 +4,7 @@ import { ChatMemberRole, MessageType, SocketEvent } from '../common/enums';
 import { success } from '../common/operators';
 import { AnyMessage } from '../models/msg.model';
 import { Message, Result } from '../models/onchat.model';
-import { SocketService } from '../services/socket.service';
+import { Socket } from '../services/socket.service';
 import { StrUtils } from '../utilities/str.utils';
 
 export class MessageEntity implements Message {
@@ -44,9 +44,9 @@ export class MessageEntity implements Message {
    * 追踪本条消息以更新数据
    */
   track() {
-    const socketService = this.injector.get(SocketService);
+    const socket = this.injector.get(Socket);
 
-    socketService.on(SocketEvent.Message).pipe(
+    socket.on(SocketEvent.Message).pipe(
       success(),
       filter(({ data }: Result<Message>) => this.isSelf(data)),
       take(1)
@@ -56,7 +56,7 @@ export class MessageEntity implements Message {
       this.loading = false;
     });
 
-    return socketService;
+    return socket;
   }
 
   /**

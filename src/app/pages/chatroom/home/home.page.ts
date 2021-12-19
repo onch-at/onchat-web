@@ -17,7 +17,7 @@ import { CacheService } from 'src/app/services/cache.service';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 import { StrUtils } from 'src/app/utilities/str.utils';
 import { SysUtils } from 'src/app/utilities/sys.utils';
 
@@ -48,7 +48,7 @@ export class HomePage implements OnInit {
     private chatroomService: ChatroomService,
     private userService: UserService,
     private cacheService: CacheService,
-    private socketService: SocketService,
+    private socket: Socket,
     private routerOutlet: IonRouterOutlet,
     private destroyer: Destroyer,
   ) { }
@@ -74,7 +74,7 @@ export class HomePage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.ChatRequest).pipe(
+    this.socket.on(SocketEvent.ChatRequest).pipe(
       takeUntil(this.destroyer),
       debounceTime(100)
     ).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
@@ -173,7 +173,7 @@ export class HomePage implements OnInit {
     this.overlay.alert({
       header: '申请加入',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.chatRequset(this.chatroom.id, StrUtils.trimAll(data['reason']).length ? data['reason'] : undefined);
+        this.socket.chatRequset(this.chatroom.id, StrUtils.trimAll(data['reason']).length ? data['reason'] : undefined);
       },
       inputs: [
         {
@@ -213,7 +213,7 @@ export class HomePage implements OnInit {
         chatSessions: this.globalData.privateChatrooms.filter(o => !this.members.some(p => p.userId === o.data.userId)).map(o => ({ ...o, checked: false })),
         limit: MSG_BROADCAST_QUANTITY_LIMIT,
         handler: (data: ChatSessionCheckbox[]) => {
-          const observable = this.socketService.on(SocketEvent.InviteJoinChatroom).pipe(
+          const observable = this.socket.on(SocketEvent.InviteJoinChatroom).pipe(
             switchMap(({ code, msg }: Result<number[]>) => {
               this.overlay.toast(code === ResultCode.Success ? '邀请消息已发出！' : '邀请失败，原因：' + msg);
               return of(null);
@@ -222,7 +222,7 @@ export class HomePage implements OnInit {
 
           // 得到聊天室ID
           const list = data.map(o => o.data.chatroomId);
-          this.socketService.inviteJoinChatroom(this.chatroom.id, list);
+          this.socket.inviteJoinChatroom(this.chatroom.id, list);
 
           return observable;
         }

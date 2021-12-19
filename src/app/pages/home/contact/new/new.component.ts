@@ -6,7 +6,7 @@ import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/constants';
 import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-new',
@@ -19,7 +19,7 @@ export class NewComponent {
   constructor(
     public globalData: GlobalData,
     private friendService: FriendService,
-    private socketService: SocketService,
+    private socket: Socket,
     private overlay: Overlay,
   ) { }
 
@@ -30,7 +30,7 @@ export class NewComponent {
     this.overlay.alert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestAgree(id, data['requesterAlias']);
+        this.socket.friendRequestAgree(id, data['requesterAlias']);
       },
       inputs: [{
         name: 'requesterAlias',
@@ -48,7 +48,7 @@ export class NewComponent {
     this.overlay.alert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestReject(id, data['rejectReason']);
+        this.socket.friendRequestReject(id, data['rejectReason']);
       },
       inputs: [{
         name: 'rejectReason',

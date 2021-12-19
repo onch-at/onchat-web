@@ -11,7 +11,7 @@ import { TokenService } from './token.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SocketService {
+export class Socket {
   /** 初始化后的可观察对象 */
   readonly initialized: Observable<Result>;
 

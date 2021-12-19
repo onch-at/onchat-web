@@ -12,7 +12,7 @@ import { Message, Result } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 import { BlobUtils } from 'src/app/utilities/blob.utils';
 import { StrUtils } from 'src/app/utilities/str.utils';
 import { ChatDrawerComponent } from '../chat-drawer/chat-drawer.component';
@@ -74,7 +74,7 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit {
   constructor(
     public globalData: GlobalData,
     public elementRef: ElementRef<HTMLElement>,
-    private socketService: SocketService,
+    private socket: Socket,
     private overlay: Overlay,
     private renderer: Renderer2,
     private platform: Platform,
@@ -84,7 +84,7 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     const { chatroomId, user } = this.globalData;
-    this.socketService.on(SocketEvent.Message).pipe(
+    this.socket.on(SocketEvent.Message).pipe(
       takeUntil(this.destroyer),
       success(),
       // 如果是这个房间的，且不是我的消息

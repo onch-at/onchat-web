@@ -11,7 +11,7 @@ import { Result, User } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 import { StrUtils } from 'src/app/utilities/str.utils';
 
 @Component({
@@ -51,7 +51,7 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
     private router: Router,
     private userService: UserService,
     private overlay: Overlay,
-    private socketService: SocketService,
+    private socket: Socket,
     private formBuilder: FormBuilder,
     private routerOutlet: IonRouterOutlet,
     @Inject(WINDOW) private window: Window,
@@ -77,7 +77,7 @@ export class LoginPage implements ViewWillLeave, ViewWillEnter {
         this.overlay.toast('登录成功！即将跳转…', 1000);
 
         this.globalData.user = data;
-        this.socketService.connect();
+        this.socket.connect();
 
         this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
       },

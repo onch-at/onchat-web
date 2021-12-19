@@ -4,7 +4,7 @@ import { MessageType } from 'src/app/common/enums';
 import { Message } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-bubble-toolbar',
@@ -23,7 +23,7 @@ export class BubbleToolbarComponent {
 
   constructor(
     public globalData: GlobalData,
-    private socketService: SocketService,
+    private socket: Socket,
     private overlay: Overlay,
     private clipboard: Clipboard
   ) { }
@@ -47,7 +47,7 @@ export class BubbleToolbarComponent {
    * 撤回消息
    */
   revokeMessage() {
-    this.socketService.revokeMessage(this.msgItem.id, this.globalData.chatroomId);
+    this.socket.revokeMessage(this.msgItem.id, this.globalData.chatroomId);
     this.dismiss();
   }
 

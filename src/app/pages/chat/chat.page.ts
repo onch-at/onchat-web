@@ -18,7 +18,7 @@ import { FriendService } from 'src/app/services/apis/friend.service';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 import { StrUtils } from 'src/app/utilities/str.utils';
 
 @Component({
@@ -58,7 +58,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     private chatSessionService: ChatSessionService,
     private friendService: FriendService,
     private platform: Platform,
-    private socketService: SocketService,
+    private socket: Socket,
     private route: ActivatedRoute,
     private router: Router,
     private overlay: Overlay,
@@ -97,7 +97,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
       });
     }
 
-    this.socketService.on(SocketEvent.Message).pipe(
+    this.socket.on(SocketEvent.Message).pipe(
       takeUntil(this.destroyer),
       success(),
       filter(({ data }: Result<Message>) => data.chatroomId === this.chatroomId),
@@ -123,7 +123,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
       this.chatSession && this.chatSessionService.readed(this.chatSession.id).subscribe();
     });
 
-    this.socketService.on(SocketEvent.RevokeMessage).pipe(
+    this.socket.on(SocketEvent.RevokeMessage).pipe(
       takeUntil(this.destroyer),
       success(),
       filter(({ data }: Result<{ chatroomId: number, msgId: number }>) => data.chatroomId === this.chatroomId)
@@ -137,7 +137,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     });
 
     // 重连时，自动重发
-    this.socketService.initialized.pipe(
+    this.socket.initialized.pipe(
       takeUntil(this.destroyer),
       success(),
       filter(() => this.msgList.some(o => o.loading)),

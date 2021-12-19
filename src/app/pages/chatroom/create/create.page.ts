@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/apis/user.service';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 
 const ITEM_ROWS: number = 10;
 
@@ -73,7 +73,7 @@ export class CreatePage implements OnInit {
     private overlay: Overlay,
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private socketService: SocketService,
+    private socket: Socket,
     private destroyer: Destroyer,
   ) { }
 
@@ -91,7 +91,7 @@ export class CreatePage implements OnInit {
       });
     }
 
-    this.socketService.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.destroyer)).subscribe(({ code, data, msg }: Result<ChatSession>) => {
+    this.socket.on(SocketEvent.CreateChatroom).pipe(takeUntil(this.destroyer)).subscribe(({ code, data, msg }: Result<ChatSession>) => {
       this.loading = false;
 
       if (code !== ResultCode.Success) {
@@ -104,7 +104,7 @@ export class CreatePage implements OnInit {
       this.overlay.toast('聊天室创建成功！');
       // 得到邀请的好友的聊天室ID
       const chatroomIdList = this.getCheckedChatSessions().map(o => o.data.chatroomId);
-      this.socketService.inviteJoinChatroom(data.data.chatroomId, chatroomIdList);
+      this.socket.inviteJoinChatroom(data.data.chatroomId, chatroomIdList);
 
       this.router.navigate(['/chatroom', data.data.chatroomId]);
     });
@@ -115,7 +115,7 @@ export class CreatePage implements OnInit {
     this.loading = true;
 
     const { name, description } = this.chatroomForm.value;
-    this.socketService.createChatroom(name.trim(), description?.trim());
+    this.socket.createChatroom(name.trim(), description?.trim());
   }
 
   /**

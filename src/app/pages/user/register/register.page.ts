@@ -13,7 +13,7 @@ import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 import { StrUtils } from 'src/app/utilities/str.utils';
 import { AsyncValidator } from 'src/app/validators/async.validator';
 import { SyncValidator } from 'src/app/validators/sync.validator';
@@ -94,7 +94,7 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
     private systemService: IndexService,
     private userService: UserService,
     private overlay: Overlay,
-    private socketService: SocketService,
+    private socket: Socket,
     private routerOutlet: IonRouterOutlet,
     @Inject(WINDOW) private window: Window,
   ) { }
@@ -117,7 +117,7 @@ export class RegisterPage implements ViewWillLeave, ViewWillEnter {
       next: ({ data }: Result<User>) => {
         this.overlay.toast('注册成功！即将跳转…', 1000);
         this.globalData.user = data;
-        this.socketService.connect();
+        this.socket.connect();
 
         this.window.setTimeout(() => this.router.navigateByUrl('/'), 500);
       },

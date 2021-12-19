@@ -8,7 +8,7 @@ import { ChatRequest, Result } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-request',
@@ -23,7 +23,7 @@ export class RequestPage implements OnInit {
   requestReason: string = null;
 
   constructor(
-    private socketService: SocketService,
+    private socket: Socket,
     private overlay: Overlay,
     private globalData: GlobalData,
     private route: ActivatedRoute,
@@ -42,7 +42,7 @@ export class RequestPage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.ChatRequest).pipe(
+    this.socket.on(SocketEvent.ChatRequest).pipe(
       takeUntil(this.destroyer),
       debounceTime(100)
     ).subscribe(({ code, data, msg }: Result<ChatRequest>) => {
@@ -68,7 +68,7 @@ export class RequestPage implements OnInit {
    * 申请加入群聊
    */
   chatRequest() {
-    this.socketService.chatRequset(this.request.chatroomId, this.requestReason);
+    this.socket.chatRequset(this.request.chatroomId, this.requestReason);
   }
 
 }

@@ -10,7 +10,7 @@ import { ChatRequest, Result } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-handle',
@@ -23,7 +23,7 @@ export class HandlePage implements OnInit {
   request: ChatRequest;
 
   constructor(
-    private socketService: SocketService,
+    private socket: Socket,
     private route: ActivatedRoute,
     private overlay: Overlay,
     private globalData: GlobalData,
@@ -41,7 +41,7 @@ export class HandlePage implements OnInit {
       }
     });
 
-    this.socketService.on(SocketEvent.ChatRequestReject).pipe(
+    this.socket.on(SocketEvent.ChatRequestReject).pipe(
       takeUntil(this.destroyer),
       success(),
       // 操作成功,并且处理人是我
@@ -55,7 +55,7 @@ export class HandlePage implements OnInit {
     this.overlay.alert({
       header: '同意申请',
       message: '你确定同意该请求吗？',
-      confirmHandler: () => this.socketService.chatRequsetAgree(this.request.id)
+      confirmHandler: () => this.socket.chatRequsetAgree(this.request.id)
     });
   }
 
@@ -63,7 +63,7 @@ export class HandlePage implements OnInit {
     this.overlay.alert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.chatRequestReject(this.request.id, data['rejectReason'] || null);
+        this.socket.chatRequestReject(this.request.id, data['rejectReason'] || null);
       },
       inputs: [{
         name: 'rejectReason',

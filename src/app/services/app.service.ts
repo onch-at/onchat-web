@@ -10,7 +10,7 @@ import { AuthService } from './apis/auth.service';
 import { FeedbackService } from './feedback.service';
 import { GlobalData } from './global-data.service';
 import { Overlay } from './overlay.service';
-import { SocketService } from './socket.service';
+import { Socket } from './socket.service';
 import { TokenService } from './token.service';
 
 @Injectable({
@@ -25,13 +25,13 @@ export class Application {
     private globalData: GlobalData,
     private authService: AuthService,
     private tokenService: TokenService,
-    private socketService: SocketService,
+    private socket: Socket,
     private feedbackService: FeedbackService,
     @Inject(WINDOW) private window: Window,
     @Inject(DOCUMENT) private document: Document,
     @Inject(LOCATION) private location: Location,
   ) {
-    this.socketService.initialized.pipe(
+    this.socket.initialized.pipe(
       filter(({ code }: Result) => code === ResultCode.Unauthorized),
       mergeMap(() => this.authService.refresh(this.tokenService.folder.refresh))
     ).subscribe(({ code, data }: Result<string>) => {
@@ -40,14 +40,14 @@ export class Application {
       }
 
       this.tokenService.store(data);
-      this.socketService.connect();
+      this.socket.connect();
     });
   }
 
   logout() {
     this.globalData.reset();
     this.tokenService.clear();
-    this.socketService.disconnect();
+    this.socket.disconnect();
     this.router.navigateByUrl('/user/login');
   }
 
@@ -77,7 +77,7 @@ export class Application {
    */
   detectSocketConnectStatus() {
     // 连接断开时
-    this.socketService.on(SocketEvent.Disconnect).pipe(
+    this.socket.on(SocketEvent.Disconnect).pipe(
       // 用户登录后且客户端在前台
       filter(() => this.globalData.user !== null),
       filter(() => !this.document.hidden)
@@ -86,14 +86,14 @@ export class Application {
     });
 
     // 连接失败时
-    this.socketService.on(SocketEvent.ReconnectError).pipe(
+    this.socket.on(SocketEvent.ReconnectError).pipe(
       filter(() => !this.document.hidden)
     ).subscribe(() => {
       this.overlay.toast('OnChat: 服务器连接失败！');
     });
 
     // 重连成功时
-    this.socketService.on(SocketEvent.Reconnect).pipe(
+    this.socket.on(SocketEvent.Reconnect).pipe(
       filter(() => !this.document.hidden)
     ).subscribe(() => {
       this.overlay.toast('OnChat: 与服务器重连成功！');

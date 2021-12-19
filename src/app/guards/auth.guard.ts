@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Result, User } from '../models/onchat.model';
 import { AuthService } from '../services/apis/auth.service';
 import { GlobalData } from '../services/global-data.service';
-import { SocketService } from '../services/socket.service';
+import { Socket } from '../services/socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ import { SocketService } from '../services/socket.service';
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
     private authService: AuthService,
-    private socketService: SocketService,
+    private socket: Socket,
     private globalData: GlobalData,
   ) { }
 
@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate, CanLoad {
       map(({ data }: Result<User>) => {
         if (data) {
           this.globalData.user = data;
-          this.socketService.connect();
+          this.socket.connect();
         }
         return true;
       })

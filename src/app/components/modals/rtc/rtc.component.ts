@@ -15,7 +15,7 @@ import { GlobalData } from 'src/app/services/global-data.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { Peer } from 'src/app/services/peer.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -45,7 +45,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     private peer: Peer,
     private elementRef: ElementRef,
     private mediaDevice: MediaDevice,
-    private socketService: SocketService,
+    private socket: Socket,
     private feedbackService: FeedbackService,
     private fullscreenService: FullscreenService,
     protected overlay: Overlay,
@@ -60,8 +60,8 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
     super.ngOnInit();
 
     merge(
-      this.socketService.on(SocketEvent.RtcHangUp),
-      this.socketService.on(SocketEvent.RtcBusy).pipe(
+      this.socket.on(SocketEvent.RtcHangUp),
+      this.socket.on(SocketEvent.RtcBusy).pipe(
         tap(({ data: { senderId } }) => senderId === this.target.id && this.busy())
       ),
     ).pipe(
@@ -109,7 +109,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
         this.peer.create();
 
         // 侦听 RTC 数据
-        this.socketService.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
+        this.socket.on<Result<RtcData>>(SocketEvent.RtcData).pipe(
           takeUntil(this.destroyer),
           success(),
           filter(({ data: { senderId } }) => senderId === this.target.id),

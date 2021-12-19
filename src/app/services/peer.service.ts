@@ -3,7 +3,7 @@ import { catchError, from, fromEvent, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RtcDataType, SocketEvent } from '../common/enums';
 import { Overlay } from './overlay.service';
-import { SocketService } from './socket.service';
+import { Socket } from './socket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class Peer {
 
   constructor(
     private overlay: Overlay,
-    private socketService: SocketService
+    private socket: Socket
   ) { }
 
   create() {
@@ -109,7 +109,7 @@ export class Peer {
    * @param value
    */
   data<T extends RTCSessionDescriptionInit | RTCIceCandidate>(targetId: number, type: RtcDataType, value: T) {
-    this.socketService.emit(SocketEvent.RtcData, {
+    this.socket.emit(SocketEvent.RtcData, {
       targetId,
       type,
       value
@@ -121,7 +121,7 @@ export class Peer {
    * @param chatroomId
    */
   call(chatroomId: number) {
-    this.socketService.emit(SocketEvent.RtcCall, { chatroomId });
+    this.socket.emit(SocketEvent.RtcCall, { chatroomId });
   }
 
   /**
@@ -129,7 +129,7 @@ export class Peer {
    * @param targetId
    */
   hangUp(targetId: number) {
-    this.socketService.emit(SocketEvent.RtcHangUp, { targetId });
+    this.socket.emit(SocketEvent.RtcHangUp, { targetId });
   }
 
   /**
@@ -137,6 +137,6 @@ export class Peer {
    * @param targetId
    */
   busy(targetId: number) {
-    this.socketService.emit(SocketEvent.RtcBusy, { targetId });
+    this.socket.emit(SocketEvent.RtcBusy, { targetId });
   }
 }

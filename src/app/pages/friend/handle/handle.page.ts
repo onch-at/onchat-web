@@ -12,7 +12,7 @@ import { FriendService } from 'src/app/services/apis/friend.service';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { SocketService } from 'src/app/services/socket.service';
+import { Socket } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-handle',
@@ -31,7 +31,7 @@ export class HandlePage implements OnInit {
     private overlay: Overlay,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private socketService: SocketService,
+    private socket: Socket,
     private friendService: FriendService,
     private destroyer: Destroyer,
     @Inject(WINDOW) private window: Window,
@@ -43,7 +43,7 @@ export class HandlePage implements OnInit {
       this.request = request.data;
     });
 
-    this.socketService.on(SocketEvent.FriendRequestAgree).pipe(
+    this.socket.on(SocketEvent.FriendRequestAgree).pipe(
       takeUntil(this.destroyer),
       success(),
       filter(({ data }: Result<AgreeFriendRequest>) => data.requesterId === this.user.id)
@@ -51,7 +51,7 @@ export class HandlePage implements OnInit {
       this.window.setTimeout(() => this.navCtrl.back(), 250);
     });
 
-    this.socketService.on(SocketEvent.FriendRequestReject).pipe(
+    this.socket.on(SocketEvent.FriendRequestReject).pipe(
       takeUntil(this.destroyer),
       success(),
       filter(({ data }: Result<FriendRequest>) => data.requesterId === this.user.id)
@@ -74,7 +74,7 @@ export class HandlePage implements OnInit {
     this.overlay.alert({
       header: '同意申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestAgree(this.request.id, data['requesterAlias']);
+        this.socket.friendRequestAgree(this.request.id, data['requesterAlias']);
       },
       inputs: [{
         name: 'requesterAlias',
@@ -92,7 +92,7 @@ export class HandlePage implements OnInit {
     this.overlay.alert({
       header: '拒绝申请',
       confirmHandler: (data: KeyValue<string, any>) => {
-        this.socketService.friendRequestReject(this.request.id, data['rejectReason']);
+        this.socket.friendRequestReject(this.request.id, data['rejectReason']);
       },
       inputs: [{
         name: 'rejectReason',
