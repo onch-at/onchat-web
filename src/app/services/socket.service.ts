@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { Socketio } from 'ngx-socketio2';
 import { Observable } from 'rxjs';
 import { share, tap } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enums';
@@ -16,8 +16,8 @@ export class SocketService {
   readonly initialized: Observable<Result>;
 
   constructor(
-    private socket: Socket,
     private overlay: Overlay,
+    private socketio: Socketio,
     private tokenService: TokenService,
   ) {
     this.initialized = this.on<Result>(SocketEvent.Init).pipe(share());
@@ -152,7 +152,7 @@ export class SocketService {
    * @param data 数据
    */
   emit(eventName: string, data?: unknown) {
-    return this.socket.emit(eventName, data);
+    return this.socketio.emit(eventName, data);
   }
 
   /**
@@ -160,7 +160,7 @@ export class SocketService {
    * @param eventName 事件名
    */
   on<T = unknown>(eventName: string | SocketEvent): Observable<T> {
-    return this.socket.fromEvent(eventName).pipe(tap((data: SafeAny) => {
+    return this.socketio.on(eventName).pipe(tap((data: SafeAny) => {
       switch (data?.code) {
         case ResultCode.AccessOverclock:
           this.overlay.toast('OnChat：请求频率过高，请稍后再试');
@@ -173,18 +173,20 @@ export class SocketService {
    * 建立套接字连接
    */
   connect() {
-    this.socket.ioSocket.io.opts.query = {
+    this.socketio.io.opts.query = {
       token: this.tokenService.folder.access
     };
 
-    return this.socket.connect();
+    // this.socketio.auth = { a: 'abc' }
+
+    return this.socketio.connect();
   }
 
   /**
    * 断开连接
    */
   disconnect() {
-    return this.socket.disconnect();
+    return this.socketio.disconnect();
   }
 
 }

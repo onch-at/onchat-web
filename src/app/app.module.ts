@@ -11,7 +11,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { QuillModule } from 'ngx-quill';
-import { SocketIoModule } from 'ngx-socket-io';
+import { SocketioModule } from 'ngx-socketio2';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -50,7 +50,7 @@ registerLocaleData(localeZhHans, 'zh-Hans', localeExtraZhHans);
       backButtonText: '',
       backButtonIcon: 'chevron-back-outline'
     }),
-    SocketIoModule.forRoot({
+    SocketioModule.forRoot({
       url: '',
       options: {
         path: environment.socketioPath,
