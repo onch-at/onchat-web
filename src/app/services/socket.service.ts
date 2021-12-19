@@ -173,11 +173,9 @@ export class Socket {
    * 建立套接字连接
    */
   connect() {
-    this.socketio.io.opts.query = {
-      token: this.tokenService.folder.access
+    this.socketio.auth = {
+      auth: this.tokenService.folder.access
     };
-
-    // this.socketio.auth = { a: 'abc' }
 
     return this.socketio.connect();
   }
