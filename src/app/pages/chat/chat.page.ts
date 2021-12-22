@@ -227,10 +227,9 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
    * 滚到底部
    */
   scrollToBottom(duration: number = 500) {
-    return new Promise<void>(resolve => this.window.setTimeout(async () => {
-      await this.ionContent.scrollToBottom(duration);
-      resolve();
-    }));
+    this.window.setTimeout(() => {
+      this.ionContent.scrollToBottom(duration);
+    });
   }
 
   /**
