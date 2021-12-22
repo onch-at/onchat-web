@@ -214,7 +214,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
         }, 10);
 
         if (data.length) {
-          this.firstMsg = data[0];
+          this.firstMsg = this.msgList[0];
         }
       },
       error: ({ error }: { error: Result }) => {
