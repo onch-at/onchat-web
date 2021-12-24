@@ -209,9 +209,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
         }
 
         // 如果是第一次查记录，就执行滚动
-        this.firstMsg || this.window.setTimeout(() => {
-          this.scrollToBottom(0);
-        }, 10);
+        this.firstMsg || this.scrollToBottom(0);
 
         if (data.length) {
           this.firstMsg = this.msgList[0];
@@ -230,7 +228,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     return new Promise<void>(resolve => this.window.setTimeout(async () => {
       await this.ionContent.scrollToBottom(duration);
       resolve();
-    }));
+    }, 30));
   }
 
   /**
