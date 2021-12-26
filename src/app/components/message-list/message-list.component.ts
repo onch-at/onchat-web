@@ -70,7 +70,9 @@ export class MessageListComponent {
       event,
       showBackdrop: false,
       keyboardClose: false,
-      backdropDismiss: false
+      backdropDismiss: false,
+      side: 'top',
+      align: 'center',
     });
 
     popover.onWillDismiss().then(({ role, data }) => {

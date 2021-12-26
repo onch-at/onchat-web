@@ -19,13 +19,11 @@
 }
 
 ::ng-deep .bubble-toolbar-popover {
+    --width: auto;
+    // 多一个按钮，就加3rem
+    --max-width: 13rem;
+
     .popover-arrow::after {
         background: var(--color-dark) !important;
-    }
-
-    .popover-content {
-        width: auto;
-        // 多一个按钮，就加3rem
-        max-width: 13rem;
     }
 }

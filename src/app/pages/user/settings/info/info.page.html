@@ -52,10 +52,19 @@
       </div>
 
       <div class="form-group">
-        <label class="dp-block">生日</label>
-        <ion-datetime class="ipt-primary text-center" formControlName="birthday" displayFormat="YYYY-MM-DD" [min]="min"
-                      [max]="today" [monthNames]="monthNames" cancelText="取消" doneText="确认">
-        </ion-datetime>
+        <label class="dp-block" for="user-info-form-birthday">生日</label>
+        <input type="text" id="user-info-form-birthday" class="ipt-primary text-center dp-block" readonly="true"
+               [value]="form.value.birthday | date: 'YYYY-MM-dd'">
+
+        <ion-modal class="datetime-modal" trigger="user-info-form-birthday">
+          <ng-template>
+            <ion-content>
+              <ion-datetime class="min-hg-full" formControlName="birthday" presentation="date" size="cover"
+                            [showDefaultButtons]="true" [min]="min" [max]="today" cancelText="取消" doneText="确认">
+              </ion-datetime>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
       </div>
 
       <div class="form-group">

@@ -1,26 +1,23 @@
-<ion-content [fullscreen]="true">
-  <ion-header slot="fixed">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-button (click)="dismiss()">
-          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
-        </ion-button>
-      </ion-buttons>
+<ion-header slot="fixed">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
 
-      <ion-title>文本编辑器</ion-title>
+    <ion-title>文本编辑器</ion-title>
 
-      <ion-buttons slot="end" [hidden]="!canSend()">
-        <ion-button (click)="send()">
-          <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+    <ion-buttons slot="end" [hidden]="!canSend()">
+      <ion-button (click)="send()">
+        <ion-icon slot="icon-only" name="checkmark-outline" style="font-size: 1.75rem;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-  <main>
-    <quill-editor class="dp-flex flex-col min-hg-full" [(ngModel)]="html" [modules]="modules"
-                  (onContentChanged)="onContentChanged($event); cache()">
-    </quill-editor>
-  </main>
-
+<ion-content>
+  <quill-editor class="dp-flex flex-col min-hg-full" [(ngModel)]="html" [modules]="modules"
+                (onContentChanged)="onContentChanged($event); cache()">
+  </quill-editor>
 </ion-content>

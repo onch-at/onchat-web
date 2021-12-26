@@ -5,7 +5,7 @@
 }
 
 .home-menu-item {
-    padding: 0.5rem 0.9rem;
+    padding: 0.55rem 1rem;
     font-size: 0.95rem;
 
     > ion-icon {
@@ -16,8 +16,5 @@
 
 ::ng-deep .home-menu-popover {
     --background: var(--color-light);
-
-    .popover-content {
-        --max-width: 8.5rem;
-    }
+    --max-width: 8.75rem;
 }

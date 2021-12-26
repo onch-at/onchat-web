@@ -106,12 +106,12 @@ ion-textarea {
     }
 }
 
-ion-segment,
-ion-datetime {
+ion-segment {
     height: 2.75rem;
 }
 
-ion-datetime {
-    line-height: 2.75rem;
-    padding: 0 1rem;
+.datetime-modal {
+    --width: 20rem;
+    --height: 25rem;
+    --border-radius: 1rem;
 }

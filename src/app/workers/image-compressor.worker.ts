@@ -1,5 +1,7 @@
 /// <reference lib="webworker" />
 
+declare var OffscreenCanvas;
+
 addEventListener('message', async ({ data }) => {
   const { quality, format, imageBitmap } = data;
 

@@ -8,11 +8,6 @@ ion-header {
     }
 }
 
-main {
-    padding-top: 3rem;
-    height: 100%;
-}
-
 quill-editor ::ng-deep {
     .ql-container,
     .ql-toolbar {
@@ -66,7 +61,7 @@ quill-editor ::ng-deep {
 
     .ql-toolbar {
         position: sticky;
-        top: 3rem;
+        top: 0;
         left: 0;
         background: var(--color-light);
         z-index: 1;

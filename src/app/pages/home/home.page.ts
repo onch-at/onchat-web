@@ -38,7 +38,8 @@ export class HomePage implements OnInit {
     this.overlay.popover({
       component: HomeMenuComponent,
       event: event,
-      cssClass: 'home-menu-popover'
+      cssClass: 'home-menu-popover',
+      dismissOnSelect: true
     });
   }
 

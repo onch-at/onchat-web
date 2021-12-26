@@ -28,8 +28,6 @@ export class InfoPage implements OnInit {
   readonly signatureMaxLength: number = SIGNATURE_MAX_LENGTH;
   /** 性别枚举 */
   readonly gender: typeof Gender = Gender;
-  /** 月份别名 */
-  monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
   /** 初始时间 */
   min: string = new Date(new Date().getFullYear() - 100, 0, 2).toISOString();
   /** 今天的ISO时间 */
@@ -179,7 +177,7 @@ export class InfoPage implements OnInit {
 
   // TODO ionic v6 has CustomEvent
   onScroll(event: Event) {
-    this.showMask = (event as CustomEvent).detail.scrollTop > 125;
+    this.showMask = (event as CustomEvent<HTMLIonContentElement>).detail.scrollTop > 125;
   }
 
 }

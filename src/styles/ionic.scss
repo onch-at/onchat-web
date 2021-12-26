@@ -247,7 +247,7 @@ ion-refresher {
 ion-popover {
     --max-width: 75vw;
 
-    .popover-content {
+    &::part(content) {
         border-radius: 1rem !important;
     }
 }
@@ -544,9 +544,13 @@ ion-toast {
 }
 
 ion-modal {
-    .modal-wrapper {
-        @media only screen and (min-height: 600px) and (min-width: 768px) {
-            --border-radius: 1.5rem;
-        }
+    @media only screen and (min-height: 600px) and (min-width: 768px) {
+        --border-radius: 1rem;
+    }
+}
+
+ion-datetime {
+    &::part(buttons) {
+        --ion-color-base: var(--color-primary-rgb) !important;
     }
 }

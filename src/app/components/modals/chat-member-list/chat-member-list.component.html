@@ -1,16 +1,16 @@
-<ion-content [fullscreen]="true">
-  <ion-header slot="fixed">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-button (click)="dismiss()">
-          <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
-        </ion-button>
-      </ion-buttons>
+<ion-header slot="fixed">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline" style="font-size: 1.75rem;--ionicon-stroke-width: 2.75rem;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
 
-      <ion-title>聊天室成员（{{ chatMembers.length }}）</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-title>聊天室成员（{{ chatMembers.length }}）</ion-title>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content>
   <ion-searchbar animated placeholder="搜索" (ngModelChange)="search($event)" [(ngModel)]="keyword"></ion-searchbar>
 
   <app-empty *ngIf="list?.length === 0"></app-empty>
