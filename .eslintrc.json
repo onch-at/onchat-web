@@ -40,7 +40,7 @@
         "@angular-eslint/directive-selector": [
           "error",
           {
-            "prefix": "app",
+            "prefix": "app|ng|cdk",
             "style": "camelCase",
             "type": "attribute"
           }
