@@ -15,6 +15,7 @@ import { ImagePreviewerComponent } from 'src/app/components/modals/image-preview
 import { RichTextEditorComponent } from 'src/app/components/modals/rich-text-editor/rich-text-editor.component';
 import { BubbleToolbarComponent } from 'src/app/components/popovers/bubble-toolbar/bubble-toolbar.component';
 import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
+import { ForTrackByIdModule } from 'src/app/directives/for-track-by-id/for-track-by-id.module';
 import { RippleModule } from 'src/app/directives/ripple/ripple.module';
 import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
@@ -35,7 +36,8 @@ import { ChatPage } from './chat.page';
     QuillModule,
     ClipboardModule,
     RippleModule,
-    SwiperModule
+    SwiperModule,
+    ForTrackByIdModule
   ],
   declarations: [
     ChatPage,

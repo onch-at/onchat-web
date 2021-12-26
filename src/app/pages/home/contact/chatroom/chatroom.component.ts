@@ -5,7 +5,6 @@ import { ChatSession, Result } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { CssUtils } from 'src/app/utilities/css.utils';
-import { EntityUtils } from 'src/app/utilities/entity.utils';
 
 @Component({
   selector: 'app-chatroom',
@@ -18,8 +17,6 @@ export class ChatroomComponent implements ViewWillEnter {
 
   minBufferPx: number = this.window.innerHeight * 1.5;
   maxBufferPx: number = this.window.innerHeight * 2;
-
-  trackByFn = EntityUtils.trackBy;
 
   constructor(
     private userService: UserService,

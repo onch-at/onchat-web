@@ -5,7 +5,6 @@ import { WINDOW } from 'src/app/common/tokens';
 import { Result, User } from 'src/app/models/onchat.model';
 import { UserService } from 'src/app/services/apis/user.service';
 import { CssUtils } from 'src/app/utilities/css.utils';
-import { EntityUtils } from 'src/app/utilities/entity.utils';
 
 @Component({
   selector: 'app-user',
@@ -22,8 +21,6 @@ export class UserComponent {
 
   minBufferPx: number = this.window.innerHeight * 1.5;
   maxBufferPx: number = this.window.innerHeight * 2;
-
-  trackByFn = EntityUtils.trackBy;
 
   constructor(
     private userService: UserService,

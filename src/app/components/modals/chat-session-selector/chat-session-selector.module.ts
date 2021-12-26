@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { ForTrackByIdModule } from 'src/app/directives/for-track-by-id/for-track-by-id.module';
 import { ScrollbarModule } from '../../../directives/scrollbar/scrollbar.module';
 import { EmptyModule } from '../../empty/empty.module';
 import { ChatSessionSelectorComponent } from './chat-session-selector.component';
@@ -17,7 +18,8 @@ import { ChatSessionSelectorComponent } from './chat-session-selector.component'
     FormsModule,
     IonicModule,
     ScrollbarModule,
-    ScrollingModule
+    ScrollingModule,
+    ForTrackByIdModule
   ],
   exports: [
     ChatSessionSelectorComponent

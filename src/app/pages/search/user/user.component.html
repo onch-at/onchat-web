@@ -9,7 +9,7 @@
   <cdk-virtual-scroll-viewport *ngIf="users?.length > 0" [itemSize]="itemHeight" [minBufferPx]="minBufferPx"
                                [maxBufferPx]="maxBufferPx">
     <ion-list class="friend-list">
-      <ion-item mode="md" lines="none" [detail]="false" *cdkVirtualFor="let item of users; let i = index; trackBy: trackByFn"
+      <ion-item mode="md" lines="none" [detail]="false" *cdkVirtualFor="let item of users; let i = index; trackById"
                 [routerLink]="['/user', item.id]">
         <ion-img slot="start" class="clip" [src]="item.avatarThumbnail"></ion-img>
 

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { EmptyModule } from 'src/app/components/empty/empty.module';
 import { SkeletonItemModule } from 'src/app/components/skeleton-item/skeleton-item.module';
+import { ForTrackByIdModule } from 'src/app/directives/for-track-by-id/for-track-by-id.module';
 import { SharedModule } from 'src/app/modules/shared.module';
 import { ChatroomComponent } from './chatroom/chatroom.component';
 import { SearchPageRoutingModule } from './search-routing.module';
@@ -20,7 +21,8 @@ import { UserComponent } from './user/user.component';
     EmptyModule,
     SharedModule,
     ScrollingModule,
-    SearchPageRoutingModule
+    SearchPageRoutingModule,
+    ForTrackByIdModule
   ],
   declarations: [
     SearchPage,

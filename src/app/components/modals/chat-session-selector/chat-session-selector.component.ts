@@ -7,7 +7,6 @@ import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { CssUtils } from 'src/app/utilities/css.utils';
-import { EntityUtils } from 'src/app/utilities/entity.utils';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -39,8 +38,6 @@ export class ChatSessionSelectorComponent extends ModalComponent implements OnIn
   /** 已选会话列表 */
   get checkedChatSessions() { return this.chatSessions.filter(o => o.checked); }
   get disabled() { return this.checkedChatSessions.length >= this.limit; }
-
-  trackByFn = EntityUtils.trackBy;
 
   constructor(
     public globalData: GlobalData,

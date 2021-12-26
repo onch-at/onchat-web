@@ -9,6 +9,7 @@ import { ChatMemberListComponent } from 'src/app/components/modals/chat-member-l
 import { ChatSessionSelectorModule } from 'src/app/components/modals/chat-session-selector/chat-session-selector.module';
 import { SkeletonItemModule } from 'src/app/components/skeleton-item/skeleton-item.module';
 import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
+import { ForTrackByIdModule } from 'src/app/directives/for-track-by-id/for-track-by-id.module';
 import { RippleModule } from 'src/app/directives/ripple/ripple.module';
 import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
@@ -29,7 +30,8 @@ import { HomePage } from './home.page';
     EmptyModule,
     RippleModule,
     SharedModule,
-    SkeletonItemModule
+    SkeletonItemModule,
+    ForTrackByIdModule
   ],
   declarations: [
     HomePage,

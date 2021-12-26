@@ -10,7 +10,7 @@
   </ion-header>
 
   <swiper class="swiper" [initialSlide]="index" [lazy]="lazy" [zoom]="zoom">
-    <ng-template *ngFor="let item of data; trackBy: trackByFn" swiperSlide>
+    <ng-template *ngFor="let item of data; trackById" swiperSlide>
       <div class="swiper-zoom-container" (click)="dismiss()">
         <img class="swiper-lazy" [attr.data-src]="item.data.url | sanitize: 'url'" (press)="doMore(item, $event)"
              (contextmenu)="doMore(item, $event)">

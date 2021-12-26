@@ -5,7 +5,6 @@ import { WINDOW } from 'src/app/common/tokens';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';
 import { CssUtils } from 'src/app/utilities/css.utils';
-import { EntityUtils } from 'src/app/utilities/entity.utils';
 
 @Component({
   selector: 'app-chatroom',
@@ -22,8 +21,6 @@ export class ChatroomComponent {
 
   minBufferPx: number = this.window.innerHeight * 1.5;
   maxBufferPx: number = this.window.innerHeight * 2;
-
-  trackByFn = EntityUtils.trackBy;
 
   constructor(
     private chatroomService: ChatroomService,

@@ -6,7 +6,6 @@ import { Message } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';
-import { EntityUtils } from 'src/app/utilities/entity.utils';
 import { StrUtils } from 'src/app/utilities/str.utils';
 import { SysUtils } from 'src/app/utilities/sys.utils';
 import Swiper, { Lazy, Zoom } from 'swiper';
@@ -26,8 +25,6 @@ export class ImagePreviewerComponent extends ModalComponent {
   @Input() data: Message<ImageMessage>[] = [];
   @Input() index: number;
   @ViewChild(SwiperComponent) swiper: SwiperComponent;
-
-  trackByFn = EntityUtils.trackBy;
 
   zoom: ZoomOptions = {
     maxRatio: 5,

@@ -5,7 +5,7 @@
 </ng-container>
 
 <cdk-virtual-scroll-viewport [itemSize]="itemHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
-	<ion-item-sliding mode="md" *cdkVirtualFor="let item of globalData.privateChatrooms; trackBy: trackByFn">
+	<ion-item-sliding mode="md" *cdkVirtualFor="let item of globalData.privateChatrooms; trackById">
 		<ion-item lines="none" [detail]="false" [routerLink]="['/chat', item.data.chatroomId]">
 			<ion-img slot="start" class="clip" [src]="item.avatarThumbnail"></ion-img>
 

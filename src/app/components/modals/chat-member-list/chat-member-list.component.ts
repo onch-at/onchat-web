@@ -6,7 +6,6 @@ import { ChatMember } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { CssUtils } from 'src/app/utilities/css.utils';
-import { EntityUtils } from 'src/app/utilities/entity.utils';
 import { ModalComponent } from '../modal.component';
 
 @Component({
@@ -26,8 +25,6 @@ export class ChatMemberListComponent extends ModalComponent implements OnInit {
 
   minBufferPx: number = this.window.innerHeight * 1.5;
   maxBufferPx: number = this.window.innerHeight * 2;
-
-  trackByFn = EntityUtils.trackBy;
 
   readonly chatMemberRole: typeof ChatMemberRole = ChatMemberRole;
 

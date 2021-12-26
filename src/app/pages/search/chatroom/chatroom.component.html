@@ -10,7 +10,7 @@
   <cdk-virtual-scroll-viewport *ngIf="chatrooms?.length > 0" [itemSize]="itemHeight" [minBufferPx]="minBufferPx"
                                [maxBufferPx]="maxBufferPx">
     <ion-list class="friend-list">
-      <ion-item mode="md" lines="none" [detail]="false" *cdkVirtualFor="let item of chatrooms; let i = index; trackBy: trackByFn"
+      <ion-item mode="md" lines="none" [detail]="false" *cdkVirtualFor="let item of chatrooms; let i = index; trackById"
                 [routerLink]="['/chatroom', item.id]">
         <ion-img slot="start" class="clip" [src]="item.avatarThumbnail"></ion-img>
 

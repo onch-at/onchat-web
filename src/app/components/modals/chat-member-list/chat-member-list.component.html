@@ -17,7 +17,7 @@
 
   <cdk-virtual-scroll-viewport [itemSize]="itemHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
     <ion-list class="chat-member-list">
-      <ion-item *cdkVirtualFor="let item of list; trackBy: trackByFn" mode="md" lines="none" [detail]="false" button
+      <ion-item *cdkVirtualFor="let item of list; trackById" mode="md" lines="none" [detail]="false" button
                 class="ion-activatable" (click)="onTap(item)">
         <ion-img class="clip" slot="start" [src]="item.avatarThumbnail"></ion-img>
 

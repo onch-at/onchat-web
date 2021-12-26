@@ -7,6 +7,7 @@ import { EmptyModule } from 'src/app/components/empty/empty.module';
 import { HomeMenuComponent } from 'src/app/components/popovers/home-menu/home-menu.component';
 import { SkeletonItemModule } from 'src/app/components/skeleton-item/skeleton-item.module';
 import { ActiveClassModule } from 'src/app/directives/active-class/active-class.module';
+import { ForTrackByIdModule } from 'src/app/directives/for-track-by-id/for-track-by-id.module';
 import { RippleModule } from 'src/app/directives/ripple/ripple.module';
 import { ScrollbarModule } from 'src/app/directives/scrollbar/scrollbar.module';
 import { SharedModule } from 'src/app/modules/shared.module';
@@ -32,7 +33,8 @@ import { SettingsPage } from './settings/settings.page';
     ActiveClassModule,
     EmptyModule,
     ScrollbarModule,
-    SkeletonItemModule
+    SkeletonItemModule,
+    ForTrackByIdModule
   ],
   declarations: [
     HomePage,

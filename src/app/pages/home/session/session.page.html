@@ -13,7 +13,7 @@
 	</ng-container>
 
 	<cdk-virtual-scroll-viewport [itemSize]="itemHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
-		<ion-item-sliding #ionItemSliding *cdkVirtualFor="let item of globalData.chatSessions; trackBy: trackByFn" mode="md">
+		<ion-item-sliding #ionItemSliding *cdkVirtualFor="let item of globalData.chatSessions; trackById" mode="md">
 			<ion-item-options side="start">
 				<ion-item-option (tap)="doStickyChatSession(item, ionItemSliding)" class="chat-session-item-option bg-gray color-medium">
 					{{ item.sticky ? '取消置顶' : '置顶' }}

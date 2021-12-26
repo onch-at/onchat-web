@@ -12,7 +12,6 @@ import { GlobalData } from 'src/app/services/global-data.service';
 import { OnChatService } from 'src/app/services/onchat.service';
 import { CssUtils } from 'src/app/utilities/css.utils';
 import { DateUtils } from 'src/app/utilities/date.utils';
-import { EntityUtils } from 'src/app/utilities/entity.utils';
 
 @Component({
   selector: 'app-session',
@@ -27,8 +26,6 @@ export class SessionPage {
 
   readonly msgType: typeof MessageType = MessageType;
   readonly chatSessionType: typeof ChatSessionType = ChatSessionType;
-
-  trackByFn = EntityUtils.trackBy;
 
   constructor(
     private router: Router,
