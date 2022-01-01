@@ -227,10 +227,7 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit {
     msg.chatroomId = chatroomId;
     msg.userId = id;
     msg.avatarThumbnail = avatarThumbnail;
-    msg.data = new TextMessage(
-      this.msg,
-      this.msg.replace(/^([^-\p{L}\x00-\x7F]+)+$/um, '').length === 0
-    );
+    msg.data = new TextMessage(this.msg);
 
     if (this.replyMessage) {
       msg.replyId = this.replyMessage.id;

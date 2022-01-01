@@ -1,15 +1,19 @@
+import emojiRegex from 'emoji-regex';
 import { TipsType } from '../common/enums';
 
 export type AnyMessage = TipsMessage | TextMessage | RichTextMessage | ChatInvitationMessage | ImageMessage | VoiceMessage;
 
 /** 纯文本消息 */
 export class TextMessage {
+  /** 是否为表情符号 */
+  public emoji: boolean
+
   constructor(
     /** 内容 */
-    public content: string,
-    /** 是否为表情符号 */
-    public emoji?: boolean
-  ) { }
+    public content: string
+  ) {
+    this.emoji = content.replace(emojiRegex(), '').length === 0;
+  }
 }
 
 /** 富文本消息 */
