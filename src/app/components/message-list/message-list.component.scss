@@ -69,6 +69,10 @@
   white-space: pre-wrap;
   touch-action: auto !important;
 
+  &::ng-deep a {
+    color: var(--color-info);
+  }
+
   blockquote {
     margin: 0.35rem 0;
     padding: 0.3rem 0.5rem;

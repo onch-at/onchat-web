@@ -17,14 +17,14 @@
     <div class="button-group dp-flex flex-col">
       <ion-button expand="block" fill="clear" routerLink="/home/session" routerLinkActive="active">
         <ion-icon slot="icon-only" name="chatbubble-ellipses"></ion-icon>
-        <ion-badge [hidden]="!globalData.unreadMessage" class="bg-danger">
+        <ion-badge [hidden]="!globalData.unreadMessage" class="bg-danger color-white">
           {{ globalData.unreadMessage | numLimit }}
         </ion-badge>
       </ion-button>
 
       <ion-button expand="block" fill="clear" routerLink="/home/contact" routerLinkActive="active">
         <ion-icon slot="icon-only" name="people"></ion-icon>
-        <ion-badge [hidden]="!globalData.unreadFriendRequest" class="bg-danger">
+        <ion-badge [hidden]="!globalData.unreadFriendRequest" class="bg-danger color-white">
           {{ globalData.unreadFriendRequest | numLimit }}
         </ion-badge>
       </ion-button>
