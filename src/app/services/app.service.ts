@@ -1,8 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
-import { filter, mergeMap } from 'rxjs/operators';
+import { SwUpdate } from '@angular/service-worker';
+import { filter, mergeMap, tap } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enums';
 import { LOCATION, WINDOW } from '../common/tokens';
 import { Result } from '../models/onchat.model';
@@ -31,8 +31,9 @@ export class Application {
     @Inject(DOCUMENT) private document: Document,
     @Inject(LOCATION) private location: Location,
   ) {
-    this.socket.initialized.pipe(
+    this.socket.on(SocketEvent.Init).pipe(
       filter(({ code }: Result) => code === ResultCode.Unauthorized),
+      tap(() => this.socket.disconnect()),
       mergeMap(() => this.authService.refresh(this.tokenService.folder.refresh))
     ).subscribe(({ code, data }: Result<string>) => {
       if (code !== ResultCode.Success) {
@@ -110,9 +111,9 @@ export class Application {
       backdropDismiss: false,
     }).then(() => this.window.setTimeout(() => this.location.reload(), 2000)));
 
-    this.swUpdate.available.subscribe((event: UpdateAvailableEvent) => {
-      console.log('current version is', event.current);
-      console.log('available version is', event.available);
+    this.swUpdate.versionUpdates.pipe(
+      filter(event => event.type === 'VERSION_READY')
+    ).subscribe(() => {
       this.overlay.alert({
         header: '新版本已就绪',
         message: '是否立即重启以更新到新版本？',
