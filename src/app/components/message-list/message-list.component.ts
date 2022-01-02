@@ -51,20 +51,20 @@ export class MessageListComponent {
 
   /**
    * 弹出BubbleToolbar气泡工具条
-   * @param msgItem 气泡对应的Message
+   * @param msg 气泡对应的Message
    * @param element
    * @param event
    */
-  async presentBubbleToolbarPopover(msgItem: Message, element: Element, event: Event) {
+  async presentBubbleToolbarPopover(msg: Message, element: Element, event: Event) {
     event.preventDefault();
 
-    if (!msgItem.id) { return; }
+    if (!msg.id) { return; }
 
     const popover = await this.overlay.popover({
       component: BubbleToolbarComponent,
       componentProps: {
         element,
-        msgItem
+        msg
       },
       cssClass: 'bubble-toolbar-popover',
       event,
