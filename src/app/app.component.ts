@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // 连接打通时
-    this.socket.on(SocketEvent.Init).subscribe(() => {
+    this.socket.on(SocketEvent.Init).pipe(success()).subscribe(() => {
       this.onChatService.init();
     });
 

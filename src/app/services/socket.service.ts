@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Socketio } from 'ngx-socketio2';
 import { Observable } from 'rxjs';
-import { share, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enums';
 import { SafeAny } from '../common/interfaces';
-import { Message, Result } from '../models/onchat.model';
+import { Message } from '../models/onchat.model';
 import { Overlay } from './overlay.service';
 import { TokenService } from './token.service';
 
@@ -12,16 +12,12 @@ import { TokenService } from './token.service';
   providedIn: 'root'
 })
 export class Socket {
-  /** 初始化后的可观察对象 */
-  readonly initialized: Observable<Result>;
 
   constructor(
     private overlay: Overlay,
     private socketio: Socketio,
     private tokenService: TokenService,
-  ) {
-    this.initialized = this.on<Result>(SocketEvent.Init).pipe(share());
-  }
+  ) { }
 
   /**
    * 刷新令牌
