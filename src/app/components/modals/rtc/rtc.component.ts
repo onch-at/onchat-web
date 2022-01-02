@@ -100,7 +100,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   }
 
   busy() {
-    this.overlay.toast('OnChat：对方正在忙线中，请稍后再试…');
+    this.overlay.toast('对方正在忙线中，请稍后再试…');
   }
 
   prepare() {

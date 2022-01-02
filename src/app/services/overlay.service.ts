@@ -72,7 +72,7 @@ export class Overlay {
    */
   async toast(message: string, duration: number = 2000): Promise<HTMLIonToastElement> {
     const toast = await this.toastCtrl.create({
-      message,
+      message: 'OnChat: ' + message,
       duration
     });
 

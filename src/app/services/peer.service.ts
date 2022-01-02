@@ -60,7 +60,7 @@ export class Peer {
     }
 
     return this.connection.setLocalDescription(description).catch(error => {
-      this.overlay.toast('OnChat：WebRTC 本地描述设置失败！');
+      this.overlay.toast('WebRTC 本地描述设置失败！');
       throw error;
     });
   }
@@ -84,7 +84,7 @@ export class Peer {
   createOffer(options?: RTCOfferOptions) {
     return from(this.connection.createOffer(options)).pipe(
       catchError(error => {
-        this.overlay.toast('OnChat：WebRTC Offer 创建失败！');
+        this.overlay.toast('WebRTC Offer 创建失败！');
         console.error(error);
 
         return throwError(() => error);
@@ -95,7 +95,7 @@ export class Peer {
   createAnswer(options?: RTCAnswerOptions) {
     return from(this.connection.createAnswer(options)).pipe(
       catchError(error => {
-        this.overlay.toast('OnChat：WebRTC Answer 创建失败！');
+        this.overlay.toast('WebRTC Answer 创建失败！');
         console.error(error);
 
         return throwError(() => error);
