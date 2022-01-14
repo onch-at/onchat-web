@@ -22,8 +22,5 @@
     --width: auto;
     // 多一个按钮，就加3rem
     --max-width: 13rem;
-
-    .popover-arrow::after {
-        background: var(--color-dark) !important;
-    }
+    --background: var(--color-dark);
 }

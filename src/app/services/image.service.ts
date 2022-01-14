@@ -1,6 +1,5 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { base64ToFile } from 'ngx-image-cropper';
 import { from, Observable } from 'rxjs';
 import { WINDOW } from '../common/tokens';
 
@@ -55,16 +54,10 @@ export class ImageService {
       img.onload = () => {
         this.resize(img);
 
-        // 如果支持WebWorker
-        if ('OffscreenCanvas' in window) {
-          return this.drawInWebWorker(img, quality, format).subscribe(blob => {
-            observer.next(blob);
-            observer.complete();
-          });
-        }
-
-        observer.next(base64ToFile(this.draw(img, quality, format)));
-        observer.complete();
+        ('OffscreenCanvas' in window ? this.drawInWebWorker(img, quality, format) : this.draw(img, quality, format)).subscribe(blob => {
+          observer.next(blob);
+          observer.complete();
+        });
       }
 
       img.onerror = (error: Event) => {
@@ -104,14 +97,19 @@ export class ImageService {
    * @param format 格式
    */
   draw(img: HTMLImageElement, quality: number, format: string) {
-    const canvas = this.document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
+    return new Observable<Blob>(observer => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
 
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, img.width, img.height);
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, img.width, img.height);
 
-    return canvas.toDataURL('image/' + format, quality);
+      canvas.toBlob(blob => {
+        observer.next(blob);
+        observer.complete();
+      }, 'image/' + format, quality);
+    });
   }
 
   /**
@@ -129,21 +127,24 @@ export class ImageService {
         observer.complete();
       };
 
-      this.createImageBitmap(img).subscribe(imageBitmap => {
-        worker.onmessage = ({ data }) => {
-          observer.next(data);
-          complete();
-        }
+      this.createImageBitmap(img).subscribe({
+        next: imageBitmap => {
+          worker.onmessage = ({ data }) => {
+            observer.next(data);
+            complete();
+          }
 
-        worker.onerror = error => {
+          worker.onerror = error => {
+            observer.error(error);
+            complete();
+          }
+
+          worker.postMessage({ quality, format, imageBitmap }, [imageBitmap]);
+        },
+        error: error => {
           observer.error(error);
           complete();
         }
-
-        worker.postMessage({ quality, format, imageBitmap }, [imageBitmap]);
-      }, error => {
-        observer.error(error);
-        complete();
       });
     });
   }
