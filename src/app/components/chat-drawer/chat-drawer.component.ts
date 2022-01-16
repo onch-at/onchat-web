@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { IonRouterOutlet } from '@ionic/angular';
 import { filter, mergeMap, take, tap } from 'rxjs/operators';
 import { Throttle } from 'src/app/common/decorators';
@@ -9,7 +8,7 @@ import { success } from 'src/app/common/operators';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { MessageEntity } from 'src/app/entities/message.entity';
 import { VoiceMessageEntity } from 'src/app/entities/voice-message.entity';
-import { ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
+import { AnyMessage, ImageMessage, VoiceMessage } from 'src/app/models/msg.model';
 import { Result, User } from 'src/app/models/onchat.model';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { MediaDevice } from 'src/app/services/media-device.service';
@@ -36,7 +35,7 @@ export class ChatDrawerComponent {
   readonly chatroomTypes: typeof ChatroomType = ChatroomType;
   /** 聊天室类型 */
   @Input() chatroomType: ChatroomType;
-  @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
+  @Output() msgpush: EventEmitter<MessageEntity<AnyMessage>> = new EventEmitter<MessageEntity<AnyMessage>>();
   @ViewChild(SwiperComponent) swiper: SwiperComponent;
 
   constructor(
@@ -44,7 +43,6 @@ export class ChatDrawerComponent {
     private overlay: Overlay,
     private injector: Injector,
     private globalData: GlobalData,
-    private sanitizer: DomSanitizer,
     private mediaDevice: MediaDevice,
     private socket: Socket,
     private routerOutlet: IonRouterOutlet,
@@ -57,7 +55,7 @@ export class ChatDrawerComponent {
   onVoiceOutput({ blob, src, duration }: ChatRecorderOutputEvent) {
     const { user, chatroomId } = this.globalData;
 
-    const msg = new VoiceMessageEntity(blob, new VoiceMessage(src, duration)).inject(this.injector);
+    const msg = new VoiceMessageEntity(new VoiceMessage(src, duration)).inject(this.injector).blob(blob);
     msg.chatroomId = chatroomId;
     msg.userId = user.id;
     msg.avatarThumbnail = user.avatarThumbnail;
@@ -130,20 +128,22 @@ export class ChatDrawerComponent {
   }
 
   createImageMessage(file: File, original: boolean) {
-    original ||= BlobUtils.isAnimation(file);
     const { user, chatroomId } = this.globalData;
     const url = URL.createObjectURL(file);
-    const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url) as string;
     const img = new Image();
-    const msg = new ImageMessageEntity(file, url, original).inject(this.injector);
-
-    msg.userId = user.id;
-    msg.chatroomId = chatroomId;
-    msg.avatarThumbnail = user.avatarThumbnail;
+    original ||= BlobUtils.isAnimation(file);
 
     return new Promise((resolve, reject) => {
       img.onload = () => {
-        msg.data = new ImageMessage(safeUrl, safeUrl, img.width, img.height);
+        const msg = new ImageMessageEntity(new ImageMessage(url, url, img.width, img.height))
+          .inject(this.injector)
+          .original(original)
+          .file(file);
+
+        msg.userId = user.id;
+        msg.chatroomId = chatroomId;
+        msg.avatarThumbnail = user.avatarThumbnail;
+
         this.msgpush.emit(msg);
         resolve(msg);
       };

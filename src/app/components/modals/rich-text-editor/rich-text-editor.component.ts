@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { ContentChange } from 'ngx-quill';
 import { filter, take } from 'rxjs/operators';
 import { Throttle } from 'src/app/common/decorators';
-import { MessageType, SocketEvent } from 'src/app/common/enums';
+import { SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/constants';
-import { MessageEntity } from 'src/app/entities/message.entity';
+import { RichTextMessageEntity } from 'src/app/entities/rich-text-message.entity';
 import { RichTextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
@@ -69,11 +69,10 @@ export class RichTextEditorComponent extends ModalComponent implements OnInit {
 
     const loading = await this.overlay.loading('Sending…');
     const { chatroomId, user, chatRichTextMap } = this.globalData;
-    const msg = new MessageEntity(MessageType.RichText).inject(this.injector);
+    const msg = new RichTextMessageEntity(new RichTextMessage(this.html, this.text)).inject(this.injector);
     msg.chatroomId = chatroomId;
     msg.userId = user.id;
     msg.avatarThumbnail = user.avatarThumbnail;
-    msg.data = new RichTextMessage(this.html, this.text);
 
     this.dismiss(msg);
     loading.dismiss();

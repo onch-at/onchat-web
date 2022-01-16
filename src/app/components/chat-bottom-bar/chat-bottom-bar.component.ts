@@ -7,7 +7,8 @@ import { ChatroomType, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/constants';
 import { MessageEntity } from 'src/app/entities/message.entity';
-import { TextMessage } from 'src/app/models/msg.model';
+import { TextMessageEntity } from 'src/app/entities/text-message.entity';
+import { AnyMessage, TextMessage } from 'src/app/models/msg.model';
 import { Message, Result } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -45,7 +46,7 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit {
   /** 聊天室类型 */
   @Input() chatroomType: ChatroomType;
 
-  @Output() msgpush: EventEmitter<MessageEntity> = new EventEmitter<MessageEntity>();
+  @Output() msgpush: EventEmitter<MessageEntity<AnyMessage>> = new EventEmitter<MessageEntity<AnyMessage>>();
   /** 进行回复 */
   @Output() reply: EventEmitter<Message> = new EventEmitter<Message>();
 
@@ -146,7 +147,7 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onMessagePush(msg: MessageEntity) {
+  onMessagePush(msg: MessageEntity<AnyMessage>) {
     this.msgpush.emit(msg);
   }
 
@@ -223,11 +224,10 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit {
     if (!this.canSend() || this.disableSendBtn()) { return; }
 
     const { chatroomId, user: { id, avatarThumbnail } } = this.globalData;
-    const msg = new MessageEntity().inject(this.injector);
+    const msg = new TextMessageEntity(new TextMessage(this.msg)).inject(this.injector);
     msg.chatroomId = chatroomId;
     msg.userId = id;
     msg.avatarThumbnail = avatarThumbnail;
-    msg.data = new TextMessage(this.msg);
 
     if (this.replyMessage) {
       msg.replyId = this.replyMessage.id;

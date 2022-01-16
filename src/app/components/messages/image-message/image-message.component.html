@@ -1,4 +1,5 @@
-<img #img class="image bg-light" [src]="msg.data.thumbnailUrl" [ngStyle]="{ 'width.px': width, 'height.px': height }" />
+<img #img class="image bg-light" [src]="msg.data.thumbnailUrl | sanitize: 'url'"
+     [ngStyle]="{ 'width.px': width, 'height.px': height }" />
 <ng-container *ngIf="msg.loading">
   <div class="loading-progress" [style.transform]="'translateY(-' + msg.percent + '%)'"></div>
   <div class="loading-container">

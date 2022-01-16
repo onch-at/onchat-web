@@ -9,7 +9,7 @@ import { success } from 'src/app/common/operators';
 import { WINDOW } from 'src/app/common/tokens';
 import { NICKNAME_MAX_LENGTH } from 'src/app/constants';
 import { MessageEntity } from 'src/app/entities/message.entity';
-import { RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
+import { AnyMessage, RevokeMessageTipsMessage, TextMessage } from 'src/app/models/msg.model';
 import { Chatroom, ChatSession, Message, Result } from 'src/app/models/onchat.model';
 import { ChatRecordService } from 'src/app/services/apis/chat-record.service';
 import { ChatSessionService } from 'src/app/services/apis/chat-session.service';
@@ -143,7 +143,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
       filter(() => this.msgList.some(o => o.loading)),
     ).subscribe(() => {
       this.msgList.filter(o => o.loading).forEach(o => {
-        (o as MessageEntity).send();
+        (o as MessageEntity<AnyMessage>).send();
       });
     });
   }
@@ -158,7 +158,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
     });
   }
 
-  onMessagePush(msg: MessageEntity) {
+  onMessagePush(msg: MessageEntity<AnyMessage>) {
     this.msgList.push(msg);
     msg.send();
 

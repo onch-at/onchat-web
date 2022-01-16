@@ -7,7 +7,7 @@ import { Message, Result } from '../models/onchat.model';
 import { Socket } from '../services/socket.service';
 import { StrUtils } from '../utilities/str.utils';
 
-export class MessageEntity implements Message {
+export abstract class MessageEntity<T extends AnyMessage> implements Message {
   id: number;
   createTime: number;
   updateTime?: number;
@@ -16,25 +16,17 @@ export class MessageEntity implements Message {
   role?: ChatMemberRole;
   nickname?: string;
   avatarThumbnail?: string;
-  type: MessageType;
-  data: AnyMessage;
+  data: T;
   replyId?: number;
-  tempId?: string;
   loading?: boolean;
 
   protected injector: Injector;
 
-  constructor(type: MessageType = MessageType.Text, tempId?: string) {
-    this.type = type;
-    this.tempId = tempId ?? StrUtils.random();
+  constructor(public type: MessageType, public tempId: string = StrUtils.random()) {
     this.createTime = Date.now();
     this.loading = true;
   }
 
-  /**
-   * 设置注入器
-   * @param injector 注入器
-   */
   inject(injector: Injector) {
     this.injector = injector;
     return this;
@@ -43,10 +35,8 @@ export class MessageEntity implements Message {
   /**
    * 追踪本条消息以更新数据
    */
-  track() {
-    const socket = this.injector.get(Socket);
-
-    socket.on(SocketEvent.Message).pipe(
+  protected track() {
+    this.injector.get(Socket).on(SocketEvent.Message).pipe(
       success(),
       filter(({ data }: Result<Message>) => this.isSelf(data)),
       take(1)
@@ -55,15 +45,14 @@ export class MessageEntity implements Message {
       Object.assign(this, msg);
       this.loading = false;
     });
-
-    return socket;
   }
 
   /**
    * 发送消息
    */
   send() {
-    this.track().message({
+    this.track();
+    this.injector.get(Socket).message({
       id: undefined,
       chatroomId: this.chatroomId,
       userId: this.userId,

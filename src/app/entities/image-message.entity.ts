@@ -9,28 +9,30 @@ import { ImageService } from '../services/image.service';
 import { BlobUtils } from '../utilities/blob.utils';
 import { MessageEntity } from './message.entity';
 
-export class ImageMessageEntity extends MessageEntity {
+export class ImageMessageEntity extends MessageEntity<ImageMessage> {
   /** 上传进度 */
   percent: number = 0;
-  /** 图像消息数据 */
-  data: ImageMessage;
 
-  /**
-   * @param file 图像文件
-   * @param url 图像原URL
-   * @param original 是否为原图
-   */
-  constructor(
-    private file: File,
-    private url: string,
-    private original?: boolean
-  ) {
+  private _original: boolean;
+  private _file: File;
+
+  constructor(public data: ImageMessage) {
     super(MessageType.Image);
   }
 
+  original(original: boolean) {
+    this._original = original;
+    return this;
+  }
+
+  file(file: File) {
+    this._file = file;
+    return this;
+  }
+
   send() {
-    (this.original ? of(null) : this.compress()).pipe(
-      mergeMap(() => this.injector.get(ChatRecordService).sendImage(this.chatroomId, this.file, this.tempId))
+    (this._original ? of(null) : this.compress()).pipe(
+      mergeMap(() => this.injector.get(ChatRecordService).sendImage(this.chatroomId, this._file, this.tempId))
     ).subscribe((event: HttpEvent<Result<Message<ImageMessage>>>) => {
       switch (event.type) {
         case HttpEventType.Sent:
@@ -56,13 +58,13 @@ export class ImageMessageEntity extends MessageEntity {
    */
   private compress(): Observable<Blob> {
     const imageService = this.injector.get(ImageService);
-    return imageService.compress(this.url).pipe(
+    return imageService.compress(this.data.url).pipe(
       tap((blob: Blob) => {
         const array = this.file.name.split('.');
         array.pop();
         // 拼接出新的文件名
         const fileName = array.join() + '.' + imageService.format;
-        this.file = BlobUtils.toFile(blob, fileName);
+        this._file = BlobUtils.toFile(blob, fileName);
       })
     );
   }

@@ -12,7 +12,7 @@
   <swiper class="swiper" [initialSlide]="index" [lazy]="lazy" [zoom]="zoom">
     <ng-template *ngFor="let item of data; trackById" swiperSlide>
       <div class="swiper-zoom-container" (click)="dismiss()">
-        <img class="swiper-lazy" [attr.data-src]="item.data.url | sanitize: 'url'" (press)="doMore(item, $event)"
+        <img class="swiper-lazy" [attr.data-src]="item.data.url" (press)="doMore(item, $event)"
              (contextmenu)="doMore(item, $event)">
         <ion-spinner class="swiper-lazy-spinner" name="crescent"></ion-spinner>
       </div>
