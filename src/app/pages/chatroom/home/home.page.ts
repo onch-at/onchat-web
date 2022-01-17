@@ -109,7 +109,7 @@ export class HomePage implements OnInit {
   changeChatroomName() {
     this.overlay.alert({
       header: '聊天室名称',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         const { id, name } = this.chatroom;
         if (!StrUtils.trimAll(data['name']).length || data['name'] === name) { return; }
 
@@ -141,7 +141,7 @@ export class HomePage implements OnInit {
   changeNickname() {
     this.overlay.alert({
       header: '我的昵称',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         if (data['nickname'] === this.member.nickname) { return; }
 
         this.chatroomService.setMemberNickname(this.chatroom.id, data['nickname']).subscribe(({ data }: Result<string>) => {
@@ -172,7 +172,7 @@ export class HomePage implements OnInit {
   request() {
     this.overlay.alert({
       header: '申请加入',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         this.socket.chatRequset(this.chatroom.id, StrUtils.trimAll(data['reason']).length ? data['reason'] : undefined);
       },
       inputs: [

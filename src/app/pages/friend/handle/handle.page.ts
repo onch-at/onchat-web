@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { filter, takeUntil } from 'rxjs/operators';
 import { FriendRequestStatus, SocketEvent } from 'src/app/common/enums';
+import { SafeAny } from 'src/app/common/interfaces';
 import { success } from 'src/app/common/operators';
 import { WINDOW } from 'src/app/common/tokens';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/constants';
@@ -73,7 +74,7 @@ export class HandlePage implements OnInit {
   agree() {
     this.overlay.alert({
       header: '同意申请',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         this.socket.friendRequestAgree(this.request.id, data['requesterAlias']);
       },
       inputs: [{
@@ -91,7 +92,7 @@ export class HandlePage implements OnInit {
   reject() {
     this.overlay.alert({
       header: '拒绝申请',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         this.socket.friendRequestReject(this.request.id, data['rejectReason']);
       },
       inputs: [{

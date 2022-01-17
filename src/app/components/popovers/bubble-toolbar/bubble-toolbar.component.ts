@@ -1,5 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { MessageType } from 'src/app/common/enums';
+import { SafeAny } from 'src/app/common/interfaces';
 import { NAVIGATOR } from 'src/app/common/tokens';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
@@ -69,7 +70,7 @@ export class BubbleToolbarComponent {
   /**
    * 关闭气泡消息工具条
    */
-  dismiss(data?: any, role?: string) {
+  dismiss(data?: SafeAny, role?: string) {
     this.overlay.dismissPopover(data, role);
   }
 

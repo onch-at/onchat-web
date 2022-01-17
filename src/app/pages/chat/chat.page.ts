@@ -256,7 +256,7 @@ export class ChatPage implements OnInit, OnDestroy, AfterViewInit, ViewWillEnter
 
     this.overlay.alert({
       header: '好友别名',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         if (data['alias'] === this.chatroomName) { return; }
 
         this.friendService.setAlias(this.chatroomId, data['alias']).subscribe(({ code, data, msg }: Result<string>) => {

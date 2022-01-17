@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ChatRequestStatus, SocketEvent } from 'src/app/common/enums';
+import { SafeAny } from 'src/app/common/interfaces';
 import { success } from 'src/app/common/operators';
 import { REASON_MAX_LENGTH } from 'src/app/constants';
 import { ChatRequest, Result } from 'src/app/models/onchat.model';
@@ -62,7 +63,7 @@ export class HandlePage implements OnInit {
   reject() {
     this.overlay.alert({
       header: '拒绝申请',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         this.socket.chatRequestReject(this.request.id, data['rejectReason'] || null);
       },
       inputs: [{

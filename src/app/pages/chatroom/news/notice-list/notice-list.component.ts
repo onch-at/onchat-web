@@ -1,6 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ChatRequestStatus, ChatSessionType } from 'src/app/common/enums';
+import { SafeAny } from 'src/app/common/interfaces';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { Socket } from 'src/app/services/socket.service';
@@ -40,7 +41,7 @@ export class NoticeListComponent implements OnInit {
   rejectChatRequest(requestId: number) {
     this.overlay.alert({
       header: '拒绝申请',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         this.socket.chatRequestReject(requestId, data['rejectReason']);
       },
       inputs: [

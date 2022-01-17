@@ -2,6 +2,7 @@ import { KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { FriendRequestStatus } from 'src/app/common/enums';
+import { SafeAny } from 'src/app/common/interfaces';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/constants';
 import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';
@@ -29,7 +30,7 @@ export class NewComponent {
 
     this.overlay.alert({
       header: '同意申请',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         this.socket.friendRequestAgree(id, data['requesterAlias']);
       },
       inputs: [{
@@ -47,7 +48,7 @@ export class NewComponent {
   reject(id: number) {
     this.overlay.alert({
       header: '拒绝申请',
-      confirmHandler: (data: KeyValue<string, any>) => {
+      confirmHandler: (data: KeyValue<string, SafeAny>) => {
         this.socket.friendRequestReject(id, data['rejectReason']);
       },
       inputs: [{
