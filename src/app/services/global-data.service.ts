@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { ChatSessionType, LocalStorageKey } from '../common/enums';
+import { SafeAny } from '../common/interfaces';
 import { NAVIGATOR } from '../common/tokens';
 import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
 import { EntityUtils } from '../utilities/entity.utils';
@@ -57,7 +58,7 @@ export class GlobalData {
       count + (o.unread || 0)
     ), 0);
 
-    (this.navigator as any).setAppBadge?.(count);
+    (this.navigator as SafeAny).setAppBadge?.(count);
 
     return count;
   }

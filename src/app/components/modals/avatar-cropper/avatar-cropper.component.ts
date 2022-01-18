@@ -93,7 +93,7 @@ export class AvatarCropperComponent extends ModalComponent implements OnInit {
     let blob: Blob, src: string | SafeUrl;
 
     // 此处需要调用imageCropper的一些私有方法，使用 any 绕过编译器检查
-    const imageCropper = this.imageCropper as any;
+    const imageCropper = this.imageCropper as SafeAny;
     // 如果支持离屏画布，并且当前允许裁剪
     if (
       'OffscreenCanvas' in window &&
