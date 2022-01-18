@@ -3,6 +3,7 @@ import { catchError, from, fromEvent, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import 'webrtc-adapter';
 import { RtcDataType, SocketEvent } from '../common/enums';
+import { SafeAny } from '../common/interfaces';
 import { Overlay } from './overlay.service';
 import { Socket } from './socket.service';
 
@@ -22,7 +23,7 @@ export class Peer {
   }
 
   get connectionStateChange() {
-    return fromEvent<any>(this.connection, 'connectionstatechange');
+    return fromEvent<SafeAny>(this.connection, 'connectionstatechange');
   }
 
   get track() {

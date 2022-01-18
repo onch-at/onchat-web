@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { LocalStorageKey } from '../common/enums';
+import { SafeAny } from '../common/interfaces';
 import { STORAGE } from '../common/tokens';
 
 /** 本地存储服务 */
@@ -17,7 +18,7 @@ export class LocalStorage {
    * @param key 键名
    * @param value 数据
    */
-  set<T = any>(key: LocalStorageKey, value: T): void {
+  set<T = SafeAny>(key: LocalStorageKey, value: T): void {
     this.storage.setItem(key, JSON.stringify(value));
   }
 
@@ -26,7 +27,7 @@ export class LocalStorage {
    * @param key 键名
    * @param defaults 默认值
    */
-  get<T = any>(key: LocalStorageKey, defaults: T = null): T {
+  get<T = SafeAny>(key: LocalStorageKey, defaults: T = null): T {
     const data = this.storage.getItem(key);
     return data ? JSON.parse(data) : defaults;
   }
@@ -39,13 +40,13 @@ export class LocalStorage {
     this.storage.removeItem(key);
   }
 
-  setItemToMap<T = any>(storageKey: LocalStorageKey, key: string | number, value: T): void {
+  setItemToMap<T = SafeAny>(storageKey: LocalStorageKey, key: string | number, value: T): void {
     const map = this.get(storageKey, {});
     map[key] = value;
     this.set(storageKey, map);
   }
 
-  getItemFromMap<T = any>(storageKey: LocalStorageKey, key: string | number): T {
+  getItemFromMap<T = SafeAny>(storageKey: LocalStorageKey, key: string | number): T {
     const map = this.get(storageKey, {});
     return map[key];
   }
