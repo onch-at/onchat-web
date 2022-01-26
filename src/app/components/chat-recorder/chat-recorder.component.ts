@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnDestroy, Output, ViewChild } from '@angular/core';
+import { SafeAny } from '@ngify/types';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, filter, mergeMap, take, tap } from 'rxjs/operators';
 import { Vector2 } from 'src/app/common/classes';
-import { SafeAny } from 'src/app/common/interfaces';
 import { WINDOW } from 'src/app/common/tokens';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { Overlay } from 'src/app/services/overlay.service';

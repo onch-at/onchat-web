@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { SafeAny } from '@ngify/types';
 import { Socketio } from 'ngx-socketio2';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ResultCode, SocketEvent } from '../common/enums';
-import { SafeAny } from '../common/interfaces';
 import { Message } from '../models/onchat.model';
 import { Overlay } from './overlay.service';
 import { TokenService } from './token.service';

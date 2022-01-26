@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { Throttle } from 'src/app/common/decorators';
-import { SafeAny } from 'src/app/common/interfaces';
+import { Throttle } from '@ngify/at';
+import { SafeAny } from '@ngify/types';
 import { WINDOW } from 'src/app/common/tokens';
 import { Chatroom, Result } from 'src/app/models/onchat.model';
 import { ChatroomService } from 'src/app/services/apis/chatroom.service';

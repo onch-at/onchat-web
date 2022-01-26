@@ -2,8 +2,8 @@
 
 import { getTestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { SafeAny } from '@ngify/types';
 import 'zone.js/testing';
-import { SafeAny } from './app/common/interfaces';
 
 declare const require: SafeAny;
 

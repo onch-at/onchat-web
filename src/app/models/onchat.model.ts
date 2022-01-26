@@ -1,5 +1,5 @@
+import { SafeAny } from '@ngify/types';
 import { ChatMemberRole, ChatRequestStatus, ChatSessionType, FriendRequestStatus, MessageType, ResultCode } from '../common/enums';
-import { SafeAny } from '../common/interfaces';
 import { AnyMessage } from './msg.model';
 
 export interface Result<T = null> {

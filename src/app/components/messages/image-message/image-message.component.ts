@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, HostListener, Inject, Input } from '@angular/core';
-import { Throttle } from 'src/app/common/decorators';
+import { Debounce } from '@ngify/at';
 import { WINDOW } from 'src/app/common/tokens';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';
@@ -24,7 +24,7 @@ export class ImageMessageComponent implements AfterViewInit {
   }
 
   @HostListener('window:resize')
-  @Throttle(100)
+  @Debounce(100)
   onWindowResize() {
     this.resize();
   }

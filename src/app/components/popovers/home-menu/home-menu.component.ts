@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SafeAny } from 'src/app/common/interfaces';
+import { SafeAny } from '@ngify/types';
 
 @Component({
   selector: 'app-home-menu',

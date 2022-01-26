@@ -1,8 +1,8 @@
 import { KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
+import { SafeAny } from '@ngify/types';
 import { FriendRequestStatus } from 'src/app/common/enums';
-import { SafeAny } from 'src/app/common/interfaces';
 import { NICKNAME_MAX_LENGTH, REASON_MAX_LENGTH } from 'src/app/constants';
 import { FriendService } from 'src/app/services/apis/friend.service';
 import { GlobalData } from 'src/app/services/global-data.service';

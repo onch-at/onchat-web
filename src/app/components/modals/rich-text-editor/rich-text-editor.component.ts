@@ -1,8 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Throttle } from '@ngify/at';
 import { ContentChange } from 'ngx-quill';
 import { filter, take } from 'rxjs/operators';
-import { Throttle } from 'src/app/common/decorators';
 import { SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/constants';

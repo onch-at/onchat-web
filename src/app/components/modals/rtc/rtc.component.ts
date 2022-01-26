@@ -1,8 +1,8 @@
 import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Debounce } from '@ngify/at';
 import { merge, of } from 'rxjs';
 import { filter, map, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
-import { Throttle } from 'src/app/common/decorators';
 import { AudioName, RtcDataType, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
 import { WINDOW } from 'src/app/common/tokens';
@@ -173,7 +173,7 @@ export class RtcComponent extends ModalComponent implements OnInit, OnDestroy {
   }
 
   /** 被申请人发起连接 */
-  @Throttle(300)
+  @Debounce(300)
   call() {
     this.overlay.loading('Preparing…');
 

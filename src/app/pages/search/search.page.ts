@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
+import { SafeAny } from '@ngify/types';
 import { slide } from 'src/app/animations/ionic.animation';
-import { SafeAny } from 'src/app/common/interfaces';
 
 @Component({
   selector: 'app-search',

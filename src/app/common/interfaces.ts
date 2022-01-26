@@ -2,9 +2,6 @@ import { ValidationErrors } from '@angular/forms';
 import { AlertButton, AlertInput } from '@ionic/angular';
 import { ChatSession } from '../models/onchat.model';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type SafeAny = any;
-
 /** 聊天会话多选框类型 */
 export type ChatSessionCheckbox = ChatSession & { checked: boolean };
 

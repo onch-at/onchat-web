@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
 import { IonRouterOutlet } from '@ionic/angular';
+import { Debounce } from '@ngify/at';
+import { SafeAny } from '@ngify/types';
 import { filter, mergeMap, take, tap } from 'rxjs/operators';
-import { Throttle } from 'src/app/common/decorators';
 import { ChatroomType, SocketEvent } from 'src/app/common/enums';
-import { SafeAny } from 'src/app/common/interfaces';
 import { success } from 'src/app/common/operators';
 import { ImageMessageEntity } from 'src/app/entities/image-message.entity';
 import { MessageEntity } from 'src/app/entities/message.entity';
@@ -99,7 +99,7 @@ export class ChatDrawerComponent {
     });
   }
 
-  @Throttle(300)
+  @Debounce(300)
   rtc() {
     let mediaStream: MediaStream;
     this.overlay.loading();

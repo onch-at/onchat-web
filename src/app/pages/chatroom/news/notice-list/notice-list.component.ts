@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { SafeAny } from '@ngify/types';
 import { ChatRequestStatus, ChatSessionType } from 'src/app/common/enums';
-import { SafeAny } from 'src/app/common/interfaces';
 import { GlobalData } from 'src/app/services/global-data.service';
 import { Overlay } from 'src/app/services/overlay.service';
 import { Socket } from 'src/app/services/socket.service';

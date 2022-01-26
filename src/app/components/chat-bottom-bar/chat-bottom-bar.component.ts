@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Injector, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { IonContent, Platform } from '@ionic/angular';
+import { Debounce } from '@ngify/at';
 import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { Throttle } from 'src/app/common/decorators';
 import { ChatroomType, SocketEvent } from 'src/app/common/enums';
 import { success } from 'src/app/common/operators';
 import { TEXT_MSG_MAX_LENGTH } from 'src/app/constants';
@@ -193,7 +193,7 @@ export class ChatBottomBarComponent implements OnInit, AfterViewInit {
    * 抬升滚动，用于软键盘弹起的时候
    */
   @HostListener('window:resize')
-  @Throttle(100)
+  @Debounce(100)
   onWindowResize() {
     const { clientHeight } = this.contentElement;
     const diffHeight = this.contentClientHeight - clientHeight;

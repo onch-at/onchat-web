@@ -1,7 +1,7 @@
 import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { SafeAny } from '@ngify/types';
 import { filter, takeUntil } from 'rxjs/operators';
-import { SafeAny } from 'src/app/common/interfaces';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { Overlay } from 'src/app/services/overlay.service';
 

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
+import { SafeAny } from '@ngify/types';
 import { LocalStorageKey } from '../common/enums';
-import { SafeAny } from '../common/interfaces';
 import { STORAGE } from '../common/tokens';
 
 /** 本地存储服务 */

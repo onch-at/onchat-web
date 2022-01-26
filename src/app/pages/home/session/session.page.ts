@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
+import { SafeAny } from '@ngify/types';
 import { finalize } from 'rxjs/operators';
 import { ChatSessionType, MessageType } from 'src/app/common/enums';
-import { SafeAny } from 'src/app/common/interfaces';
 import { WINDOW } from 'src/app/common/tokens';
 import { ChatSession } from 'src/app/models/onchat.model';
 import { ChatSessionService } from 'src/app/services/apis/chat-session.service';

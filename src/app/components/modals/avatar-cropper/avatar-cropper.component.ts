@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { SafeAny } from '@ngify/types';
 import { base64ToFile, ImageCropperComponent, resizeCanvas } from 'ngx-image-cropper';
 import { lastValueFrom, Observable } from 'rxjs';
-import { SafeAny } from 'src/app/common/interfaces';
 import { Result } from 'src/app/models/onchat.model';
 import { Destroyer } from 'src/app/services/destroyer.service';
 import { ImageService } from 'src/app/services/image.service';

@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
+import { SafeAny } from '@ngify/types';
 import { MessageType } from 'src/app/common/enums';
-import { SafeAny } from 'src/app/common/interfaces';
 import { NAVIGATOR } from 'src/app/common/tokens';
 import { ImageMessage } from 'src/app/models/msg.model';
 import { Message } from 'src/app/models/onchat.model';

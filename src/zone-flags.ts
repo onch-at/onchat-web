@@ -1,4 +1,4 @@
-import { SafeAny } from './app/common/interfaces';
+import { SafeAny } from '@ngify/types';
 
 /**
  * Prevents Angular change detection from

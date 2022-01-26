@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
+import { SafeAny } from '@ngify/types';
 import { ChatSessionType, LocalStorageKey } from '../common/enums';
-import { SafeAny } from '../common/interfaces';
 import { NAVIGATOR } from '../common/tokens';
 import { ChatRequest, ChatSession, FriendRequest, User } from '../models/onchat.model';
 import { EntityUtils } from '../utilities/entity.utils';

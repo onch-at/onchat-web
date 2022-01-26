@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { SafeAny } from '@ngify/types';
 import { catchError, from, fromEvent, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import 'webrtc-adapter';
 import { RtcDataType, SocketEvent } from '../common/enums';
-import { SafeAny } from '../common/interfaces';
 import { Overlay } from './overlay.service';
 import { Socket } from './socket.service';
 
