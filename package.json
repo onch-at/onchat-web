@@ -27,7 +27,7 @@
     "@angular/service-worker": "13.1.2",
     "@capacitor/android": "3.4.0",
     "@capacitor/core": "3.4.0",
-    "@ionic/angular": "6.0.3",
+    "@ionic/angular": "6.0.5",
     "@ngify/at": "^1.2.0",
     "emoji-regex": "10.0.0",
     "hammerjs": "2.0.8",
