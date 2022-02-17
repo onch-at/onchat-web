@@ -72,7 +72,7 @@ export class MessageListComponent {
       keyboardClose: false,
       backdropDismiss: false,
       side: 'top',
-      align: 'center',
+      alignment: 'center',
     });
 
     popover.onWillDismiss().then(({ role, data }) => {
