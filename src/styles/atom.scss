@@ -1,4 +1,5 @@
 @import "variables/color";
+@import "~@hyperify/lonely/dist/lonely";
 
 @each $color-name, $color-value in $colors-light {
     .color-#{$color-name} {
@@ -12,94 +13,4 @@
 
 .font-primary {
     font-family: "Alibaba-Sans-Black" !important;
-}
-.dp-none {
-    display: none !important;
-}
-.dp-block {
-    display: block !important;
-}
-.dp-inline {
-    display: inline !important;
-}
-.dp-inline-block {
-    display: inline-block !important;
-}
-.dp-flex {
-    display: flex !important;
-}
-.dp-inline-flex {
-    display: inline-flex !important;
-}
-.justify-center {
-    justify-content: center !important;
-}
-.justify-between {
-    justify-content: space-between !important;
-}
-.justify-end {
-    justify-content: flex-end !important;
-}
-.align-start {
-    align-items: flex-start !important;
-}
-.align-center {
-    align-items: center !important;
-}
-.align-end {
-    align-items: flex-end !important;
-}
-.flex-auto {
-    flex: auto !important;
-}
-.flex-col {
-    flex-direction: column !important;
-}
-.flex-nowrap {
-    flex-wrap: nowrap !important;
-}
-.flex-wrap {
-    flex-wrap: wrap !important;
-}
-.text-left {
-    text-align: left !important;
-}
-.text-center {
-    text-align: center !important;
-}
-.text-right {
-    text-align: right !important;
-}
-.font-normal {
-    font-weight: normal !important;
-}
-.font-bold {
-    font-weight: bold !important;
-}
-.mg-0 {
-    margin: 0 !important;
-}
-.pd-0 {
-    padding: 0 !important;
-}
-.outline-none {
-    outline: none !important;
-}
-.hidden {
-    visibility: hidden !important;
-}
-.pointer {
-    cursor: pointer !important;
-}
-.clip {
-    overflow: hidden !important;
-}
-.line-hg-0 {
-    line-height: 0 !important;
-}
-.min-hg-full {
-    min-height: 100% !important;
-}
-.min-wd-full {
-    min-width: 100% !important;
 }

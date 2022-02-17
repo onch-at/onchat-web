@@ -27,6 +27,7 @@
     "@angular/service-worker": "13.1.2",
     "@capacitor/android": "3.3.4",
     "@capacitor/core": "3.3.4",
+    "@hyperify/lonely": "^1.0.0",
     "@ionic/angular": "6.0.3",
     "@ngify/at": "^1.2.0",
     "emoji-regex": "10.0.0",
