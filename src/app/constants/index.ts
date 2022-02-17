@@ -19,17 +19,17 @@ export const PASSWORD_MAX_LENGTH: number = 50;
 /** 聊天室名称最小长度 */
 export const CHATROOM_NAME_MIN_LENGTH: number = 1;
 /** 聊天室名称最大长度 */
-export const CHATROOM_NAME_MAX_LENGTH: number = 30;
+export const CHATROOM_NAME_MAX_LENGTH: number = 15;
 
 /** 聊天室简介最小长度 */
 export const CHATROOM_DESCRIPTION_MIN_LENGTH: number = 5;
 /** 聊天室简介最大长度 */
-export const CHATROOM_DESCRIPTION_MAX_LENGTH: number = 300;
+export const CHATROOM_DESCRIPTION_MAX_LENGTH: number = 256;
 
 /** 个性签名最小长度 */
 export const SIGNATURE_MIN_LENGTH: number = 1;
 /** 个性签名最大长度 */
-export const SIGNATURE_MAX_LENGTH: number = 100;
+export const SIGNATURE_MAX_LENGTH: number = 128;
 
 /** 文本消息最长长度 */
 export const TEXT_MSG_MAX_LENGTH: number = 3000;
